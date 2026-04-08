@@ -13,6 +13,7 @@ interface AddCandidateFormProps {
 
 const AddCandidateForm = ({ onAdd }: AddCandidateFormProps) => {
   const [form, setForm] = useState({
+    numriPersonal: "",
     emri: "",
     mbiemri: "",
     telefon: "",
