@@ -3,6 +3,7 @@ import { Candidate } from "@/types/candidate";
 export const mockCandidates: Candidate[] = [
   {
     id: "1",
+    numriPersonal: "1985051234567",
     emri: "Arben",
     mbiemri: "Krasniqi",
     telefon: "+383 44 123 456",
@@ -15,6 +16,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: "2",
+    numriPersonal: "2000092234589",
     emri: "Fjolla",
     mbiemri: "Berisha",
     telefon: "+383 45 234 567",
@@ -27,6 +29,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: "3",
+    numriPersonal: "1995030812345",
     emri: "Besnik",
     mbiemri: "Gashi",
     telefon: "+383 49 345 678",
@@ -39,6 +42,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: "4",
+    numriPersonal: "2001123067890",
     emri: "Drita",
     mbiemri: "Hoxha",
     telefon: "+383 44 456 789",
@@ -51,6 +55,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: "5",
+    numriPersonal: "1999071456789",
     emri: "Luan",
     mbiemri: "Morina",
     telefon: "+383 45 567 890",
@@ -63,6 +68,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: "6",
+    numriPersonal: "2002041890123",
     emri: "Vlora",
     mbiemri: "Shala",
     telefon: "+383 49 678 901",
