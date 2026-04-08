@@ -39,7 +39,7 @@ const AddCandidateForm = ({ onAdd }: AddCandidateFormProps) => {
 
     onAdd(newCandidate);
     toast.success("Kandidati u shtua me sukses!");
-    setForm({ emri: "", mbiemri: "", telefon: "", email: "", dataLindjes: "", kategoria: "B", shenimet: "" });
+    setForm({ numriPersonal: "", emri: "", mbiemri: "", telefon: "", email: "", dataLindjes: "", kategoria: "B", shenimet: "" });
   };
 
   return (
@@ -47,6 +47,10 @@ const AddCandidateForm = ({ onAdd }: AddCandidateFormProps) => {
       <h2 className="text-xl font-semibold mb-6">Shto Kandidat të Ri</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="numriPersonal">Numri Personal *</Label>
+            <Input id="numriPersonal" value={form.numriPersonal} onChange={(e) => setForm({ ...form, numriPersonal: e.target.value })} placeholder="Numri personal" />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="emri">Emri *</Label>
             <Input id="emri" value={form.emri} onChange={(e) => setForm({ ...form, emri: e.target.value })} placeholder="Emri" />
