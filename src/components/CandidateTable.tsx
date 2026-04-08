@@ -1,0 +1,79 @@
+import { useState } from "react";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Candidate } from "@/types/candidate";
+import StatusBadge from "@/components/StatusBadge";
+
+interface CandidateTableProps {
+  candidates: Candidate[];
+}
+
+const CandidateTable = ({ candidates }: CandidateTableProps) => {
+  const [search, setSearch] = useState("");
+
+  const filtered = candidates.filter(
+    (c) =>
+      c.emri.toLowerCase().includes(search.toLowerCase()) ||
+      c.mbiemri.toLowerCase().includes(search.toLowerCase()) ||
+      c.telefon.includes(search)
+  );
+
+  return (
+    <div className="glass-card rounded-xl">
+      <div className="p-4 border-b border-border/50">
+        <div className="relative max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            placeholder="Kërko kandidatë..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+      </div>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Emri</TableHead>
+              <TableHead>Mbiemri</TableHead>
+              <TableHead>Telefon</TableHead>
+              <TableHead>Kategoria</TableHead>
+              <TableHead>Statusi</TableHead>
+              <TableHead>Data Regj.</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                  Nuk u gjet asnjë kandidat
+                </TableCell>
+              </TableRow>
+            ) : (
+              filtered.map((c) => (
+                <TableRow key={c.id}>
+                  <TableCell className="font-medium">{c.emri}</TableCell>
+                  <TableCell>{c.mbiemri}</TableCell>
+                  <TableCell>{c.telefon}</TableCell>
+                  <TableCell>
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
+                      {c.kategoria}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <StatusBadge status={c.statusi} />
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">{c.dataRegjistrimit}</TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+};
+
+export default CandidateTable;
