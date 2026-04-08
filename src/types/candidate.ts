@@ -2,6 +2,7 @@ export type CandidateStatus = "regjistuar" | "ne_proces" | "kaluar" | "deshtur";
 
 export interface Candidate {
   id: string;
+  numriPersonal: string;
   emri: string;
   mbiemri: string;
   telefon: string;
