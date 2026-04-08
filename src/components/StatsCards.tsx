@@ -1,0 +1,43 @@
+import { Users, UserCheck, Clock, XCircle } from "lucide-react";
+import { Candidate } from "@/types/candidate";
+
+interface StatsCardsProps {
+  candidates: Candidate[];
+}
+
+const StatsCards = ({ candidates }: StatsCardsProps) => {
+  const total = candidates.length;
+  const active = candidates.filter((c) => c.statusi === "ne_proces").length;
+  const passed = candidates.filter((c) => c.statusi === "kaluar").length;
+  const failed = candidates.filter((c) => c.statusi === "deshtur").length;
+
+  const stats = [
+    { label: "Gjithsej", value: total, icon: Users, color: "text-primary" },
+    { label: "Në Proces", value: active, icon: Clock, color: "text-warning" },
+    { label: "Kaluar", value: passed, icon: UserCheck, color: "text-success" },
+    { label: "Dështuar", value: failed, icon: XCircle, color: "text-destructive" },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {stats.map((stat) => {
+        const Icon = stat.icon;
+        return (
+          <div key={stat.label} className="glass-card rounded-xl p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                <p className="text-3xl font-bold mt-1">{stat.value}</p>
+              </div>
+              <div className={`p-3 rounded-lg bg-muted ${stat.color}`}>
+                <Icon className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default StatsCards;
