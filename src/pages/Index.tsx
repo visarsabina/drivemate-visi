@@ -3,6 +3,7 @@ import AppSidebar from "@/components/Sidebar";
 import StatsCards from "@/components/StatsCards";
 import CandidateTable from "@/components/CandidateTable";
 import AddCandidateForm from "@/components/AddCandidateForm";
+import PaymentForm from "@/components/PaymentForm";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate } from "@/types/candidate";
 import { Menu, X } from "lucide-react";
@@ -21,6 +22,7 @@ const Index = () => {
     dashboard: "Paneli Kryesor",
     candidates: "Lista e Kandidatëve",
     add: "Shto Kandidat",
+    payment: "Pagesa",
   };
 
   return (
@@ -58,6 +60,8 @@ const Index = () => {
           {activeView === "candidates" && <CandidateTable candidates={candidates} />}
 
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
+
+          {activeView === "payment" && <PaymentForm candidates={candidates} />}
         </div>
       </main>
     </div>

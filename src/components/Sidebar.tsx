@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, UserPlus } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 interface SidebarProps {
@@ -10,6 +10,7 @@ const navItems = [
   { id: "dashboard", label: "Paneli", icon: LayoutDashboard },
   { id: "candidates", label: "Kandidatët", icon: Users },
   { id: "add", label: "Shto Kandidat", icon: UserPlus },
+  { id: "payment", label: "Pagesa", icon: CreditCard },
 ];
 
 const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
