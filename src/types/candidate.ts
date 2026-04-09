@@ -10,6 +10,8 @@ export interface Candidate {
   email: string;
   dataLindjes: string;
   kategoria: string;
+  certifikataShendetsore: string;
+  vendi: string;
   statusi: CandidateStatus;
   dataRegjistrimit: string;
   shenimet: string;
