@@ -57,7 +57,7 @@ const Index = () => {
 
           {activeView === "candidates" && <CandidateTable candidates={candidates} />}
 
-          {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} />}
+          {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
         </div>
       </main>
     </div>
