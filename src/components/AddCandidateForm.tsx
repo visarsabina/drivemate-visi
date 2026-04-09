@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 interface AddCandidateFormProps {
   onAdd: (candidate: Candidate) => void;
+  candidateCount: number;
 }
 
 const AddCandidateForm = ({ onAdd }: AddCandidateFormProps) => {
