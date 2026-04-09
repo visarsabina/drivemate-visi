@@ -28,6 +28,9 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     email: "",
     dataLindjes: "",
     kategoria: "B",
+    certifikataShendetsore: "",
+    vendi: "",
+    dataRegjistrimit: new Date().toISOString().split("T")[0],
     shenimet: "",
   });
 
@@ -42,12 +45,11 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       id: Date.now().toString(),
       ...form,
       statusi: "regjistuar" as CandidateStatus,
-      dataRegjistrimit: new Date().toISOString().split("T")[0],
     };
 
     onAdd(newCandidate);
     toast.success("Kandidati u shtua me sukses!");
-    setForm({ numriRegjistrimit: generateRegNumber(candidateCount + 1), numriPersonal: "", emri: "", mbiemri: "", telefon: "", email: "", dataLindjes: "", kategoria: "B", shenimet: "" });
+    setForm({ numriRegjistrimit: generateRegNumber(candidateCount + 1), numriPersonal: "", emri: "", mbiemri: "", telefon: "", email: "", dataLindjes: "", kategoria: "B", certifikataShendetsore: "", vendi: "", dataRegjistrimit: new Date().toISOString().split("T")[0], shenimet: "" });
   };
 
   return (
@@ -96,6 +98,20 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
                 <SelectItem value="D">D - Autobus</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="certifikataShendetsore">Çertifikata Shëndetësore (Nr.Data)</Label>
+            <Input id="certifikataShendetsore" value={form.certifikataShendetsore} onChange={(e) => setForm({ ...form, certifikataShendetsore: e.target.value })} placeholder="12345.15.03.2026" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="vendi">Vendi</Label>
+            <Input id="vendi" value={form.vendi} onChange={(e) => setForm({ ...form, vendi: e.target.value })} placeholder="Prishtinë" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="dataRegjistrimit">Data e Regjistrimit</Label>
+            <Input id="dataRegjistrimit" type="date" value={form.dataRegjistrimit} onChange={(e) => setForm({ ...form, dataRegjistrimit: e.target.value })} />
           </div>
         </div>
         <div className="space-y-2">
