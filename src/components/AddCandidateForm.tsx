@@ -9,11 +9,18 @@ import { toast } from "sonner";
 
 interface AddCandidateFormProps {
   onAdd: (candidate: Candidate) => void;
+  candidateCount: number;
 }
 
-const AddCandidateForm = ({ onAdd }: AddCandidateFormProps) => {
+const generateRegNumber = (count: number) => {
+  const year = new Date().getFullYear().toString().slice(-2);
+  const num = String(count + 1).padStart(2, "0");
+  return `${num}/${year}`;
+};
+
+const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
   const [form, setForm] = useState({
-    numriRegjistrimit: "",
+    numriRegjistrimit: generateRegNumber(candidateCount),
     numriPersonal: "",
     emri: "",
     mbiemri: "",
@@ -40,7 +47,7 @@ const AddCandidateForm = ({ onAdd }: AddCandidateFormProps) => {
 
     onAdd(newCandidate);
     toast.success("Kandidati u shtua me sukses!");
-    setForm({ numriRegjistrimit: "", numriPersonal: "", emri: "", mbiemri: "", telefon: "", email: "", dataLindjes: "", kategoria: "B", shenimet: "" });
+    setForm({ numriRegjistrimit: generateRegNumber(candidateCount + 1), numriPersonal: "", emri: "", mbiemri: "", telefon: "", email: "", dataLindjes: "", kategoria: "B", shenimet: "" });
   };
 
   return (
@@ -50,7 +57,7 @@ const AddCandidateForm = ({ onAdd }: AddCandidateFormProps) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="numriRegjistrimit">Numri i Regjistrimit</Label>
-            <Input id="numriRegjistrimit" value={form.numriRegjistrimit} onChange={(e) => setForm({ ...form, numriRegjistrimit: e.target.value })} placeholder="Numri i regjistrimit" />
+            <Input id="numriRegjistrimit" value={form.numriRegjistrimit} readOnly className="bg-muted cursor-not-allowed" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="numriPersonal">Numri Personal *</Label>
