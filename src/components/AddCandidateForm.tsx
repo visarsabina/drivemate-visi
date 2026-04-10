@@ -25,13 +25,13 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     emri: "",
     mbiemri: "",
     telefon: "",
-    email: "",
     dataLindjes: "",
     kategoria: "B",
     certifikataShendetsore: "",
     vendi: "",
     dataRegjistrimit: new Date().toISOString().split("T")[0],
     shenimet: "",
+    shumaMarreveshjes: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -45,11 +45,26 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       id: Date.now().toString(),
       ...form,
       statusi: "regjistuar" as CandidateStatus,
+      shumaMarreveshjes: parseFloat(form.shumaMarreveshjes) || 0,
+      payments: [],
     };
 
     onAdd(newCandidate);
     toast.success("Kandidati u shtua me sukses!");
-    setForm({ numriRegjistrimit: generateRegNumber(candidateCount + 1), numriPersonal: "", emri: "", mbiemri: "", telefon: "", email: "", dataLindjes: "", kategoria: "B", certifikataShendetsore: "", vendi: "", dataRegjistrimit: new Date().toISOString().split("T")[0], shenimet: "" });
+    setForm({
+      numriRegjistrimit: generateRegNumber(candidateCount + 1),
+      numriPersonal: "",
+      emri: "",
+      mbiemri: "",
+      telefon: "",
+      dataLindjes: "",
+      kategoria: "B",
+      certifikataShendetsore: "",
+      vendi: "",
+      dataRegjistrimit: new Date().toISOString().split("T")[0],
+      shenimet: "",
+      shumaMarreveshjes: "",
+    });
   };
 
   return (
@@ -78,10 +93,6 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
             <Input id="telefon" value={form.telefon} onChange={(e) => setForm({ ...form, telefon: e.target.value })} placeholder="+383 4X XXX XXX" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="email@example.com" />
-          </div>
-          <div className="space-y-2">
             <Label htmlFor="dataLindjes">Data e Lindjes</Label>
             <Input id="dataLindjes" type="date" value={form.dataLindjes} onChange={(e) => setForm({ ...form, dataLindjes: e.target.value })} />
           </div>
@@ -98,6 +109,10 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
                 <SelectItem value="D">D - Autobus</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="shumaMarreveshjes">Shuma e Marrëveshjes (€)</Label>
+            <Input id="shumaMarreveshjes" type="number" value={form.shumaMarreveshjes} onChange={(e) => setForm({ ...form, shumaMarreveshjes: e.target.value })} placeholder="0.00" />
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

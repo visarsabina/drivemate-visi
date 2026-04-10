@@ -1,5 +1,11 @@
 export type CandidateStatus = "regjistuar" | "ne_proces" | "kaluar" | "deshtur";
 
+export interface Payment {
+  id: string;
+  shuma: number;
+  data: string;
+}
+
 export interface Candidate {
   id: string;
   numriRegjistrimit: string;
@@ -7,7 +13,6 @@ export interface Candidate {
   emri: string;
   mbiemri: string;
   telefon: string;
-  email: string;
   dataLindjes: string;
   kategoria: string;
   certifikataShendetsore: string;
@@ -15,4 +20,6 @@ export interface Candidate {
   statusi: CandidateStatus;
   dataRegjistrimit: string;
   shenimet: string;
+  shumaMarreveshjes: number;
+  payments: Payment[];
 }

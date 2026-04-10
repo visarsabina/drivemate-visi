@@ -5,8 +5,9 @@ import CandidateTable from "@/components/CandidateTable";
 import AddCandidateForm from "@/components/AddCandidateForm";
 import PaymentForm from "@/components/PaymentForm";
 import { mockCandidates } from "@/data/mockCandidates";
-import { Candidate } from "@/types/candidate";
-import { Menu, X } from "lucide-react";
+import { Candidate, Payment } from "@/types/candidate";
+import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [activeView, setActiveView] = useState("dashboard");
@@ -18,6 +19,16 @@ const Index = () => {
     setActiveView("candidates");
   };
 
+  const handlePayment = (candidateId: string, payment: Payment) => {
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.id === candidateId
+          ? { ...c, payments: [...c.payments, payment] }
+          : c
+      )
+    );
+  };
+
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
     candidates: "Lista e Kandidatëve",
@@ -25,19 +36,23 @@ const Index = () => {
     payment: "Pagesa",
   };
 
+  const dashboardActions = [
+    { id: "libreza", label: "Libreza e Kandidatit", icon: BookOpen, description: "Shiko librezën e kandidatit" },
+    { id: "vertetimi", label: "Vërtetimi", icon: FileCheck, description: "Gjenero vërtetimin" },
+    { id: "fletparaqitja", label: "Fletparaqitja", icon: FileText, description: "Gjenero fletparaqitjen" },
+    { id: "kontrata", label: "Kontrata", icon: FileSignature, description: "Gjenero kontratën" },
+  ];
+
   return (
     <div className="flex min-h-screen">
-      {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-foreground/40 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-50 transform transition-transform lg:relative lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <AppSidebar activeView={activeView} onViewChange={(v) => { setActiveView(v); setSidebarOpen(false); }} />
       </div>
 
-      {/* Main */}
       <main className="flex-1 min-h-screen">
         <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border px-4 lg:px-8 py-4 flex items-center gap-4">
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg hover:bg-muted">
@@ -50,6 +65,27 @@ const Index = () => {
           {activeView === "dashboard" && (
             <>
               <StatsCards candidates={candidates} />
+
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {dashboardActions.map((action) => {
+                    const Icon = action.icon;
+                    return (
+                      <Button
+                        key={action.id}
+                        variant="outline"
+                        className="h-auto flex flex-col items-center gap-3 p-6 hover:bg-primary/5 hover:border-primary/30"
+                        onClick={() => setActiveView(action.id)}
+                      >
+                        <Icon className="w-8 h-8 text-primary" />
+                        <span className="text-sm font-medium text-center">{action.label}</span>
+                      </Button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div>
                 <h3 className="text-lg font-semibold mb-4">Kandidatët e Fundit</h3>
                 <CandidateTable candidates={candidates} />
@@ -61,7 +97,13 @@ const Index = () => {
 
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 
-          {activeView === "payment" && <PaymentForm candidates={candidates} />}
+          {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} />}
+
+          {(activeView === "libreza" || activeView === "vertetimi" || activeView === "fletparaqitja" || activeView === "kontrata") && (
+            <div className="glass-card rounded-xl p-8 text-center">
+              <p className="text-muted-foreground">Kjo faqe është në zhvillim...</p>
+            </div>
+          )}
         </div>
       </main>
     </div>

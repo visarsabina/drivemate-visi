@@ -16,6 +16,7 @@ const CandidateTable = ({ candidates }: CandidateTableProps) => {
     (c) =>
       c.emri.toLowerCase().includes(search.toLowerCase()) ||
       c.mbiemri.toLowerCase().includes(search.toLowerCase()) ||
+      c.numriRegjistrimit.includes(search) ||
       c.telefon.includes(search)
   );
 
@@ -36,38 +37,48 @@ const CandidateTable = ({ candidates }: CandidateTableProps) => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Nr. Regj.</TableHead>
               <TableHead>Emri</TableHead>
               <TableHead>Mbiemri</TableHead>
-              <TableHead>Telefon</TableHead>
               <TableHead>Kategoria</TableHead>
-              <TableHead>Statusi</TableHead>
               <TableHead>Data Regj.</TableHead>
+              <TableHead>Paguar</TableHead>
+              <TableHead>Borxhi</TableHead>
+              <TableHead>Statusi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
                   Nuk u gjet asnjë kandidat
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((c) => (
-                <TableRow key={c.id}>
-                  <TableCell className="font-medium">{c.emri}</TableCell>
-                  <TableCell>{c.mbiemri}</TableCell>
-                  <TableCell>{c.telefon}</TableCell>
-                  <TableCell>
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
-                      {c.kategoria}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <StatusBadge status={c.statusi} />
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">{c.dataRegjistrimit}</TableCell>
-                </TableRow>
-              ))
+              filtered.map((c) => {
+                const totalPaguar = c.payments.reduce((sum, p) => sum + p.shuma, 0);
+                const borxhi = c.shumaMarreveshjes - totalPaguar;
+                return (
+                  <TableRow key={c.id}>
+                    <TableCell className="font-medium">{c.numriRegjistrimit}</TableCell>
+                    <TableCell>{c.emri}</TableCell>
+                    <TableCell>{c.mbiemri}</TableCell>
+                    <TableCell>
+                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted font-semibold text-sm">
+                        {c.kategoria}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{c.dataRegjistrimit}</TableCell>
+                    <TableCell className="text-primary font-medium">{totalPaguar.toFixed(2)} €</TableCell>
+                    <TableCell className={borxhi > 0 ? "text-destructive font-medium" : "text-primary font-medium"}>
+                      {borxhi.toFixed(2)} €
+                    </TableCell>
+                    <TableCell>
+                      <StatusBadge status={c.statusi} />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>

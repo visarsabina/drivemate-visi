@@ -8,7 +8,6 @@ export const mockCandidates: Candidate[] = [
     emri: "Arben",
     mbiemri: "Krasniqi",
     telefon: "+383 44 123 456",
-    email: "arben.k@email.com",
     dataLindjes: "1998-05-12",
     kategoria: "B",
     certifikataShendetsore: "45678.10.01.2024",
@@ -16,6 +15,11 @@ export const mockCandidates: Candidate[] = [
     statusi: "ne_proces",
     dataRegjistrimit: "2024-01-15",
     shenimet: "Provimi i parë i teorisë më 20 shkurt",
+    shumaMarreveshjes: 350,
+    payments: [
+      { id: "p1", shuma: 200, data: "2024-01-15" },
+      { id: "p2", shuma: 50, data: "2024-02-10" },
+    ],
   },
   {
     id: "2",
@@ -24,7 +28,6 @@ export const mockCandidates: Candidate[] = [
     emri: "Fjolla",
     mbiemri: "Berisha",
     telefon: "+383 45 234 567",
-    email: "fjolla.b@email.com",
     dataLindjes: "2000-09-22",
     kategoria: "B",
     certifikataShendetsore: "23456.05.11.2023",
@@ -32,6 +35,10 @@ export const mockCandidates: Candidate[] = [
     statusi: "kaluar",
     dataRegjistrimit: "2023-11-05",
     shenimet: "Ka përfunduar me sukses",
+    shumaMarreveshjes: 300,
+    payments: [
+      { id: "p3", shuma: 300, data: "2023-11-05" },
+    ],
   },
   {
     id: "3",
@@ -40,7 +47,6 @@ export const mockCandidates: Candidate[] = [
     emri: "Besnik",
     mbiemri: "Gashi",
     telefon: "+383 49 345 678",
-    email: "besnik.g@email.com",
     dataLindjes: "1995-03-08",
     kategoria: "C",
     certifikataShendetsore: "67890.01.02.2024",
@@ -48,6 +54,8 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2024-02-01",
     shenimet: "",
+    shumaMarreveshjes: 500,
+    payments: [],
   },
   {
     id: "4",
@@ -56,7 +64,6 @@ export const mockCandidates: Candidate[] = [
     emri: "Drita",
     mbiemri: "Hoxha",
     telefon: "+383 44 456 789",
-    email: "drita.h@email.com",
     dataLindjes: "2001-12-30",
     kategoria: "B",
     certifikataShendetsore: "34567.20.10.2023",
@@ -64,6 +71,10 @@ export const mockCandidates: Candidate[] = [
     statusi: "deshtur",
     dataRegjistrimit: "2023-10-20",
     shenimet: "Nuk ka kaluar provimin e praktikës",
+    shumaMarreveshjes: 350,
+    payments: [
+      { id: "p4", shuma: 150, data: "2023-10-20" },
+    ],
   },
   {
     id: "5",
@@ -72,7 +83,6 @@ export const mockCandidates: Candidate[] = [
     emri: "Luan",
     mbiemri: "Morina",
     telefon: "+383 45 567 890",
-    email: "luan.m@email.com",
     dataLindjes: "1999-07-14",
     kategoria: "B",
     certifikataShendetsore: "78901.25.01.2024",
@@ -80,6 +90,11 @@ export const mockCandidates: Candidate[] = [
     statusi: "ne_proces",
     dataRegjistrimit: "2024-01-25",
     shenimet: "Ka kaluar teorinë, pret praktikën",
+    shumaMarreveshjes: 350,
+    payments: [
+      { id: "p5", shuma: 200, data: "2024-01-25" },
+      { id: "p6", shuma: 100, data: "2024-02-15" },
+    ],
   },
   {
     id: "6",
@@ -88,7 +103,6 @@ export const mockCandidates: Candidate[] = [
     emri: "Vlora",
     mbiemri: "Shala",
     telefon: "+383 49 678 901",
-    email: "vlora.s@email.com",
     dataLindjes: "2002-04-18",
     kategoria: "A",
     certifikataShendetsore: "89012.10.02.2024",
@@ -96,5 +110,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2024-02-10",
     shenimet: "",
+    shumaMarreveshjes: 250,
+    payments: [],
   },
 ];
