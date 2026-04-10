@@ -4,6 +4,7 @@ import StatsCards from "@/components/StatsCards";
 import CandidateTable from "@/components/CandidateTable";
 import AddCandidateForm from "@/components/AddCandidateForm";
 import PaymentForm from "@/components/PaymentForm";
+import CandidateBooklet from "@/components/CandidateBooklet";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
@@ -34,6 +35,7 @@ const Index = () => {
     candidates: "Lista e Kandidatëve",
     add: "Shto Kandidat",
     payment: "Pagesa",
+    libreza: "Libreza e Kandidatit",
   };
 
   const dashboardActions = [
@@ -99,7 +101,9 @@ const Index = () => {
 
           {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} />}
 
-          {(activeView === "libreza" || activeView === "vertetimi" || activeView === "fletparaqitja" || activeView === "kontrata") && (
+          {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
+
+          {(activeView === "vertetimi" || activeView === "fletparaqitja" || activeView === "kontrata") && (
             <div className="glass-card rounded-xl p-8 text-center">
               <p className="text-muted-foreground">Kjo faqe është në zhvillim...</p>
             </div>
