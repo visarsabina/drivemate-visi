@@ -5,6 +5,7 @@ import CandidateTable from "@/components/CandidateTable";
 import AddCandidateForm from "@/components/AddCandidateForm";
 import PaymentForm from "@/components/PaymentForm";
 import CandidateBooklet from "@/components/CandidateBooklet";
+import CandidateDetail from "@/components/CandidateDetail";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
@@ -14,6 +15,7 @@ const Index = () => {
   const [activeView, setActiveView] = useState("dashboard");
   const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
 
   const handleAddCandidate = (candidate: Candidate) => {
     setCandidates((prev) => [candidate, ...prev]);
@@ -33,6 +35,7 @@ const Index = () => {
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
     candidates: "Lista e Kandidatëve",
+    "candidate-detail": "Paneli i Kandidatit",
     add: "Shto Kandidat",
     payment: "Pagesa",
     libreza: "Libreza e Kandidatit",
@@ -90,12 +93,21 @@ const Index = () => {
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Kandidatët e Fundit</h3>
-                <CandidateTable candidates={candidates} />
+                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
               </div>
             </>
           )}
 
-          {activeView === "candidates" && <CandidateTable candidates={candidates} />}
+          {activeView === "candidates" && !selectedCandidate && (
+            <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
+          )}
+
+          {activeView === "candidate-detail" && selectedCandidate && (
+            <CandidateDetail
+              candidate={candidates.find(c => c.id === selectedCandidate.id) || selectedCandidate}
+              onBack={() => { setSelectedCandidate(null); setActiveView("candidates"); }}
+            />
+          )}
 
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 

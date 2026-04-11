@@ -6,10 +6,11 @@ import { Printer } from "lucide-react";
 
 interface CandidateBookletProps {
   candidates: Candidate[];
+  preselectedId?: string;
 }
 
-const CandidateBooklet = ({ candidates }: CandidateBookletProps) => {
-  const [selectedId, setSelectedId] = useState("");
+const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) => {
+  const [selectedId, setSelectedId] = useState(preselectedId || "");
   const candidate = candidates.find((c) => c.id === selectedId);
 
   const handlePrint = () => {
