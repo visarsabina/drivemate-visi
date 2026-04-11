@@ -35,6 +35,7 @@ const Index = () => {
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
     candidates: "Lista e Kandidatëve",
+    "candidate-detail": "Paneli i Kandidatit",
     add: "Shto Kandidat",
     payment: "Pagesa",
     libreza: "Libreza e Kandidatit",
