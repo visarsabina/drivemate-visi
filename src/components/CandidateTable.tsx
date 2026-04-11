@@ -7,6 +7,7 @@ import StatusBadge from "@/components/StatusBadge";
 
 interface CandidateTableProps {
   candidates: Candidate[];
+  onSelectCandidate?: (candidate: Candidate) => void;
 }
 
 const CandidateTable = ({ candidates }: CandidateTableProps) => {
