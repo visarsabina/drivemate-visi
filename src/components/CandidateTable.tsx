@@ -10,7 +10,7 @@ interface CandidateTableProps {
   onSelectCandidate?: (candidate: Candidate) => void;
 }
 
-const CandidateTable = ({ candidates }: CandidateTableProps) => {
+const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) => {
   const [search, setSearch] = useState("");
 
   const filtered = candidates.filter(
@@ -60,7 +60,7 @@ const CandidateTable = ({ candidates }: CandidateTableProps) => {
                 const totalPaguar = c.payments.reduce((sum, p) => sum + p.shuma, 0);
                 const borxhi = c.shumaMarreveshjes - totalPaguar;
                 return (
-                  <TableRow key={c.id}>
+                  <TableRow key={c.id} className="cursor-pointer hover:bg-muted/50" onClick={() => onSelectCandidate?.(c)}>
                     <TableCell className="font-medium">{c.numriRegjistrimit}</TableCell>
                     <TableCell>{c.emri}</TableCell>
                     <TableCell>{c.mbiemri}</TableCell>
