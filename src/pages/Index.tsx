@@ -15,6 +15,7 @@ const Index = () => {
   const [activeView, setActiveView] = useState("dashboard");
   const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
 
   const handleAddCandidate = (candidate: Candidate) => {
     setCandidates((prev) => [candidate, ...prev]);
