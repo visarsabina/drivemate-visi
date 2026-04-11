@@ -92,12 +92,21 @@ const Index = () => {
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Kandidatët e Fundit</h3>
-                <CandidateTable candidates={candidates} />
+                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
               </div>
             </>
           )}
 
-          {activeView === "candidates" && <CandidateTable candidates={candidates} />}
+          {activeView === "candidates" && !selectedCandidate && (
+            <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
+          )}
+
+          {activeView === "candidate-detail" && selectedCandidate && (
+            <CandidateDetail
+              candidate={candidates.find(c => c.id === selectedCandidate.id) || selectedCandidate}
+              onBack={() => { setSelectedCandidate(null); setActiveView("candidates"); }}
+            />
+          )}
 
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 
