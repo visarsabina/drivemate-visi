@@ -5,6 +5,7 @@ import CandidateTable from "@/components/CandidateTable";
 import AddCandidateForm from "@/components/AddCandidateForm";
 import PaymentForm from "@/components/PaymentForm";
 import CandidateBooklet from "@/components/CandidateBooklet";
+import CandidateDetail from "@/components/CandidateDetail";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
