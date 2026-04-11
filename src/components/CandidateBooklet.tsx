@@ -6,6 +6,7 @@ import { Printer } from "lucide-react";
 
 interface CandidateBookletProps {
   candidates: Candidate[];
+  preselectedId?: string;
 }
 
 const CandidateBooklet = ({ candidates }: CandidateBookletProps) => {
