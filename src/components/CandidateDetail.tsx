@@ -103,7 +103,15 @@ const CandidateDetail = ({ candidate, onBack }: CandidateDetailProps) => {
           <div><span className="text-muted-foreground">Çertifikata:</span> <strong>{candidate.certifikataShendetsore}</strong></div>
           <div><span className="text-muted-foreground">Shuma Marrëveshjes:</span> <strong>{candidate.shumaMarreveshjes.toFixed(2)} €</strong></div>
           <div><span className="text-muted-foreground">Paguar:</span> <strong className="text-primary">{totalPaguar.toFixed(2)} €</strong></div>
-          <div><span className="text-muted-foreground">Borxhi:</span> <strong className={borxhi > 0 ? "text-destructive" : "text-primary"}>{borxhi.toFixed(2)} €</strong></div>
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">Borxhi:</span>
+            <strong className={borxhi > 0 ? "text-destructive" : "text-primary"}>{borxhi.toFixed(2)} €</strong>
+            {borxhi > 0 && (
+              <Button variant="ghost" size="sm" className="h-7 px-2 gap-1" onClick={() => printFletepagesa(candidate)}>
+                <Printer className="w-3.5 h-3.5" /> Printo
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
