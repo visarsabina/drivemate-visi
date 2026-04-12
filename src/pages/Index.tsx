@@ -6,6 +6,7 @@ import AddCandidateForm from "@/components/AddCandidateForm";
 import PaymentForm from "@/components/PaymentForm";
 import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateDetail from "@/components/CandidateDetail";
+import CandidateVertetimi from "@/components/CandidateVertetimi";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
@@ -115,7 +116,9 @@ const Index = () => {
 
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 
-          {(activeView === "vertetimi" || activeView === "fletparaqitja" || activeView === "kontrata") && (
+          {activeView === "vertetimi" && <CandidateVertetimi candidates={candidates} />}
+
+          {(activeView === "fletparaqitja" || activeView === "kontrata") && (
             <div className="glass-card rounded-xl p-8 text-center">
               <p className="text-muted-foreground">Kjo faqe është në zhvillim...</p>
             </div>
