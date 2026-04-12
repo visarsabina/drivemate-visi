@@ -52,7 +52,7 @@ const CandidateVertetimi = ({ candidates, preselectedId }: CandidateVertetimiPro
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${candidate.emri} ${candidate.mbiemri}</title>
 <style>
-  @page { size: A4; margin: 15mm 20mm; }
+  @page { size: A4 landscape; margin: 15mm 20mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Times New Roman', serif; font-size: 13px; color: #000; padding: 30px 40px; line-height: 1.8; }
   .header { text-align: center; margin-bottom: 10px; font-size: 13px; }
