@@ -52,82 +52,93 @@ const CandidateVertetimi = ({ candidates, preselectedId }: CandidateVertetimiPro
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${candidate.emri} ${candidate.mbiemri}</title>
 <style>
-  @page { size: A4; margin: 20mm; }
+  @page { size: A4; margin: 15mm 20mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Times New Roman', serif; font-size: 13px; color: #000; padding: 40px; line-height: 1.6; }
-  .header { text-align: center; margin-bottom: 30px; }
-  .header h1 { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-  .header h2 { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
-  .header p { font-size: 12px; }
-  .title { text-align: center; font-size: 20px; font-weight: bold; margin: 30px 0; text-decoration: underline; text-transform: uppercase; }
-  .content { margin: 20px 0; }
-  .row { display: flex; margin-bottom: 8px; }
-  .row .label { min-width: 200px; font-weight: bold; }
-  .row .value { flex: 1; border-bottom: 1px dotted #999; padding-left: 10px; }
-  table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-  table th, table td { border: 1px solid #333; padding: 6px 10px; text-align: left; font-size: 12px; }
-  table th { background: #f0f0f0; font-weight: bold; }
-  .section-title { font-weight: bold; font-size: 14px; margin: 20px 0 10px; }
-  .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
-  .signature-box { text-align: center; width: 200px; }
-  .signature-line { border-top: 1px solid #333; margin-top: 50px; padding-top: 5px; }
-  .stamp-area { text-align: center; margin-top: 40px; }
-  @media print { body { padding: 0; } }
+  body { font-family: 'Times New Roman', serif; font-size: 13px; color: #000; padding: 30px 40px; line-height: 1.8; }
+  .header { text-align: center; margin-bottom: 10px; font-size: 13px; }
+  .title { text-align: center; font-size: 22px; font-weight: bold; margin: 15px 0 20px; }
+  .info-line { margin-bottom: 4px; }
+  .nr-personal { display: inline; }
+  .nr-personal span { display: inline-block; border: 1px solid #000; width: 22px; height: 22px; text-align: center; line-height: 22px; font-weight: bold; margin-right: 2px; }
+  .section { margin: 10px 0; }
+  .signatures { margin-top: 40px; }
+  .sig-row { display: flex; justify-content: space-between; margin-bottom: 25px; }
+  .sig-left { width: 45%; }
+  .sig-right { width: 45%; }
+  .sig-line { border-bottom: 1px solid #000; min-height: 30px; }
+  .bottom-row { display: flex; justify-content: space-between; margin-top: 30px; }
+  .vula { text-align: center; margin-top: 20px; font-style: italic; }
+  @media print { body { padding: 15px 25px; } }
 </style></head><body>
 
 <div class="header">
-  <h1>AUTO SHKOLLA "VISI"</h1>
-  <p>Nr. i Licencës: ____________</p>
-  <p>Adresa: ____________ | Tel: ____________</p>
+  Auto Shkolla &nbsp;&nbsp;"<strong>VISI</strong>" &nbsp;me seli në &nbsp;<strong>Podujevë</strong>&nbsp; adresa: &nbsp;<strong>Rr. Zahir Pajaziti</strong>&nbsp; dhe me &nbsp;numër të licencës &nbsp;&nbsp;<strong>62-01-B/2019</strong>&nbsp; lëshon këtë:
 </div>
 
 <div class="title">VËRTETIM</div>
 
-<div class="content">
-  <table>
-    <tr><th style="width:200px">Emri</th><td>${candidate.emri}</td></tr>
-    <tr><th>Mbiemri</th><td>${candidate.mbiemri}</td></tr>
-    <tr><th>Datëlindja</th><td>${formatDate(candidate.dataLindjes)}</td></tr>
-    <tr><th>Vendi i Lindjes</th><td>${vendlindja || "_______________"}</td></tr>
-    <tr><th>Komuna</th><td>${komuna || "_______________"}</td></tr>
-    <tr><th>Vendbanimi</th><td>${vendbanimi || "_______________"}</td></tr>
-    <tr><th>Numri Personal</th><td>${candidate.numriPersonal}</td></tr>
-    <tr><th>Data e Regjistrimit</th><td>${formatDate(candidate.dataRegjistrimit)}</td></tr>
-    <tr><th>Numri i Regjistrimit</th><td>${candidate.numriRegjistrimit}</td></tr>
-    <tr><th>Kategoria</th><td>${candidate.kategoria}</td></tr>
-  </table>
+<div class="section">
+  <div class="info-line">
+    &nbsp;&nbsp;&nbsp;&nbsp;<strong>${candidate.emri}(${vendlindja || "____"})${candidate.mbiemri}</strong>
+    &nbsp;&nbsp;e lindur më: &nbsp;<strong>${formatDate(candidate.dataLindjes)}</strong>
+    &nbsp;&nbsp;në: &nbsp;<strong>${vendlindja || "________"}</strong>
+    &nbsp;&nbsp;Komuna: &nbsp;<strong>${komuna || "________"}</strong>
+  </div>
+  
+  <div class="info-line" style="margin-top:8px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;me vendbanim në &nbsp;<strong>${vendbanimi || "________"}</strong>
+    &nbsp;&nbsp;nr. personal &nbsp;
+    <span class="nr-personal">${candidate.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</span>
+    &nbsp;&nbsp;i regjistruar në auto shkollë më datën:
+  </div>
 
-  <div class="section-title">Mësimi Teorik</div>
-  <table>
-    <tr><th style="width:200px">Numri i Orëve</th><td>${numriOreveTeori}</td></tr>
-    <tr><th>Data e Fillimit</th><td>${formatDate(dataFillimitTeori)}</td></tr>
-    <tr><th>Data e Mbarimit</th><td>${formatDate(dataMbarimitTeori)}</td></tr>
-    <tr><th>Ligjëruesi</th><td>${ligjruesi}</td></tr>
-  </table>
+  <div class="info-line" style="margin-top:8px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;<strong>${formatDate(candidate.dataRegjistrimit)}</strong>
+    &nbsp;&nbsp;nr. Rendor &nbsp;<strong>${candidate.numriRegjistrimit}</strong>
+    &nbsp;&nbsp;kreu aftësimin për dhenien e provimit për paten-shofer për kat. &nbsp;"<strong>${candidate.kategoria}</strong>", &nbsp;sipas planit
+  </div>
 
-  <div class="section-title">Mësimi Praktik</div>
-  <table>
-    <tr><th style="width:200px">Numri i Orëve</th><td>${numriOrevePraktike}</td></tr>
-    <tr><th>Data e Fillimit</th><td>${formatDate(dataFillimitPraktike)}</td></tr>
-    <tr><th>Data e Mbarimit</th><td>${formatDate(dataMbarimitPraktike)}</td></tr>
-    <tr><th>Instruktori</th><td>${instruktori}</td></tr>
-  </table>
+  <div class="info-line" style="margin-top:4px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;programit të parapare nga lëndët mësimore:
+  </div>
+</div>
 
-  <p style="margin-top:20px;"><strong>Data e lëshimit të vërtetimit:</strong> ${formatDate(dataLeshimit)}</p>
+<div class="section" style="margin-top:15px;">
+  <div class="info-line">
+    Rregullat e komunikaciont dhe të sigurisë (pjesa teorike) prej &nbsp;<strong>${numriOreveTeori}</strong>&nbsp; orëve në kohën prej: &nbsp;<strong>${formatDate(dataFillimitTeori)}</strong>&nbsp; deri: &nbsp;<strong>${formatDate(dataMbarimitTeori)}</strong>
+  </div>
+  <div class="info-line">
+    Të drejtuarit e mjetit me veprim motorik (pjesa praktike) prej &nbsp;<strong>${numriOrevePraktike}</strong>&nbsp; orëve në kohën prej: &nbsp;<strong>${formatDate(dataFillimitPraktike)}</strong>&nbsp; deri: &nbsp;<strong>${formatDate(dataMbarimitPraktike)}</strong>
+  </div>
+</div>
+
+<div class="section" style="margin-top:15px;">
+  <div class="info-line">&nbsp;&nbsp;&nbsp;&nbsp;Pas verifikimit të aftësive të kandiatit jepet mendimi:</div>
+  <div class="info-line" style="margin-top:10px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;Ligjëruesi: &nbsp;&nbsp;Është aftësuar nga pjesa teorike
+  </div>
+  <div class="info-line" style="margin-top:10px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;Shofer instruktori: &nbsp;&nbsp;Është aftësuar nga pjesa praktike
+  </div>
 </div>
 
 <div class="signatures">
-  <div class="signature-box">
-    <div class="signature-line">Ligjëruesi</div>
-    <p style="margin-top:5px; font-size:12px;">${ligjruesi}</p>
+  <div class="sig-row">
+    <div class="sig-left">Emri dhe mbiemri i ligjëruesit &nbsp;&nbsp;&nbsp;<strong>${ligjruesi}</strong></div>
+    <div class="sig-right">Nënshkrimi i ligjëruesit _______________</div>
   </div>
-  <div class="signature-box">
-    <div class="signature-line">Vula</div>
+  <div class="sig-row">
+    <div class="sig-left">Emri dhe mbiemri i shofer instruktorit &nbsp;&nbsp;&nbsp;<strong>${instruktori}</strong></div>
+    <div class="sig-right">Nënshkrimi i shofer instruktorit _______________</div>
   </div>
-  <div class="signature-box">
-    <div class="signature-line">Instruktori</div>
-    <p style="margin-top:5px; font-size:12px;">${instruktori}</p>
-  </div>
+</div>
+
+<div class="bottom-row">
+  <div>Data e lëshurjes së vërtetimit &nbsp;&nbsp;&nbsp;<strong>${formatDate(dataLeshimit)}</strong></div>
+  <div>Drejtori: &nbsp;<strong>Fadil Jaha</strong></div>
+</div>
+
+<div class="vula" style="margin-top:15px;">v.v</div>
 </div>
 
 <script>window.print();<\/script>
