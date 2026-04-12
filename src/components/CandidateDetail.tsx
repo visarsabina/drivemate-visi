@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import CandidateBooklet from "@/components/CandidateBooklet";
+import CandidateVertetimi from "@/components/CandidateVertetimi";
 
 const printFletepagesa = (candidate: Candidate) => {
   const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
@@ -65,7 +66,18 @@ const CandidateDetail = ({ candidate, onBack }: CandidateDetailProps) => {
     );
   }
 
-  if (activeDoc === "vertetimi" || activeDoc === "fletparaqitja" || activeDoc === "kontrata") {
+  if (activeDoc === "vertetimi") {
+    return (
+      <div className="space-y-4">
+        <Button variant="ghost" onClick={() => setActiveDoc(null)} className="gap-2">
+          <ArrowLeft className="w-4 h-4" /> Kthehu tek paneli
+        </Button>
+        <CandidateVertetimi candidates={[candidate]} preselectedId={candidate.id} />
+      </div>
+    );
+  }
+
+  if (activeDoc === "fletparaqitja" || activeDoc === "kontrata") {
     return (
       <div className="space-y-4">
         <Button variant="ghost" onClick={() => setActiveDoc(null)} className="gap-2">
