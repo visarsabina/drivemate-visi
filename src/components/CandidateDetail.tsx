@@ -5,6 +5,32 @@ import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer } from
 import StatusBadge from "@/components/StatusBadge";
 import CandidateBooklet from "@/components/CandidateBooklet";
 
+const printFletepagesa = (candidate: Candidate) => {
+  const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
+  const borxhi = candidate.shumaMarreveshjes - totalPaguar;
+  const printWindow = window.open("", "_blank");
+  if (!printWindow) return;
+  printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletëpagesa</title>
+    <style>body{font-family:Arial;padding:40px;font-size:14px}
+    h2{text-align:center;margin-bottom:30px}
+    table{width:100%;border-collapse:collapse;margin:20px 0}
+    th,td{border:1px solid #333;padding:8px;text-align:left}
+    th{background:#f0f0f0}
+    .summary{margin-top:20px;font-size:15px}
+    .summary div{margin:5px 0}
+    @media print{body{padding:20px}}</style></head><body>
+    <h2>FLETËPAGESA</h2>
+    <table><tr><th>Emri</th><td>${candidate.emri}</td><th>Mbiemri</th><td>${candidate.mbiemri}</td></tr>
+    <tr><th>Nr. Personal</th><td>${candidate.numriPersonal}</td><th>Nr. Regjistrimit</th><td>${candidate.numriRegjistrimit}</td></tr>
+    <tr><th>Kategoria</th><td>${candidate.kategoria}</td><th>Data</th><td>${new Date().toLocaleDateString("sq-AL")}</td></tr></table>
+    <div class="summary"><div><strong>Shuma e Marrëveshjes:</strong> ${candidate.shumaMarreveshjes.toFixed(2)} €</div>
+    <div><strong>Totali i Paguar:</strong> ${totalPaguar.toFixed(2)} €</div>
+    <div><strong>Borxhi:</strong> ${borxhi.toFixed(2)} €</div></div>
+    ${candidate.payments.length > 0 ? `<h3>Historiku i Pagesave</h3><table><thead><tr><th>Nr.</th><th>Data</th><th>Shuma</th></tr></thead><tbody>${candidate.payments.map((p, i) => `<tr><td>${i + 1}</td><td>${p.data}</td><td>${p.shuma.toFixed(2)} €</td></tr>`).join("")}</tbody></table>` : ""}
+    <script>window.print();<\/script></body></html>`);
+  printWindow.document.close();
+};
+
 interface CandidateDetailProps {
   candidate: Candidate;
   onBack: () => void;
