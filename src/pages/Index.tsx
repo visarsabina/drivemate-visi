@@ -33,6 +33,14 @@ const Index = () => {
     );
   };
 
+  const handleVertetimiPrinted = (candidateId: string) => {
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.id === candidateId ? { ...c, vertetimiPrintuar: true } : c
+      )
+    );
+  };
+
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
     candidates: "Lista e Kandidatëve",
@@ -107,6 +115,7 @@ const Index = () => {
             <CandidateDetail
               candidate={candidates.find(c => c.id === selectedCandidate.id) || selectedCandidate}
               onBack={() => { setSelectedCandidate(null); setActiveView("candidates"); }}
+              onVertetimiPrinted={handleVertetimiPrinted}
             />
           )}
 
@@ -116,7 +125,7 @@ const Index = () => {
 
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 
-          {activeView === "vertetimi" && <CandidateVertetimi candidates={candidates} />}
+          {activeView === "vertetimi" && <CandidateVertetimi candidates={candidates} onPrinted={handleVertetimiPrinted} />}
 
           {(activeView === "fletparaqitja" || activeView === "kontrata") && (
             <div className="glass-card rounded-xl p-8 text-center">

@@ -22,4 +22,5 @@ export interface Candidate {
   shenimet: string;
   shumaMarreveshjes: number;
   payments: Payment[];
+  vertetimiPrintuar?: boolean;
 }
