@@ -54,9 +54,10 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${candidate.emri} ${candidate.mbiemri}</title>
 <style>
-  @page { size: A4 landscape; margin: 15mm 20mm; }
+  @page { size: landscape; margin: 10mm 15mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Times New Roman', serif; font-size: 13px; color: #000; padding: 30px 40px; line-height: 1.8; }
+  html, body { width: 100%; height: 100%; }
+  body { font-family: 'Times New Roman', serif; font-size: 13px; color: #000; padding: 20px 30px; line-height: 1.8; -webkit-print-color-adjust: exact; }
   .header { text-align: center; margin-bottom: 10px; font-size: 13px; }
   .title { text-align: center; font-size: 22px; font-weight: bold; margin: 15px 0 20px; }
   .info-line { margin-bottom: 4px; }
