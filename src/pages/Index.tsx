@@ -115,6 +115,7 @@ const Index = () => {
             <CandidateDetail
               candidate={candidates.find(c => c.id === selectedCandidate.id) || selectedCandidate}
               onBack={() => { setSelectedCandidate(null); setActiveView("candidates"); }}
+              onVertetimiPrinted={handleVertetimiPrinted}
             />
           )}
 
@@ -124,7 +125,7 @@ const Index = () => {
 
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 
-          {activeView === "vertetimi" && <CandidateVertetimi candidates={candidates} />}
+          {activeView === "vertetimi" && <CandidateVertetimi candidates={candidates} onPrinted={handleVertetimiPrinted} />}
 
           {(activeView === "fletparaqitja" || activeView === "kontrata") && (
             <div className="glass-card rounded-xl p-8 text-center">
