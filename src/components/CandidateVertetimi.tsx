@@ -70,6 +70,9 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   .sig-line { border-bottom: 1px solid #000; min-height: 30px; }
   .bottom-row { display: flex; justify-content: space-between; margin-top: 30px; }
   .vula { text-align: center; margin-top: 20px; font-style: italic; }
+  .u { border-bottom: 1px solid #000; padding-bottom: 1px; display: inline-block; min-width: 80px; }
+  .u-wide { border-bottom: 1px solid #000; padding-bottom: 1px; display: inline-block; min-width: 150px; }
+  .mendimi-line { border-bottom: 1px solid #000; display: block; padding-bottom: 2px; margin-top: 10px; }
   @media print { body { padding: 15px 25px; } }
 </style></head><body>
 
@@ -81,23 +84,23 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
 
 <div class="section">
   <div class="info-line">
-    &nbsp;&nbsp;&nbsp;&nbsp;<strong>${candidate.emri}(${vendlindja || "____"})${candidate.mbiemri}</strong>
-    &nbsp;&nbsp;e lindur më: &nbsp;<strong>${formatDate(candidate.dataLindjes)}</strong>
-    &nbsp;&nbsp;në: &nbsp;<strong>${vendlindja || "________"}</strong>
-    &nbsp;&nbsp;Komuna: &nbsp;<strong>${komuna || "________"}</strong>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="u"><strong>${candidate.emri}</strong></span>(<span class="u"><strong>${vendlindja || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</strong></span>)<span class="u"><strong>${candidate.mbiemri}</strong></span>
+    &nbsp;&nbsp;e lindur më: &nbsp;<span class="u"><strong>${formatDate(candidate.dataLindjes)}</strong></span>
+    &nbsp;&nbsp;në: &nbsp;<span class="u"><strong>${vendlindja || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</strong></span>
+    &nbsp;&nbsp;Komuna: &nbsp;<span class="u"><strong>${komuna || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</strong></span>
   </div>
   
   <div class="info-line" style="margin-top:8px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;me vendbanim në &nbsp;<strong>${vendbanimi || "________"}</strong>
+    &nbsp;&nbsp;&nbsp;&nbsp;me vendbanim në &nbsp;<span class="u"><strong>${vendbanimi || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</strong></span>
     &nbsp;&nbsp;nr. personal &nbsp;
     <span class="nr-personal">${candidate.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</span>
     &nbsp;&nbsp;i regjistruar në auto shkollë më datën:
   </div>
 
   <div class="info-line" style="margin-top:8px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;<strong>${formatDate(candidate.dataRegjistrimit)}</strong>
-    &nbsp;&nbsp;nr. Rendor &nbsp;<strong>${candidate.numriRegjistrimit}</strong>
-    &nbsp;&nbsp;kreu aftësimin për dhenien e provimit për paten-shofer për kat. &nbsp;"<strong>${candidate.kategoria}</strong>", &nbsp;sipas planit
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="u"><strong>${formatDate(candidate.dataRegjistrimit)}</strong></span>
+    &nbsp;&nbsp;nr. Rendor &nbsp;<span class="u"><strong>${candidate.numriRegjistrimit}</strong></span>
+    &nbsp;&nbsp;kreu aftësimin për dhenien e provimit për paten-shofer për kat. &nbsp;"<span class="u"><strong>${candidate.kategoria}</strong></span>", &nbsp;sipas planit
   </div>
 
   <div class="info-line" style="margin-top:4px;">
@@ -107,36 +110,36 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
 
 <div class="section" style="margin-top:15px;">
   <div class="info-line">
-    Rregullat e komunikaciont dhe të sigurisë (pjesa teorike) prej &nbsp;<strong>${numriOreveTeori}</strong>&nbsp; orëve në kohën prej: &nbsp;<strong>${formatDate(dataFillimitTeori)}</strong>&nbsp; deri: &nbsp;<strong>${formatDate(dataMbarimitTeori)}</strong>
+    Rregullat e komunikaciont dhe të sigurisë (pjesa teorike) prej &nbsp;<span class="u"><strong>${numriOreveTeori}</strong></span>&nbsp; orëve në kohën prej: &nbsp;<span class="u"><strong>${formatDate(dataFillimitTeori)}</strong></span>&nbsp; deri: &nbsp;<span class="u"><strong>${formatDate(dataMbarimitTeori)}</strong></span>
   </div>
   <div class="info-line">
-    Të drejtuarit e mjetit me veprim motorik (pjesa praktike) prej &nbsp;<strong>${numriOrevePraktike}</strong>&nbsp; orëve në kohën prej: &nbsp;<strong>${formatDate(dataFillimitPraktike)}</strong>&nbsp; deri: &nbsp;<strong>${formatDate(dataMbarimitPraktike)}</strong>
+    Të drejtuarit e mjetit me veprim motorik (pjesa praktike) prej &nbsp;<span class="u"><strong>${numriOrevePraktike}</strong></span>&nbsp; orëve në kohën prej: &nbsp;<span class="u"><strong>${formatDate(dataFillimitPraktike)}</strong></span>&nbsp; deri: &nbsp;<span class="u"><strong>${formatDate(dataMbarimitPraktike)}</strong></span>
   </div>
 </div>
 
 <div class="section" style="margin-top:15px;">
   <div class="info-line">&nbsp;&nbsp;&nbsp;&nbsp;Pas verifikimit të aftësive të kandiatit jepet mendimi:</div>
-  <div class="info-line" style="margin-top:10px;">
+  <div class="mendimi-line" style="margin-top:10px;">
     &nbsp;&nbsp;&nbsp;&nbsp;Ligjëruesi: &nbsp;&nbsp;Është aftësuar nga pjesa teorike
   </div>
-  <div class="info-line" style="margin-top:10px;">
+  <div class="mendimi-line" style="margin-top:10px;">
     &nbsp;&nbsp;&nbsp;&nbsp;Shofer instruktori: &nbsp;&nbsp;Është aftësuar nga pjesa praktike
   </div>
 </div>
 
 <div class="signatures">
   <div class="sig-row">
-    <div class="sig-left">Emri dhe mbiemri i ligjëruesit &nbsp;&nbsp;&nbsp;<strong>${ligjruesi}</strong></div>
+    <div class="sig-left">Emri dhe mbiemri i ligjëruesit &nbsp;&nbsp;&nbsp;<span class="u-wide"><strong>${ligjruesi}</strong></span></div>
     <div class="sig-right">Nënshkrimi i ligjëruesit _______________</div>
   </div>
   <div class="sig-row">
-    <div class="sig-left">Emri dhe mbiemri i shofer instruktorit &nbsp;&nbsp;&nbsp;<strong>${instruktori}</strong></div>
+    <div class="sig-left">Emri dhe mbiemri i shofer instruktorit &nbsp;&nbsp;&nbsp;<span class="u-wide"><strong>${instruktori}</strong></span></div>
     <div class="sig-right">Nënshkrimi i shofer instruktorit _______________</div>
   </div>
 </div>
 
 <div class="bottom-row">
-  <div>Data e lëshurjes së vërtetimit &nbsp;&nbsp;&nbsp;<strong>${formatDate(dataLeshimit)}</strong></div>
+  <div>Data e lëshurjes së vërtetimit &nbsp;&nbsp;&nbsp;<span class="u"><strong>${formatDate(dataLeshimit)}</strong></span></div>
   <div>Drejtori: &nbsp;<strong>Fadil Jaha</strong></div>
 </div>
 
