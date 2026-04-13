@@ -33,6 +33,14 @@ const Index = () => {
     );
   };
 
+  const handleVertetimiPrinted = (candidateId: string) => {
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.id === candidateId ? { ...c, vertetimiPrintuar: true } : c
+      )
+    );
+  };
+
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
     candidates: "Lista e Kandidatëve",
