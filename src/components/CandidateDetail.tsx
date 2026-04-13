@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Candidate } from "@/types/candidate";
 import { Button } from "@/components/ui/button";
-import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer, CreditCard } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
-const printFletepagesa = (candidate: Candidate) => {
+const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
   const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
   const borxhi = candidate.shumaMarreveshjes - totalPaguar;
   const printWindow = window.open("", "_blank");
@@ -21,6 +24,7 @@ const printFletepagesa = (candidate: Candidate) => {
     .summary div{margin:5px 0}
     @media print{body{padding:20px}}</style></head><body>
     <h2>FLETËPAGESA</h2>
+    ${numriPageses ? `<p style="text-align:right;font-size:13px;"><strong>Nr. Pagesës:</strong> ${numriPageses}</p>` : ""}
     <table><tr><th>Emri</th><td>${candidate.emri}</td><th>Mbiemri</th><td>${candidate.mbiemri}</td></tr>
     <tr><th>Nr. Personal</th><td>${candidate.numriPersonal}</td><th>Nr. Regjistrimit</th><td>${candidate.numriRegjistrimit}</td></tr>
     <tr><th>Kategoria</th><td>${candidate.kategoria}</td><th>Data</th><td>${new Date().toLocaleDateString("sq-AL")}</td></tr></table>
@@ -35,10 +39,13 @@ const printFletepagesa = (candidate: Candidate) => {
 interface CandidateDetailProps {
   candidate: Candidate;
   onBack: () => void;
+  onVertetimiPrinted?: (candidateId: string) => void;
 }
 
-const CandidateDetail = ({ candidate, onBack }: CandidateDetailProps) => {
+const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted }: CandidateDetailProps) => {
   const [activeDoc, setActiveDoc] = useState<string | null>(null);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [numriPageses, setNumriPageses] = useState("");
   const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
   const borxhi = candidate.shumaMarreveshjes - totalPaguar;
 
@@ -72,7 +79,7 @@ const CandidateDetail = ({ candidate, onBack }: CandidateDetailProps) => {
         <Button variant="ghost" onClick={() => setActiveDoc(null)} className="gap-2">
           <ArrowLeft className="w-4 h-4" /> Kthehu tek paneli
         </Button>
-        <CandidateVertetimi candidates={[candidate]} preselectedId={candidate.id} />
+        <CandidateVertetimi candidates={[candidate]} preselectedId={candidate.id} onPrinted={onVertetimiPrinted} />
       </div>
     );
   }
@@ -102,7 +109,12 @@ const CandidateDetail = ({ candidate, onBack }: CandidateDetailProps) => {
             <h2 className="text-2xl font-bold">{candidate.emri} {candidate.mbiemri}</h2>
             <p className="text-muted-foreground">Nr. Regjistrimit: {candidate.numriRegjistrimit}</p>
           </div>
-          <StatusBadge status={candidate.statusi} />
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${candidate.vertetimiPrintuar ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+              {candidate.vertetimiPrintuar ? "Vërtetim ✓" : "Vërtetim ✗"}
+            </span>
+            <StatusBadge status={candidate.statusi} />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
@@ -119,7 +131,7 @@ const CandidateDetail = ({ candidate, onBack }: CandidateDetailProps) => {
             <span className="text-muted-foreground">Borxhi:</span>
             <strong className={borxhi > 0 ? "text-destructive" : "text-primary"}>{borxhi.toFixed(2)} €</strong>
             {borxhi > 0 && (
-              <Button variant="ghost" size="sm" className="h-7 px-2 gap-1" onClick={() => printFletepagesa(candidate)}>
+              <Button variant="ghost" size="sm" className="h-7 px-2 gap-1" onClick={() => setShowPaymentDialog(true)}>
                 <Printer className="w-3.5 h-3.5" /> Printo
               </Button>
             )}
@@ -149,7 +161,12 @@ const CandidateDetail = ({ candidate, onBack }: CandidateDetailProps) => {
 
       {candidate.payments.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-4">Historiku i Pagesave</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold">Historiku i Pagesave</h3>
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowPaymentDialog(true)}>
+              <CreditCard className="w-4 h-4" /> Pagesa
+            </Button>
+          </div>
           <div className="glass-card rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -172,6 +189,38 @@ const CandidateDetail = ({ candidate, onBack }: CandidateDetailProps) => {
           </div>
         </div>
       )}
+
+      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Printo Fletëpagesën</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-2">
+              <Label>Numri i Pagesës</Label>
+              <Input
+                value={numriPageses}
+                onChange={(e) => setNumriPageses(e.target.value)}
+                placeholder="Shkruaj numrin e pagesës..."
+              />
+            </div>
+            <div className="text-sm text-muted-foreground">
+              <p>Kandidati: <strong>{candidate.emri} {candidate.mbiemri}</strong></p>
+              <p>Borxhi: <strong className={borxhi > 0 ? "text-destructive" : "text-primary"}>{borxhi.toFixed(2)} €</strong></p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowPaymentDialog(false)}>Anulo</Button>
+            <Button className="gap-2" onClick={() => {
+              printFletepagesa(candidate, numriPageses);
+              setShowPaymentDialog(false);
+              setNumriPageses("");
+            }}>
+              <Printer className="w-4 h-4" /> Printo
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
