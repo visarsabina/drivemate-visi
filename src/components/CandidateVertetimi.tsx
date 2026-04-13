@@ -9,6 +9,7 @@ import { Printer } from "lucide-react";
 interface CandidateVertetimiProps {
   candidates: Candidate[];
   preselectedId?: string;
+  onPrinted?: (candidateId: string) => void;
 }
 
 const ligjruesit = ["Afrim Jaha"];
@@ -22,7 +23,7 @@ const instruktoret = [
   "Visar Jaha",
 ];
 
-const CandidateVertetimi = ({ candidates, preselectedId }: CandidateVertetimiProps) => {
+const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateVertetimiProps) => {
   const [selectedId, setSelectedId] = useState(preselectedId || "");
   const [vendlindja, setVendlindja] = useState("");
   const [komuna, setKomuna] = useState("");
@@ -49,6 +50,7 @@ const CandidateVertetimi = ({ candidates, preselectedId }: CandidateVertetimiPro
     if (!candidate) return;
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
+    onPrinted?.(candidate.id);
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${candidate.emri} ${candidate.mbiemri}</title>
 <style>
