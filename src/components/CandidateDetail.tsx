@@ -7,6 +7,7 @@ import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer, Credi
 import StatusBadge from "@/components/StatusBadge";
 import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
+import CandidateKontrata from "@/components/CandidateKontrata";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
 const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
@@ -84,7 +85,18 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted }: CandidateDet
     );
   }
 
-  if (activeDoc === "fletparaqitja" || activeDoc === "kontrata") {
+  if (activeDoc === "kontrata") {
+    return (
+      <div className="space-y-4">
+        <Button variant="ghost" onClick={() => setActiveDoc(null)} className="gap-2">
+          <ArrowLeft className="w-4 h-4" /> Kthehu tek paneli
+        </Button>
+        <CandidateKontrata candidates={[candidate]} preselectedId={candidate.id} />
+      </div>
+    );
+  }
+
+  if (activeDoc === "fletparaqitja") {
     return (
       <div className="space-y-4">
         <Button variant="ghost" onClick={() => setActiveDoc(null)} className="gap-2">
