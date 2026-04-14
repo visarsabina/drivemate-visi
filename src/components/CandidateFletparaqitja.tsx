@@ -102,7 +102,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     </div>
     <div class="form-row">
       <span class="form-label">2. Emri i babait / Očevo ime / Father's Name:</span>
-      <span class="form-value">${emriBabait}</span>
+      <span class="form-value">${effectiveEmriBabait}</span>
     </div>
     <div class="form-row">
       <span class="form-label">3. Emri / Ime / First Name:</span>
