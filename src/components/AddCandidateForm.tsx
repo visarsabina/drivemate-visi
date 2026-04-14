@@ -24,6 +24,8 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     numriPersonal: "",
     emri: "",
     mbiemri: "",
+    emriBabait: "",
+    vendlindja: "",
     telefon: "",
     dataLindjes: "",
     kategoria: "B",
@@ -56,6 +58,8 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       numriPersonal: "",
       emri: "",
       mbiemri: "",
+      emriBabait: "",
+      vendlindja: "",
       telefon: "",
       dataLindjes: "",
       kategoria: "B",
@@ -87,6 +91,14 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
           <div className="space-y-2">
             <Label htmlFor="mbiemri">Mbiemri *</Label>
             <Input id="mbiemri" value={form.mbiemri} onChange={(e) => setForm({ ...form, mbiemri: e.target.value })} placeholder="Mbiemri" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="emriBabait">Emri i Babait</Label>
+            <Input id="emriBabait" value={form.emriBabait} onChange={(e) => setForm({ ...form, emriBabait: e.target.value })} placeholder="Emri i babait" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="vendlindja">Vendlindja</Label>
+            <Input id="vendlindja" value={form.vendlindja} onChange={(e) => setForm({ ...form, vendlindja: e.target.value })} placeholder="Vendi i lindjes" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="telefon">Telefon *</Label>

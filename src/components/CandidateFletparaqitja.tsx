@@ -19,6 +19,10 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
   const candidate = candidates.find((c) => c.id === selectedId);
 
+  // Sync from candidate data
+  const effectiveEmriBabait = emriBabait || candidate?.emriBabait || "";
+  const effectiveVendlindja = vendlindja || candidate?.vendlindja || "";
+
   const formatDate = (d: string) => {
     if (!d) return "";
     const parts = d.split("-");
@@ -98,7 +102,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     </div>
     <div class="form-row">
       <span class="form-label">2. Emri i babait / Očevo ime / Father's Name:</span>
-      <span class="form-value">${emriBabait}</span>
+      <span class="form-value">${effectiveEmriBabait}</span>
     </div>
     <div class="form-row">
       <span class="form-label">3. Emri / Ime / First Name:</span>
@@ -110,7 +114,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     </div>
     <div class="form-row">
       <span class="form-label">5. Vendi i lindjes / Mesto rodjenja / Place of birth:</span>
-      <span class="form-value">${vendlindja}</span>
+      <span class="form-value">${effectiveVendlindja}</span>
     </div>
     <div class="form-row">
       <span class="form-label">6. Komuna / Opština / Municipality:</span>

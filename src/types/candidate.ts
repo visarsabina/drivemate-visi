@@ -12,6 +12,8 @@ export interface Candidate {
   numriPersonal: string;
   emri: string;
   mbiemri: string;
+  emriBabait: string;
+  vendlindja: string;
   telefon: string;
   dataLindjes: string;
   kategoria: string;
