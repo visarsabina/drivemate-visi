@@ -8,6 +8,7 @@ import StatusBadge from "@/components/StatusBadge";
 import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
+import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
 const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
@@ -102,9 +103,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted }: CandidateDet
         <Button variant="ghost" onClick={() => setActiveDoc(null)} className="gap-2">
           <ArrowLeft className="w-4 h-4" /> Kthehu tek paneli
         </Button>
-        <div className="glass-card rounded-xl p-8 text-center">
-          <p className="text-muted-foreground">Kjo faqe është në zhvillim...</p>
-        </div>
+        <CandidateFletparaqitja candidates={[candidate]} preselectedId={candidate.id} />
       </div>
     );
   }
