@@ -8,6 +8,7 @@ import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateDetail from "@/components/CandidateDetail";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
+import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
@@ -130,11 +131,7 @@ const Index = () => {
 
           {activeView === "kontrata" && <CandidateKontrata candidates={candidates} />}
 
-          {activeView === "fletparaqitja" && (
-            <div className="glass-card rounded-xl p-8 text-center">
-              <p className="text-muted-foreground">Kjo faqe është në zhvillim...</p>
-            </div>
-          )}
+          {activeView === "fletparaqitja" && <CandidateFletparaqitja candidates={candidates} />}
         </div>
       </main>
     </div>
