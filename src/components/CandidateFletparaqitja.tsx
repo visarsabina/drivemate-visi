@@ -19,6 +19,13 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
   const candidate = candidates.find((c) => c.id === selectedId);
 
+  // Sync from candidate data
+  const effectiveEmriBabait = emriBabait || candidate?.emriBabait || "";
+  const effectiveVendlindja = vendlindja || candidate?.vendlindja || "";
+  const [komuna, setKomuna] = useState("");
+
+  const candidate = candidates.find((c) => c.id === selectedId);
+
   const formatDate = (d: string) => {
     if (!d) return "";
     const parts = d.split("-");

@@ -93,6 +93,14 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
             <Input id="mbiemri" value={form.mbiemri} onChange={(e) => setForm({ ...form, mbiemri: e.target.value })} placeholder="Mbiemri" />
           </div>
           <div className="space-y-2">
+            <Label htmlFor="emriBabait">Emri i Babait</Label>
+            <Input id="emriBabait" value={form.emriBabait} onChange={(e) => setForm({ ...form, emriBabait: e.target.value })} placeholder="Emri i babait" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="vendlindja">Vendlindja</Label>
+            <Input id="vendlindja" value={form.vendlindja} onChange={(e) => setForm({ ...form, vendlindja: e.target.value })} placeholder="Vendi i lindjes" />
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="telefon">Telefon *</Label>
             <Input id="telefon" value={form.telefon} onChange={(e) => setForm({ ...form, telefon: e.target.value })} placeholder="+383 4X XXX XXX" />
           </div>
