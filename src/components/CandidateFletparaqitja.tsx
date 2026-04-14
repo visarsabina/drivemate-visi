@@ -114,7 +114,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     </div>
     <div class="form-row">
       <span class="form-label">5. Vendi i lindjes / Mesto rodjenja / Place of birth:</span>
-      <span class="form-value">${vendlindja}</span>
+      <span class="form-value">${effectiveVendlindja}</span>
     </div>
     <div class="form-row">
       <span class="form-label">6. Komuna / Opština / Municipality:</span>
