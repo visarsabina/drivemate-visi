@@ -25,10 +25,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(newSession?.user ?? null);
 
       if (newSession?.user) {
-        // Defer role check to avoid blocking the auth callback
+        // Defer role check so the SDK can attach the new access token to subsequent requests
         setTimeout(() => {
-          checkAdminRole(newSession.user.id);
-        }, 0);
+          checkAdminRole(newSession.user.id, newSession.access_token);
+        }, 100);
       } else {
         setIsAdmin(false);
       }
