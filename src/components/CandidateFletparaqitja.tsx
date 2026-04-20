@@ -112,7 +112,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
   <div class="meta-row">
     <div>FORMA A1 NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
-    <div>Nr. regj./Br.Regj./Lbook.no. <span class="u">${candidate.numriRegjistrimit}</span></div>
+    <div>Nr. regj./Br.Regj./Lbook.no. <span class="u">&nbsp;</span></div>
   </div>
 
   <div class="sec-bar">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
@@ -165,7 +165,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   <div>
     <div><span class="tel">Tel: ${candidate.telefon || ""}</span></div>
     <div class="header" style="margin-top:3mm;">
-      <img src="/kosovo-coat.jpg" alt="" style="height:14mm;" />
+      <img src="/kosovo-coat.jpg" alt="" style="height:10mm;" />
       <div class="h-small">Republika e Kosovës / Republika Kosova / Republika of Kosovo</div>
       <div class="h-small">Qeveria e Kosovës/ Vlada Kosova / Government of Kosova</div>
       <div class="h-sub">MINISTRIA E INFRASTRUKTURES DHE TRANSPORTIT</div>
@@ -175,7 +175,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     </div>
     <div class="meta-row" style="margin-top:2mm;">
       <div>NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
-      <div>Nr. Regj./Br.Regj./Lbook.no. <span class="u">${candidate.numriRegjistrimit}</span></div>
+      <div>Nr. Regj./Br.Regj./Lbook.no. <span class="u">&nbsp;</span></div>
     </div>
     <table class="small-table">
       <tr>
@@ -183,7 +183,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
         <th>Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis<br/>službenog lica</th>
       </tr>
       <tr>
-        <td style="font-weight:bold; text-align:center; height:15mm;">${candidate.emri} ${candidate.mbiemri}</td>
+        <td style="font-weight:bold; text-align:center; height:12mm;">${candidate.emri} ${candidate.mbiemri}</td>
         <td>&nbsp;</td>
       </tr>
     </table>
