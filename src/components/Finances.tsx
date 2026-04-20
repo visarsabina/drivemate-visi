@@ -70,7 +70,7 @@ const Finances = ({ candidates }: FinancesProps) => {
   const yearTotal = yearlyByMonth.reduce((s, v) => s + v, 0);
 
   const stats = [
-    { label: "Balanci momental", value: balanci, icon: Wallet, color: "text-primary", hint: "Të arkëtuara − borxhe" },
+    { label: "Shuma e përgjithshme momentale", value: totalPaguar, icon: Wallet, color: "text-primary", hint: "Të gjitha arkëtimet deri sot" },
     { label: "Arkëtimet sot", value: totalSot, icon: CalIcon, color: "text-success", hint: today },
     { label: "Arkëtimet këtë muaj", value: currentMonthTotal, icon: TrendingUp, color: "text-warning", hint: monthNames[currentMonth] },
     { label: "Borxhi total", value: totalBorxh, icon: Users, color: "text-destructive", hint: `${candidates.length} kandidatë` },
