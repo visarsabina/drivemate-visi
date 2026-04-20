@@ -342,6 +342,12 @@ const Home = () => {
           </div>
         </div>
       </footer>
+
+      <RegistrationDialog
+        open={registerOpen}
+        onOpenChange={setRegisterOpen}
+        defaultCategory={registerCategory}
+      />
     </div>
   );
 };
