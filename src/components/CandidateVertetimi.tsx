@@ -54,98 +54,97 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${candidate.emri} ${candidate.mbiemri}</title>
 <style>
-  @page { size: landscape; margin: 10mm 15mm; }
+  @page { size: A4 portrait; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 100%; height: 100%; }
-  body { font-family: 'Times New Roman', serif; font-size: 13px; color: #000; padding: 20px 30px; line-height: 1.8; -webkit-print-color-adjust: exact; }
-  .header { text-align: center; margin-bottom: 10px; font-size: 13px; }
-  .title { text-align: center; font-size: 22px; font-weight: bold; margin: 15px 0 20px; }
-  .info-line { margin-bottom: 4px; }
-  .nr-personal { display: inline; }
-  .nr-personal span { display: inline-block; border: 1px solid #000; width: 22px; height: 22px; text-align: center; line-height: 22px; font-weight: bold; margin-right: 2px; }
-  .section { margin: 10px 0; }
-  .signatures { margin-top: 40px; }
-  .sig-row { display: flex; justify-content: space-between; margin-bottom: 25px; }
-  .sig-left { width: 45%; }
-  .sig-right { width: 45%; }
-  .sig-line { border-bottom: 1px solid #000; min-height: 30px; }
-  .bottom-row { display: flex; justify-content: space-between; margin-top: 30px; }
-  .vula { text-align: center; margin-top: 20px; font-style: italic; }
-  .u { border-bottom: 1px solid #000; padding-bottom: 1px; display: inline-block; min-width: 80px; }
-  .u-wide { border-bottom: 1px solid #000; padding-bottom: 1px; display: inline-block; min-width: 150px; }
-  .mendimi-line { border-bottom: 1px solid #000; display: block; padding-bottom: 2px; margin-top: 10px; }
-  @media print { body { padding: 15px 25px; } }
+  html, body { width: 210mm; height: 297mm; }
+  body { font-family: 'Times New Roman', serif; font-size: 12pt; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; padding: 10mm; position: relative; }
+  .frame { border: 2px solid #000; width: 100%; height: 100%; padding: 6mm 8mm; display: flex; flex-direction: column; }
+  .header { text-align: center; line-height: 1.7; font-size: 12pt; padding: 2mm 4mm 4mm; }
+  .title { text-align: center; font-size: 22pt; font-weight: bold; letter-spacing: 2px; margin: 4mm 0 6mm; }
+  .row { display: flex; align-items: stretch; border-top: 1px solid #000; }
+  .row:last-child { border-bottom: 1px solid #000; }
+  .cell { padding: 2.5mm 3mm; border-right: 1px solid #000; display: flex; align-items: center; gap: 3mm; min-height: 9mm; }
+  .cell:last-child { border-right: none; }
+  .cell .label { white-space: nowrap; }
+  .cell .val { font-weight: bold; flex: 1; text-align: center; }
+  .nrp { display: flex; gap: 1px; }
+  .nrp span { display: inline-block; border: 1px solid #000; width: 6mm; height: 6mm; text-align: center; line-height: 6mm; font-weight: bold; font-size: 11pt; }
+  .full { flex: 1; }
+  .mendimi { padding: 3mm 4mm; border-top: 1px solid #000; }
+  .sig-cell { flex: 1; padding: 3mm 4mm; border-right: 1px solid #000; display: flex; align-items: center; gap: 3mm; }
+  .sig-cell:last-child { border-right: none; }
+  .sig-val { font-weight: bold; border-bottom: 1px solid #000; flex: 1; text-align: center; padding: 0 4mm; }
+  .vula { text-align: center; font-style: italic; padding: 4mm 0 2mm; margin-top: auto; }
 </style></head><body>
 
-<div class="header">
-  Auto Shkolla &nbsp;&nbsp;"<strong>VISI</strong>" &nbsp;me seli në &nbsp;<strong>Podujevë</strong>&nbsp; adresa: &nbsp;<strong>Rr. Zahir Pajaziti</strong>&nbsp; dhe me &nbsp;numër të licencës &nbsp;&nbsp;<strong>62-01-B/2019</strong>&nbsp; lëshon këtë:
-</div>
+<div class="page"><div class="frame">
 
-<div class="title">VËRTETIM</div>
-
-<div class="section">
-  <div class="info-line">
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="u"><strong>${candidate.emri}</strong></span>(<span class="u"><strong>${vendlindja || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</strong></span>)<span class="u"><strong>${candidate.mbiemri}</strong></span>
-    &nbsp;&nbsp;e lindur më: &nbsp;<span class="u"><strong>${formatDate(candidate.dataLindjes)}</strong></span>
-    &nbsp;&nbsp;në: &nbsp;<span class="u"><strong>${vendlindja || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</strong></span>
-    &nbsp;&nbsp;Komuna: &nbsp;<span class="u"><strong>${komuna || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</strong></span>
-  </div>
-  
-  <div class="info-line" style="margin-top:8px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;me vendbanim në &nbsp;<span class="u"><strong>${vendbanimi || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}</strong></span>
-    &nbsp;&nbsp;nr. personal &nbsp;
-    <span class="nr-personal">${candidate.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</span>
-    &nbsp;&nbsp;i regjistruar në auto shkollë më datën:
+  <div class="header">
+    Auto Shkolla &nbsp;"<strong>VISI</strong>" &nbsp;me seli në &nbsp;<strong>Podujevë</strong>&nbsp; adresa: &nbsp;<strong>Rr. Zahir Pajaziti</strong>&nbsp; dhe me &nbsp;numër të<br/>
+    licencës &nbsp;<strong><u>R-369-01-B/2023</u></strong>&nbsp; lëshon këtë:
   </div>
 
-  <div class="info-line" style="margin-top:8px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="u"><strong>${formatDate(candidate.dataRegjistrimit)}</strong></span>
-    &nbsp;&nbsp;nr. Rendor &nbsp;<span class="u"><strong>${candidate.numriRegjistrimit}</strong></span>
-    &nbsp;&nbsp;kreu aftësimin për dhenien e provimit për paten-shofer për kat. &nbsp;"<span class="u"><strong>${candidate.kategoria}</strong></span>", &nbsp;sipas planit
+  <div class="title">VËRTETIM</div>
+
+  <div class="row">
+    <div class="cell" style="flex:1.4;"><span class="val">${candidate.emri} (${vendlindja || "____"}) ${candidate.mbiemri}</span></div>
+    <div class="cell" style="flex:1.2;"><span class="label">e lindur më:</span><span class="val">${formatDate(candidate.dataLindjes)}</span></div>
+    <div class="cell" style="flex:0.9;"><span class="label">në:</span><span class="val">${vendlindja || "____"}</span></div>
+    <div class="cell" style="flex:1;"><span class="label">Komuna:</span><span class="val">${komuna || "____"}</span></div>
   </div>
 
-  <div class="info-line" style="margin-top:4px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;programit të parapare nga lëndët mësimore:
+  <div class="row">
+    <div class="cell" style="flex:1.3;"><span class="label">me vendbanim në</span><span class="val">${vendbanimi || "____"}</span></div>
+    <div class="cell" style="flex:2;"><span class="label">nr. personal</span><div class="nrp">${candidate.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</div></div>
+    <div class="cell" style="flex:1.5;"><span class="label">i regjistruar në auto shkollë më datën:</span></div>
   </div>
-</div>
 
-<div class="section" style="margin-top:15px;">
-  <div class="info-line">
-    Rregullat e komunikaciont dhe të sigurisë (pjesa teorike) prej &nbsp;<span class="u"><strong>${numriOreveTeori}</strong></span>&nbsp; orëve në kohën prej: &nbsp;<span class="u"><strong>${formatDate(dataFillimitTeori)}</strong></span>&nbsp; deri: &nbsp;<span class="u"><strong>${formatDate(dataMbarimitTeori)}</strong></span>
+  <div class="row">
+    <div class="cell full"><span class="val" style="flex:0;">${formatDate(candidate.dataRegjistrimit)}</span><span class="label">nr. Rendor</span><span class="val" style="flex:0;">${candidate.numriRegjistrimit}</span><span class="label">kreu aftësimin për dhënien e provimit për paten-shofer për kat.</span><span class="val" style="flex:0;">"${candidate.kategoria}"</span><span class="label">, sipas plan</span></div>
   </div>
-  <div class="info-line">
-    Të drejtuarit e mjetit me veprim motorik (pjesa praktike) prej &nbsp;<span class="u"><strong>${numriOrevePraktike}</strong></span>&nbsp; orëve në kohën prej: &nbsp;<span class="u"><strong>${formatDate(dataFillimitPraktike)}</strong></span>&nbsp; deri: &nbsp;<span class="u"><strong>${formatDate(dataMbarimitPraktike)}</strong></span>
-  </div>
-</div>
 
-<div class="section" style="margin-top:15px;">
-  <div class="info-line">&nbsp;&nbsp;&nbsp;&nbsp;Pas verifikimit të aftësive të kandiatit jepet mendimi:</div>
-  <div class="mendimi-line" style="margin-top:10px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;Ligjëruesi: &nbsp;&nbsp;Është aftësuar nga pjesa teorike
-  </div>
-  <div class="mendimi-line" style="margin-top:10px;">
-    &nbsp;&nbsp;&nbsp;&nbsp;Shofer instruktori: &nbsp;&nbsp;Është aftësuar nga pjesa praktike
-  </div>
-</div>
+  <div style="height:4mm;"></div>
 
-<div class="signatures">
-  <div class="sig-row">
-    <div class="sig-left">Emri dhe mbiemri i ligjëruesit &nbsp;&nbsp;&nbsp;<span class="u-wide"><strong>${ligjruesi}</strong></span></div>
-    <div class="sig-right">Nënshkrimi i ligjëruesit _______________</div>
+  <div class="row">
+    <div class="cell full"><span class="label">Rregullat e komunikaciont dhe të sigurisë (pjesa teorike) prej</span><span class="val" style="flex:0;">${numriOreveTeori}</span><span class="label">orëve në kohën prej:</span><span class="val" style="flex:0;">${formatDate(dataFillimitTeori)}</span><span class="label">deri:</span><span class="val" style="flex:0;">${formatDate(dataMbarimitTeori)}</span></div>
   </div>
-  <div class="sig-row">
-    <div class="sig-left">Emri dhe mbiemri i shofer instruktorit &nbsp;&nbsp;&nbsp;<span class="u-wide"><strong>${instruktori}</strong></span></div>
-    <div class="sig-right">Nënshkrimi i shofer instruktorit _______________</div>
+  <div class="row">
+    <div class="cell full"><span class="label">Të drejtuarit e mjetit me veprim motorik (pjesa praktike) prej</span><span class="val" style="flex:0;">${numriOrevePraktike}</span><span class="label">orëve në kohën prej:</span><span class="val" style="flex:0;">${formatDate(dataFillimitPraktike)}</span><span class="label">deri:</span><span class="val" style="flex:0;">${formatDate(dataMbarimitPraktike)}</span></div>
   </div>
-</div>
 
-<div class="bottom-row">
-  <div>Data e lëshurjes së vërtetimit &nbsp;&nbsp;&nbsp;<span class="u"><strong>${formatDate(dataLeshimit)}</strong></span></div>
-  <div>Drejtori: &nbsp;<strong>Fadil Jaha</strong></div>
-</div>
+  <div class="mendimi">Pas verifikimit të aftësive të kandidatit jepet mendimi:</div>
 
-<div class="vula" style="margin-top:15px;">v.v</div>
-</div>
+  <div class="row">
+    <div class="cell" style="flex:0.5;"><span class="label">Ligjëruesi :</span></div>
+    <div class="cell full"><span class="val">Është aftësuar nga pjesa teorike</span></div>
+  </div>
+  <div class="row">
+    <div class="cell" style="flex:0.5;"><span class="label">Shofer insruktori:</span></div>
+    <div class="cell full"><span class="val">Është aftësuar nga pjesa praktike</span></div>
+  </div>
+
+  <div style="height:4mm;"></div>
+
+  <div class="row">
+    <div class="sig-cell"><span class="label">Emri dhe mbiemri i ligjëruesit</span><span class="sig-val">${ligjruesi}</span></div>
+    <div class="sig-cell"><span class="label">Nënshkrimi i ligjëruesit</span><span class="sig-val">&nbsp;</span></div>
+  </div>
+  <div class="row">
+    <div class="sig-cell"><span class="label">Emri dhe mbiemri i shofer insruktorit</span><span class="sig-val">${instruktori}</span></div>
+    <div class="sig-cell"><span class="label">Nënshkrimi i shofer insruktorit</span><span class="sig-val">&nbsp;</span></div>
+  </div>
+
+  <div style="height:4mm;"></div>
+
+  <div class="row" style="border-bottom:none;">
+    <div class="sig-cell"><span class="label">Data e lëshurjes së vërtetimit</span><span class="sig-val">${formatDate(dataLeshimit)}</span></div>
+    <div class="sig-cell" style="justify-content:flex-end;"><span class="label">Drejtori:</span><span class="val" style="flex:0; font-weight:bold;">Fadil Jaha</span></div>
+  </div>
+
+  <div class="vula">v.v</div>
+
+</div></div>
 
 <script>window.print();<\/script>
 </body></html>`);
