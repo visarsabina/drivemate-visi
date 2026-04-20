@@ -47,158 +47,148 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
 
-    printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja</title>
+    printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${candidate.emri} ${candidate.mbiemri}</title>
 <style>
-  @page { size: A4 portrait; margin: 10mm 15mm; }
+  @page { size: A4 portrait; margin: 8mm 10mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: Arial, sans-serif; font-size: 11px; color: #000; padding: 15mm; }
-  .center { text-align: center; }
-  .bold { font-weight: bold; }
-  .header-title { font-size: 13px; font-weight: bold; margin: 2px 0; }
-  .header-sub { font-size: 10px; margin: 1px 0; }
-  .section-title { font-size: 10px; font-weight: bold; background: #f0f0f0; padding: 3px 5px; border: 1px solid #000; border-bottom: none; }
-  .form-row { display: flex; align-items: baseline; padding: 4px 10px; font-size: 12px; }
-  .form-label { flex: 1; }
-  .form-value { flex: 0.7; font-weight: bold; border-bottom: 1px solid #000; min-width: 200px; padding-left: 5px; font-size: 13px; }
-  .top-bar { display: flex; justify-content: space-between; margin: 8px 0; font-size: 11px; }
-  .cat-box { font-size: 22px; font-weight: bold; border: 2px solid #000; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; position: absolute; top: 15mm; right: 20mm; }
-  .docs-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-top: 5px; }
-  .docs-table th, .docs-table td { border: 1px solid #000; padding: 3px 5px; }
-  .docs-table th { background: #f0f0f0; }
-  .sig-section { display: flex; justify-content: space-between; margin-top: 10px; font-size: 10px; }
-  .sig-box { width: 48%; }
-  .sig-box .sig-title { font-weight: bold; font-size: 9px; }
-  .dashed-line { border-top: 1px dashed #000; margin: 15px 0; }
-  .bottom-section { font-size: 10px; }
-  .bottom-section .center { margin-bottom: 3px; }
-  @media print { body { padding: 0; } }
+  body { font-family: 'Times New Roman', serif; font-size: 11pt; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .wrap { position: relative; width: 100%; }
+  .cat-box { position: absolute; top: 0; right: 0; border: 1.5px solid #000; width: 14mm; height: 14mm; display: flex; align-items: center; justify-content: center; font-size: 22pt; font-weight: bold; }
+  .header { text-align: center; }
+  .header img { height: 18mm; margin-bottom: 2mm; }
+  .h-main { font-size: 14pt; font-weight: bold; line-height: 1.3; }
+  .h-sub { font-size: 11pt; line-height: 1.4; }
+  .h-small { font-size: 10pt; line-height: 1.4; }
+  .form-title { font-size: 11pt; margin-top: 3mm; }
+  .meta-row { display: flex; justify-content: space-between; margin-top: 3mm; font-size: 11pt; }
+  .meta-row .u { border-bottom: 1px solid #000; min-width: 40mm; display: inline-block; padding: 0 4mm; text-align: center; font-weight: bold; }
+  .sec-bar { border: 1px solid #000; padding: 2mm 4mm; font-weight: bold; font-size: 11pt; margin-top: 3mm; }
+  .data-box { border: 1px solid #000; border-top: none; padding: 3mm 6mm; }
+  .frow { display: flex; align-items: baseline; padding: 1.5mm 0; }
+  .flbl { flex: 0 0 60%; font-size: 11pt; }
+  .fval { flex: 1; font-weight: bold; border-bottom: 1px solid #000; padding: 0 4mm 1px; text-align: center; min-height: 5mm; font-size: 12pt; }
+  .nr-row { display: flex; align-items: center; padding: 1.5mm 0; }
+  .nr-row .flbl { flex: 0 0 60%; }
+  .nrp { border-collapse: collapse; }
+  .nrp td { border: 1px solid #000; width: 7mm; height: 7mm; text-align: center; font-weight: bold; font-size: 11pt; vertical-align: middle; }
+  .cat-title { font-size: 9pt; font-weight: bold; margin-top: 3mm; padding-bottom: 1mm; border-bottom: 1px solid #000; }
+  .cat-table { width: 100%; border-collapse: collapse; }
+  .cat-table td { border: 1px solid #000; padding: 1.5mm 0; text-align: center; font-size: 11pt; }
+  .cat-table td.sel { background: #c8c8c8; font-weight: bold; }
+  .docs-row { display: flex; gap: 0; }
+  .docs-table { flex: 1; border-collapse: collapse; font-size: 9.5pt; }
+  .docs-table th, .docs-table td { border: 1px solid #000; padding: 1.5mm 2mm; }
+  .docs-table th { font-weight: bold; text-align: center; }
+  .docs-table td.po { text-align: center; width: 18mm; }
+  .remarks-box { border: 1px solid #000; border-left: none; width: 38mm; padding: 2mm; text-align: center; display: flex; flex-direction: column; }
+  .remarks-box .rh { font-size: 9pt; font-weight: bold; padding-bottom: 1mm; border-bottom: 1px solid #000; margin-bottom: 2mm; }
+  .remarks-box .rb { font-weight: bold; font-size: 11pt; line-height: 1.3; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .remarks-box .rb .big { font-size: 18pt; }
+  .sig-section { display: flex; gap: 0; margin-top: 0; }
+  .sig-box { flex: 1; border: 1px solid #000; padding: 2mm 3mm; min-height: 18mm; }
+  .sig-box + .sig-box { border-left: none; }
+  .sig-title { font-size: 9pt; font-weight: bold; text-align: center; }
+  .dashed { border-top: 1px dashed #000; margin: 5mm 0; }
+  .tel { font-size: 11pt; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding: 0 6mm 1px; min-width: 60mm; }
+  .small-table { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+  .small-table th, .small-table td { border: 1px solid #000; padding: 2mm; font-size: 10pt; }
+  .small-table th { font-weight: bold; text-align: center; }
 </style></head><body>
-<div style="position:relative;">
+<div class="wrap">
   <div class="cat-box">${candidate.kategoria}</div>
 
-  <div class="center">
-    <img src="" onerror="this.style.display='none'" style="height:40px;margin-bottom:3px;" />
-    <div class="header-title">REPUBLIKA E KOSOVËS / REPUBLIKA KOSOVA / REPUBLIC OF KOSOVO</div>
-    <div class="header-title">QEVERIA / VLADA / GOVERNMENT</div>
-    <div class="header-sub">MINISTRIA E INFRASTRUKTURËS DHE TRANSPORTIT</div>
-    <div class="header-sub">MINISTRSTVO ZA INFRASTRUKTURU I TRANSOPROTA</div>
-    <div class="header-sub">MINISTRY OF INFRASTRUCTURE AND TRANSPORT</div>
-    <div class="header-sub" style="margin-top:5px;">NJËSIA E TESTIMIT PËR PATENT SHOFER: PRISHTINE</div>
-    <div style="margin-top:8px;font-size:11px;font-weight:bold;">FLETËPARAQITJE PËR PROVIM PËR SHOFERË / PRIJAVA ZA POLAGANJE VOZAČKOG DOZVOLE</div>
-    <div style="font-size:10px;font-weight:bold;">DRIVING EXAM RESERVATION FORM</div>
+  <div class="header">
+    <img src="/kosovo-coat.jpg" alt="" />
+    <div class="h-main">REPUBLIKA E KOSOVËS / REPUBLIKA KOSOVA / REPUBLIC OF KOSOVO</div>
+    <div class="h-main">QEVERIA / VLADA / GOVERNMENT</div>
+    <div class="h-sub" style="margin-top:2mm;">MINISTRIA E INFRASTRUKTURES DHE TRANSPORTIT</div>
+    <div class="h-sub">MINISTRSTVO ZA INFRASTRUKTURE I TRANSOPRTA</div>
+    <div class="h-sub">MINISTRY OF INFRASTRUCTURE AND TRANSPORT</div>
+    <div class="h-small" style="margin-top:2mm;">NJËSIA E TESTIMIT PËR PATENT SHOFER: PRISHTINE</div>
+    <div class="form-title">FLETËPARAQITJE PËR PROVIM PËR SHOFERË / PRIJAVA ZA POLAGANJE VOZAČKOG DOZVOLE</div>
+    <div class="h-small">DRIVING EXAM RESERVATION FORM</div>
   </div>
 
-  <div class="top-bar">
-    <div>FORMA A1 NJPSH / JVD / DLU: ______________</div>
-    <div>Nr. regj./Br.Regj./Lbook.no. <strong style="border-bottom:1px solid #000;padding:0 10px;">${candidate.numriRegjistrimit}</strong></div>
+  <div class="meta-row">
+    <div>FORMA A1 NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
+    <div>Nr. regj./Br.Regj./Lbook.no. <span class="u">${candidate.numriRegjistrimit}</span></div>
   </div>
 
-  <div class="section-title">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
-
-  <div style="border:1px solid #000; padding: 5px 0;">
-    <div class="form-row">
-      <span class="form-label">1. Mbiemri / Prezime / Family Name:</span>
-      <span class="form-value">${candidate.mbiemri}</span>
-    </div>
-    <div class="form-row">
-      <span class="form-label">2. Emri i babait / Očevo ime / Father's Name:</span>
-      <span class="form-value">${effectiveEmriBabait}</span>
-    </div>
-    <div class="form-row">
-      <span class="form-label">3. Emri / Ime / First Name:</span>
-      <span class="form-value">${candidate.emri}</span>
-    </div>
-    <div class="form-row">
-      <span class="form-label">4. Data e lindjes / Datum rodjenja / Date of Birth:</span>
-      <span class="form-value">${formatDate(candidate.dataLindjes)}</span>
-    </div>
-    <div class="form-row">
-      <span class="form-label">5. Vendi i lindjes / Mesto rodjenja / Place of birth:</span>
-      <span class="form-value">${effectiveVendlindja}</span>
-    </div>
-    <div class="form-row">
-      <span class="form-label">6. Komuna / Opština / Municipality:</span>
-      <span class="form-value">${komuna || candidate.vendi}</span>
-    </div>
-    <div class="form-row" style="align-items:center;">
-      <span class="form-label">7. Numri personal / Lični broj / Personal Number:</span>
-      <table style="border-collapse:collapse;">${personalBoxes}${emptyBoxes}</table>
-    </div>
+  <div class="sec-bar">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
+  <div class="data-box">
+    <div class="frow"><span class="flbl">1.&nbsp;&nbsp;&nbsp;Mbiemri / Prezime / Family Name:</span><span class="fval">${candidate.mbiemri}</span></div>
+    <div class="frow"><span class="flbl">2.&nbsp;&nbsp;&nbsp;Emri i babait / Očevo ime / Father's Name:</span><span class="fval">${effectiveEmriBabait || "&nbsp;"}</span></div>
+    <div class="frow"><span class="flbl">3.&nbsp;&nbsp;&nbsp;Emri / Ime / First Name:</span><span class="fval">${candidate.emri}</span></div>
+    <div class="frow"><span class="flbl">4.&nbsp;&nbsp;&nbsp;Data e lindjes / Datum rodjenja Date of Birth:</span><span class="fval">${formatDate(candidate.dataLindjes)}</span></div>
+    <div class="frow"><span class="flbl">5.&nbsp;&nbsp;&nbsp;Vendi i lindjes / Mesto rodjenja / Place of birth:</span><span class="fval">${effectiveVendlindja || "&nbsp;"}</span></div>
+    <div class="frow"><span class="flbl">6.&nbsp;&nbsp;&nbsp;Komuna / Opština / Municipality:</span><span class="fval">${komuna || candidate.vendi || "&nbsp;"}</span></div>
+    <div class="nr-row"><span class="flbl">7.&nbsp;&nbsp;&nbsp;Numri personal / Lični broj / Personal Number:</span><table class="nrp"><tr>${personalBoxes}${emptyBoxes}</tr></table></div>
   </div>
 
-  <div style="margin-top:3px;font-size:9px;font-weight:bold;">KATEGORIT PËR PATENT SHOFER / I KATEGORIJE ZA VOZAČKU DOZVOLU / DRIVING LICENSE CATEGORIES</div>
-  <table style="border-collapse:collapse;width:100%;margin-top:2px;">
-    <tr>${catCells}</tr>
-  </table>
+  <div class="cat-title">KATEGORIT PËR PATENT SHOFER / I KATEGORIJE ZA VOZAČKU DOZVOLU / DRIVING LICENSE CATEGORIES</div>
+  <table class="cat-table"><tr>${allCategories.map(cat => {
+    const isSelected = candidate.kategoria === cat;
+    return `<td class="${isSelected ? 'sel' : ''}">${cat}</td>`;
+  }).join("")}</tr></table>
 
-  <div style="margin-top:8px;">
-    <div class="section-title" style="border-bottom:1px solid #000;">DOKUMENTET E BASHKANGJITURA / PRILOŽENI DOKUMENTI / ATTACHED DOCUMENTS</div>
+  <div class="sec-bar" style="margin-top:3mm;">DOKUMENTET E BASHKANGJITURA / PRILOŽENI DOKUMENTI / ATTACHED DOCUMENTS</div>
+  <div class="docs-row">
     <table class="docs-table">
       <tr>
-        <th style="width:60%;">9.Dokumentet / Dokumentacija / documents</th>
-        <th style="width:15%;">Po/Jes/Yes</th>
-        <th>Vërejtje/Primedbe/Remarks</th>
+        <th>9.Dokumentet / Dokumentacija / documents</th>
+        <th style="width:18mm;">Po/Jes/Yes</th>
+      </tr>
+      <tr><td>Vërtetimi I Auto Shkollës/ Potvrda Auto Škole/ Driving school certificate</td><td class="po">PO</td></tr>
+      <tr><td>Çertifikata mjeksore/ Lekarsko uverenje / Medical certificate</td><td class="po">PO</td></tr>
+      <tr><td>Çertifikata e kryqit të kuq / Uverenje crvenog krsta /Red Cross certificate</td><td class="po">PO</td></tr>
+      <tr><td>Fotokopja e letërnjoftimit / Fotokopija lična karta/ Photocopy ID Card</td><td class="po">PO</td></tr>
+    </table>
+    <div class="remarks-box">
+      <div class="rh">Vërejtje/Primedbe/Remarks</div>
+      <div class="rb">Auto shkolla<br/><span class="big">VISI</span></div>
+    </div>
+  </div>
+
+  <div class="sec-bar" style="margin-top:3mm;">PARAQITJA / PRIJAVA / RESERVATION</div>
+  <div class="sig-section">
+    <div class="sig-box">
+      <div class="sig-title">10. Nënshkrimi I paraqitësit / Data / Potpis<br/>podnosioca / Datum / Officer's Signature / Date</div>
+    </div>
+    <div class="sig-box">
+      <div class="sig-title">11. Nënshkrimi I nënpunsit zyrtar / Data /Potpis<br/>službenog lica / Datum / Aplican't Signature / Date</div>
+    </div>
+  </div>
+
+  <div class="dashed"></div>
+
+  <div>
+    <div><span class="tel">Tel: ${candidate.telefon || ""}</span></div>
+    <div class="header" style="margin-top:3mm;">
+      <img src="/kosovo-coat.jpg" alt="" style="height:14mm;" />
+      <div class="h-small">Republika e Kosovës / Republika Kosova / Republika of Kosovo</div>
+      <div class="h-small">Qeveria e Kosovës/ Vlada Kosova / Government of Kosova</div>
+      <div class="h-sub">MINISTRIA E INFRASTRUKTURES DHE TRANSPORTIT</div>
+      <div class="h-sub">MINISTRSTVO ZA INFRASTRUKTURE I TRANSOPRTA</div>
+      <div class="h-sub">MINISTRY OF INFRASTRUCTURE AND TRANSPORT</div>
+      <div class="h-small" style="margin-top:1mm;">Fletëza për paraqitjen e provimit për shofer / Listič za prijavljeni vozački ispit / Driving exam reservation slip</div>
+    </div>
+    <div class="meta-row" style="margin-top:2mm;">
+      <div>NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
+      <div>Nr. Regj./Br.Regj./Lbook.no. <span class="u">${candidate.numriRegjistrimit}</span></div>
+    </div>
+    <table class="small-table">
+      <tr>
+        <th style="width:50%;">Emri dhe mbiemri I kandidatit/<br/>Ime i prezime kandidata</th>
+        <th>Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis<br/>službenog lica</th>
       </tr>
       <tr>
-        <td>Vërtetimi i Auto Shkollës/ Potvrda Auto Škole/ Driving school certificate</td>
-        <td class="center">PO</td>
-        <td rowspan="4" class="center bold" style="font-size:16px;vertical-align:middle;">Auto shkolla<br/>VISI</td>
-      </tr>
-      <tr>
-        <td>Çertifikata mjeksore/ Lekarsko uverenje/ Medical certificate</td>
-        <td class="center">PO</td>
-      </tr>
-      <tr>
-        <td>Çertifikata e kryqit të kuq / Uverenje crvenog krsta / Red Cross certificate</td>
-        <td class="center">PO</td>
-      </tr>
-      <tr>
-        <td>Fotokopja e letërnjoftimit / Fotokopija lična karta/ Photocopy ID Card</td>
-        <td class="center">PO</td>
+        <td style="font-weight:bold; text-align:center; height:15mm;">${candidate.emri} ${candidate.mbiemri}</td>
+        <td>&nbsp;</td>
       </tr>
     </table>
   </div>
-
-  <div style="margin-top:5px;font-size:9px;font-weight:bold;">PARAQITJA / PRIJAVA / RESERVATION</div>
-  <div class="sig-section" style="border:1px solid #000;padding:8px;">
-    <div class="sig-box">
-      <div class="sig-title">10. Nënshkrimi I paraqitësit / Data / Potpis podnosioca / Datum / Officer's Signature / Date</div>
-      <div style="margin-top:15px;">→</div>
-    </div>
-    <div class="sig-box">
-      <div class="sig-title">11. Nënshkrimi I nënpunsit zyrtar / Data / Potpis službenog lica / Datum / Aplican't Signature / Date</div>
-    </div>
-  </div>
-
-  <div class="dashed-line"></div>
-
-  <div class="bottom-section">
-    <div><strong>Tel:${candidate.telefon}</strong></div>
-    <div style="margin-top:8px;" class="center">
-      <div class="header-sub">Republika e Kosovës / Republika Kosova / Republika of Kosovo</div>
-      <div class="header-sub">Qeveria e Kosovës/ Vlada Kosova / Government of Kosova</div>
-      <div class="header-sub">MINISTRIA E INFRASTRUKTURËS DHE TRANSPORTIT</div>
-      <div class="header-sub">MINISTRSTVO ZA INFRASTRUKTURU I TRANSOPROTA</div>
-      <div class="header-sub">MINISTRY OF INFRASTRUCTURE AND TRANSPORT</div>
-    </div>
-    <div style="margin-top:5px;font-size:10px;">Fletëza për paraqitjen e provimit për shofer / Listička prijavljeni vozački ispit / Driving exam reservation slip</div>
-    <div class="top-bar" style="margin-top:3px;">
-      <div>NJPSH / JVD / DLU: ______________</div>
-      <div>Nr. Regj./Br.Regj./Lbook.no. <strong style="border-bottom:1px solid #000;padding:0 10px;">${candidate.numriRegjistrimit}</strong></div>
-    </div>
-    <div class="sig-section">
-      <div class="sig-box">
-        <div class="sig-title">Emri dhe mbiemri I kandidatit/ Ime i prezime kandidata</div>
-        <div style="margin-top:5px;font-weight:bold;">${candidate.emri} ${candidate.mbiemri}</div>
-        <div style="margin-top:10px;">→</div>
-      </div>
-      <div class="sig-box">
-        <div class="sig-title">Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis službenog lica</div>
-      </div>
-    </div>
-  </div>
 </div>
-<script>window.print();<\/script>
+<script>setTimeout(()=>window.print(),400);<\/script>
 </body></html>`);
     printWindow.document.close();
   };
