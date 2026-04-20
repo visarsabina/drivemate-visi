@@ -58,7 +58,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="landing-theme min-h-screen bg-background">
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
