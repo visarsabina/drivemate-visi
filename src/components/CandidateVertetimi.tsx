@@ -59,23 +59,21 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   html, body { width: 297mm; height: 210mm; }
   body { font-family: 'Times New Roman', serif; font-size: 12pt; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .page { width: 297mm; height: 210mm; padding: 8mm; position: relative; }
-  .frame { border: 2px solid #000; width: 100%; height: 100%; padding: 6mm 8mm; display: flex; flex-direction: column; }
-  .header { text-align: center; line-height: 1.7; font-size: 12pt; padding: 2mm 4mm 4mm; }
-  .title { text-align: center; font-size: 22pt; font-weight: bold; letter-spacing: 2px; margin: 4mm 0 6mm; }
-  .row { display: flex; align-items: stretch; border-top: 1px solid #000; }
-  .row:last-child { border-bottom: 1px solid #000; }
-  .cell { padding: 2.5mm 3mm; border-right: 1px solid #000; display: flex; align-items: center; gap: 3mm; min-height: 9mm; }
-  .cell:last-child { border-right: none; }
-  .cell .label { white-space: nowrap; }
-  .cell .val { font-weight: bold; flex: 1; text-align: center; }
+  .frame { width: 100%; height: 100%; padding: 4mm 10mm; display: flex; flex-direction: column; }
+  .header { text-align: center; line-height: 1.9; font-size: 12pt; padding: 2mm 4mm 2mm; }
+  .title { text-align: center; font-size: 22pt; font-weight: bold; letter-spacing: 2px; margin: 4mm 0 8mm; }
+  .row { display: flex; align-items: flex-end; gap: 5mm; margin-bottom: 6mm; flex-wrap: nowrap; }
+  .cell { display: flex; align-items: flex-end; gap: 2mm; white-space: nowrap; }
+  .label { padding-bottom: 1px; }
+  .val { font-weight: bold; text-align: center; border-bottom: 1px solid #000; padding: 0 3mm 1px; min-width: 28mm; display: inline-block; }
+  .val.sm { min-width: 14mm; }
+  .val.md { min-width: 22mm; }
+  .val.grow { flex: 1; min-width: 0; }
   .nrp { display: flex; gap: 1px; }
   .nrp span { display: inline-block; border: 1px solid #000; width: 6mm; height: 6mm; text-align: center; line-height: 6mm; font-weight: bold; font-size: 11pt; }
-  .full { flex: 1; }
-  .mendimi { padding: 3mm 4mm; border-top: 1px solid #000; }
-  .sig-cell { flex: 1; padding: 3mm 4mm; border-right: 1px solid #000; display: flex; align-items: center; gap: 3mm; }
-  .sig-cell:last-child { border-right: none; }
-  .sig-val { font-weight: bold; border-bottom: 1px solid #000; flex: 1; text-align: center; padding: 0 4mm; }
-  .vula { text-align: center; font-style: italic; padding: 4mm 0 2mm; margin-top: auto; }
+  .mendimi { padding: 2mm 0 4mm; }
+  .vula { text-align: center; font-style: italic; padding: 6mm 0 2mm; margin-top: auto; }
+  .spread { display: flex; justify-content: space-between; align-items: flex-end; gap: 8mm; margin-bottom: 6mm; }
 </style></head><body>
 
 <div class="page"><div class="frame">
@@ -88,58 +86,54 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   <div class="title">VËRTETIM</div>
 
   <div class="row">
-    <div class="cell" style="flex:1.4;"><span class="val">${candidate.emri} (${vendlindja || "____"}) ${candidate.mbiemri}</span></div>
-    <div class="cell" style="flex:1.2;"><span class="label">e lindur më:</span><span class="val">${formatDate(candidate.dataLindjes)}</span></div>
-    <div class="cell" style="flex:0.9;"><span class="label">në:</span><span class="val">${vendlindja || "____"}</span></div>
-    <div class="cell" style="flex:1;"><span class="label">Komuna:</span><span class="val">${komuna || "____"}</span></div>
+    <div class="cell" style="flex:1.4;"><span class="val grow">${candidate.emri}${vendlindja ? "(" + vendlindja + ")" : ""}${candidate.mbiemri}</span></div>
+    <div class="cell"><span class="label">e lindur më:</span><span class="val md">${formatDate(candidate.dataLindjes)}</span></div>
+    <div class="cell"><span class="label">në:</span><span class="val md">${vendlindja || "&nbsp;"}</span></div>
+    <div class="cell"><span class="label">Komuna:</span><span class="val md">${komuna || "&nbsp;"}</span></div>
   </div>
 
   <div class="row">
-    <div class="cell" style="flex:1.3;"><span class="label">me vendbanim në</span><span class="val">${vendbanimi || "____"}</span></div>
-    <div class="cell" style="flex:2;"><span class="label">nr. personal</span><div class="nrp">${candidate.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</div></div>
-    <div class="cell" style="flex:1.5;"><span class="label">i regjistruar në auto shkollë më datën:</span></div>
+    <div class="cell"><span class="label">me vendbanim në</span><span class="val md">${vendbanimi || "&nbsp;"}</span></div>
+    <div class="cell"><span class="label">nr. personal</span><div class="nrp">${candidate.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</div></div>
+    <div class="cell"><span class="label">i regjistruar në auto shkollë më datën:</span></div>
   </div>
 
   <div class="row">
-    <div class="cell full"><span class="val" style="flex:0;">${formatDate(candidate.dataRegjistrimit)}</span><span class="label">nr. Rendor</span><span class="val" style="flex:0;">${candidate.numriRegjistrimit}</span><span class="label">kreu aftësimin për dhënien e provimit për paten-shofer për kat.</span><span class="val" style="flex:0;">"${candidate.kategoria}"</span><span class="label">, sipas plan</span></div>
+    <div class="cell"><span class="val md">${formatDate(candidate.dataRegjistrimit)}</span></div>
+    <div class="cell"><span class="label">nr. Rendor</span><span class="val sm">${candidate.numriRegjistrimit}</span></div>
+    <div class="cell"><span class="label">kreu aftësimin për dhënien e provimit për paten-shofer për kat.</span><span class="val sm">"${candidate.kategoria}"</span><span class="label">, sipas plan</span></div>
   </div>
 
-  <div style="height:4mm;"></div>
-
   <div class="row">
-    <div class="cell full"><span class="label">Rregullat e komunikaciont dhe të sigurisë (pjesa teorike) prej</span><span class="val" style="flex:0;">${numriOreveTeori}</span><span class="label">orëve në kohën prej:</span><span class="val" style="flex:0;">${formatDate(dataFillimitTeori)}</span><span class="label">deri:</span><span class="val" style="flex:0;">${formatDate(dataMbarimitTeori)}</span></div>
+    <div class="cell"><span class="label">Rregullat e komunikaciont dhe të sigurisë (pjesa teorike) prej</span><span class="val sm">${numriOreveTeori}</span><span class="label">orëve në kohën prej:</span><span class="val md">${formatDate(dataFillimitTeori)}</span><span class="label">deri:</span><span class="val md">${formatDate(dataMbarimitTeori)}</span></div>
   </div>
   <div class="row">
-    <div class="cell full"><span class="label">Të drejtuarit e mjetit me veprim motorik (pjesa praktike) prej</span><span class="val" style="flex:0;">${numriOrevePraktike}</span><span class="label">orëve në kohën prej:</span><span class="val" style="flex:0;">${formatDate(dataFillimitPraktike)}</span><span class="label">deri:</span><span class="val" style="flex:0;">${formatDate(dataMbarimitPraktike)}</span></div>
+    <div class="cell"><span class="label">Të drejtuarit e mjetit me veprim motorik (pjesa praktike) prej</span><span class="val sm">${numriOrevePraktike}</span><span class="label">orëve në kohën prej:</span><span class="val md">${formatDate(dataFillimitPraktike)}</span><span class="label">deri:</span><span class="val md">${formatDate(dataMbarimitPraktike)}</span></div>
   </div>
 
   <div class="mendimi">Pas verifikimit të aftësive të kandidatit jepet mendimi:</div>
 
   <div class="row">
-    <div class="cell" style="flex:0.5;"><span class="label">Ligjëruesi :</span></div>
-    <div class="cell full"><span class="val">Është aftësuar nga pjesa teorike</span></div>
+    <div class="cell"><span class="label">Ligjëruesi :</span></div>
+    <div class="cell" style="flex:1;"><span class="val grow" style="text-align:center;">Është aftësuar nga pjesa teorike</span></div>
   </div>
   <div class="row">
-    <div class="cell" style="flex:0.5;"><span class="label">Shofer insruktori:</span></div>
-    <div class="cell full"><span class="val">Është aftësuar nga pjesa praktike</span></div>
+    <div class="cell"><span class="label">Shofer insruktori:</span></div>
+    <div class="cell" style="flex:1;"><span class="val grow" style="text-align:center;">Është aftësuar nga pjesa praktike</span></div>
   </div>
 
-  <div style="height:4mm;"></div>
-
-  <div class="row">
-    <div class="sig-cell"><span class="label">Emri dhe mbiemri i ligjëruesit</span><span class="sig-val">${ligjruesi}</span></div>
-    <div class="sig-cell"><span class="label">Nënshkrimi i ligjëruesit</span><span class="sig-val">&nbsp;</span></div>
+  <div class="spread">
+    <div class="cell"><span class="label">Emri dhe mbiemri i ligjëruesit</span><span class="val md">${ligjruesi}</span></div>
+    <div class="cell"><span class="label">Nënshkrimi i ligjëruesit</span><span class="val md">&nbsp;</span></div>
   </div>
-  <div class="row">
-    <div class="sig-cell"><span class="label">Emri dhe mbiemri i shofer insruktorit</span><span class="sig-val">${instruktori}</span></div>
-    <div class="sig-cell"><span class="label">Nënshkrimi i shofer insruktorit</span><span class="sig-val">&nbsp;</span></div>
+  <div class="spread">
+    <div class="cell"><span class="label">Emri dhe mbiemri i shofer insruktorit</span><span class="val md">${instruktori}</span></div>
+    <div class="cell"><span class="label">Nënshkrimi i shofer insruktorit</span><span class="val md">&nbsp;</span></div>
   </div>
 
-  <div style="height:4mm;"></div>
-
-  <div class="row" style="border-bottom:none;">
-    <div class="sig-cell"><span class="label">Data e lëshurjes së vërtetimit</span><span class="sig-val">${formatDate(dataLeshimit)}</span></div>
-    <div class="sig-cell" style="justify-content:flex-end;"><span class="label">Drejtori:</span><span class="val" style="flex:0; font-weight:bold;">Fadil Jaha</span></div>
+  <div class="spread">
+    <div class="cell"><span class="label">Data e lëshurjes së vërtetimit</span><span class="val md">${formatDate(dataLeshimit)}</span></div>
+    <div class="cell"><span class="label">Drejtori:</span><span class="val md"><strong>Fadil Jaha</strong></span></div>
   </div>
 
   <div class="vula">v.v</div>
