@@ -127,6 +127,8 @@ const Index = () => {
 
           {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} />}
 
+          {activeView === "finances" && <Finances candidates={candidates} />}
+
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 
           {activeView === "vertetimi" && <CandidateVertetimi candidates={candidates} onPrinted={handleVertetimiPrinted} />}
