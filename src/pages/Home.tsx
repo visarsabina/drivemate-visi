@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import RegistrationDialog from "@/components/RegistrationDialog";
 import heroImg from "@/assets/hero-driving.jpg";
 import classroomImg from "@/assets/classroom.jpg";
 import successImg from "@/assets/success-student.jpg";
@@ -43,6 +44,13 @@ const stats = [
 const Home = () => {
   const navigate = useNavigate();
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const [registerCategory, setRegisterCategory] = useState("");
+
+  const openRegister = (category = "") => {
+    setRegisterCategory(category);
+    setRegisterOpen(true);
+  };
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -185,7 +193,7 @@ const Home = () => {
                       <div className="flex justify-between"><span className="text-muted-foreground">Kohëzgjatja</span><span className="font-medium">{cat.duration}</span></div>
                       <div className="flex justify-between"><span className="text-muted-foreground">Çmimi</span><span className="font-bold text-primary text-lg">{cat.price}</span></div>
                     </div>
-                    <Button className="w-full mt-5" onClick={() => scrollTo("contact")}>Regjistrohu Tani</Button>
+                    <Button className="w-full mt-5" onClick={() => openRegister(cat.name)}>Regjistrohu Tani</Button>
                   </CardContent>
                 </Card>
               );
@@ -244,7 +252,7 @@ const Home = () => {
                 </li>
               ))}
             </ul>
-            <Button size="lg" onClick={() => scrollTo("contact")}>Filloni Sot</Button>
+            <Button size="lg" onClick={() => openRegister()}>Filloni Sot</Button>
           </div>
         </div>
       </section>
