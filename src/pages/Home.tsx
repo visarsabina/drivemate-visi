@@ -8,15 +8,18 @@ import RegistrationDialog from "@/components/RegistrationDialog";
 import heroImg from "@/assets/hero-driving.jpg";
 import classroomImg from "@/assets/classroom.jpg";
 import successImg from "@/assets/success-student.jpg";
+import carBImg from "@/assets/car-b.jpg";
+import carBeImg from "@/assets/car-be.jpg";
+import busDImg from "@/assets/bus-d.jpg";
 import logo from "@/assets/logo.png";
 
 const categories = [
-  { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "30 ditë", price: "350€", icon: Car },
-  { name: "BE", desc: "Automjete me rimorkio", age: "18+", duration: "15 ditë", price: "200€", icon: Car },
-  { name: "C1", desc: "Automjete 3500-7500 kg", age: "18+", duration: "20 ditë", price: "400€", icon: Truck },
-  { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "30 ditë", price: "500€", icon: Truck },
-  { name: "CE", desc: "Kamion me rimorkio", age: "21+", duration: "20 ditë", price: "300€", icon: Truck },
-  { name: "D", desc: "Autobus (mbi 8 udhëtarë)", age: "24+", duration: "45 ditë", price: "700€", icon: Bus },
+  { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "30 ditë", price: "350€", icon: Car, image: carBImg },
+  { name: "BE", desc: "Automjete me rimorkio", age: "18+", duration: "15 ditë", price: "200€", icon: Car, image: carBeImg },
+  { name: "C1", desc: "Automjete 3500-7500 kg", age: "18+", duration: "20 ditë", price: "400€", icon: Truck, image: null },
+  { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "30 ditë", price: "500€", icon: Truck, image: null },
+  { name: "CE", desc: "Kamion me rimorkio", age: "21+", duration: "20 ditë", price: "300€", icon: Truck, image: null },
+  { name: "D", desc: "Autobus (mbi 8 udhëtarë)", age: "24+", duration: "45 ditë", price: "700€", icon: Bus, image: busDImg },
 ];
 
 const testimonials = [
@@ -93,7 +96,7 @@ const Home = () => {
       {/* Hero */}
       <section id="hero" className="relative min-h-[90vh] flex items-center pt-16">
         <div className="absolute inset-0">
-          <img src={heroImg} alt="Autoshkolla Visi" className="w-full h-full object-cover" width={1920} height={1080} />
+          <img src={heroImg} alt="Makina e Auto Shkollës Visi" className="w-full h-full object-cover" width={1920} height={1080} />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-20">
@@ -156,7 +159,7 @@ const Home = () => {
             </div>
           </div>
           <div className="relative">
-            <img src={classroomImg} alt="Klasa teorike" className="rounded-2xl shadow-xl" loading="lazy" width={1280} height={720} />
+            <img src={classroomImg} alt="Autobusi i Auto Shkollës Visi për kategorinë D" className="rounded-2xl shadow-xl w-full h-[400px] object-cover" loading="lazy" width={1280} height={720} />
             <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground rounded-xl p-4 shadow-lg">
               <div className="text-2xl font-bold">25+</div>
               <div className="text-xs opacity-80">Vite përvojë</div>
@@ -177,7 +180,12 @@ const Home = () => {
             {categories.map((cat) => {
               const Icon = cat.icon;
               return (
-                <Card key={cat.name} className="group hover:shadow-lg hover:border-primary/30 transition-all duration-300">
+                <Card key={cat.name} className="group hover:shadow-lg hover:border-primary/30 transition-all duration-300 overflow-hidden">
+                  {cat.image && (
+                    <div className="h-44 overflow-hidden bg-muted">
+                      <img src={cat.image} alt={`Mjeti për kategorinë ${cat.name}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                    </div>
+                  )}
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
