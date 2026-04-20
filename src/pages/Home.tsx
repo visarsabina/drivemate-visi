@@ -105,7 +105,7 @@ const Home = () => {
               Patenta jote fillon <span className="text-primary">këtu</span>
             </h1>
             <p className="text-lg text-white/80 mb-8">
-              Autoshkolla Visi – partneri juaj i besuar për marrjen e patentës. Instruktorë profesionalë, makina moderne, dhe sukses i garantuar.
+              Instruktorë me përvojë, makina moderne dhe orar fleksibël – mëso shpejt, sigurt dhe me sukses të garantuar nga hera e parë.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" onClick={() => scrollTo("categories")} className="text-base px-8">
