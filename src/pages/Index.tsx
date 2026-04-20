@@ -50,6 +50,7 @@ const Index = () => {
     "candidate-detail": "Paneli i Kandidatit",
     add: "Shto Kandidat",
     payment: "Pagesa",
+    finances: "Financat",
     libreza: "Libreza e Kandidatit",
   };
 
