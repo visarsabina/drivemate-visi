@@ -102,7 +102,7 @@ const Home = () => {
               🚗 Regjistrohu sot!
             </span>
             <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-              Mëso të ngasësh me <span className="text-primary">besim</span>
+              Patenta jote fillon <span className="text-primary">këtu</span>
             </h1>
             <p className="text-lg text-white/80 mb-8">
               Autoshkolla Visi – partneri juaj i besuar për marrjen e patentës. Instruktorë profesionalë, makina moderne, dhe sukses i garantuar.
