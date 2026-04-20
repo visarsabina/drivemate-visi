@@ -103,7 +103,7 @@ const Home = () => {
               <Button size="lg" onClick={() => scrollTo("categories")} className="text-base px-8">
                 Shiko Kategoritë
               </Button>
-              <Button size="lg" variant="outline" onClick={() => scrollTo("contact")} className="text-base px-8 border-white/30 text-white hover:bg-white/10">
+              <Button size="lg" variant="outline" onClick={() => scrollTo("contact")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
                 Na Kontaktoni
               </Button>
             </div>
