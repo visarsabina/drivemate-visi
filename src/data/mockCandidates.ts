@@ -4,7 +4,7 @@ export const mockCandidates: Candidate[] = [
   {
     id: "1",
     numriRegjistrimit: "01/24",
-    numriPersonal: "1985051234567",
+    numriPersonal: "1985051234",
     emri: "Arben",
     mbiemri: "Krasniqi",
     emriBabait: "Agim",
