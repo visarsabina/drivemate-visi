@@ -12,6 +12,7 @@ const navItems = [
   { id: "candidates", label: "Kandidatët", icon: Users },
   { id: "add", label: "Shto Kandidat", icon: UserPlus },
   { id: "payment", label: "Pagesa", icon: CreditCard },
+  { id: "finances", label: "Financat", icon: Wallet },
 ];
 
 const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
