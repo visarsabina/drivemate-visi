@@ -70,6 +70,62 @@ const Finances = ({ candidates }: FinancesProps) => {
 
   const yearTotal = yearlyByMonth.reduce((s, v) => s + v, 0);
 
+  const printReport = (title: string, subtitle: string, rows: { label: string; value: number }[], total: number) => {
+    const w = window.open("", "_blank", "width=900,height=1000");
+    if (!w) return;
+    const body = rows
+      .map(
+        (r) => `
+        <tr>
+          <td>${r.label}</td>
+          <td style="text-align:right">${r.value.toFixed(2)} €</td>
+        </tr>`
+      )
+      .join("");
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${title}</title>
+      <style>
+        @page { size: A4; margin: 20mm; }
+        body { font-family: Arial, sans-serif; color: #111; }
+        h1 { font-size: 20px; margin: 0 0 4px; }
+        .sub { color: #555; font-size: 12px; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; }
+        th { background: #f3f4f6; }
+        .total { margin-top: 16px; text-align: right; font-size: 14px; font-weight: 600; }
+        .footer { margin-top: 40px; font-size: 11px; color: #666; text-align: center; }
+      </style></head><body>
+      <h1>${title}</h1>
+      <div class="sub">Auto Shkolla Visi — ${subtitle}</div>
+      <table>
+        <thead><tr><th>Muaji</th><th style="text-align:right">Totali</th></tr></thead>
+        <tbody>${body}</tbody>
+      </table>
+      <div class="total">Total: ${total.toFixed(2)} €</div>
+      <div class="footer">Gjeneruar nga sistemi Auto Shkolla Visi</div>
+      <script>window.onload = () => { window.print(); }</script>
+      </body></html>`);
+    w.document.close();
+  };
+
+  const handlePrintMonthly = () => {
+    const rows = monthNames.map((m, idx) => ({
+      label: m,
+      value: allPayments
+        .filter((p) => {
+          const d = new Date(p.data);
+          return d.getFullYear() === currentYear && d.getMonth() === idx;
+        })
+        .reduce((s, p) => s + p.shuma, 0),
+    }));
+    const total = rows.reduce((s, r) => s + r.value, 0);
+    printReport(`Raporti mujor — ${currentYear}`, `Viti: ${currentYear}`, rows, total);
+  };
+
+  const handlePrintYearly = () => {
+    const rows = monthNames.map((m, idx) => ({ label: m, value: yearlyByMonth[idx] }));
+    printReport(`Raporti vjetor — ${selectedYear}`, `Viti: ${selectedYear}`, rows, yearTotal);
+  };
+
   const handlePrintDaily = () => {
     const w = window.open("", "_blank", "width=900,height=1000");
     if (!w) return;
