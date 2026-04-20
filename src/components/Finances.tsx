@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { Candidate } from "@/types/candidate";
-import { Wallet, TrendingUp, Calendar as CalIcon, Users } from "lucide-react";
+import { Wallet, TrendingUp, Calendar as CalIcon, Users, Printer } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 
 interface FinancesProps {
   candidates: Candidate[];
@@ -69,6 +70,48 @@ const Finances = ({ candidates }: FinancesProps) => {
 
   const yearTotal = yearlyByMonth.reduce((s, v) => s + v, 0);
 
+  const handlePrintDaily = () => {
+    const w = window.open("", "_blank", "width=900,height=1000");
+    if (!w) return;
+    const rows = todayPayments
+      .map(
+        (p) => `
+        <tr>
+          <td>${p.numriRegjistrimit}</td>
+          <td>${p.emri}</td>
+          <td>${p.mbiemri}</td>
+          <td style="text-align:right">${p.shuma.toFixed(2)} €</td>
+        </tr>`
+      )
+      .join("");
+    const body = todayPayments.length
+      ? rows
+      : `<tr><td colspan="4" style="text-align:center;padding:24px;color:#666">Nuk ka pagesa sot</td></tr>`;
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Raporti ditor — ${today}</title>
+      <style>
+        @page { size: A4; margin: 20mm; }
+        body { font-family: Arial, sans-serif; color: #111; }
+        h1 { font-size: 20px; margin: 0 0 4px; }
+        .sub { color: #555; font-size: 12px; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; }
+        th { background: #f3f4f6; }
+        .total { margin-top: 16px; text-align: right; font-size: 14px; font-weight: 600; }
+        .footer { margin-top: 40px; font-size: 11px; color: #666; text-align: center; }
+      </style></head><body>
+      <h1>Raporti ditor i pagesave</h1>
+      <div class="sub">Auto Shkolla Visi — Data: ${today}</div>
+      <table>
+        <thead><tr><th>Nr. Regj.</th><th>Emri</th><th>Mbiemri</th><th style="text-align:right">Shuma</th></tr></thead>
+        <tbody>${body}</tbody>
+      </table>
+      <div class="total">Total: ${totalSot.toFixed(2)} €</div>
+      <div class="footer">Gjeneruar nga sistemi Auto Shkolla Visi</div>
+      <script>window.onload = () => { window.print(); }</script>
+      </body></html>`);
+    w.document.close();
+  };
+
   const stats = [
     { label: "Shuma e përgjithshme momentale", value: totalPaguar, icon: Wallet, color: "text-primary", hint: "Të gjitha arkëtimet deri sot" },
     { label: "Arkëtimet sot", value: totalSot, icon: CalIcon, color: "text-success", hint: today },
@@ -106,8 +149,14 @@ const Finances = ({ candidates }: FinancesProps) => {
             <h3 className="text-lg font-semibold">Raporti ditor</h3>
             <p className="text-xs text-muted-foreground">Pagesat e bëra sot ({today})</p>
           </div>
-          <div className="text-sm">
-            Total: <span className="font-semibold text-primary">{totalSot.toFixed(2)} €</span>
+          <div className="flex items-center gap-3">
+            <div className="text-sm">
+              Total: <span className="font-semibold text-primary">{totalSot.toFixed(2)} €</span>
+            </div>
+            <Button size="sm" variant="outline" onClick={handlePrintDaily}>
+              <Printer className="w-4 h-4 mr-2" />
+              Printo
+            </Button>
           </div>
         </div>
         <div className="overflow-x-auto">
