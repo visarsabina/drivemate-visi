@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     if (username === USERNAME && password === PASSWORD) {
       localStorage.setItem("visi_auth", "1");
-      navigate("/", { replace: true });
+      navigate("/admin", { replace: true });
     } else {
       toast({
         title: "Kyçje e dështuar",

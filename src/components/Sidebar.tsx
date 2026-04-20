@@ -20,7 +20,7 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
 
   const handleSignOut = () => {
     localStorage.removeItem("visi_auth");
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   };
 
   return (
