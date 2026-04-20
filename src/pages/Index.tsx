@@ -9,6 +9,7 @@ import CandidateDetail from "@/components/CandidateDetail";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
+import Finances from "@/components/Finances";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
