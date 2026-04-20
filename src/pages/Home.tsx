@@ -36,7 +36,7 @@ const faqs = [
 
 const stats = [
   { value: "2000+", label: "Kandidatë të diplomuar", icon: Users },
-  { value: "15+", label: "Vite përvojë", icon: Award },
+  { value: "25+", label: "Vite përvojë", icon: Award },
   { value: "98%", label: "Shkalla e kalueshmërisë", icon: Star },
   { value: "6", label: "Kategori të patentës", icon: Car },
 ];
@@ -145,7 +145,7 @@ const Home = () => {
             <span className="text-primary font-semibold text-sm uppercase tracking-wider">Rreth Nesh</span>
             <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">Autoshkolla me traditë dhe profesionalizëm</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Me mbi 15 vite përvojë në fushën e aftësimit të shoferëve, Autoshkolla Visi është njëra nga autoshkollat më të besuara në rajon. Misioni ynë është t'ju ofrojmë arsimim cilësor dhe të sigurt për të gjitha kategoritë e patentës.
+              Me mbi 25 vite përvojë në fushën e aftësimit të shoferëve, Autoshkolla Visi është njëra nga autoshkollat më të besuara në rajon. Misioni ynë është t'ju ofrojmë arsimim cilësor dhe të sigurt për të gjitha kategoritë e patentës.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6">
               Disponojmë me makina moderne, klasa teorike të pajisura, dhe instruktorë me përvojë të gjatë. Suksesi juaj është prioriteti ynë!
@@ -158,7 +158,7 @@ const Home = () => {
           <div className="relative">
             <img src={classroomImg} alt="Klasa teorike" className="rounded-2xl shadow-xl" loading="lazy" width={1280} height={720} />
             <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground rounded-xl p-4 shadow-lg">
-              <div className="text-2xl font-bold">15+</div>
+              <div className="text-2xl font-bold">25+</div>
               <div className="text-xs opacity-80">Vite përvojë</div>
             </div>
           </div>
