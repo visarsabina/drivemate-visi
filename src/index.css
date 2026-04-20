@@ -67,3 +67,11 @@
     @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm;
   }
 }
+
+/* Landing page (visitor area) — yellow brand from logo */
+.landing-theme {
+  --primary: 45 95% 50%;
+  --primary-foreground: 215 30% 15%;
+  --ring: 45 95% 50%;
+}
+
