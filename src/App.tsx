@@ -18,10 +18,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route
-            path="/"
+            path="/admin"
             element={
               <RequireLogin>
                 <Index />
