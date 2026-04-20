@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { Candidate } from "@/types/candidate";
-import { Wallet, TrendingUp, Calendar as CalIcon, Users } from "lucide-react";
+import { Wallet, TrendingUp, Calendar as CalIcon, Users, Printer } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 
 interface FinancesProps {
   candidates: Candidate[];
