@@ -10,6 +10,7 @@ import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import Finances from "@/components/Finances";
+import Registrations from "@/components/Registrations";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
@@ -51,7 +52,11 @@ const Index = () => {
     add: "Shto Kandidat",
     payment: "Pagesa",
     finances: "Financat",
+    registrations: "Regjistrimet nga Vizitorët",
     libreza: "Libreza e Kandidatit",
+    vertetimi: "Vërtetimi",
+    kontrata: "Kontrata",
+    fletparaqitja: "Fletparaqitja",
   };
 
   const dashboardActions = [
@@ -128,6 +133,8 @@ const Index = () => {
           {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} />}
 
           {activeView === "finances" && <Finances candidates={candidates} />}
+
+          {activeView === "registrations" && <Registrations />}
 
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 

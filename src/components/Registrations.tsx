@@ -1,0 +1,184 @@
+import { useEffect, useState } from "react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, Trash2, Mail, Phone, Inbox } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+interface Registration {
+  fullName: string;
+  email: string;
+  phone: string;
+  category: string;
+  createdAt: string;
+}
+
+const STORAGE_KEY = "visi_registrations";
+
+const Registrations = () => {
+  const { toast } = useToast();
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
+  const [search, setSearch] = useState("");
+
+  const load = () => {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      setRegistrations(Array.isArray(data) ? data.reverse() : []);
+    } catch {
+      setRegistrations([]);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const handleDelete = (createdAt: string) => {
+    const all: Registration[] = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const updated = all.filter((r) => r.createdAt !== createdAt);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    load();
+    toast({ title: "Regjistrimi u fshi" });
+  };
+
+  const handleClearAll = () => {
+    if (!confirm("A jeni të sigurt që doni t'i fshini të gjitha regjistrimet?")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    load();
+    toast({ title: "Të gjitha regjistrimet u fshinë" });
+  };
+
+  const filtered = registrations.filter(
+    (r) =>
+      r.fullName.toLowerCase().includes(search.toLowerCase()) ||
+      r.email.toLowerCase().includes(search.toLowerCase()) ||
+      r.phone.includes(search) ||
+      r.category.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const formatDate = (iso: string) => {
+    const d = new Date(iso);
+    return d.toLocaleDateString("sq-AL", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="glass-card rounded-xl p-4 flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold">Kërkesat nga Vizitorët</h3>
+          <p className="text-sm text-muted-foreground">
+            Gjithsej: <strong>{registrations.length}</strong> regjistrime
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={load}>
+            Rifresko
+          </Button>
+          {registrations.length > 0 && (
+            <Button variant="destructive" size="sm" onClick={handleClearAll}>
+              <Trash2 className="w-4 h-4" /> Fshij të gjitha
+            </Button>
+          )}
+        </div>
+      </div>
+
+      <div className="glass-card rounded-xl">
+        <div className="p-4 border-b border-border/50">
+          <div className="relative max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Kërko sipas emrit, email, telefon ose kategori..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </div>
+
+        {registrations.length === 0 ? (
+          <div className="text-center py-16 px-4">
+            <Inbox className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+            <p className="text-muted-foreground font-medium">Ende nuk ka regjistrime</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Kërkesat nga formulari "Regjistrohu" në faqen kryesore do të shfaqen këtu.
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Data</TableHead>
+                  <TableHead>Emri dhe Mbiemri</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Telefoni</TableHead>
+                  <TableHead>Kategoria</TableHead>
+                  <TableHead className="text-right">Veprime</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                      Asnjë rezultat për kërkimin tuaj
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filtered.map((r) => (
+                    <TableRow key={r.createdAt}>
+                      <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
+                        {formatDate(r.createdAt)}
+                      </TableCell>
+                      <TableCell className="font-medium">{r.fullName}</TableCell>
+                      <TableCell>
+                        <a
+                          href={`mailto:${r.email}`}
+                          className="inline-flex items-center gap-1.5 text-primary hover:underline"
+                        >
+                          <Mail className="w-3.5 h-3.5" />
+                          {r.email}
+                        </a>
+                      </TableCell>
+                      <TableCell>
+                        <a
+                          href={`tel:${r.phone}`}
+                          className="inline-flex items-center gap-1.5 text-primary hover:underline"
+                        >
+                          <Phone className="w-3.5 h-3.5" />
+                          {r.phone}
+                        </a>
+                      </TableCell>
+                      <TableCell>
+                        <span className="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-primary/10 text-primary font-semibold text-sm">
+                          {r.category}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(r.createdAt)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Registrations;
