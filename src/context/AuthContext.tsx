@@ -25,10 +25,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(newSession?.user ?? null);
 
       if (newSession?.user) {
-        // Defer role check to avoid blocking the auth callback
+        // Defer role check so the SDK can attach the new access token to subsequent requests
         setTimeout(() => {
-          checkAdminRole(newSession.user.id);
-        }, 0);
+          checkAdminRole(newSession.user.id, newSession.access_token);
+        }, 100);
       } else {
         setIsAdmin(false);
       }
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
       if (existingSession?.user) {
-        checkAdminRole(existingSession.user.id).finally(() => setLoading(false));
+        checkAdminRole(existingSession.user.id, existingSession.access_token).finally(() => setLoading(false));
       } else {
         setLoading(false);
       }
@@ -48,19 +48,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const checkAdminRole = async (userId: string) => {
-    const { data, error } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-
-    if (error) {
-      console.error("Role check failed:", error);
+  const checkAdminRole = async (userId: string, accessToken?: string) => {
+    // Use REST directly with the user's access token to avoid race conditions
+    // where the SDK hasn't attached the new token yet
+    try {
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/user_roles?select=role&user_id=eq.${userId}&role=eq.admin`;
+      const res = await fetch(url, {
+        headers: {
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          Authorization: `Bearer ${accessToken ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+      });
+      const data = await res.json();
+      setIsAdmin(Array.isArray(data) && data.length > 0);
+    } catch (err) {
+      console.error("Role check failed:", err);
       setIsAdmin(false);
-    } else {
-      setIsAdmin(!!data);
     }
   };
 
