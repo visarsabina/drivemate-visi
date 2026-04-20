@@ -26,7 +26,7 @@ export const mockCandidates: Candidate[] = [
   {
     id: "2",
     numriRegjistrimit: "02/23",
-    numriPersonal: "2000092234589",
+    numriPersonal: "2000092234",
     emri: "Fjolla",
     mbiemri: "Berisha",
     emriBabait: "Besim",
@@ -47,7 +47,7 @@ export const mockCandidates: Candidate[] = [
   {
     id: "3",
     numriRegjistrimit: "03/24",
-    numriPersonal: "1995030812345",
+    numriPersonal: "1995030812",
     emri: "Besnik",
     mbiemri: "Gashi",
     emriBabait: "Halil",
@@ -66,7 +66,7 @@ export const mockCandidates: Candidate[] = [
   {
     id: "4",
     numriRegjistrimit: "04/23",
-    numriPersonal: "2001123067890",
+    numriPersonal: "2001123067",
     emri: "Drita",
     mbiemri: "Hoxha",
     emriBabait: "Fatmir",
@@ -87,7 +87,7 @@ export const mockCandidates: Candidate[] = [
   {
     id: "5",
     numriRegjistrimit: "05/24",
-    numriPersonal: "1999071456789",
+    numriPersonal: "1999071456",
     emri: "Luan",
     mbiemri: "Morina",
     emriBabait: "Shaban",
@@ -109,7 +109,7 @@ export const mockCandidates: Candidate[] = [
   {
     id: "6",
     numriRegjistrimit: "06/24",
-    numriPersonal: "2002041890123",
+    numriPersonal: "2002041890",
     emri: "Vlora",
     mbiemri: "Shala",
     emriBabait: "Driton",
