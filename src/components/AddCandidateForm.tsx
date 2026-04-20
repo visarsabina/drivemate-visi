@@ -81,8 +81,19 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
             <Input id="numriRegjistrimit" value={form.numriRegjistrimit} readOnly className="bg-muted cursor-not-allowed" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="numriPersonal">Numri Personal *</Label>
-            <Input id="numriPersonal" value={form.numriPersonal} onChange={(e) => setForm({ ...form, numriPersonal: e.target.value })} placeholder="Numri personal" />
+            <Label htmlFor="numriPersonal">Numri Personal * (10 shifra)</Label>
+            <Input
+              id="numriPersonal"
+              value={form.numriPersonal}
+              onChange={(e) => {
+                const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+                setForm({ ...form, numriPersonal: digits });
+              }}
+              maxLength={10}
+              inputMode="numeric"
+              pattern="\d{10}"
+              placeholder="10 shifra"
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="emri">Emri *</Label>
