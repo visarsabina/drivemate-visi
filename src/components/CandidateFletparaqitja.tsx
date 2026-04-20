@@ -180,11 +180,11 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     <table class="small-table">
       <tr>
         <th style="width:50%;">Emri dhe mbiemri I kandidatit/<br/>Ime i prezime kandidata</th>
-        <th>Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis<br/>službenog lica</th>
+        <th>Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis<br/>službenog lica / Datum</th>
       </tr>
       <tr>
-        <td style="font-weight:bold; text-align:center; height:12mm;">${candidate.emri} ${candidate.mbiemri}</td>
-        <td>&nbsp;</td>
+        <td style="font-weight:bold; text-align:center; height:14mm;">${candidate.emri} ${candidate.mbiemri}</td>
+        <td style="height:14mm;">&nbsp;</td>
       </tr>
     </table>
   </div>
