@@ -149,8 +149,14 @@ const Finances = ({ candidates }: FinancesProps) => {
             <h3 className="text-lg font-semibold">Raporti ditor</h3>
             <p className="text-xs text-muted-foreground">Pagesat e bëra sot ({today})</p>
           </div>
-          <div className="text-sm">
-            Total: <span className="font-semibold text-primary">{totalSot.toFixed(2)} €</span>
+          <div className="flex items-center gap-3">
+            <div className="text-sm">
+              Total: <span className="font-semibold text-primary">{totalSot.toFixed(2)} €</span>
+            </div>
+            <Button size="sm" variant="outline" onClick={handlePrintDaily}>
+              <Printer className="w-4 h-4 mr-2" />
+              Printo
+            </Button>
           </div>
         </div>
         <div className="overflow-x-auto">
