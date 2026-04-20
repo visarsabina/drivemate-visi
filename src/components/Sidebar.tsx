@@ -1,6 +1,5 @@
 import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
@@ -16,12 +15,11 @@ const navItems = [
 ];
 
 const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
-  const { signOut, user } = useAuth();
   const navigate = useNavigate();
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/auth", { replace: true });
+  const handleSignOut = () => {
+    localStorage.removeItem("visi_auth");
+    navigate("/login", { replace: true });
   };
 
   return (
