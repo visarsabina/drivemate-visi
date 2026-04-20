@@ -18,21 +18,31 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const [checkedAdmin, setCheckedAdmin] = useState(false);
+
   useEffect(() => {
-    if (!authLoading && session) {
-      if (isAdmin) {
-        navigate("/", { replace: true });
-      } else {
-        // Logged in but not admin
-        toast({
-          title: "Qasje e ndaluar",
-          description: "Ky llogari nuk ka rolin e administratorit.",
-          variant: "destructive",
-        });
-        supabase.auth.signOut();
-      }
+    if (authLoading || !session) return;
+
+    // Wait briefly for the role check to complete after session is set
+    const timer = setTimeout(() => setCheckedAdmin(true), 600);
+    return () => clearTimeout(timer);
+  }, [session, authLoading]);
+
+  useEffect(() => {
+    if (!checkedAdmin || !session) return;
+
+    if (isAdmin) {
+      navigate("/", { replace: true });
+    } else {
+      toast({
+        title: "Qasje e ndaluar",
+        description: "Ky llogari nuk ka rolin e administratorit.",
+        variant: "destructive",
+      });
+      supabase.auth.signOut();
+      setCheckedAdmin(false);
     }
-  }, [session, isAdmin, authLoading, navigate, toast]);
+  }, [checkedAdmin, session, isAdmin, navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
