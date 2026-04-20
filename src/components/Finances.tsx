@@ -251,9 +251,15 @@ const Finances = ({ candidates }: FinancesProps) => {
 
       {/* Monthly summary (current year) */}
       <div className="glass-card rounded-xl">
-        <div className="p-4 border-b border-border/50">
-          <h3 className="text-lg font-semibold">Raporti mujor — {currentYear}</h3>
-          <p className="text-xs text-muted-foreground">Përmbledhje sipas muajve për vitin aktual</p>
+        <div className="p-4 border-b border-border/50 flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h3 className="text-lg font-semibold">Raporti mujor — {currentYear}</h3>
+            <p className="text-xs text-muted-foreground">Përmbledhje sipas muajve për vitin aktual</p>
+          </div>
+          <Button size="sm" variant="outline" onClick={handlePrintMonthly}>
+            <Printer className="w-4 h-4 mr-2" />
+            Printo
+          </Button>
         </div>
         <div className="overflow-x-auto">
           <Table>
@@ -306,6 +312,10 @@ const Finances = ({ candidates }: FinancesProps) => {
             <div className="text-sm">
               Total: <span className="font-semibold text-primary">{yearTotal.toFixed(2)} €</span>
             </div>
+            <Button size="sm" variant="outline" onClick={handlePrintYearly}>
+              <Printer className="w-4 h-4 mr-2" />
+              Printo
+            </Button>
           </div>
         </div>
         <div className="overflow-x-auto">
