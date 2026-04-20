@@ -49,49 +49,50 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${candidate.emri} ${candidate.mbiemri}</title>
 <style>
-  @page { size: A4 portrait; margin: 8mm 10mm; }
+  @page { size: A4 portrait; margin: 6mm 8mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Times New Roman', serif; font-size: 11pt; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { height: 100%; }
+  body { font-family: 'Times New Roman', serif; font-size: 10pt; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .wrap { position: relative; width: 100%; }
-  .cat-box { position: absolute; top: 0; right: 0; border: 1.5px solid #000; width: 14mm; height: 14mm; display: flex; align-items: center; justify-content: center; font-size: 22pt; font-weight: bold; }
+  .cat-box { position: absolute; top: 0; right: 0; border: 1.5px solid #000; width: 12mm; height: 12mm; display: flex; align-items: center; justify-content: center; font-size: 18pt; font-weight: bold; }
   .header { text-align: center; }
-  .header img { height: 18mm; margin-bottom: 2mm; }
-  .h-main { font-size: 14pt; font-weight: bold; line-height: 1.3; }
-  .h-sub { font-size: 11pt; line-height: 1.4; }
-  .h-small { font-size: 10pt; line-height: 1.4; }
-  .form-title { font-size: 11pt; margin-top: 3mm; }
-  .meta-row { display: flex; justify-content: space-between; margin-top: 3mm; font-size: 11pt; }
-  .meta-row .u { border-bottom: 1px solid #000; min-width: 40mm; display: inline-block; padding: 0 4mm; text-align: center; font-weight: bold; }
-  .sec-bar { border: 1px solid #000; padding: 2mm 4mm; font-weight: bold; font-size: 11pt; margin-top: 3mm; }
-  .data-box { border: 1px solid #000; border-top: none; padding: 3mm 6mm; }
-  .frow { display: flex; align-items: baseline; padding: 1.5mm 0; }
-  .flbl { flex: 0 0 60%; font-size: 11pt; }
-  .fval { flex: 1; font-weight: bold; border-bottom: 1px solid #000; padding: 0 4mm 1px; text-align: center; min-height: 5mm; font-size: 12pt; }
-  .nr-row { display: flex; align-items: center; padding: 1.5mm 0; }
+  .header img { height: 13mm; margin-bottom: 1mm; }
+  .h-main { font-size: 12pt; font-weight: bold; line-height: 1.2; }
+  .h-sub { font-size: 9.5pt; line-height: 1.25; }
+  .h-small { font-size: 9pt; line-height: 1.25; }
+  .form-title { font-size: 10pt; margin-top: 1.5mm; font-weight: bold; }
+  .meta-row { display: flex; justify-content: space-between; margin-top: 2mm; font-size: 10pt; }
+  .meta-row .u { border-bottom: 1px solid #000; min-width: 36mm; display: inline-block; padding: 0 4mm; text-align: center; font-weight: bold; }
+  .sec-bar { border: 1px solid #000; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-top: 1.5mm; }
+  .data-box { border: 1px solid #000; border-top: none; padding: 1.5mm 5mm; }
+  .frow { display: flex; align-items: baseline; padding: 0.6mm 0; }
+  .flbl { flex: 0 0 60%; font-size: 10pt; }
+  .fval { flex: 1; font-weight: bold; border-bottom: 1px solid #000; padding: 0 3mm 1px; text-align: center; min-height: 4.5mm; font-size: 11pt; }
+  .nr-row { display: flex; align-items: center; padding: 0.6mm 0; }
   .nr-row .flbl { flex: 0 0 60%; }
   .nrp { border-collapse: collapse; }
-  .nrp td { border: 1px solid #000; width: 7mm; height: 7mm; text-align: center; font-weight: bold; font-size: 11pt; vertical-align: middle; }
-  .cat-title { font-size: 9pt; font-weight: bold; margin-top: 3mm; padding-bottom: 1mm; border-bottom: 1px solid #000; }
+  .nrp td { border: 1px solid #000; width: 6mm; height: 6mm; text-align: center; font-weight: bold; font-size: 10pt; vertical-align: middle; }
+  .cat-title { font-size: 8.5pt; font-weight: bold; margin-top: 1.5mm; padding-bottom: 0.5mm; border-bottom: 1px solid #000; }
   .cat-table { width: 100%; border-collapse: collapse; }
-  .cat-table td { border: 1px solid #000; padding: 1.5mm 0; text-align: center; font-size: 11pt; }
+  .cat-table td { border: 1px solid #000; padding: 1mm 0; text-align: center; font-size: 10pt; }
   .cat-table td.sel { background: #c8c8c8; font-weight: bold; }
   .docs-row { display: flex; gap: 0; }
-  .docs-table { flex: 1; border-collapse: collapse; font-size: 9.5pt; }
-  .docs-table th, .docs-table td { border: 1px solid #000; padding: 1.5mm 2mm; }
+  .docs-table { flex: 1; border-collapse: collapse; font-size: 9pt; }
+  .docs-table th, .docs-table td { border: 1px solid #000; padding: 1mm 2mm; }
   .docs-table th { font-weight: bold; text-align: center; }
-  .docs-table td.po { text-align: center; width: 18mm; }
-  .remarks-box { border: 1px solid #000; border-left: none; width: 38mm; padding: 2mm; text-align: center; display: flex; flex-direction: column; }
-  .remarks-box .rh { font-size: 9pt; font-weight: bold; padding-bottom: 1mm; border-bottom: 1px solid #000; margin-bottom: 2mm; }
-  .remarks-box .rb { font-weight: bold; font-size: 11pt; line-height: 1.3; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-  .remarks-box .rb .big { font-size: 18pt; }
+  .docs-table td.po { text-align: center; width: 16mm; }
+  .remarks-box { border: 1px solid #000; border-left: none; width: 36mm; padding: 1.5mm; text-align: center; display: flex; flex-direction: column; }
+  .remarks-box .rh { font-size: 8.5pt; font-weight: bold; padding-bottom: 1mm; border-bottom: 1px solid #000; margin-bottom: 1mm; }
+  .remarks-box .rb { font-weight: bold; font-size: 10pt; line-height: 1.2; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .remarks-box .rb .big { font-size: 16pt; }
   .sig-section { display: flex; gap: 0; margin-top: 0; }
-  .sig-box { flex: 1; border: 1px solid #000; padding: 2mm 3mm; min-height: 18mm; }
+  .sig-box { flex: 1; border: 1px solid #000; padding: 1.5mm 2mm; min-height: 12mm; }
   .sig-box + .sig-box { border-left: none; }
-  .sig-title { font-size: 9pt; font-weight: bold; text-align: center; }
-  .dashed { border-top: 1px dashed #000; margin: 5mm 0; }
-  .tel { font-size: 11pt; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding: 0 6mm 1px; min-width: 60mm; }
-  .small-table { width: 100%; border-collapse: collapse; margin-top: 2mm; }
-  .small-table th, .small-table td { border: 1px solid #000; padding: 2mm; font-size: 10pt; }
+  .sig-title { font-size: 8.5pt; font-weight: bold; text-align: center; }
+  .dashed { border-top: 1px dashed #000; margin: 3mm 0; }
+  .tel { font-size: 10pt; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding: 0 6mm 1px; min-width: 55mm; }
+  .small-table { width: 100%; border-collapse: collapse; margin-top: 1.5mm; }
+  .small-table th, .small-table td { border: 1px solid #000; padding: 1.5mm; font-size: 9.5pt; }
   .small-table th { font-weight: bold; text-align: center; }
 </style></head><body>
 <div class="wrap">
@@ -111,7 +112,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
   <div class="meta-row">
     <div>FORMA A1 NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
-    <div>Nr. regj./Br.Regj./Lbook.no. <span class="u">${candidate.numriRegjistrimit}</span></div>
+    <div>Nr. regj./Br.Regj./Lbook.no. <span class="u">&nbsp;</span></div>
   </div>
 
   <div class="sec-bar">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
@@ -164,7 +165,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   <div>
     <div><span class="tel">Tel: ${candidate.telefon || ""}</span></div>
     <div class="header" style="margin-top:3mm;">
-      <img src="/kosovo-coat.jpg" alt="" style="height:14mm;" />
+      <img src="/kosovo-coat.jpg" alt="" style="height:10mm;" />
       <div class="h-small">Republika e Kosovës / Republika Kosova / Republika of Kosovo</div>
       <div class="h-small">Qeveria e Kosovës/ Vlada Kosova / Government of Kosova</div>
       <div class="h-sub">MINISTRIA E INFRASTRUKTURES DHE TRANSPORTIT</div>
@@ -174,7 +175,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     </div>
     <div class="meta-row" style="margin-top:2mm;">
       <div>NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
-      <div>Nr. Regj./Br.Regj./Lbook.no. <span class="u">${candidate.numriRegjistrimit}</span></div>
+      <div>Nr. Regj./Br.Regj./Lbook.no. <span class="u">&nbsp;</span></div>
     </div>
     <table class="small-table">
       <tr>
@@ -182,7 +183,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
         <th>Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis<br/>službenog lica</th>
       </tr>
       <tr>
-        <td style="font-weight:bold; text-align:center; height:15mm;">${candidate.emri} ${candidate.mbiemri}</td>
+        <td style="font-weight:bold; text-align:center; height:12mm;">${candidate.emri} ${candidate.mbiemri}</td>
         <td>&nbsp;</td>
       </tr>
     </table>
