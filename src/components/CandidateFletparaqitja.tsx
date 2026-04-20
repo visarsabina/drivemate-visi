@@ -32,11 +32,11 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   const handlePrint = () => {
     if (!candidate) return;
 
-    const nrPersonal = candidate.numriPersonal.split("");
-    const personalBoxes = nrPersonal.map(d => `<td style="border:1px solid #000;width:28px;height:28px;text-align:center;font-weight:bold;font-size:14px;">${d}</td>`).join("");
-    // Pad to 10 boxes
-    const remaining = 10 - nrPersonal.length;
-    const emptyBoxes = Array(Math.max(0, remaining)).fill('<td style="border:1px solid #000;width:28px;height:28px;"></td>').join("");
+    const personalDigits = (candidate.numriPersonal || "").replace(/\D/g, "").slice(0, 10).split("");
+    const personalBoxes = Array.from({ length: 10 }).map((_, i) =>
+      `<td style="border:1px solid #000;width:28px;height:28px;text-align:center;font-weight:bold;font-size:14px;">${personalDigits[i] || ""}</td>`
+    ).join("");
+    const emptyBoxes = "";
 
     const allCategories = ["A1","A","B1","B","C1","C","D1","D","BE","C1E","CE","D1E","DE","M","T"];
     const catCells = allCategories.map(cat => {
