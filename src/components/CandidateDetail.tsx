@@ -16,24 +16,44 @@ const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
   const borxhi = candidate.shumaMarreveshjes - totalPaguar;
   const printWindow = window.open("", "_blank");
   if (!printWindow) return;
+
+  const copyHtml = `
+    <div class="copy">
+      <h2>FLETËPAGESA</h2>
+      ${numriPageses ? `<p class="nr"><strong>Nr. Pagesës:</strong> ${numriPageses}</p>` : ""}
+      <table><tr><th>Emri</th><td>${candidate.emri}</td><th>Mbiemri</th><td>${candidate.mbiemri}</td></tr>
+      <tr><th>Nr. Personal</th><td>${candidate.numriPersonal}</td><th>Nr. Regjistrimit</th><td>${candidate.numriRegjistrimit}</td></tr>
+      <tr><th>Kategoria</th><td>${candidate.kategoria}</td><th>Data</th><td>${new Date().toLocaleDateString("sq-AL")}</td></tr></table>
+      <div class="summary">
+        <div><strong>Shuma e Marrëveshjes:</strong> ${candidate.shumaMarreveshjes.toFixed(2)} €</div>
+        <div><strong>Totali i Paguar:</strong> ${totalPaguar.toFixed(2)} €</div>
+        <div><strong>Borxhi:</strong> ${borxhi.toFixed(2)} €</div>
+      </div>
+      ${candidate.payments.length > 0 ? `<h3>Historiku i Pagesave</h3><table><thead><tr><th>Nr.</th><th>Data</th><th>Shuma</th></tr></thead><tbody>${candidate.payments.map((p, i) => `<tr><td>${i + 1}</td><td>${p.data}</td><td>${p.shuma.toFixed(2)} €</td></tr>`).join("")}</tbody></table>` : ""}
+    </div>`;
+
   printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletëpagesa</title>
-    <style>body{font-family:Arial;padding:40px;font-size:14px}
-    h2{text-align:center;margin-bottom:30px}
-    table{width:100%;border-collapse:collapse;margin:20px 0}
-    th,td{border:1px solid #333;padding:8px;text-align:left}
-    th{background:#f0f0f0}
-    .summary{margin-top:20px;font-size:15px}
-    .summary div{margin:5px 0}
-    @media print{body{padding:20px}}</style></head><body>
-    <h2>FLETËPAGESA</h2>
-    ${numriPageses ? `<p style="text-align:right;font-size:13px;"><strong>Nr. Pagesës:</strong> ${numriPageses}</p>` : ""}
-    <table><tr><th>Emri</th><td>${candidate.emri}</td><th>Mbiemri</th><td>${candidate.mbiemri}</td></tr>
-    <tr><th>Nr. Personal</th><td>${candidate.numriPersonal}</td><th>Nr. Regjistrimit</th><td>${candidate.numriRegjistrimit}</td></tr>
-    <tr><th>Kategoria</th><td>${candidate.kategoria}</td><th>Data</th><td>${new Date().toLocaleDateString("sq-AL")}</td></tr></table>
-    <div class="summary"><div><strong>Shuma e Marrëveshjes:</strong> ${candidate.shumaMarreveshjes.toFixed(2)} €</div>
-    <div><strong>Totali i Paguar:</strong> ${totalPaguar.toFixed(2)} €</div>
-    <div><strong>Borxhi:</strong> ${borxhi.toFixed(2)} €</div></div>
-    ${candidate.payments.length > 0 ? `<h3>Historiku i Pagesave</h3><table><thead><tr><th>Nr.</th><th>Data</th><th>Shuma</th></tr></thead><tbody>${candidate.payments.map((p, i) => `<tr><td>${i + 1}</td><td>${p.data}</td><td>${p.shuma.toFixed(2)} €</td></tr>`).join("")}</tbody></table>` : ""}
+    <style>
+      @page{size:A4 portrait;margin:0}
+      *{box-sizing:border-box}
+      body{font-family:Arial;margin:0;padding:0;font-size:12px}
+      .page{width:210mm;height:297mm;display:flex;flex-direction:column;padding:8mm 12mm}
+      .copy{flex:1;display:flex;flex-direction:column;padding:4mm 0;overflow:hidden}
+      .copy + .copy{border-top:2px dashed #555;margin-top:2mm;padding-top:4mm}
+      h2{text-align:center;margin:0 0 8px;font-size:16px}
+      h3{margin:8px 0 4px;font-size:13px}
+      .nr{text-align:right;font-size:11px;margin:0 0 6px}
+      table{width:100%;border-collapse:collapse;margin:4px 0}
+      th,td{border:1px solid #333;padding:4px 6px;text-align:left;font-size:11px}
+      th{background:#f0f0f0}
+      .summary{margin-top:6px;font-size:12px}
+      .summary div{margin:2px 0}
+      @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+    </style></head><body>
+    <div class="page">
+      ${copyHtml}
+      ${copyHtml}
+    </div>
     <script>window.print();<\/script></body></html>`);
   printWindow.document.close();
 };
