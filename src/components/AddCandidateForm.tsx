@@ -42,6 +42,10 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       toast.error("Ju lutem plotësoni fushat e detyrueshme");
       return;
     }
+    if (form.numriPersonal && form.numriPersonal.length !== 10) {
+      toast.error("Numri personal duhet të ketë saktësisht 10 shifra");
+      return;
+    }
 
     const newCandidate: Candidate = {
       id: Date.now().toString(),
