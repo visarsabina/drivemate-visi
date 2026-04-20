@@ -9,6 +9,7 @@ import CandidateDetail from "@/components/CandidateDetail";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
+import Finances from "@/components/Finances";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
@@ -49,6 +50,7 @@ const Index = () => {
     "candidate-detail": "Paneli i Kandidatit",
     add: "Shto Kandidat",
     payment: "Pagesa",
+    finances: "Financat",
     libreza: "Libreza e Kandidatit",
   };
 
@@ -124,6 +126,8 @@ const Index = () => {
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 
           {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} />}
+
+          {activeView === "finances" && <Finances candidates={candidates} />}
 
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 
