@@ -19,10 +19,10 @@ import logo from "@/assets/logo.png";
 const categories = [
   { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "20 orë teori + 20 praktike", price: "250€", icon: Car, image: carBImg },
   { name: "BE", desc: "Automjete me rimorkio", age: "18+", duration: "6 ditë", price: "150€", icon: Car, image: carBeImg },
-  { name: "C1", desc: "Automjete 3500-7500 kg", age: "18+", duration: "20 ditë", price: "250€", icon: Truck, image: truckC1Img },
-  { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "30 ditë", price: "500€", icon: Truck, image: truckCImg },
+  { name: "C1", desc: "Automjete 3500-7500 kg", age: "18+", duration: "deri 45 ditë", price: "250€", icon: Truck, image: truckC1Img },
+  { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "21 ditë", price: "500€", icon: Truck, image: truckCImg },
   { name: "CE", desc: "Kamion me rimorkio", age: "21+", duration: "10 ditë", price: "250€", icon: Truck, image: truckCeImg },
-  { name: "D", desc: "Autobus (mbi 8 udhëtarë)", age: "24+", duration: "45 ditë", price: "250€", icon: Bus, image: busDImg },
+  { name: "D", desc: "Autobus (mbi 8 udhëtarë)", age: "24+", duration: "21 ditë", price: "250€", icon: Bus, image: busDImg },
 ];
 
 const testimonials = [
