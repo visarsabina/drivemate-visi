@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -16,6 +16,7 @@ const navItems = [
   { id: "finances", label: "Financat", icon: Wallet },
   { id: "registrations", label: "Regjistrimet", icon: Inbox },
   { id: "vehicles", label: "Mjetet", icon: Car },
+  { id: "employees", label: "Punëtorët", icon: Briefcase },
 ];
 
 const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {

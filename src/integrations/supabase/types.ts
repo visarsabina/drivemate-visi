@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      employees: {
+        Row: {
+          created_at: string
+          full_name: string
+          health_certificate_date: string | null
+          health_certificate_expiry_date: string | null
+          id: string
+          license_date: string | null
+          license_expiry_date: string | null
+          license_number: string | null
+          personal_number: string | null
+          photo_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name: string
+          health_certificate_date?: string | null
+          health_certificate_expiry_date?: string | null
+          id?: string
+          license_date?: string | null
+          license_expiry_date?: string | null
+          license_number?: string | null
+          personal_number?: string | null
+          photo_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string
+          health_certificate_date?: string | null
+          health_certificate_expiry_date?: string | null
+          id?: string
+          license_date?: string | null
+          license_expiry_date?: string | null
+          license_number?: string | null
+          personal_number?: string | null
+          photo_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       registrations: {
         Row: {
           category: string

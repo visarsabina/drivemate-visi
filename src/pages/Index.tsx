@@ -12,6 +12,7 @@ import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import Finances from "@/components/Finances";
 import Registrations from "@/components/Registrations";
 import Vehicles from "@/components/Vehicles";
+import Employees from "@/components/Employees";
 import VehicleAlerts from "@/components/VehicleAlerts";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
@@ -56,6 +57,7 @@ const Index = () => {
     finances: "Financat",
     registrations: "Regjistrimet nga Vizitorët",
     vehicles: "Mjetet e Auto-shkollës",
+    employees: "Punëtorët",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
@@ -142,6 +144,8 @@ const Index = () => {
           {activeView === "registrations" && <Registrations />}
 
           {activeView === "vehicles" && <Vehicles />}
+
+          {activeView === "employees" && <Employees />}
 
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 
