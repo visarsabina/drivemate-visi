@@ -50,6 +50,14 @@ const Index = () => {
     );
   };
 
+  const handleToggleDocuments = (candidateId: string, value: boolean) => {
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.id === candidateId ? { ...c, dokumenteTerhequr: value } : c
+      )
+    );
+  };
+
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
     candidates: "Lista e Kandidatëve",
