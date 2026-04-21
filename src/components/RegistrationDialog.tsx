@@ -214,10 +214,13 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "" }: Regist
               </div>
 
               <DialogFooter className="gap-2 sm:gap-0">
-                <Button type="button" variant="outline" onClick={() => handleClose(false)}>
+                <Button type="button" variant="outline" onClick={() => handleClose(false)} disabled={submitting}>
                   Anulo
                 </Button>
-                <Button type="submit">Dërgo Regjistrimin</Button>
+                <Button type="submit" disabled={submitting}>
+                  {submitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                  {submitting ? "Duke dërguar..." : "Dërgo Regjistrimin"}
+                </Button>
               </DialogFooter>
             </form>
           </>
