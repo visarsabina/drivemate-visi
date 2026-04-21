@@ -23,7 +23,7 @@ const navItems = [
 
 const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   const handleSignOut = async () => {
     await signOut();
@@ -62,6 +62,12 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
       </nav>
 
       <div className="p-4 border-t border-sidebar-border space-y-3">
+        {user?.email && (
+          <div className="px-2 text-xs text-sidebar-foreground/70 truncate" title={user.email}>
+            <span className="text-sidebar-foreground/50">I kyçur si:</span>
+            <div className="font-medium text-sidebar-foreground truncate">{user.email}</div>
+          </div>
+        )}
         <button
           onClick={handleSignOut}
           className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors"
