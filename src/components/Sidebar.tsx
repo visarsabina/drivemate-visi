@@ -15,6 +15,7 @@ const navItems = [
   { id: "payment", label: "Pagesa", icon: CreditCard },
   { id: "finances", label: "Financat", icon: Wallet },
   { id: "registrations", label: "Regjistrimet", icon: Inbox },
+  { id: "vehicles", label: "Mjetet", icon: Car },
 ];
 
 const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
