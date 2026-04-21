@@ -11,14 +11,17 @@ import successImg from "@/assets/success-student.jpg";
 import carBImg from "@/assets/car-b.jpg";
 import carBeImg from "@/assets/car-be.jpg";
 import busDImg from "@/assets/bus-d.jpg";
+import truckC1Img from "@/assets/truck-c1.jpg";
+import truckCImg from "@/assets/truck-c.jpg";
+import truckCeImg from "@/assets/truck-ce.jpg";
 import logo from "@/assets/logo.png";
 
 const categories = [
   { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "30 ditë", price: "350€", icon: Car, image: carBImg },
   { name: "BE", desc: "Automjete me rimorkio", age: "18+", duration: "15 ditë", price: "200€", icon: Car, image: carBeImg },
-  { name: "C1", desc: "Automjete 3500-7500 kg", age: "18+", duration: "20 ditë", price: "400€", icon: Truck, image: null },
-  { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "30 ditë", price: "500€", icon: Truck, image: null },
-  { name: "CE", desc: "Kamion me rimorkio", age: "21+", duration: "20 ditë", price: "300€", icon: Truck, image: null },
+  { name: "C1", desc: "Automjete 3500-7500 kg", age: "18+", duration: "20 ditë", price: "400€", icon: Truck, image: truckC1Img },
+  { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "30 ditë", price: "500€", icon: Truck, image: truckCImg },
+  { name: "CE", desc: "Kamion me rimorkio", age: "21+", duration: "20 ditë", price: "300€", icon: Truck, image: truckCeImg },
   { name: "D", desc: "Autobus (mbi 8 udhëtarë)", age: "24+", duration: "45 ditë", price: "700€", icon: Bus, image: busDImg },
 ];
 
