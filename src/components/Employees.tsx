@@ -309,16 +309,10 @@ const Employees = () => {
                     <TableCell>{e.personal_number || "—"}</TableCell>
                     <TableCell>{e.license_number || "—"}</TableCell>
                     <TableCell>
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs">{formatDate(e.license_expiry_date)}</span>
-                        <Badge variant={lic.variant} className="w-fit">{lic.label}</Badge>
-                      </div>
+                      <span className="text-xs">{formatDate(e.license_expiry_date)}</span>
                     </TableCell>
                     <TableCell>
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs">{formatDate(e.health_certificate_expiry_date)}</span>
-                        <Badge variant={health.variant} className="w-fit">{health.label}</Badge>
-                      </div>
+                      <span className="text-xs">{formatDate(e.health_certificate_expiry_date)}</span>
                     </TableCell>
                     <TableCell>
                       {e.photo_url ? (
