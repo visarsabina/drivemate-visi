@@ -19,7 +19,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const schema = z.object({
   fullName: z
@@ -52,6 +53,7 @@ interface RegistrationDialogProps {
 const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "" }: RegistrationDialogProps) => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState({
     fullName: "",
@@ -69,6 +71,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "" }: Regist
     setForm({ fullName: "", email: "", phone: "", category: "" });
     setErrors({});
     setSubmitted(false);
+    setSubmitting(false);
   };
 
   const handleClose = (next: boolean) => {
@@ -78,7 +81,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "" }: Regist
     onOpenChange(next);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = schema.safeParse(form);
     if (!result.success) {
@@ -91,16 +94,26 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "" }: Regist
       return;
     }
     setErrors({});
+    setSubmitting(true);
 
-    // Save locally so admin can see registrations later (placeholder, no backend)
-    try {
-      const existing = JSON.parse(localStorage.getItem("visi_registrations") || "[]");
-      existing.push({ ...result.data, createdAt: new Date().toISOString() });
-      localStorage.setItem("visi_registrations", JSON.stringify(existing));
-    } catch {
-      // ignore
+    const { error } = await supabase.from("registrations").insert({
+      full_name: result.data.fullName,
+      email: result.data.email,
+      phone: result.data.phone,
+      category: result.data.category,
+    });
+
+    if (error) {
+      setSubmitting(false);
+      toast({
+        title: "Gabim",
+        description: "Regjistrimi nuk u dërgua. Provoni përsëri.",
+        variant: "destructive",
+      });
+      return;
     }
 
+    setSubmitting(false);
     setSubmitted(true);
     toast({
       title: "Regjistrimi u dërgua!",
