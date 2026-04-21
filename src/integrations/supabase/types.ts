@@ -223,12 +223,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_all_users_with_roles: {
+        Args: never
+        Returns: {
+          created_at: string
+          email: string
+          is_admin: boolean
+          user_id: string
+        }[]
+      }
+      grant_admin_role: {
+        Args: { _target_user_id: string }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      revoke_admin_role: {
+        Args: { _target_user_id: string }
+        Returns: undefined
       }
     }
     Enums: {
