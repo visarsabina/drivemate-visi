@@ -159,7 +159,7 @@ const Home = () => {
             </div>
           </div>
           <div className="relative">
-            <img src={classroomImg} alt="Autobusi i Auto Shkollës Visi për kategorinë D" className="rounded-2xl shadow-xl w-full h-[400px] object-cover" loading="lazy" width={1280} height={720} />
+            <img src={classroomImg} alt="Flota e makinave të Autoshkollës Visi" className="rounded-2xl shadow-xl w-full h-[400px] object-cover" loading="lazy" width={1280} height={720} />
             <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground rounded-xl p-4 shadow-lg">
               <div className="text-2xl font-bold">25+</div>
               <div className="text-xs opacity-80">Vite përvojë</div>
