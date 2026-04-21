@@ -11,6 +11,8 @@ import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import Finances from "@/components/Finances";
 import Registrations from "@/components/Registrations";
+import Vehicles from "@/components/Vehicles";
+import VehicleAlerts from "@/components/VehicleAlerts";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
@@ -53,6 +55,7 @@ const Index = () => {
     payment: "Pagesa",
     finances: "Financat",
     registrations: "Regjistrimet nga Vizitorët",
+    vehicles: "Mjetet e Auto-shkollës",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
@@ -88,6 +91,8 @@ const Index = () => {
           {activeView === "dashboard" && (
             <>
               <StatsCards candidates={candidates} />
+
+              <VehicleAlerts onViewVehicles={() => setActiveView("vehicles")} />
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
@@ -135,6 +140,8 @@ const Index = () => {
           {activeView === "finances" && <Finances candidates={candidates} />}
 
           {activeView === "registrations" && <Registrations />}
+
+          {activeView === "vehicles" && <Vehicles />}
 
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 

@@ -107,6 +107,45 @@ export type Database = {
         }
         Relationships: []
       }
+      vehicles: {
+        Row: {
+          attestation_expiry_date: string | null
+          attestation_number: string | null
+          created_at: string
+          id: string
+          inspection_expiry_date: string | null
+          name: string
+          photo_url: string | null
+          plate_number: string
+          registration_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          attestation_expiry_date?: string | null
+          attestation_number?: string | null
+          created_at?: string
+          id?: string
+          inspection_expiry_date?: string | null
+          name: string
+          photo_url?: string | null
+          plate_number: string
+          registration_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attestation_expiry_date?: string | null
+          attestation_number?: string | null
+          created_at?: string
+          id?: string
+          inspection_expiry_date?: string | null
+          name?: string
+          photo_url?: string | null
+          plate_number?: string
+          registration_date?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
