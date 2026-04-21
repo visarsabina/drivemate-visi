@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Login from "./pages/Login.tsx";
+import Staff from "./pages/Staff.tsx";
 import RequireLogin from "@/components/RequireLogin";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/stafi" element={<Staff />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/admin"
