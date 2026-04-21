@@ -22,6 +22,7 @@ const generateRegNumber = (count: number) => {
 
 const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const defaultPriceFor = (kategoria: string) => (kategoria === "C" ? "250" : "");
   const [form, setForm] = useState({
     numriRegjistrimit: generateRegNumber(candidateCount),
     numriPersonal: "",
@@ -95,7 +96,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
           statusi: "regjistuar" as CandidateStatus,
           dataRegjistrimit: today,
           shenimet: "Importuar nga Excel",
-          shumaMarreveshjes: 0,
+          shumaMarreveshjes: kategoria === "C" ? 250 : 0,
           payments: [],
         };
 
