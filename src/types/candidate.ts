@@ -25,4 +25,5 @@ export interface Candidate {
   shumaMarreveshjes: number;
   payments: Payment[];
   vertetimiPrintuar?: boolean;
+  dokumenteTerhequr?: boolean;
 }
