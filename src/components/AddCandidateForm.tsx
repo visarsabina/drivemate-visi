@@ -96,7 +96,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
           statusi: "regjistuar" as CandidateStatus,
           dataRegjistrimit: today,
           shenimet: "Importuar nga Excel",
-          shumaMarreveshjes: 0,
+          shumaMarreveshjes: kategoria === "C" ? 250 : 0,
           payments: [],
         };
 
