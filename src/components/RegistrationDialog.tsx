@@ -133,6 +133,14 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "" }: Regist
                 Plotëso formularin dhe ne do t'ju kontaktojmë së shpejti.
               </DialogDescription>
             </DialogHeader>
+            {form.category === "B" && (
+              <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
+                <div className="font-semibold text-primary mb-1">🎉 Ofertë: 6 këste pa interes</div>
+                <div className="text-muted-foreground">
+                  Kategoria B – 250€ total, vetëm <strong className="text-foreground">42€/muaj</strong> për 6 muaj.
+                </div>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="fullName">Emri dhe mbiemri *</Label>

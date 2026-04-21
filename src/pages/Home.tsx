@@ -187,7 +187,7 @@ const Home = () => {
                 <Button
                   size="lg"
                   variant="secondary"
-                  onClick={() => openRegister()}
+                  onClick={() => openRegister("B")}
                   className="text-base px-8 font-bold shadow-xl hover:scale-105 transition-transform"
                 >
                   Regjistrohu Tani
