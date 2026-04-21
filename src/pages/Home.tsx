@@ -252,28 +252,77 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About */}
+      {/* About + Staff */}
       <section id="about" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Rreth Nesh</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">Autoshkolla me traditë dhe profesionalizëm</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Me mbi 25 vite përvojë në fushën e aftësimit të shoferëve, Autoshkolla Visi është njëra nga autoshkollat më të besuara në rajon. Misioni ynë është t'ju ofrojmë arsimim cilësor dhe të sigurt për të gjitha kategoritë e patentës.
-            </p>
-            <p className="text-muted-foreground leading-relaxed mb-6">
-              Disponojmë me makina moderne, klasa teorike të pajisura, dhe instruktorë me përvojë të gjatë. Suksesi juaj është prioriteti ynë!
-            </p>
-            <div className="flex gap-4">
-              <Button onClick={() => scrollTo("contact")}>Na Kontaktoni</Button>
-              <Button variant="outline" onClick={() => scrollTo("categories")}>Kategoritë</Button>
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-primary font-semibold text-sm uppercase tracking-wider">Rreth Nesh</span>
+              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">Autoshkolla me traditë dhe profesionalizëm</h2>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Me mbi 25 vite përvojë në fushën e aftësimit të shoferëve, Autoshkolla Visi është njëra nga autoshkollat më të besuara në rajon. Misioni ynë është t'ju ofrojmë arsimim cilësor dhe të sigurt për të gjitha kategoritë e patentës.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Disponojmë me makina moderne, klasa teorike të pajisura, dhe instruktorë me përvojë të gjatë. Suksesi juaj është prioriteti ynë!
+              </p>
+              <div className="flex gap-4">
+                <Button onClick={() => scrollTo("contact")}>Na Kontaktoni</Button>
+                <Button variant="outline" onClick={() => scrollTo("categories")}>Kategoritë</Button>
+              </div>
+            </div>
+            <div className="relative">
+              <img src={classroomImg} alt="Flota e makinave të Autoshkollës Visi" className="rounded-2xl shadow-xl w-full h-[400px] object-cover" loading="lazy" width={1280} height={720} />
+              <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground rounded-xl p-4 shadow-lg">
+                <div className="text-2xl font-bold">25+</div>
+                <div className="text-xs opacity-80">Vite përvojë</div>
+              </div>
             </div>
           </div>
-          <div className="relative">
-            <img src={classroomImg} alt="Flota e makinave të Autoshkollës Visi" className="rounded-2xl shadow-xl w-full h-[400px] object-cover" loading="lazy" width={1280} height={720} />
-            <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground rounded-xl p-4 shadow-lg">
-              <div className="text-2xl font-bold">25+</div>
-              <div className="text-xs opacity-80">Vite përvojë</div>
+
+          {/* Stafi (brenda Rreth Nesh) */}
+          <div id="staff" className="mt-20">
+            <div className="text-center mb-12">
+              <span className="text-primary font-semibold text-sm uppercase tracking-wider">Stafi</span>
+              <h2 className="text-3xl md:text-4xl font-bold mt-2">Instruktorët tanë</h2>
+              <p className="text-muted-foreground mt-3 max-w-xl mx-auto">Ekipi profesional me përvojë të gjatë në fushën e aftësimit të shoferëve.</p>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {staff.map((member) => (
+                <Card key={member.id} className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 group">
+                  <div className="aspect-square bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
+                    {member.photo_url ? (
+                      <img
+                        src={member.photo_url}
+                        alt={`${member.role} ${member.name}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <User className="w-24 h-24 text-primary/40" />
+                    )}
+                  </div>
+                  <CardContent className="p-5 text-center">
+                    <h3 className="font-bold text-lg mb-1">{member.name}</h3>
+                    <p className="text-sm text-primary font-medium mb-3">{member.role}</p>
+                    {member.categories && (
+                      <div className="flex flex-wrap gap-1.5 justify-center">
+                        {member.categories.split(",").map((cat) => {
+                          const c = cat.trim();
+                          if (!c) return null;
+                          return (
+                            <span
+                              key={c}
+                              className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-semibold border border-primary/20"
+                            >
+                              {c}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
