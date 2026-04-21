@@ -152,7 +152,30 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
 
   return (
     <div className="glass-card rounded-xl p-6 max-w-2xl">
-      <h2 className="text-xl font-semibold mb-6">Shto Kandidat të Ri</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <h2 className="text-xl font-semibold">Shto Kandidat të Ri</h2>
+        <div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={handleExcelImport}
+            className="hidden"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            className="gap-2"
+          >
+            <Upload className="w-4 h-4" />
+            Importo nga Excel
+          </Button>
+        </div>
+      </div>
+      <p className="text-xs text-muted-foreground mb-4">
+        Formati i Excel: <strong>Nr.Regj | Kategoria | Emri | Emri i Babait | Mbiemri</strong>
+      </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
