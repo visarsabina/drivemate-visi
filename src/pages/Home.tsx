@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -46,16 +47,7 @@ const literatura = [
   { title: "Libri për kategoritë C1 & D", desc: "Materiali zyrtar mësimor për kategoritë C1 dhe D", file: "/literatura/Libri-per-C1-D.pdf" },
 ];
 
-const staff: { name: string; role: string; categories: string; photo: string | null }[] = [
-  { name: "Visar Jaha", role: "Instruktor", categories: "B, C1, C, CE, D", photo: null },
-  { name: "Alma Llugaliu", role: "Asistente", categories: "", photo: null },
-  { name: "Afrim Jaha", role: "Ligjërues", categories: "", photo: null },
-  { name: "Fadil Jaha", role: "Instruktor", categories: "", photo: null },
-  { name: "Remzie Jaha", role: "Instruktore", categories: "", photo: null },
-  { name: "Nesibe Zeka", role: "Instruktore", categories: "", photo: null },
-  { name: "Dafina Hodolli", role: "Instruktore", categories: "", photo: null },
-  { name: "Sabina Krasniqi", role: "Instruktore", categories: "", photo: null },
-];
+type StaffMember = { id: string; name: string; role: string; categories: string | null; photo_url: string | null };
 
 const stats = [
   { value: "10000+", label: "Kandidatë të diplomuar", icon: Users },
@@ -69,6 +61,18 @@ const Home = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
+  const [staff, setStaff] = useState<StaffMember[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("staff")
+      .select("id, name, role, categories, photo_url")
+      .eq("is_active", true)
+      .order("display_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (!error && data) setStaff(data as StaffMember[]);
+      });
+  }, []);
 
   const openRegister = (category = "") => {
     setRegisterCategory(category);
@@ -358,12 +362,12 @@ const Home = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {staff.map((member) => (
-              <Card key={member.name} className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 group">
+              <Card key={member.id} className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 group">
                 <div className="aspect-square bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
-                  {member.photo ? (
+                  {member.photo_url ? (
                     <img
-                      src={member.photo}
-                      alt={`Instruktori ${member.name}`}
+                      src={member.photo_url}
+                      alt={`${member.role} ${member.name}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
@@ -373,8 +377,23 @@ const Home = () => {
                 </div>
                 <CardContent className="p-5 text-center">
                   <h3 className="font-bold text-lg mb-1">{member.name}</h3>
-                  <p className="text-sm text-primary font-medium mb-2">{member.role}</p>
-                  <p className="text-xs text-muted-foreground">Kategoritë: {member.categories}</p>
+                  <p className="text-sm text-primary font-medium mb-3">{member.role}</p>
+                  {member.categories && (
+                    <div className="flex flex-wrap gap-1.5 justify-center">
+                      {member.categories.split(",").map((cat) => {
+                        const c = cat.trim();
+                        if (!c) return null;
+                        return (
+                          <span
+                            key={c}
+                            className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-semibold border border-primary/20"
+                          >
+                            {c}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
