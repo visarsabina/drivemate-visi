@@ -137,6 +137,22 @@ const Employees = () => {
       toast.error("Numri personal duhet të ketë 10 shifra");
       return;
     }
+    if (
+      form.license_date &&
+      form.license_expiry_date &&
+      form.license_expiry_date < form.license_date
+    ) {
+      toast.error("Skadenca e licencës nuk mund të jetë më e hershme se data e licencës");
+      return;
+    }
+    if (
+      form.health_certificate_date &&
+      form.health_certificate_expiry_date &&
+      form.health_certificate_expiry_date < form.health_certificate_date
+    ) {
+      toast.error("Skadenca e certifikatës shëndetësore nuk mund të jetë më e hershme se data e saj");
+      return;
+    }
     setUploading(true);
     let photoUrl = form.photo_url;
 
@@ -402,8 +418,17 @@ const Employees = () => {
                   id="license_expiry"
                   type="date"
                   value={form.license_expiry_date}
+                  min={form.license_date || undefined}
                   onChange={(e) => setForm({ ...form, license_expiry_date: e.target.value })}
+                  aria-invalid={
+                    !!(form.license_date && form.license_expiry_date && form.license_expiry_date < form.license_date)
+                  }
                 />
+                {form.license_date && form.license_expiry_date && form.license_expiry_date < form.license_date && (
+                  <p className="text-xs text-destructive">
+                    Skadenca nuk mund të jetë më e hershme se data e licencës.
+                  </p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="health_date">Data e Cert. Shëndetësore</Label>
@@ -420,8 +445,17 @@ const Employees = () => {
                   id="health_expiry"
                   type="date"
                   value={form.health_certificate_expiry_date}
+                  min={form.health_certificate_date || undefined}
                   onChange={(e) => setForm({ ...form, health_certificate_expiry_date: e.target.value })}
+                  aria-invalid={
+                    !!(form.health_certificate_date && form.health_certificate_expiry_date && form.health_certificate_expiry_date < form.health_certificate_date)
+                  }
                 />
+                {form.health_certificate_date && form.health_certificate_expiry_date && form.health_certificate_expiry_date < form.health_certificate_date && (
+                  <p className="text-xs text-destructive">
+                    Skadenca nuk mund të jetë më e hershme se data e certifikatës.
+                  </p>
+                )}
               </div>
             </div>
 

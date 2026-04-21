@@ -130,6 +130,14 @@ const Vehicles = () => {
       toast.error("Emri dhe numri i tabelave janë të detyrueshëm");
       return;
     }
+    if (
+      form.registration_date &&
+      form.inspection_expiry_date &&
+      form.inspection_expiry_date < form.registration_date
+    ) {
+      toast.error("Skadenca e kontrollës nuk mund të jetë më e hershme se data e regjistrimit");
+      return;
+    }
     setUploading(true);
     let photoUrl = form.photo_url;
 
@@ -376,8 +384,17 @@ const Vehicles = () => {
                   id="insp"
                   type="date"
                   value={form.inspection_expiry_date}
+                  min={form.registration_date || undefined}
                   onChange={(e) => setForm({ ...form, inspection_expiry_date: e.target.value })}
+                  aria-invalid={
+                    !!(form.registration_date && form.inspection_expiry_date && form.inspection_expiry_date < form.registration_date)
+                  }
                 />
+                {form.registration_date && form.inspection_expiry_date && form.inspection_expiry_date < form.registration_date && (
+                  <p className="text-xs text-destructive">
+                    Skadenca nuk mund të jetë më e hershme se data e regjistrimit.
+                  </p>
+                )}
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="att-num">Numri i Atestit</Label>
