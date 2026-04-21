@@ -8,7 +8,6 @@ interface ExpiringVehicle {
   name: string;
   plate_number: string;
   inspection_expiry_date: string | null;
-  attestation_expiry_date: string | null;
 }
 
 interface Props {
@@ -28,12 +27,11 @@ const VehicleAlerts = ({ onViewVehicles }: Props) => {
     (async () => {
       const { data } = await supabase
         .from("vehicles")
-        .select("id, name, plate_number, inspection_expiry_date, attestation_expiry_date");
+        .select("id, name, plate_number, inspection_expiry_date");
       if (data) {
         const filtered = data.filter((v) => {
           const insp = daysUntil(v.inspection_expiry_date);
-          const att = daysUntil(v.attestation_expiry_date);
-          return (insp !== null && insp <= 7) || (att !== null && att <= 7);
+          return insp !== null && insp <= 7;
         });
         setExpiring(filtered);
       }
@@ -54,17 +52,12 @@ const VehicleAlerts = ({ onViewVehicles }: Props) => {
           <ul className="text-sm text-muted-foreground mt-2 space-y-1">
             {expiring.map((v) => {
               const insp = daysUntil(v.inspection_expiry_date);
-              const att = daysUntil(v.attestation_expiry_date);
-              const issues: string[] = [];
-              if (insp !== null && insp <= 7) {
-                issues.push(insp < 0 ? `kontrolla skadoi para ${Math.abs(insp)} ditë` : `kontrolla në ${insp} ditë`);
-              }
-              if (att !== null && att <= 7) {
-                issues.push(att < 0 ? `atesti skadoi para ${Math.abs(att)} ditë` : `atesti në ${att} ditë`);
-              }
+              const issue = insp !== null
+                ? (insp < 0 ? `kontrolla skadoi para ${Math.abs(insp)} ditë` : `kontrolla në ${insp} ditë`)
+                : "";
               return (
                 <li key={v.id}>
-                  <span className="font-medium text-foreground">{v.name}</span> ({v.plate_number}) — {issues.join(", ")}
+                  <span className="font-medium text-foreground">{v.name}</span> ({v.plate_number}) — {issue}
                 </li>
               );
             })}
