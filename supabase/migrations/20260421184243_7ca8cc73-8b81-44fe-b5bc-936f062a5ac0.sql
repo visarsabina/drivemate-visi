@@ -1,0 +1,2 @@
+UPDATE public.staff SET photo_url = 'https://hgbwdywlrgnpzfhviovs.supabase.co/storage/v1/object/public/staff-photos/visar-jaha-v2.jpeg' WHERE id = 'dd868c44-db1e-4821-b012-cb25767808d1';
+UPDATE public.staff SET photo_url = 'https://hgbwdywlrgnpzfhviovs.supabase.co/storage/v1/object/public/staff-photos/sabina-krasniqi-v2.jpeg' WHERE id = '378e757b-e3eb-4130-b017-7b8902b14684';
