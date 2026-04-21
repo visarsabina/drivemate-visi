@@ -333,7 +333,7 @@ const Home = () => {
       </section>
 
       {/* Categories */}
-      <section id="categories" className="py-20 bg-muted/50">
+      <section id="categories" className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <span className="text-primary font-semibold text-sm uppercase tracking-wider">Kategoritë</span>
