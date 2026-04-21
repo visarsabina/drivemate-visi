@@ -17,36 +17,35 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  const [checkedAdmin, setCheckedAdmin] = useState(false);
-
-  useEffect(() => {
-    if (authLoading || !session) return;
-
-    // Wait briefly for the role check to complete after session is set
-    const timer = setTimeout(() => setCheckedAdmin(true), 600);
-    return () => clearTimeout(timer);
-  }, [session, authLoading]);
+  const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
 
   useEffect(() => {
-    if (!checkedAdmin || !session) return;
+    // Only react after the user has actually tried to log in (or already had a session on mount)
+    if (authLoading) return;
+    if (!session) return;
 
     if (isAdmin) {
       navigate("/admin", { replace: true });
-    } else {
+      return;
+    }
+
+    // Session exists but no admin role — only sign out if the user just tried to log in.
+    // This avoids racing with the async role check on initial mount.
+    if (hasAttemptedLogin) {
       toast({
         title: "Qasje e ndaluar",
-        description: "Ky llogari nuk ka rolin e administratorit.",
+        description: "Kjo llogari nuk ka rolin e administratorit.",
         variant: "destructive",
       });
       supabase.auth.signOut();
-      setCheckedAdmin(false);
+      setHasAttemptedLogin(false);
     }
-  }, [checkedAdmin, session, isAdmin, navigate, toast]);
+  }, [session, isAdmin, authLoading, hasAttemptedLogin, navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setHasAttemptedLogin(true);
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
@@ -56,9 +55,10 @@ const Auth = () => {
         description: error.message,
         variant: "destructive",
       });
-      setSubmitting(false);
+      setHasAttemptedLogin(false);
     }
-    // Success handled by useEffect
+    setSubmitting(false);
+    // Success handled by useEffect once isAdmin is verified
   };
 
   return (
