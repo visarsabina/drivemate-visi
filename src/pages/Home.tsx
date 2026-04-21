@@ -95,10 +95,9 @@ const Home = () => {
           </div>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium">
             <button onClick={() => scrollTo("hero")} className="hover:text-primary transition-colors">Kryefaqja</button>
-            <button onClick={() => scrollTo("about")} className="hover:text-primary transition-colors">Rreth Nesh</button>
+            <button onClick={() => scrollTo("about")} className="hover:text-primary transition-colors">Rreth Nesh & Stafi</button>
             <button onClick={() => scrollTo("categories")} className="hover:text-primary transition-colors">Kategoritë</button>
             <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
-            <button onClick={() => scrollTo("staff")} className="hover:text-primary transition-colors">Stafi</button>
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
             <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
