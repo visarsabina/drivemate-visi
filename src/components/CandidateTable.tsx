@@ -15,6 +15,15 @@ const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) 
   const [yearFilter, setYearFilter] = useState<string>("all");
   const [paymentFilter, setPaymentFilter] = useState<string>("all");
   const [vertetimiFilter, setVertetimiFilter] = useState<string>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    candidates.forEach((c) => {
+      if (c.kategoria) set.add(c.kategoria);
+    });
+    return Array.from(set).sort();
+  }, [candidates]);
 
   const years = useMemo(() => {
     const set = new Set<string>();
@@ -45,7 +54,9 @@ const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) 
       (vertetimiFilter === "po" && c.vertetimiPrintuar) ||
       (vertetimiFilter === "jo" && !c.vertetimiPrintuar);
 
-    return matchesSearch && matchesYear && matchesPayment && matchesVertetimi;
+    const matchesCategory = categoryFilter === "all" || c.kategoria === categoryFilter;
+
+    return matchesSearch && matchesYear && matchesPayment && matchesVertetimi && matchesCategory;
   });
 
   return (
@@ -92,6 +103,18 @@ const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) 
               <SelectItem value="all">Të gjithë</SelectItem>
               <SelectItem value="po">Vërtetim i printuar</SelectItem>
               <SelectItem value="jo">Pa vërtetim</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Kategoria" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Të gjitha kategoritë</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>Kategoria {cat}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
