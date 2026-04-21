@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -40,6 +40,12 @@ const faqs = [
   { q: "Çfarë ndodh nëse nuk e kaloj provimin?", a: "Keni mundësi të riprovohet pa kosto shtesë për mësimin, vetëm taksa e provimit." },
 ];
 
+const literatura = [
+  { title: "Libri për kategorinë B", desc: "Materiali zyrtar mësimor për kategorinë B", file: "/literatura/Libri-per-B.pdf" },
+  { title: "Pyetje dhe Përgjigje - B", desc: "Përmbledhje e pyetjeve të provimit për kategorinë B", file: "/literatura/Pytje-dhe-Pergjigjje-B.pdf" },
+  { title: "Libri për kategoritë C1 & D", desc: "Materiali zyrtar mësimor për kategoritë C1 dhe D", file: "/literatura/Libri-per-C1-D.pdf" },
+];
+
 const stats = [
   { value: "10000+", label: "Kandidatë të diplomuar", icon: Users },
   { value: "25+", label: "Vite përvojë", icon: Award },
@@ -77,6 +83,7 @@ const Home = () => {
             <button onClick={() => scrollTo("about")} className="hover:text-primary transition-colors">Rreth Nesh</button>
             <button onClick={() => scrollTo("categories")} className="hover:text-primary transition-colors">Kategoritë</button>
             <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
+            <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
             <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
             <Button size="sm" onClick={() => navigate("/login")}>Kyçu</Button>
@@ -87,7 +94,7 @@ const Home = () => {
         </div>
         {mobileMenu && (
           <div className="md:hidden bg-background border-b border-border px-4 py-4 space-y-3">
-            {["Kryefaqja:hero", "Rreth Nesh:about", "Kategoritë:categories", "Vlerësimet:testimonials", "FAQ:faq", "Kontakti:contact"].map((item) => {
+            {["Kryefaqja:hero", "Rreth Nesh:about", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
               const [label, id] = item.split(":");
               return <button key={id} onClick={() => scrollTo(id)} className="block w-full text-left text-sm font-medium hover:text-primary">{label}</button>;
             })}
@@ -268,8 +275,38 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Literatura */}
+      <section id="literatura" className="py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Literatura</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2">Materialet mësimore</h2>
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">Shkarkoni librat zyrtarë dhe pyetjet e provimit në format PDF.</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {literatura.map((book) => (
+              <Card key={book.title} className="group hover:shadow-lg hover:border-primary/30 transition-all duration-300">
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <BookOpen className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-bold mb-2">{book.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-5 flex-1">{book.desc}</p>
+                  <a href={book.file} target="_blank" rel="noopener noreferrer" download>
+                    <Button className="w-full gap-2">
+                      <Download className="w-4 h-4" />
+                      Shkarko PDF
+                    </Button>
+                  </a>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
-      <section id="faq" className="py-20">
+      <section id="faq" className="py-20 bg-muted/50">
         <div className="max-w-3xl mx-auto px-4">
           <div className="text-center mb-12">
             <span className="text-primary font-semibold text-sm uppercase tracking-wider">Pyetje të Shpeshta</span>
@@ -287,7 +324,7 @@ const Home = () => {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="py-20 bg-muted/50">
+      <section id="contact" className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <span className="text-primary font-semibold text-sm uppercase tracking-wider">Kontakti</span>
