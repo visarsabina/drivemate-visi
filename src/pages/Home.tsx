@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -46,6 +46,10 @@ const literatura = [
   { title: "Libri për kategoritë C1 & D", desc: "Materiali zyrtar mësimor për kategoritë C1 dhe D", file: "/literatura/Libri-per-C1-D.pdf" },
 ];
 
+const staff: { name: string; role: string; categories: string; photo: string | null }[] = [
+  { name: "Visar Jaha", role: "Instruktor", categories: "B, C1, C, CE, D", photo: null },
+];
+
 const stats = [
   { value: "10000+", label: "Kandidatë të diplomuar", icon: Users },
   { value: "25+", label: "Vite përvojë", icon: Award },
@@ -83,6 +87,7 @@ const Home = () => {
             <button onClick={() => scrollTo("about")} className="hover:text-primary transition-colors">Rreth Nesh</button>
             <button onClick={() => scrollTo("categories")} className="hover:text-primary transition-colors">Kategoritë</button>
             <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
+            <button onClick={() => scrollTo("staff")} className="hover:text-primary transition-colors">Stafi</button>
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
             <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
@@ -94,7 +99,7 @@ const Home = () => {
         </div>
         {mobileMenu && (
           <div className="md:hidden bg-background border-b border-border px-4 py-4 space-y-3">
-            {["Kryefaqja:hero", "Rreth Nesh:about", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
+            {["Kryefaqja:hero", "Rreth Nesh:about", "Kategoritë:categories", "Vlerësimet:testimonials", "Stafi:staff", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
               const [label, id] = item.split(":");
               return <button key={id} onClick={() => scrollTo(id)} className="block w-full text-left text-sm font-medium hover:text-primary">{label}</button>;
             })}
