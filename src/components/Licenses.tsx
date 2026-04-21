@@ -126,6 +126,10 @@ const Licenses = () => {
       toast.error("Kategoria dhe numri i licencës janë të detyrueshëm");
       return;
     }
+    if (form.issue_date && form.expiry_date && form.expiry_date < form.issue_date) {
+      toast.error("Skadenca nuk mund të jetë më e hershme se data e licencës");
+      return;
+    }
     setSaving(true);
 
     const payload = {
@@ -334,8 +338,17 @@ const Licenses = () => {
                   id="exp"
                   type="date"
                   value={form.expiry_date}
+                  min={form.issue_date || undefined}
                   onChange={(e) => setForm({ ...form, expiry_date: e.target.value })}
+                  aria-invalid={
+                    !!(form.issue_date && form.expiry_date && form.expiry_date < form.issue_date)
+                  }
                 />
+                {form.issue_date && form.expiry_date && form.expiry_date < form.issue_date && (
+                  <p className="text-xs text-destructive">
+                    Skadenca nuk mund të jetë më e hershme se data e licencës.
+                  </p>
+                )}
               </div>
             </div>
 
