@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Image as ImageIcon, Upload, AlertTriangle } from "lucide-react";
+import { Plus, Pencil, Trash2, Image as ImageIcon, Upload, AlertTriangle, Printer } from "lucide-react";
 
 interface Vehicle {
   id: string;
@@ -186,9 +186,48 @@ const Vehicles = () => {
 
   const expiringSoon = vehicles.filter((v) => {
     const insp = daysUntil(v.inspection_expiry_date);
-    const att = daysUntil(v.attestation_expiry_date);
-    return (insp !== null && insp <= 7) || (att !== null && att <= 7);
+    return insp !== null && insp <= 7;
   });
+
+  const handlePrint = () => {
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lista e Mjeteve</title>
+    <style>
+      body{font-family:Arial,sans-serif;padding:24px;color:#111;}
+      h1{margin:0 0 4px 0;font-size:20px;}
+      .sub{color:#555;margin-bottom:16px;font-size:12px;}
+      table{width:100%;border-collapse:collapse;font-size:12px;}
+      th,td{border:1px solid #999;padding:6px 8px;text-align:left;vertical-align:top;}
+      th{background:#f0f0f0;}
+      .urgent{background:#ffe5e5;}
+      @media print{button{display:none;}}
+    </style></head><body>
+    <h1>Auto Shkolla Visi — Lista e Mjeteve</h1>
+    <div class="sub">Data e printimit: ${new Date().toLocaleDateString("sq-AL")} • Gjithsej: ${vehicles.length} mjete</div>
+    <table>
+      <thead><tr>
+        <th>#</th><th>Emri i Veturës</th><th>Tabelat</th><th>Regjistrimi</th>
+        <th>Kontrolla Periodike</th><th>Nr. Atestit</th>
+      </tr></thead>
+      <tbody>
+        ${vehicles.map((v, i) => {
+          const insp = daysUntil(v.inspection_expiry_date);
+          const urgent = insp !== null && insp <= 7;
+          return `<tr class="${urgent ? "urgent" : ""}">
+            <td>${i + 1}</td>
+            <td>${v.name}</td>
+            <td>${v.plate_number}</td>
+            <td>${formatDate(v.registration_date)}</td>
+            <td>${formatDate(v.inspection_expiry_date)}</td>
+            <td>${v.attestation_number || "—"}</td>
+          </tr>`;
+        }).join("")}
+      </tbody>
+    </table>
+    <script>window.onload=()=>{window.print();}</script>
+    </body></html>`;
+    const w = window.open("", "_blank");
+    if (w) { w.document.write(html); w.document.close(); }
+  };
 
   return (
     <div className="space-y-6">
@@ -206,13 +245,18 @@ const Vehicles = () => {
         </div>
       )}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
         <p className="text-sm text-muted-foreground">
           Gjithsej: {vehicles.length} mjete
         </p>
-        <Button onClick={openAdd}>
-          <Plus className="w-4 h-4" /> Shto Mjet
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handlePrint} disabled={vehicles.length === 0}>
+            <Printer className="w-4 h-4" /> Printo Listën
+          </Button>
+          <Button onClick={openAdd}>
+            <Plus className="w-4 h-4" /> Shto Mjet
+          </Button>
+        </div>
       </div>
 
       <div className="rounded-lg border bg-card">
@@ -224,7 +268,6 @@ const Vehicles = () => {
               <TableHead>Regjistrimi</TableHead>
               <TableHead>Kontrolla Periodike</TableHead>
               <TableHead>Nr. Atestit</TableHead>
-              <TableHead>Skadenca Atestit</TableHead>
               <TableHead>Foto</TableHead>
               <TableHead className="text-right">Veprime</TableHead>
             </TableRow>
@@ -232,21 +275,20 @@ const Vehicles = () => {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                   Duke ngarkuar...
                 </TableCell>
               </TableRow>
             ) : vehicles.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                   Nuk ka mjete të regjistruara
                 </TableCell>
               </TableRow>
             ) : (
               vehicles.map((v) => {
                 const insp = expiryStatus(v.inspection_expiry_date);
-                const att = expiryStatus(v.attestation_expiry_date);
-                const rowAlert = insp.urgent || att.urgent;
+                const rowAlert = insp.urgent;
                 return (
                   <TableRow key={v.id} className={rowAlert ? "bg-destructive/5" : ""}>
                     <TableCell className="font-medium">{v.name}</TableCell>
@@ -259,12 +301,6 @@ const Vehicles = () => {
                       </div>
                     </TableCell>
                     <TableCell>{v.attestation_number || "—"}</TableCell>
-                    <TableCell>
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs">{formatDate(v.attestation_expiry_date)}</span>
-                        <Badge variant={att.variant} className="w-fit">{att.label}</Badge>
-                      </div>
-                    </TableCell>
                     <TableCell>
                       {v.photo_url ? (
                         <button
@@ -343,21 +379,12 @@ const Vehicles = () => {
                   onChange={(e) => setForm({ ...form, inspection_expiry_date: e.target.value })}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="att-num">Numri i Atestit</Label>
                 <Input
                   id="att-num"
                   value={form.attestation_number}
                   onChange={(e) => setForm({ ...form, attestation_number: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="att-exp">Skadenca e Atestit</Label>
-                <Input
-                  id="att-exp"
-                  type="date"
-                  value={form.attestation_expiry_date}
-                  onChange={(e) => setForm({ ...form, attestation_expiry_date: e.target.value })}
                 />
               </div>
             </div>
