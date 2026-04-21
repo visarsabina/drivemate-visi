@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import * as XLSX from "xlsx";
+import { Upload } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -19,6 +21,7 @@ const generateRegNumber = (count: number) => {
 };
 
 const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
     numriRegjistrimit: generateRegNumber(candidateCount),
     numriPersonal: "",
@@ -35,6 +38,78 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     shenimet: "",
     shumaMarreveshjes: "",
   });
+
+  const handleExcelImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+
+      const dataRows = rows.filter((r, i) => {
+        if (!r || r.length === 0) return false;
+        if (i === 0) {
+          const first = String(r[0] ?? "").toLowerCase();
+          if (first.includes("nr") || first.includes("reg")) return false;
+        }
+        return r.some((c) => String(c ?? "").trim() !== "");
+      });
+
+      if (dataRows.length === 0) {
+        toast.error("Fajlli është bosh ose pa të dhëna të vlefshme");
+        return;
+      }
+
+      const today = new Date().toISOString().split("T")[0];
+      let added = 0;
+      let skipped = 0;
+
+      dataRows.forEach((row, idx) => {
+        const numriRegjistrimit = String(row[0] ?? "").trim();
+        const kategoria = String(row[1] ?? "B").trim().toUpperCase() || "B";
+        const emri = String(row[2] ?? "").trim();
+        const emriBabait = String(row[3] ?? "").trim();
+        const mbiemri = String(row[4] ?? "").trim();
+
+        if (!emri || !mbiemri) {
+          skipped++;
+          return;
+        }
+
+        const newCandidate: Candidate = {
+          id: `${Date.now()}-${idx}`,
+          numriRegjistrimit: numriRegjistrimit || generateRegNumber(candidateCount + added),
+          numriPersonal: "",
+          emri,
+          mbiemri,
+          emriBabait,
+          vendlindja: "",
+          telefon: "",
+          dataLindjes: "",
+          kategoria,
+          certifikataShendetsore: "",
+          vendi: "",
+          statusi: "regjistuar" as CandidateStatus,
+          dataRegjistrimit: today,
+          shenimet: "Importuar nga Excel",
+          shumaMarreveshjes: 0,
+          payments: [],
+        };
+
+        onAdd(newCandidate);
+        added++;
+      });
+
+      toast.success(`U importuan ${added} kandidatë${skipped > 0 ? ` (${skipped} u anashkaluan)` : ""}`);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (err) {
+      console.error(err);
+      toast.error("Dështoi leximi i fajllit Excel");
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,7 +152,30 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
 
   return (
     <div className="glass-card rounded-xl p-6 max-w-2xl">
-      <h2 className="text-xl font-semibold mb-6">Shto Kandidat të Ri</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <h2 className="text-xl font-semibold">Shto Kandidat të Ri</h2>
+        <div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={handleExcelImport}
+            className="hidden"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            className="gap-2"
+          >
+            <Upload className="w-4 h-4" />
+            Importo nga Excel
+          </Button>
+        </div>
+      </div>
+      <p className="text-xs text-muted-foreground mb-4">
+        Formati i Excel: <strong>Nr.Regj | Kategoria | Emri | Emri i Babait | Mbiemri</strong>
+      </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
