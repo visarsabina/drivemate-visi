@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -46,6 +46,10 @@ const literatura = [
   { title: "Libri për kategoritë C1 & D", desc: "Materiali zyrtar mësimor për kategoritë C1 dhe D", file: "/literatura/Libri-per-C1-D.pdf" },
 ];
 
+const staff: { name: string; role: string; categories: string; photo: string | null }[] = [
+  { name: "Visar Jaha", role: "Instruktor", categories: "B, C1, C, CE, D", photo: null },
+];
+
 const stats = [
   { value: "10000+", label: "Kandidatë të diplomuar", icon: Users },
   { value: "25+", label: "Vite përvojë", icon: Award },
@@ -83,6 +87,7 @@ const Home = () => {
             <button onClick={() => scrollTo("about")} className="hover:text-primary transition-colors">Rreth Nesh</button>
             <button onClick={() => scrollTo("categories")} className="hover:text-primary transition-colors">Kategoritë</button>
             <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
+            <button onClick={() => scrollTo("staff")} className="hover:text-primary transition-colors">Stafi</button>
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
             <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
@@ -94,7 +99,7 @@ const Home = () => {
         </div>
         {mobileMenu && (
           <div className="md:hidden bg-background border-b border-border px-4 py-4 space-y-3">
-            {["Kryefaqja:hero", "Rreth Nesh:about", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
+            {["Kryefaqja:hero", "Rreth Nesh:about", "Kategoritë:categories", "Vlerësimet:testimonials", "Stafi:staff", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
               const [label, id] = item.split(":");
               return <button key={id} onClick={() => scrollTo(id)} className="block w-full text-left text-sm font-medium hover:text-primary">{label}</button>;
             })}
@@ -336,8 +341,42 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Stafi */}
+      <section id="staff" className="py-20 bg-muted/50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Stafi</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2">Instruktorët tanë</h2>
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">Ekipi profesional me përvojë të gjatë në fushën e aftësimit të shoferëve.</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {staff.map((member) => (
+              <Card key={member.name} className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 group">
+                <div className="aspect-square bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
+                  {member.photo ? (
+                    <img
+                      src={member.photo}
+                      alt={`Instruktori ${member.name}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <User className="w-24 h-24 text-primary/40" />
+                  )}
+                </div>
+                <CardContent className="p-5 text-center">
+                  <h3 className="font-bold text-lg mb-1">{member.name}</h3>
+                  <p className="text-sm text-primary font-medium mb-2">{member.role}</p>
+                  <p className="text-xs text-muted-foreground">Kategoritë: {member.categories}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Success Image Section */}
-      <section className="py-20 bg-muted/50">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
           <img src={successImg} alt="Kandidat i suksesshëm" className="rounded-2xl shadow-xl" loading="lazy" width={800} height={800} />
           <div>
