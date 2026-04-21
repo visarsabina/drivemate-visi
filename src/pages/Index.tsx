@@ -13,6 +13,7 @@ import Finances from "@/components/Finances";
 import Registrations from "@/components/Registrations";
 import Vehicles from "@/components/Vehicles";
 import Employees from "@/components/Employees";
+import Licenses from "@/components/Licenses";
 import VehicleAlerts from "@/components/VehicleAlerts";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
@@ -58,6 +59,7 @@ const Index = () => {
     registrations: "Regjistrimet nga Vizitorët",
     vehicles: "Mjetet e Auto-shkollës",
     employees: "Punëtorët",
+    licenses: "Licencat",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
@@ -146,6 +148,8 @@ const Index = () => {
           {activeView === "vehicles" && <Vehicles />}
 
           {activeView === "employees" && <Employees />}
+
+          {activeView === "licenses" && <Licenses />}
 
           {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
 
