@@ -21,6 +21,7 @@ const generateRegNumber = (count: number) => {
 };
 
 const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
     numriRegjistrimit: generateRegNumber(candidateCount),
     numriPersonal: "",
@@ -37,6 +38,78 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     shenimet: "",
     shumaMarreveshjes: "",
   });
+
+  const handleExcelImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+
+      const dataRows = rows.filter((r, i) => {
+        if (!r || r.length === 0) return false;
+        if (i === 0) {
+          const first = String(r[0] ?? "").toLowerCase();
+          if (first.includes("nr") || first.includes("reg")) return false;
+        }
+        return r.some((c) => String(c ?? "").trim() !== "");
+      });
+
+      if (dataRows.length === 0) {
+        toast.error("Fajlli është bosh ose pa të dhëna të vlefshme");
+        return;
+      }
+
+      const today = new Date().toISOString().split("T")[0];
+      let added = 0;
+      let skipped = 0;
+
+      dataRows.forEach((row, idx) => {
+        const numriRegjistrimit = String(row[0] ?? "").trim();
+        const kategoria = String(row[1] ?? "B").trim().toUpperCase() || "B";
+        const emri = String(row[2] ?? "").trim();
+        const emriBabait = String(row[3] ?? "").trim();
+        const mbiemri = String(row[4] ?? "").trim();
+
+        if (!emri || !mbiemri) {
+          skipped++;
+          return;
+        }
+
+        const newCandidate: Candidate = {
+          id: `${Date.now()}-${idx}`,
+          numriRegjistrimit: numriRegjistrimit || generateRegNumber(candidateCount + added),
+          numriPersonal: "",
+          emri,
+          mbiemri,
+          emriBabait,
+          vendlindja: "",
+          telefon: "",
+          dataLindjes: "",
+          kategoria,
+          certifikataShendetsore: "",
+          vendi: "",
+          statusi: "regjistuar" as CandidateStatus,
+          dataRegjistrimit: today,
+          shenimet: "Importuar nga Excel",
+          shumaMarreveshjes: 0,
+          payments: [],
+        };
+
+        onAdd(newCandidate);
+        added++;
+      });
+
+      toast.success(`U importuan ${added} kandidatë${skipped > 0 ? ` (${skipped} u anashkaluan)` : ""}`);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (err) {
+      console.error(err);
+      toast.error("Dështoi leximi i fajllit Excel");
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
