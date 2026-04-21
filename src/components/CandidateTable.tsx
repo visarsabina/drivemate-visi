@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Candidate } from "@/types/candidate";
@@ -8,9 +9,10 @@ import { Candidate } from "@/types/candidate";
 interface CandidateTableProps {
   candidates: Candidate[];
   onSelectCandidate?: (candidate: Candidate) => void;
+  onToggleDocuments?: (candidateId: string, value: boolean) => void;
 }
 
-const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) => {
+const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: CandidateTableProps) => {
   const [search, setSearch] = useState("");
   const [yearFilter, setYearFilter] = useState<string>("all");
   const [paymentFilter, setPaymentFilter] = useState<string>("all");
@@ -131,12 +133,13 @@ const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) 
               <TableHead>Paguar</TableHead>
               <TableHead>Borxhi</TableHead>
               <TableHead>Vërtetimi</TableHead>
+              <TableHead className="text-center">Dokumentet</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                   Nuk u gjet asnjë kandidat
                 </TableCell>
               </TableRow>
@@ -163,6 +166,13 @@ const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) 
                       <span className={`text-xs font-semibold px-2 py-1 rounded-full ${c.vertetimiPrintuar ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
                         {c.vertetimiPrintuar ? "Vërtetim ✓" : "Vërtetim ✗"}
                       </span>
+                    </TableCell>
+                    <TableCell className="text-center" onClick={(e) => e.stopPropagation()}>
+                      <Checkbox
+                        checked={!!c.dokumenteTerhequr}
+                        onCheckedChange={(val) => onToggleDocuments?.(c.id, !!val)}
+                        aria-label="Tërheqja e dokumenteve"
+                      />
                     </TableCell>
                   </TableRow>
                 );
