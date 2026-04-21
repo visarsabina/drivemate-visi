@@ -47,16 +47,7 @@ const literatura = [
   { title: "Libri për kategoritë C1 & D", desc: "Materiali zyrtar mësimor për kategoritë C1 dhe D", file: "/literatura/Libri-per-C1-D.pdf" },
 ];
 
-const staff: { name: string; role: string; categories: string; photo: string | null }[] = [
-  { name: "Visar Jaha", role: "Instruktor", categories: "B, C1, C, CE, D", photo: null },
-  { name: "Alma Llugaliu", role: "Asistente", categories: "", photo: null },
-  { name: "Afrim Jaha", role: "Ligjërues", categories: "", photo: null },
-  { name: "Fadil Jaha", role: "Instruktor", categories: "", photo: null },
-  { name: "Remzie Jaha", role: "Instruktore", categories: "", photo: null },
-  { name: "Nesibe Zeka", role: "Instruktore", categories: "", photo: null },
-  { name: "Dafina Hodolli", role: "Instruktore", categories: "", photo: null },
-  { name: "Sabina Krasniqi", role: "Instruktore", categories: "", photo: null },
-];
+type StaffMember = { id: string; name: string; role: string; categories: string | null; photo_url: string | null };
 
 const stats = [
   { value: "10000+", label: "Kandidatë të diplomuar", icon: Users },
