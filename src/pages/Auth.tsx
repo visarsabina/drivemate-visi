@@ -32,7 +32,7 @@ const Auth = () => {
     if (!checkedAdmin || !session) return;
 
     if (isAdmin) {
-      navigate("/", { replace: true });
+      navigate("/admin", { replace: true });
     } else {
       toast({
         title: "Qasje e ndaluar",
