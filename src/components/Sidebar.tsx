@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
