@@ -38,7 +38,7 @@ const faqs = [
 ];
 
 const stats = [
-  { value: "2000+", label: "Kandidatë të diplomuar", icon: Users },
+  { value: "10000+", label: "Kandidatë të diplomuar", icon: Users },
   { value: "25+", label: "Vite përvojë", icon: Award },
   { value: "98%", label: "Shkalla e kalueshmërisë", icon: Star },
   { value: "6", label: "Kategori të patentës", icon: Car },
