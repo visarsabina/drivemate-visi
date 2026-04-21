@@ -6,6 +6,7 @@ interface AuthContextValue {
   session: Session | null;
   user: User | null;
   isAdmin: boolean;
+  roleChecked: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [roleChecked, setRoleChecked] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,12 +27,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(newSession?.user ?? null);
 
       if (newSession?.user) {
+        setRoleChecked(false);
         // Defer role check so the SDK can attach the new access token to subsequent requests
         setTimeout(() => {
           checkAdminRole(newSession.user.id, newSession.access_token);
         }, 100);
       } else {
         setIsAdmin(false);
+        setRoleChecked(true);
       }
     });
 
@@ -41,6 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (existingSession?.user) {
         checkAdminRole(existingSession.user.id, existingSession.access_token).finally(() => setLoading(false));
       } else {
+        setRoleChecked(true);
         setLoading(false);
       }
     });
@@ -49,8 +54,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const checkAdminRole = async (userId: string, accessToken?: string) => {
-    // Use REST directly with the user's access token to avoid race conditions
-    // where the SDK hasn't attached the new token yet
     try {
       const url = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/user_roles?select=role&user_id=eq.${userId}&role=eq.admin`;
       const res = await fetch(url, {
@@ -64,16 +67,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (err) {
       console.error("Role check failed:", err);
       setIsAdmin(false);
+    } finally {
+      setRoleChecked(true);
     }
   };
 
   const signOut = async () => {
     await supabase.auth.signOut();
     setIsAdmin(false);
+    setRoleChecked(true);
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, isAdmin, loading, signOut }}>
+    <AuthContext.Provider value={{ session, user, isAdmin, roleChecked, loading, signOut }}>
       {children}
     </AuthContext.Provider>
   );

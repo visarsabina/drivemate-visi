@@ -13,24 +13,24 @@ import logo from "@/assets/logo.png";
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { session, isAdmin, loading: authLoading } = useAuth();
+  const { session, isAdmin, roleChecked, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
 
   useEffect(() => {
-    // Only react after the user has actually tried to log in (or already had a session on mount)
     if (authLoading) return;
     if (!session) return;
+    // Wait until the role check actually completes before deciding
+    if (!roleChecked) return;
 
     if (isAdmin) {
       navigate("/admin", { replace: true });
       return;
     }
 
-    // Session exists but no admin role — only sign out if the user just tried to log in.
-    // This avoids racing with the async role check on initial mount.
+    // Session exists, role check finished, user is NOT admin -> reject
     if (hasAttemptedLogin) {
       toast({
         title: "Qasje e ndaluar",
@@ -40,7 +40,7 @@ const Auth = () => {
       supabase.auth.signOut();
       setHasAttemptedLogin(false);
     }
-  }, [session, isAdmin, authLoading, hasAttemptedLogin, navigate, toast]);
+  }, [session, isAdmin, roleChecked, authLoading, hasAttemptedLogin, navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,7 +58,6 @@ const Auth = () => {
       setHasAttemptedLogin(false);
     }
     setSubmitting(false);
-    // Success handled by useEffect once isAdmin is verified
   };
 
   return (
