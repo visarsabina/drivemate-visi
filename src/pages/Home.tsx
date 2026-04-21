@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -148,6 +148,92 @@ const Home = () => {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* Promo Banner - 6 këste */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-primary/80 p-8 md:p-12 shadow-2xl">
+            {/* Decorative circles */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute top-6 right-6 hidden md:block">
+              <div className="bg-warning text-warning-foreground rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-lg animate-pulse">
+                🔥 Ofertë e Re
+              </div>
+            </div>
+
+            <div className="relative grid md:grid-cols-2 gap-8 items-center">
+              <div className="text-primary-foreground">
+                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-4">
+                  <Sparkles className="w-4 h-4" />
+                  <span className="text-sm font-semibold">Pagesa me këste</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4">
+                  Regjistrohu sot, paguaj në <span className="underline decoration-warning decoration-4 underline-offset-4">6 këste</span>!
+                </h2>
+                <p className="text-base md:text-lg opacity-90 mb-6">
+                  Mos lejo që çmimi të jetë pengesë. Filloni rrugëtimin tuaj drejt patentës me pagesa të lehta mujore – pa interes, pa kompliklime.
+                </p>
+                <ul className="space-y-2 mb-8">
+                  {["Pa interes shtesë", "Pa dokumente të komplikuara", "Aprovimi në vend"].map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-sm md:text-base">
+                      <CheckCircle2 className="w-5 h-5 text-warning flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  onClick={() => openRegister()}
+                  className="text-base px-8 font-bold shadow-xl hover:scale-105 transition-transform"
+                >
+                  Regjistrohu Tani
+                </Button>
+              </div>
+
+              <div className="relative">
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl">
+                  <div className="flex items-center gap-3 mb-4 text-foreground">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <CreditCard className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Kategoria B</div>
+                      <div className="text-sm font-bold">Plani 6 muaj</div>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-border pt-4 mb-4">
+                    <div className="flex items-baseline justify-between mb-2">
+                      <span className="text-sm text-muted-foreground">Çmimi total</span>
+                      <span className="text-lg font-bold text-foreground">250€</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-sm text-muted-foreground">Numri i kësteve</span>
+                      <span className="text-lg font-bold text-foreground">6 muaj</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-5 text-center">
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mb-1">Vetëm</div>
+                    <div className="flex items-baseline justify-center gap-1">
+                      <span className="text-5xl font-extrabold text-primary">42</span>
+                      <span className="text-2xl font-bold text-primary">€</span>
+                      <span className="text-sm text-muted-foreground ml-1">/muaj</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-2">Edhe më pak se një kafe në ditë ☕</div>
+                  </div>
+
+                  <div className="mt-4 text-center text-xs text-muted-foreground">
+                    * Ofertat e tjera për kategoritë e tjera – na kontaktoni
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
