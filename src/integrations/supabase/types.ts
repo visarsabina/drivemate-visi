@@ -56,6 +56,36 @@ export type Database = {
         }
         Relationships: []
       }
+      licenses: {
+        Row: {
+          category: string
+          created_at: string
+          expiry_date: string | null
+          id: string
+          issue_date: string | null
+          license_number: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          issue_date?: string | null
+          license_number: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          issue_date?: string | null
+          license_number?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       registrations: {
         Row: {
           category: string
