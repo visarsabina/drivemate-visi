@@ -362,12 +362,12 @@ const Home = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {staff.map((member) => (
-              <Card key={member.name} className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 group">
+              <Card key={member.id} className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 group">
                 <div className="aspect-square bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
-                  {member.photo ? (
+                  {member.photo_url ? (
                     <img
-                      src={member.photo}
-                      alt={`Instruktori ${member.name}`}
+                      src={member.photo_url}
+                      alt={`${member.role} ${member.name}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
@@ -377,8 +377,23 @@ const Home = () => {
                 </div>
                 <CardContent className="p-5 text-center">
                   <h3 className="font-bold text-lg mb-1">{member.name}</h3>
-                  <p className="text-sm text-primary font-medium mb-2">{member.role}</p>
-                  <p className="text-xs text-muted-foreground">Kategoritë: {member.categories}</p>
+                  <p className="text-sm text-primary font-medium mb-3">{member.role}</p>
+                  {member.categories && (
+                    <div className="flex flex-wrap gap-1.5 justify-center">
+                      {member.categories.split(",").map((cat) => {
+                        const c = cat.trim();
+                        if (!c) return null;
+                        return (
+                          <span
+                            key={c}
+                            className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-semibold border border-primary/20"
+                          >
+                            {c}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
