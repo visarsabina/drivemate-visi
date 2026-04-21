@@ -341,8 +341,42 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Stafi */}
+      <section id="staff" className="py-20 bg-muted/50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Stafi</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2">Instruktorët tanë</h2>
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">Ekipi profesional me përvojë të gjatë në fushën e aftësimit të shoferëve.</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {staff.map((member) => (
+              <Card key={member.name} className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 group">
+                <div className="aspect-square bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
+                  {member.photo ? (
+                    <img
+                      src={member.photo}
+                      alt={`Instruktori ${member.name}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <User className="w-24 h-24 text-primary/40" />
+                  )}
+                </div>
+                <CardContent className="p-5 text-center">
+                  <h3 className="font-bold text-lg mb-1">{member.name}</h3>
+                  <p className="text-sm text-primary font-medium mb-2">{member.role}</p>
+                  <p className="text-xs text-muted-foreground">Kategoritë: {member.categories}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Success Image Section */}
-      <section className="py-20 bg-muted/50">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
           <img src={successImg} alt="Kandidat i suksesshëm" className="rounded-2xl shadow-xl" loading="lazy" width={800} height={800} />
           <div>
