@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Candidate } from "@/types/candidate";
-import StatusBadge from "@/components/StatusBadge";
 
 interface CandidateTableProps {
   candidates: Candidate[];
@@ -12,18 +12,45 @@ interface CandidateTableProps {
 
 const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) => {
   const [search, setSearch] = useState("");
+  const [yearFilter, setYearFilter] = useState<string>("all");
+  const [paymentFilter, setPaymentFilter] = useState<string>("all");
+  const [vertetimiFilter, setVertetimiFilter] = useState<string>("all");
 
-  const filtered = candidates.filter(
-    (c) =>
+  const years = useMemo(() => {
+    const set = new Set<string>();
+    candidates.forEach((c) => {
+      if (c.dataRegjistrimit) set.add(c.dataRegjistrimit.slice(0, 4));
+    });
+    return Array.from(set).sort((a, b) => b.localeCompare(a));
+  }, [candidates]);
+
+  const filtered = candidates.filter((c) => {
+    const matchesSearch =
       c.emri.toLowerCase().includes(search.toLowerCase()) ||
       c.mbiemri.toLowerCase().includes(search.toLowerCase()) ||
       c.numriRegjistrimit.includes(search) ||
-      c.telefon.includes(search)
-  );
+      c.telefon.includes(search);
+
+    const matchesYear = yearFilter === "all" || c.dataRegjistrimit.startsWith(yearFilter);
+
+    const totalPaguar = c.payments.reduce((sum, p) => sum + p.shuma, 0);
+    const borxhi = c.shumaMarreveshjes - totalPaguar;
+    const matchesPayment =
+      paymentFilter === "all" ||
+      (paymentFilter === "paguar" && borxhi <= 0) ||
+      (paymentFilter === "borxh" && borxhi > 0);
+
+    const matchesVertetimi =
+      vertetimiFilter === "all" ||
+      (vertetimiFilter === "po" && c.vertetimiPrintuar) ||
+      (vertetimiFilter === "jo" && !c.vertetimiPrintuar);
+
+    return matchesSearch && matchesYear && matchesPayment && matchesVertetimi;
+  });
 
   return (
     <div className="glass-card rounded-xl">
-      <div className="p-4 border-b border-border/50">
+      <div className="p-4 border-b border-border/50 space-y-3">
         <div className="relative max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -32,6 +59,41 @@ const CandidateTable = ({ candidates, onSelectCandidate }: CandidateTableProps) 
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
           />
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Select value={yearFilter} onValueChange={setYearFilter}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Viti" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Të gjitha vitet</SelectItem>
+              {years.map((y) => (
+                <SelectItem key={y} value={y}>{y}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={paymentFilter} onValueChange={setPaymentFilter}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Pagesa" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Të gjitha pagesat</SelectItem>
+              <SelectItem value="paguar">Paguar plotësisht</SelectItem>
+              <SelectItem value="borxh">Me borxh</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={vertetimiFilter} onValueChange={setVertetimiFilter}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Vërtetimi" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Të gjithë</SelectItem>
+              <SelectItem value="po">Vërtetim i printuar</SelectItem>
+              <SelectItem value="jo">Pa vërtetim</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="overflow-x-auto">
