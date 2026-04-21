@@ -48,6 +48,13 @@ const literatura = [
 
 const staff: { name: string; role: string; categories: string; photo: string | null }[] = [
   { name: "Visar Jaha", role: "Instruktor", categories: "B, C1, C, CE, D", photo: null },
+  { name: "Alma Llugaliu", role: "Asistente", categories: "", photo: null },
+  { name: "Afrim Jaha", role: "Ligjërues", categories: "", photo: null },
+  { name: "Fadil Jaha", role: "Instruktor", categories: "", photo: null },
+  { name: "Remzie Jaha", role: "Instruktore", categories: "", photo: null },
+  { name: "Nesibe Zeka", role: "Instruktore", categories: "", photo: null },
+  { name: "Dafina Hodolli", role: "Instruktore", categories: "", photo: null },
+  { name: "Sabina Krasniqi", role: "Instruktore", categories: "", photo: null },
 ];
 
 const stats = [
