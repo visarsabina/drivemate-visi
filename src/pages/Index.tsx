@@ -12,6 +12,7 @@ import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import Finances from "@/components/Finances";
 import Registrations from "@/components/Registrations";
 import Vehicles from "@/components/Vehicles";
+import Employees from "@/components/Employees";
 import VehicleAlerts from "@/components/VehicleAlerts";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
