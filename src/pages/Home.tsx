@@ -61,6 +61,18 @@ const Home = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
+  const [staff, setStaff] = useState<StaffMember[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("staff")
+      .select("id, name, role, categories, photo_url")
+      .eq("is_active", true)
+      .order("display_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (!error && data) setStaff(data as StaffMember[]);
+      });
+  }, []);
 
   const openRegister = (category = "") => {
     setRegisterCategory(category);
