@@ -23,7 +23,7 @@ const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
       ${numriPageses ? `<p class="nr"><strong>Nr. Pagesës:</strong> ${numriPageses}</p>` : ""}
       <table><tr><th>Emri</th><td>${candidate.emri}</td><th>Mbiemri</th><td>${candidate.mbiemri}</td></tr>
       <tr><th>Nr. Personal</th><td>${candidate.numriPersonal}</td><th>Nr. Regjistrimit</th><td>${candidate.numriRegjistrimit}</td></tr>
-      <tr><th>Kategoria</th><td>${candidate.kategoria}</td><th>Data</th><td>${new Date().toLocaleDateString("sq-AL")}</td></tr></table>
+      <tr><th>Kategoria</th><td>${candidate.kategoria}</td><th>Data</th><td>${(() => { const n = new Date(); return `${String(n.getDate()).padStart(2,"0")}.${String(n.getMonth()+1).padStart(2,"0")}.${n.getFullYear()}`; })()}</td></tr></table>
       <div class="summary">
         <div><strong>Shuma e Marrëveshjes:</strong> ${candidate.shumaMarreveshjes.toFixed(2)} €</div>
         <div><strong>Totali i Paguar:</strong> ${totalPaguar.toFixed(2)} €</div>

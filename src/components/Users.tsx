@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, ShieldOff, UserPlus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
+import { formatDateDMY } from "@/lib/date";
 import {
   AlertDialog,
   AlertDialogAction,
