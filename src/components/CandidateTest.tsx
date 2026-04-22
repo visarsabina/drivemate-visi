@@ -11,25 +11,30 @@ interface CandidateTestProps {
   candidates: Candidate[];
 }
 
-const PASS_THRESHOLD = 0.85; // 85% kalon
+const POINTS_PER_QUESTION = 4;
+const PASS_PERCENTAGE = 0.9; // 90% — standardi zyrtar i Kosovës
+const QUESTIONS_PER_TEST = 30;
 
 const formatDateNow = () => {
   const n = new Date();
   return `${String(n.getDate()).padStart(2, "0")}.${String(n.getMonth() + 1).padStart(2, "0")}.${n.getFullYear()}`;
 };
 
+const getPoints = (q: TestQuestion) => q.points ?? POINTS_PER_QUESTION;
+
 const printOfficialTest = (
   candidate: Candidate,
   questions: TestQuestion[],
   answers: Record<number, number>,
-  score: number,
+  earnedPoints: number,
+  totalPoints: number,
   passed: boolean,
 ) => {
   const win = window.open("", "_blank");
   if (!win) return;
 
-  const total = questions.length;
-  const percentage = ((score / total) * 100).toFixed(1);
+  const percentage = ((earnedPoints / totalPoints) * 100).toFixed(1);
+  const passThresholdPoints = Math.ceil(totalPoints * PASS_PERCENTAGE);
 
   const rows = questions
     .map((q, i) => {
@@ -37,12 +42,14 @@ const printOfficialTest = (
       const correct = userIdx === q.correctIndex;
       const userAnswer = userIdx !== undefined ? q.options[userIdx] : "—";
       const correctAnswer = q.options[q.correctIndex];
+      const points = getPoints(q);
       return `
         <tr>
           <td class="num">${i + 1}</td>
           <td class="q">${q.question}</td>
           <td class="ua ${correct ? "ok" : "bad"}">${userAnswer}</td>
           <td class="ca">${correctAnswer}</td>
+          <td class="pts">${correct ? points : 0}/${points}</td>
           <td class="mark">${correct ? "✓" : "✗"}</td>
         </tr>`;
     })
@@ -59,7 +66,7 @@ const printOfficialTest = (
       .info{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-bottom:10px;font-size:11px}
       .info div{padding:3px 0;border-bottom:1px dotted #999}
       .info strong{display:inline-block;min-width:130px}
-      .result-box{border:2px solid #000;padding:8px 12px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+      .result-box{border:2px solid #000;padding:8px 12px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:8px}
       .result-box .pass{color:#0a7d0a;font-weight:bold;font-size:16px}
       .result-box .fail{color:#c00;font-weight:bold;font-size:16px}
       h3{margin:10px 0 6px;font-size:13px;border-bottom:1px solid #000;padding-bottom:3px}
@@ -67,9 +74,10 @@ const printOfficialTest = (
       th,td{border:1px solid #555;padding:4px 5px;text-align:left;vertical-align:top}
       th{background:#e8e8e8;font-weight:bold;font-size:10px}
       td.num{width:24px;text-align:center;font-weight:bold}
-      td.q{width:42%}
+      td.q{width:38%}
       td.ua,td.ca{width:22%}
-      td.mark{width:24px;text-align:center;font-weight:bold;font-size:13px}
+      td.pts{width:42px;text-align:center;font-weight:bold}
+      td.mark{width:22px;text-align:center;font-weight:bold;font-size:13px}
       td.ok{background:#e8f5e8}
       td.bad{background:#fde8e8;text-decoration:line-through}
       .signatures{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
@@ -80,7 +88,7 @@ const printOfficialTest = (
     </style></head><body>
     <div class="header">
       <h1>AUTO SHKOLLA VISI</h1>
-      <h2>FLETA E TESTIT TEORIK</h2>
+      <h2>FLETA E TESTIT TEORIK — Kategoria ${candidate.kategoria}</h2>
     </div>
 
     <div class="info">
@@ -93,8 +101,8 @@ const printOfficialTest = (
     </div>
 
     <div class="result-box">
-      <div><strong>Pikët:</strong> ${score} / ${total} &nbsp; (${percentage}%)</div>
-      <div><strong>Kufiri për kalim:</strong> ${(PASS_THRESHOLD * 100).toFixed(0)}%</div>
+      <div><strong>Pikët:</strong> ${earnedPoints} / ${totalPoints} &nbsp; (${percentage}%)</div>
+      <div><strong>Kufiri për kalim:</strong> ${passThresholdPoints} pikë (${(PASS_PERCENTAGE * 100).toFixed(0)}%)</div>
       <div class="${passed ? "pass" : "fail"}">${passed ? "KALOI ✓" : "NUK KALOI ✗"}</div>
     </div>
 
@@ -106,6 +114,7 @@ const printOfficialTest = (
           <th>Pyetja</th>
           <th>Përgjigja e Dhënë</th>
           <th>Përgjigja e Saktë</th>
+          <th>Pikë</th>
           <th>✓/✗</th>
         </tr>
       </thead>
@@ -133,8 +142,7 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
   const questions = useMemo<TestQuestion[]>(() => {
     if (!started) return [];
     const all = [...testQuestions];
-    const target = Math.min(30, all.length);
-    // Përzierje e thjeshtë
+    const target = Math.min(QUESTIONS_PER_TEST, all.length);
     for (let i = all.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [all[i], all[j]] = [all[j], all[i]];
@@ -144,8 +152,14 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
 
   const candidate = candidates.find((c) => c.id === selectedId);
 
-  const score = questions.filter((q) => answers[q.id] === q.correctIndex).length;
-  const passed = questions.length > 0 && score / questions.length >= PASS_THRESHOLD;
+  const totalPoints = questions.reduce((sum, q) => sum + getPoints(q), 0);
+  const earnedPoints = questions.reduce(
+    (sum, q) => sum + (answers[q.id] === q.correctIndex ? getPoints(q) : 0),
+    0,
+  );
+  const correctCount = questions.filter((q) => answers[q.id] === q.correctIndex).length;
+  const passThresholdPoints = Math.ceil(totalPoints * PASS_PERCENTAGE);
+  const passed = questions.length > 0 && earnedPoints >= passThresholdPoints;
   const allAnswered = questions.length > 0 && questions.every((q) => answers[q.id] !== undefined);
 
   const handleStart = () => {
@@ -175,9 +189,12 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
             <FileText className="w-6 h-6 text-primary" />
             <h2 className="text-xl font-semibold">Test Teorik i Auto-Shkollës</h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-6">
+          <p className="text-sm text-muted-foreground mb-2">
             Zgjedh kandidatin që do të bëjë testin. Sistemi do të zgjedhë automatikisht{" "}
-            {Math.min(30, testQuestions.length)} pyetje. Pas plotësimit, gjenerohet fleta zyrtare për printim.
+            {Math.min(QUESTIONS_PER_TEST, testQuestions.length)} pyetje.
+          </p>
+          <p className="text-xs text-muted-foreground mb-6">
+            Standardi zyrtar i Kosovës: 4 pikë për pyetje • Kalon me ≥{(PASS_PERCENTAGE * 100).toFixed(0)}% të pikëve
           </p>
 
           <div className="space-y-2 max-w-md">
@@ -206,15 +223,15 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
 
   // Hapi 3 — rezultati pas dorëzimit
   if (submitted && candidate) {
-    const percentage = ((score / questions.length) * 100).toFixed(1);
+    const percentage = ((earnedPoints / totalPoints) * 100).toFixed(1);
     return (
       <div className="space-y-6">
         <div className="glass-card rounded-xl p-6">
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
             <div>
               <h2 className="text-2xl font-bold">Rezultati i Testit</h2>
               <p className="text-muted-foreground">
-                {candidate.emri} {candidate.mbiemri} — {candidate.kategoria}
+                {candidate.emri} {candidate.mbiemri} — Kategoria {candidate.kategoria}
               </p>
             </div>
             <div
@@ -226,10 +243,10 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 my-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-6">
             <div className="text-center p-4 rounded-lg bg-muted/50">
               <div className="text-3xl font-bold text-primary">
-                {score}/{questions.length}
+                {earnedPoints}/{totalPoints}
               </div>
               <div className="text-xs text-muted-foreground mt-1">Pikë</div>
             </div>
@@ -238,17 +255,25 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
               <div className="text-xs text-muted-foreground mt-1">Përqindja</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-muted/50">
-              <div className="text-3xl font-bold text-muted-foreground">
-                {(PASS_THRESHOLD * 100).toFixed(0)}%
+              <div className="text-3xl font-bold">
+                {correctCount}/{questions.length}
               </div>
-              <div className="text-xs text-muted-foreground mt-1">Kufiri për kalim</div>
+              <div className="text-xs text-muted-foreground mt-1">Të sakta</div>
+            </div>
+            <div className="text-center p-4 rounded-lg bg-muted/50">
+              <div className="text-3xl font-bold text-muted-foreground">{passThresholdPoints}</div>
+              <div className="text-xs text-muted-foreground mt-1">
+                Kufiri ({(PASS_PERCENTAGE * 100).toFixed(0)}%)
+              </div>
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap">
             <Button
               className="gap-2"
-              onClick={() => printOfficialTest(candidate, questions, answers, score, passed)}
+              onClick={() =>
+                printOfficialTest(candidate, questions, answers, earnedPoints, totalPoints, passed)
+              }
             >
               <Printer className="w-4 h-4" /> Printo Fletën Zyrtare
             </Button>
@@ -274,12 +299,26 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
                     )}
                     <div className="flex-1">
                       <p className="font-medium">
-                        {idx + 1}. {q.question}
+                        {idx + 1}. {q.question}{" "}
+                        <span className="text-xs text-muted-foreground font-normal">
+                          ({getPoints(q)} pikë)
+                        </span>
                       </p>
+                      {q.imageUrl && (
+                        <img
+                          src={q.imageUrl}
+                          alt={q.question}
+                          className="mt-2 max-h-48 rounded border border-border"
+                        />
+                      )}
                       <div className="mt-2 text-sm space-y-1">
                         <div>
                           <span className="text-muted-foreground">Përgjigja jote: </span>
-                          <span className={correct ? "text-green-700 font-medium" : "text-destructive font-medium"}>
+                          <span
+                            className={
+                              correct ? "text-green-700 font-medium" : "text-destructive font-medium"
+                            }
+                          >
                             {userIdx !== undefined ? q.options[userIdx] : "Pa përgjigje"}
                           </span>
                         </div>
@@ -312,7 +351,7 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
               {candidate?.emri} {candidate?.mbiemri}
             </p>
             <p className="text-xs text-muted-foreground">
-              Kategoria: {candidate?.kategoria} • {answeredCount}/{questions.length} të përgjigjura
+              Kategoria: {candidate?.kategoria} • {answeredCount}/{questions.length} të përgjigjura • {totalPoints} pikë gjithsej
             </p>
           </div>
           <div className="flex gap-2">
@@ -335,10 +374,22 @@ const CandidateTest = ({ candidates }: CandidateTestProps) => {
       <div className="space-y-4">
         {questions.map((q, idx) => (
           <div key={q.id} className="glass-card rounded-xl p-5">
-            <p className="font-medium mb-3">
-              <span className="text-primary mr-2">{idx + 1}.</span>
-              {q.question}
-            </p>
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <p className="font-medium">
+                <span className="text-primary mr-2">{idx + 1}.</span>
+                {q.question}
+              </p>
+              <span className="text-xs text-muted-foreground whitespace-nowrap shrink-0">
+                {getPoints(q)} pikë
+              </span>
+            </div>
+            {q.imageUrl && (
+              <img
+                src={q.imageUrl}
+                alt={q.question}
+                className="mb-3 max-h-64 rounded-lg border border-border"
+              />
+            )}
             <RadioGroup
               value={answers[q.id]?.toString() ?? ""}
               onValueChange={(v) => setAnswers((prev) => ({ ...prev, [q.id]: parseInt(v, 10) }))}
