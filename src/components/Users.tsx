@@ -229,7 +229,7 @@ const Users = () => {
                       {isSelf && <span className="text-xs text-muted-foreground ml-2">(ti)</span>}
                     </TableCell>
                     <TableCell className="text-muted-foreground">
-                      {new Date(u.created_at).toLocaleDateString("sq-AL")}
+                      {formatDateDMY(u.created_at)}
                     </TableCell>
                     <TableCell>
                       {u.is_admin ? (
