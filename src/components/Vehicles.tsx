@@ -31,6 +31,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Image as ImageIcon, Upload, AlertTriangle, Printer } from "lucide-react";
+import { buildVehiclesPrintHTML } from "@/lib/printTemplates";
 
 interface Vehicle {
   id: string;

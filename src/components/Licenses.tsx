@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, AlertTriangle, Printer } from "lucide-react";
+import { buildLicensesPrintHTML } from "@/lib/printTemplates";
 
 interface License {
   id: string;
