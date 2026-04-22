@@ -16,6 +16,7 @@ import Employees from "@/components/Employees";
 import Licenses from "@/components/Licenses";
 import Users from "@/components/Users";
 import VehicleAlerts from "@/components/VehicleAlerts";
+import EmployeeAlerts from "@/components/EmployeeAlerts";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
@@ -107,6 +108,8 @@ const Index = () => {
               <StatsCards candidates={candidates} />
 
               <VehicleAlerts onViewVehicles={() => setActiveView("vehicles")} />
+
+              <EmployeeAlerts onViewEmployees={() => setActiveView("employees")} />
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
