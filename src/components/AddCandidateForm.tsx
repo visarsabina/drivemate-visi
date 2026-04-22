@@ -113,15 +113,20 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     }
   };
 
+  const personalNumberInfo = form.numriPersonal.length > 0 ? parsePersonalNumber(form.numriPersonal) : null;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.emri || !form.mbiemri || !form.telefon) {
       toast.error("Ju lutem plotësoni fushat e detyrueshme");
       return;
     }
-    if (form.numriPersonal && form.numriPersonal.length !== 10) {
-      toast.error("Numri personal duhet të ketë saktësisht 10 shifra");
-      return;
+    if (form.numriPersonal) {
+      const info = parsePersonalNumber(form.numriPersonal);
+      if (!info.valid) {
+        toast.error(info.error || "Numri personal nuk është i vlefshëm");
+        return;
+      }
     }
 
     const newCandidate: Candidate = {
