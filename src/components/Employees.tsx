@@ -31,6 +31,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Image as ImageIcon, Upload, AlertTriangle, Printer } from "lucide-react";
+import { buildEmployeesPrintHTML } from "@/lib/printTemplates";
 
 interface Employee {
   id: string;
@@ -211,45 +212,7 @@ const Employees = () => {
   });
 
   const handlePrint = () => {
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lista e Punëtorëve</title>
-    <style>
-      body{font-family:Arial,sans-serif;padding:24px;color:#111;}
-      h1{margin:0 0 4px 0;font-size:20px;}
-      .sub{color:#555;margin-bottom:16px;font-size:12px;}
-      table{width:100%;border-collapse:collapse;font-size:11px;}
-      th,td{border:1px solid #999;padding:6px 8px;text-align:left;vertical-align:top;}
-      th{background:#f0f0f0;}
-      .urgent{background:#ffe5e5;}
-      @media print{button{display:none;}}
-    </style></head><body>
-    <h1>Auto Shkolla Visi — Lista e Punëtorëve</h1>
-    <div class="sub">Gjithsej: ${employees.length} punëtorë</div>
-    <table>
-      <thead><tr>
-        <th>#</th><th>Emri Mbiemri</th><th>Nr. Personal</th><th>Nr. Licencës</th>
-        <th>Data e Licencës</th><th>Skadon Licenca</th>
-        <th>Data Cert. Shëndet.</th><th>Skadon Cert.</th>
-      </tr></thead>
-      <tbody>
-        ${employees.map((e, i) => {
-          const lic = daysUntil(e.license_expiry_date);
-          const health = daysUntil(e.health_certificate_expiry_date);
-          const urgent = (lic !== null && lic <= 30) || (health !== null && health <= 30);
-          return `<tr class="${urgent ? "urgent" : ""}">
-            <td>${i + 1}</td>
-            <td>${e.full_name}</td>
-            <td>${e.personal_number || "—"}</td>
-            <td>${e.license_number || "—"}</td>
-            <td>${formatDate(e.license_date)}</td>
-            <td>${formatDate(e.license_expiry_date)}</td>
-            <td>${formatDate(e.health_certificate_date)}</td>
-            <td>${formatDate(e.health_certificate_expiry_date)}</td>
-          </tr>`;
-        }).join("")}
-      </tbody>
-    </table>
-    <script>window.onload=()=>{window.print();}</script>
-    </body></html>`;
+    const html = buildEmployeesPrintHTML(employees);
     const w = window.open("", "_blank");
     if (w) { w.document.write(html); w.document.close(); }
   };

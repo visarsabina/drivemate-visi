@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, AlertTriangle, Printer } from "lucide-react";
+import { buildLicensesPrintHTML } from "@/lib/printTemplates";
 
 interface License {
   id: string;
@@ -168,39 +169,7 @@ const Licenses = () => {
   });
 
   const handlePrint = () => {
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lista e Licencave</title>
-    <style>
-      body{font-family:Arial,sans-serif;padding:24px;color:#111;}
-      h1{margin:0 0 4px 0;font-size:20px;}
-      .sub{color:#555;margin-bottom:16px;font-size:12px;}
-      table{width:100%;border-collapse:collapse;font-size:12px;}
-      th,td{border:1px solid #999;padding:6px 8px;text-align:left;vertical-align:top;}
-      th{background:#f0f0f0;}
-      .urgent{background:#ffe5e5;}
-      @media print{button{display:none;}}
-    </style></head><body>
-    <h1>Auto Shkolla Visi — Lista e Licencave</h1>
-    <div class="sub">Gjithsej: ${licenses.length} licenca</div>
-    <table>
-      <thead><tr>
-        <th>#</th><th>Kategoria</th><th>Numri i Licencës</th><th>Data e Licencës</th><th>Skadenca</th>
-      </tr></thead>
-      <tbody>
-        ${licenses.map((l, i) => {
-          const d = daysUntil(l.expiry_date);
-          const urgent = d !== null && d <= 30;
-          return `<tr class="${urgent ? "urgent" : ""}">
-            <td>${i + 1}</td>
-            <td>${l.category}</td>
-            <td>${l.license_number}</td>
-            <td>${formatDate(l.issue_date)}</td>
-            <td>${formatDate(l.expiry_date)}</td>
-          </tr>`;
-        }).join("")}
-      </tbody>
-    </table>
-    <script>window.onload=()=>{window.print();}</script>
-    </body></html>`;
+    const html = buildLicensesPrintHTML(licenses);
     const w = window.open("", "_blank");
     if (w) { w.document.write(html); w.document.close(); }
   };
