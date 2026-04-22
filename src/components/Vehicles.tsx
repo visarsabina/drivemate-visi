@@ -87,10 +87,7 @@ const expiryStatus = (date: string | null) => {
   return { variant: "outline" as const, label: `${days} ditë`, urgent: false };
 };
 
-const formatDate = (date: string | null) => {
-  if (!date) return "—";
-  return new Date(date).toLocaleDateString("sq-AL");
-};
+import { formatDateDMY as formatDate } from "@/lib/date";
 
 const Vehicles = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -226,7 +223,7 @@ const Vehicles = () => {
       @media print{button{display:none;}}
     </style></head><body>
     <h1>Auto Shkolla Visi — Lista e Mjeteve</h1>
-    <div class="sub">Data e printimit: ${new Date().toLocaleDateString("sq-AL")} • Gjithsej: ${vehicles.length} mjete</div>
+    <div class="sub">Data e printimit: ${formatDate(new Date().toISOString())} • Gjithsej: ${vehicles.length} mjete</div>
     <table>
       <thead><tr>
         <th>#</th><th>Emri i Veturës</th><th>Tabelat</th><th>Regjistrimi</th>
