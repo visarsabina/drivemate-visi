@@ -316,14 +316,16 @@ const Vehicles = () => {
                   Duke ngarkuar...
                 </TableCell>
               </TableRow>
-            ) : vehicles.length === 0 ? (
+            ) : visibleVehicles.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                  Nuk ka mjete të regjistruara
+                  {filter === "expiring"
+                    ? "Asnjë mjet me afat që skadon në 30 ditët e ardhshme"
+                    : "Nuk ka mjete të regjistruara"}
                 </TableCell>
               </TableRow>
             ) : (
-              vehicles.map((v) => {
+              visibleVehicles.map((v) => {
                 const insp = expiryStatus(v.inspection_expiry_date);
                 const reg = expiryStatus(v.registration_expiry_date);
                 const rowAlert = insp.urgent || reg.urgent;
