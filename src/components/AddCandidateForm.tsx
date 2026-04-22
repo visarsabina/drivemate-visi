@@ -257,8 +257,9 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="A">A - Motoçikletë</SelectItem>
                 <SelectItem value="B">B - Veturë</SelectItem>
+                <SelectItem value="BE">BE - Veturë me rimorkio</SelectItem>
+                <SelectItem value="C1">C1 - Kamion i vogël</SelectItem>
                 <SelectItem value="C">C - Kamion</SelectItem>
                 <SelectItem value="D">D - Autobus</SelectItem>
               </SelectContent>
