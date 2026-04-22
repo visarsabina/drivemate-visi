@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import * as XLSX from "xlsx";
-import { Upload } from "lucide-react";
+import { Upload, CheckCircle2, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Candidate, CandidateStatus } from "@/types/candidate";
 import { toast } from "sonner";
+import { parsePersonalNumber } from "@/lib/personalNumber";
 
 interface AddCandidateFormProps {
   onAdd: (candidate: Candidate) => void;
@@ -112,15 +113,20 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     }
   };
 
+  const personalNumberInfo = form.numriPersonal.length > 0 ? parsePersonalNumber(form.numriPersonal) : null;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.emri || !form.mbiemri || !form.telefon) {
       toast.error("Ju lutem plotësoni fushat e detyrueshme");
       return;
     }
-    if (form.numriPersonal && form.numriPersonal.length !== 10) {
-      toast.error("Numri personal duhet të ketë saktësisht 10 shifra");
-      return;
+    if (form.numriPersonal) {
+      const info = parsePersonalNumber(form.numriPersonal);
+      if (!info.valid) {
+        toast.error(info.error || "Numri personal nuk është i vlefshëm");
+        return;
+      }
     }
 
     const newCandidate: Candidate = {
@@ -190,13 +196,42 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
               value={form.numriPersonal}
               onChange={(e) => {
                 const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
-                setForm({ ...form, numriPersonal: digits });
+                const next = { ...form, numriPersonal: digits };
+                if (digits.length === 10) {
+                  const info = parsePersonalNumber(digits);
+                  if (info.valid && info.birthDate) {
+                    next.dataLindjes = info.birthDate;
+                  }
+                }
+                setForm(next);
               }}
               maxLength={10}
               inputMode="numeric"
               pattern="\d{10}"
               placeholder="10 shifra"
+              className={
+                personalNumberInfo && form.numriPersonal.length === 10
+                  ? personalNumberInfo.valid
+                    ? "border-green-500 focus-visible:ring-green-500"
+                    : "border-destructive focus-visible:ring-destructive"
+                  : ""
+              }
             />
+            {personalNumberInfo && form.numriPersonal.length === 10 && (
+              <p className={`text-xs flex items-center gap-1 ${personalNumberInfo.valid ? "text-green-600" : "text-destructive"}`}>
+                {personalNumberInfo.valid ? (
+                  <>
+                    <CheckCircle2 className="w-3 h-3" />
+                    I vlefshëm — Data e lindjes u plotësua automatikisht
+                  </>
+                ) : (
+                  <>
+                    <AlertCircle className="w-3 h-3" />
+                    {personalNumberInfo.error}
+                  </>
+                )}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="emri">Emri *</Label>
