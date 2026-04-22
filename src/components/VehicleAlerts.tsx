@@ -8,6 +8,7 @@ interface ExpiringVehicle {
   name: string;
   plate_number: string;
   inspection_expiry_date: string | null;
+  registration_expiry_date: string | null;
 }
 
 interface Props {
@@ -27,11 +28,12 @@ const VehicleAlerts = ({ onViewVehicles }: Props) => {
     (async () => {
       const { data } = await supabase
         .from("vehicles")
-        .select("id, name, plate_number, inspection_expiry_date");
+        .select("id, name, plate_number, inspection_expiry_date, registration_expiry_date");
       if (data) {
         const filtered = data.filter((v) => {
           const insp = daysUntil(v.inspection_expiry_date);
-          return insp !== null && insp <= 7;
+          const reg = daysUntil(v.registration_expiry_date);
+          return (insp !== null && insp <= 30) || (reg !== null && reg <= 30);
         });
         setExpiring(filtered);
       }
@@ -52,12 +54,25 @@ const VehicleAlerts = ({ onViewVehicles }: Props) => {
           <ul className="text-sm text-muted-foreground mt-2 space-y-1">
             {expiring.map((v) => {
               const insp = daysUntil(v.inspection_expiry_date);
-              const issue = insp !== null
-                ? (insp < 0 ? `kontrolla skadoi para ${Math.abs(insp)} ditë` : `kontrolla në ${insp} ditë`)
-                : "";
+              const reg = daysUntil(v.registration_expiry_date);
+              const issues: string[] = [];
+              if (reg !== null && reg <= 30) {
+                issues.push(
+                  reg < 0
+                    ? `regjistrimi skadoi para ${Math.abs(reg)} ditë`
+                    : `regjistrimi në ${reg} ditë`
+                );
+              }
+              if (insp !== null && insp <= 30) {
+                issues.push(
+                  insp < 0
+                    ? `kontrolla skadoi para ${Math.abs(insp)} ditë`
+                    : `kontrolla në ${insp} ditë`
+                );
+              }
               return (
                 <li key={v.id}>
-                  <span className="font-medium text-foreground">{v.name}</span> ({v.plate_number}) — {issue}
+                  <span className="font-medium text-foreground">{v.name}</span> ({v.plate_number}) — {issues.join(", ")}
                 </li>
               );
             })}

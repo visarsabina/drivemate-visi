@@ -37,6 +37,8 @@ interface Vehicle {
   name: string;
   plate_number: string;
   registration_date: string | null;
+  registration_expiry_date: string | null;
+  inspection_date: string | null;
   inspection_expiry_date: string | null;
   attestation_number: string | null;
   attestation_expiry_date: string | null;
@@ -47,9 +49,8 @@ const emptyForm = {
   name: "",
   plate_number: "",
   registration_date: "",
-  inspection_expiry_date: "",
+  inspection_date: "",
   attestation_number: "",
-  attestation_expiry_date: "",
   photo_url: "",
 };
 
@@ -57,6 +58,24 @@ const daysUntil = (date: string | null): number | null => {
   if (!date) return null;
   const diff = new Date(date).getTime() - new Date().setHours(0, 0, 0, 0);
   return Math.ceil(diff / (1000 * 60 * 60 * 24));
+};
+
+// Registration valid for 1 year
+const calcRegExpiry = (regDate: string): string | null => {
+  if (!regDate) return null;
+  const d = new Date(regDate);
+  if (isNaN(d.getTime())) return null;
+  d.setFullYear(d.getFullYear() + 1);
+  return d.toISOString().split("T")[0];
+};
+
+// Inspection valid for 6 months
+const calcInspExpiry = (inspDate: string): string | null => {
+  if (!inspDate) return null;
+  const d = new Date(inspDate);
+  if (isNaN(d.getTime())) return null;
+  d.setMonth(d.getMonth() + 6);
+  return d.toISOString().split("T")[0];
 };
 
 const expiryStatus = (date: string | null) => {
@@ -115,9 +134,8 @@ const Vehicles = () => {
       name: v.name,
       plate_number: v.plate_number,
       registration_date: v.registration_date || "",
-      inspection_expiry_date: v.inspection_expiry_date || "",
+      inspection_date: v.inspection_date || "",
       attestation_number: v.attestation_number || "",
-      attestation_expiry_date: v.attestation_expiry_date || "",
       photo_url: v.photo_url || "",
     });
     setPhotoFile(null);
@@ -128,14 +146,6 @@ const Vehicles = () => {
     e.preventDefault();
     if (!form.name || !form.plate_number) {
       toast.error("Emri dhe numri i tabelave janë të detyrueshëm");
-      return;
-    }
-    if (
-      form.registration_date &&
-      form.inspection_expiry_date &&
-      form.inspection_expiry_date < form.registration_date
-    ) {
-      toast.error("Skadenca e kontrollës nuk mund të jetë më e hershme se data e regjistrimit");
       return;
     }
     setUploading(true);
@@ -160,9 +170,10 @@ const Vehicles = () => {
       name: form.name,
       plate_number: form.plate_number,
       registration_date: form.registration_date || null,
-      inspection_expiry_date: form.inspection_expiry_date || null,
+      registration_expiry_date: calcRegExpiry(form.registration_date),
+      inspection_date: form.inspection_date || null,
+      inspection_expiry_date: calcInspExpiry(form.inspection_date),
       attestation_number: form.attestation_number || null,
-      attestation_expiry_date: form.attestation_expiry_date || null,
       photo_url: photoUrl || null,
     };
 
@@ -194,7 +205,8 @@ const Vehicles = () => {
 
   const expiringSoon = vehicles.filter((v) => {
     const insp = daysUntil(v.inspection_expiry_date);
-    return insp !== null && insp <= 7;
+    const reg = daysUntil(v.registration_expiry_date);
+    return (insp !== null && insp <= 30) || (reg !== null && reg <= 30);
   });
 
   const handlePrint = () => {
@@ -267,14 +279,14 @@ const Vehicles = () => {
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-lg border bg-card overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Emri i Veturës</TableHead>
               <TableHead>Tabelat</TableHead>
-              <TableHead>Regjistrimi</TableHead>
-              <TableHead>Kontrolla Periodike</TableHead>
+              <TableHead>Skadon Regjistrimi</TableHead>
+              <TableHead>Skadon Kontrolla</TableHead>
               <TableHead>Nr. Atestit</TableHead>
               <TableHead>Foto</TableHead>
               <TableHead className="text-right">Veprime</TableHead>
@@ -296,12 +308,18 @@ const Vehicles = () => {
             ) : (
               vehicles.map((v) => {
                 const insp = expiryStatus(v.inspection_expiry_date);
-                const rowAlert = insp.urgent;
+                const reg = expiryStatus(v.registration_expiry_date);
+                const rowAlert = insp.urgent || reg.urgent;
                 return (
                   <TableRow key={v.id} className={rowAlert ? "bg-destructive/5" : ""}>
                     <TableCell className="font-medium">{v.name}</TableCell>
                     <TableCell>{v.plate_number}</TableCell>
-                    <TableCell>{formatDate(v.registration_date)}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs">{formatDate(v.registration_expiry_date)}</span>
+                        <Badge variant={reg.variant} className="w-fit">{reg.label}</Badge>
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <div className="flex flex-col gap-1">
                         <span className="text-xs">{formatDate(v.inspection_expiry_date)}</span>
@@ -377,22 +395,23 @@ const Vehicles = () => {
                   value={form.registration_date}
                   onChange={(e) => setForm({ ...form, registration_date: e.target.value })}
                 />
+                {form.registration_date && (
+                  <p className="text-xs text-muted-foreground">
+                    Skadon: <span className="font-medium text-foreground">{formatDate(calcRegExpiry(form.registration_date))}</span> (1 vit)
+                  </p>
+                )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="insp">Skadenca e Kontrollës Periodike</Label>
+                <Label htmlFor="insp">Data e Kontrollës Periodike</Label>
                 <Input
                   id="insp"
                   type="date"
-                  value={form.inspection_expiry_date}
-                  min={form.registration_date || undefined}
-                  onChange={(e) => setForm({ ...form, inspection_expiry_date: e.target.value })}
-                  aria-invalid={
-                    !!(form.registration_date && form.inspection_expiry_date && form.inspection_expiry_date < form.registration_date)
-                  }
+                  value={form.inspection_date}
+                  onChange={(e) => setForm({ ...form, inspection_date: e.target.value })}
                 />
-                {form.registration_date && form.inspection_expiry_date && form.inspection_expiry_date < form.registration_date && (
-                  <p className="text-xs text-destructive">
-                    Skadenca nuk mund të jetë më e hershme se data e regjistrimit.
+                {form.inspection_date && (
+                  <p className="text-xs text-muted-foreground">
+                    Skadon: <span className="font-medium text-foreground">{formatDate(calcInspExpiry(form.inspection_date))}</span> (6 muaj)
                   </p>
                 )}
               </div>
