@@ -185,11 +185,13 @@ export type Database = {
           attestation_number: string | null
           created_at: string
           id: string
+          inspection_date: string | null
           inspection_expiry_date: string | null
           name: string
           photo_url: string | null
           plate_number: string
           registration_date: string | null
+          registration_expiry_date: string | null
           updated_at: string
         }
         Insert: {
@@ -197,11 +199,13 @@ export type Database = {
           attestation_number?: string | null
           created_at?: string
           id?: string
+          inspection_date?: string | null
           inspection_expiry_date?: string | null
           name: string
           photo_url?: string | null
           plate_number: string
           registration_date?: string | null
+          registration_expiry_date?: string | null
           updated_at?: string
         }
         Update: {
@@ -209,11 +213,13 @@ export type Database = {
           attestation_number?: string | null
           created_at?: string
           id?: string
+          inspection_date?: string | null
           inspection_expiry_date?: string | null
           name?: string
           photo_url?: string | null
           plate_number?: string
           registration_date?: string | null
+          registration_expiry_date?: string | null
           updated_at?: string
         }
         Relationships: []
