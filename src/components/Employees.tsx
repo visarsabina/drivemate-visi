@@ -49,10 +49,18 @@ const emptyForm = {
   personal_number: "",
   license_number: "",
   license_date: "",
-  license_expiry_date: "",
   health_certificate_date: "",
   health_certificate_expiry_date: "",
   photo_url: "",
+};
+
+// License is valid for 5 years from the license date
+const calcLicenseExpiry = (licenseDate: string): string | null => {
+  if (!licenseDate) return null;
+  const d = new Date(licenseDate);
+  if (isNaN(d.getTime())) return null;
+  d.setFullYear(d.getFullYear() + 5);
+  return d.toISOString().split("T")[0];
 };
 
 const daysUntil = (date: string | null): number | null => {
@@ -118,7 +126,6 @@ const Employees = () => {
       personal_number: e.personal_number || "",
       license_number: e.license_number || "",
       license_date: e.license_date || "",
-      license_expiry_date: e.license_expiry_date || "",
       health_certificate_date: e.health_certificate_date || "",
       health_certificate_expiry_date: e.health_certificate_expiry_date || "",
       photo_url: e.photo_url || "",
@@ -135,14 +142,6 @@ const Employees = () => {
     }
     if (form.personal_number && form.personal_number.length !== 10) {
       toast.error("Numri personal duhet të ketë 10 shifra");
-      return;
-    }
-    if (
-      form.license_date &&
-      form.license_expiry_date &&
-      form.license_expiry_date < form.license_date
-    ) {
-      toast.error("Skadenca e licencës nuk mund të jetë më e hershme se data e licencës");
       return;
     }
     if (
@@ -176,7 +175,7 @@ const Employees = () => {
       personal_number: form.personal_number || null,
       license_number: form.license_number || null,
       license_date: form.license_date || null,
-      license_expiry_date: form.license_expiry_date || null,
+      license_expiry_date: calcLicenseExpiry(form.license_date),
       health_certificate_date: form.health_certificate_date || null,
       health_certificate_expiry_date: form.health_certificate_expiry_date || null,
       photo_url: photoUrl || null,
@@ -404,29 +403,16 @@ const Employees = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="license_date">Data e Licencës</Label>
+                <Label htmlFor="license_date">Data e Marrjes së Licencës</Label>
                 <Input
                   id="license_date"
                   type="date"
                   value={form.license_date}
                   onChange={(e) => setForm({ ...form, license_date: e.target.value })}
                 />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="license_expiry">Skadenca e Licencës</Label>
-                <Input
-                  id="license_expiry"
-                  type="date"
-                  value={form.license_expiry_date}
-                  min={form.license_date || undefined}
-                  onChange={(e) => setForm({ ...form, license_expiry_date: e.target.value })}
-                  aria-invalid={
-                    !!(form.license_date && form.license_expiry_date && form.license_expiry_date < form.license_date)
-                  }
-                />
-                {form.license_date && form.license_expiry_date && form.license_expiry_date < form.license_date && (
-                  <p className="text-xs text-destructive">
-                    Skadenca nuk mund të jetë më e hershme se data e licencës.
+                {form.license_date && (
+                  <p className="text-xs text-muted-foreground">
+                    Skadon automatikisht më: <span className="font-medium text-foreground">{formatDate(calcLicenseExpiry(form.license_date))}</span> (5 vite)
                   </p>
                 )}
               </div>
