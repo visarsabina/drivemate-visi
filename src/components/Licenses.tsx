@@ -180,7 +180,7 @@ const Licenses = () => {
       @media print{button{display:none;}}
     </style></head><body>
     <h1>Auto Shkolla Visi — Lista e Licencave</h1>
-    <div class="sub">Data e printimit: ${formatDate(new Date().toISOString())} • Gjithsej: ${licenses.length} licenca</div>
+    <div class="sub">Gjithsej: ${licenses.length} licenca</div>
     <table>
       <thead><tr>
         <th>#</th><th>Kategoria</th><th>Numri i Licencës</th><th>Data e Licencës</th><th>Skadenca</th>

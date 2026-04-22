@@ -223,7 +223,7 @@ const Vehicles = () => {
       @media print{button{display:none;}}
     </style></head><body>
     <h1>Auto Shkolla Visi — Lista e Mjeteve</h1>
-    <div class="sub">Data e printimit: ${formatDate(new Date().toISOString())} • Gjithsej: ${vehicles.length} mjete</div>
+    <div class="sub">Gjithsej: ${vehicles.length} mjete</div>
     <table>
       <thead><tr>
         <th>#</th><th>Emri i Veturës</th><th>Tabelat</th><th>Regjistrimi</th>
