@@ -196,13 +196,42 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
               value={form.numriPersonal}
               onChange={(e) => {
                 const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
-                setForm({ ...form, numriPersonal: digits });
+                const next = { ...form, numriPersonal: digits };
+                if (digits.length === 10) {
+                  const info = parsePersonalNumber(digits);
+                  if (info.valid && info.birthDate) {
+                    next.dataLindjes = info.birthDate;
+                  }
+                }
+                setForm(next);
               }}
               maxLength={10}
               inputMode="numeric"
               pattern="\d{10}"
               placeholder="10 shifra"
+              className={
+                personalNumberInfo && form.numriPersonal.length === 10
+                  ? personalNumberInfo.valid
+                    ? "border-green-500 focus-visible:ring-green-500"
+                    : "border-destructive focus-visible:ring-destructive"
+                  : ""
+              }
             />
+            {personalNumberInfo && form.numriPersonal.length === 10 && (
+              <p className={`text-xs flex items-center gap-1 ${personalNumberInfo.valid ? "text-green-600" : "text-destructive"}`}>
+                {personalNumberInfo.valid ? (
+                  <>
+                    <CheckCircle2 className="w-3 h-3" />
+                    I vlefshëm — Data e lindjes u plotësua automatikisht
+                  </>
+                ) : (
+                  <>
+                    <AlertCircle className="w-3 h-3" />
+                    {personalNumberInfo.error}
+                  </>
+                )}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="emri">Emri *</Label>
