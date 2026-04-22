@@ -223,7 +223,7 @@ const Employees = () => {
       @media print{button{display:none;}}
     </style></head><body>
     <h1>Auto Shkolla Visi — Lista e Punëtorëve</h1>
-    <div class="sub">Data e printimit: ${formatDate(new Date().toISOString())} • Gjithsej: ${employees.length} punëtorë</div>
+    <div class="sub">Gjithsej: ${employees.length} punëtorë</div>
     <table>
       <thead><tr>
         <th>#</th><th>Emri Mbiemri</th><th>Nr. Personal</th><th>Nr. Licencës</th>

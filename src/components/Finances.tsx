@@ -156,7 +156,7 @@ const Finances = ({ candidates }: FinancesProps) => {
         .footer { margin-top: 40px; font-size: 11px; color: #666; text-align: center; }
       </style></head><body>
       <h1>Raporti ditor i pagesave</h1>
-      <div class="sub">Auto Shkolla Visi — Data: ${today}</div>
+      <div class="sub">Auto Shkolla Visi</div>
       <table>
         <thead><tr><th>Nr. Regj.</th><th>Emri</th><th>Mbiemri</th><th style="text-align:right">Shuma</th></tr></thead>
         <tbody>${body}</tbody>
