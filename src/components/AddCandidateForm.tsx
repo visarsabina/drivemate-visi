@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import * as XLSX from "xlsx";
-import { Upload } from "lucide-react";
+import { Upload, CheckCircle2, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Candidate, CandidateStatus } from "@/types/candidate";
 import { toast } from "sonner";
+import { parsePersonalNumber } from "@/lib/personalNumber";
 
 interface AddCandidateFormProps {
   onAdd: (candidate: Candidate) => void;
