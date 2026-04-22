@@ -196,14 +196,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
               value={form.numriPersonal}
               onChange={(e) => {
                 const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
-                const next = { ...form, numriPersonal: digits };
-                if (digits.length === 10) {
-                  const info = parsePersonalNumber(digits);
-                  if (info.valid && info.birthDate) {
-                    next.dataLindjes = info.birthDate;
-                  }
-                }
-                setForm(next);
+                setForm({ ...form, numriPersonal: digits });
               }}
               maxLength={10}
               inputMode="numeric"
@@ -222,7 +215,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
                 {personalNumberInfo.valid ? (
                   <>
                     <CheckCircle2 className="w-3 h-3" />
-                    I vlefshëm — Data e lindjes u plotësua automatikisht
+                    Numri personal është i vlefshëm
                   </>
                 ) : (
                   <>
