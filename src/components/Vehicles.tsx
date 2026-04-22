@@ -102,6 +102,7 @@ const Vehicles = () => {
   const [uploading, setUploading] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [filter, setFilter] = useState<"all" | "expiring">("all");
 
   const fetchVehicles = async () => {
     setLoading(true);
@@ -203,11 +204,14 @@ const Vehicles = () => {
     setDeleteId(null);
   };
 
-  const expiringSoon = vehicles.filter((v) => {
+  const isExpiringSoon = (v: Vehicle) => {
     const insp = daysUntil(v.inspection_expiry_date);
     const reg = daysUntil(v.registration_expiry_date);
     return (insp !== null && insp <= 30) || (reg !== null && reg <= 30);
-  });
+  };
+
+  const expiringSoon = vehicles.filter(isExpiringSoon);
+  const visibleVehicles = filter === "expiring" ? expiringSoon : vehicles;
 
   const handlePrint = () => {
     const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lista e Mjeteve</title>
@@ -266,9 +270,22 @@ const Vehicles = () => {
       )}
 
       <div className="flex items-center justify-between gap-2 flex-wrap">
-        <p className="text-sm text-muted-foreground">
-          Gjithsej: {vehicles.length} mjete
-        </p>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            size="sm"
+            variant={filter === "all" ? "default" : "outline"}
+            onClick={() => setFilter("all")}
+          >
+            Të gjitha ({vehicles.length})
+          </Button>
+          <Button
+            size="sm"
+            variant={filter === "expiring" ? "default" : "outline"}
+            onClick={() => setFilter("expiring")}
+          >
+            Skadojnë në 30 ditë ({expiringSoon.length})
+          </Button>
+        </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handlePrint} disabled={vehicles.length === 0}>
             <Printer className="w-4 h-4" /> Printo Listën
@@ -299,14 +316,16 @@ const Vehicles = () => {
                   Duke ngarkuar...
                 </TableCell>
               </TableRow>
-            ) : vehicles.length === 0 ? (
+            ) : visibleVehicles.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                  Nuk ka mjete të regjistruara
+                  {filter === "expiring"
+                    ? "Asnjë mjet me afat që skadon në 30 ditët e ardhshme"
+                    : "Nuk ka mjete të regjistruara"}
                 </TableCell>
               </TableRow>
             ) : (
-              vehicles.map((v) => {
+              visibleVehicles.map((v) => {
                 const insp = expiryStatus(v.inspection_expiry_date);
                 const reg = expiryStatus(v.registration_expiry_date);
                 const rowAlert = insp.urgent || reg.urgent;
