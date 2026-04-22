@@ -211,41 +211,7 @@ const Vehicles = () => {
   const visibleVehicles = filter === "expiring" ? expiringSoon : vehicles;
 
   const handlePrint = () => {
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lista e Mjeteve</title>
-    <style>
-      body{font-family:Arial,sans-serif;padding:24px;color:#111;}
-      h1{margin:0 0 4px 0;font-size:20px;}
-      .sub{color:#555;margin-bottom:16px;font-size:12px;}
-      table{width:100%;border-collapse:collapse;font-size:12px;}
-      th,td{border:1px solid #999;padding:6px 8px;text-align:left;vertical-align:top;}
-      th{background:#f0f0f0;}
-      .urgent{background:#ffe5e5;}
-      @media print{button{display:none;}}
-    </style></head><body>
-    <h1>Auto Shkolla Visi — Lista e Mjeteve</h1>
-    <div class="sub">Gjithsej: ${vehicles.length} mjete</div>
-    <table>
-      <thead><tr>
-        <th>#</th><th>Emri i Veturës</th><th>Tabelat</th><th>Regjistrimi</th>
-        <th>Kontrolla Periodike</th><th>Nr. Atestit</th>
-      </tr></thead>
-      <tbody>
-        ${vehicles.map((v, i) => {
-          const insp = daysUntil(v.inspection_expiry_date);
-          const urgent = insp !== null && insp <= 7;
-          return `<tr class="${urgent ? "urgent" : ""}">
-            <td>${i + 1}</td>
-            <td>${v.name}</td>
-            <td>${v.plate_number}</td>
-            <td>${formatDate(v.registration_date)}</td>
-            <td>${formatDate(v.inspection_expiry_date)}</td>
-            <td>${v.attestation_number || "—"}</td>
-          </tr>`;
-        }).join("")}
-      </tbody>
-    </table>
-    <script>window.onload=()=>{window.print();}</script>
-    </body></html>`;
+    const html = buildVehiclesPrintHTML(vehicles);
     const w = window.open("", "_blank");
     if (w) { w.document.write(html); w.document.close(); }
   };
