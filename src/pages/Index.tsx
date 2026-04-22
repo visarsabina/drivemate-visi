@@ -9,7 +9,6 @@ import CandidateDetail from "@/components/CandidateDetail";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
-import CandidateTest from "@/components/CandidateTest";
 import Finances from "@/components/Finances";
 import Registrations from "@/components/Registrations";
 import Vehicles from "@/components/Vehicles";
@@ -66,7 +65,6 @@ const Index = () => {
     "candidate-detail": "Paneli i Kandidatit",
     add: "Shto Kandidat",
     payment: "Pagesa",
-    test: "Test Teorik",
     finances: "Financat",
     registrations: "Regjistrimet nga Vizitorët",
     vehicles: "Mjetet e Auto-shkollës",
@@ -159,8 +157,6 @@ const Index = () => {
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 
           {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} />}
-
-          {activeView === "test" && <CandidateTest candidates={candidates} />}
 
           {activeView === "finances" && <Finances candidates={candidates} />}
 
