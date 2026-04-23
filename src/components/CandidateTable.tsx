@@ -18,6 +18,12 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
   const [paymentFilter, setPaymentFilter] = useState<string>("all");
   const [vertetimiFilter, setVertetimiFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
+
+  const parseRegNumber = (reg: string) => {
+    const num = parseInt(reg.split("/")[0], 10);
+    return isNaN(num) ? 0 : num;
+  };
 
   const categories = useMemo(() => {
     const set = new Set<string>();
