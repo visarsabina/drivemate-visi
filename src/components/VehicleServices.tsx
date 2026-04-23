@@ -222,16 +222,44 @@ const VehicleServices = () => {
             )}
             {rows.map((r) => {
               const v = vehicles.find((x) => x.name === r.vehicle_name)!;
+              const rripLevel = getAlertLevel(
+                r.rrip?.service_km,
+                r.rrip?.next_service_km,
+                RRIP_THRESHOLD,
+              );
+              const vajLevel = getAlertLevel(
+                r.vaj?.service_km,
+                r.vaj?.next_service_km,
+                VAJ_THRESHOLD,
+              );
+              const urgent =
+                rripLevel === "danger" ||
+                rripLevel === "expired" ||
+                vajLevel === "danger" ||
+                vajLevel === "expired";
               return (
-                <tr key={r.vehicle_name} className="border-t">
+                <tr
+                  key={r.vehicle_name}
+                  className={`border-t ${urgent ? "bg-destructive/5" : ""}`}
+                >
                   <td className="p-3">
                     <div className="font-medium">{r.vehicle_name}</div>
                     <div className="text-xs text-muted-foreground">{r.plate_number}</div>
                   </td>
                   <td className="p-3">{formatKm(r.rrip?.service_km ?? null)}</td>
-                  <td className="p-3">{formatKm(r.rrip?.next_service_km ?? null)}</td>
+                  <td className="p-3">
+                    <div className="flex items-center flex-wrap">
+                      <span>{formatKm(r.rrip?.next_service_km ?? null)}</span>
+                      {renderKmAlert(r.rrip?.service_km, r.rrip?.next_service_km, RRIP_THRESHOLD)}
+                    </div>
+                  </td>
                   <td className="p-3">{formatKm(r.vaj?.service_km ?? null)}</td>
-                  <td className="p-3">{formatKm(r.vaj?.next_service_km ?? null)}</td>
+                  <td className="p-3">
+                    <div className="flex items-center flex-wrap">
+                      <span>{formatKm(r.vaj?.next_service_km ?? null)}</span>
+                      {renderKmAlert(r.vaj?.service_km, r.vaj?.next_service_km, VAJ_THRESHOLD)}
+                    </div>
+                  </td>
                   <td className="p-3 text-right">
                     <Button size="sm" variant="ghost" onClick={() => openEdit(v)}>
                       <Pencil className="w-4 h-4 mr-1" /> Modifiko
