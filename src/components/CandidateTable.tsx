@@ -18,6 +18,12 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
   const [paymentFilter, setPaymentFilter] = useState<string>("all");
   const [vertetimiFilter, setVertetimiFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
+
+  const parseRegNumber = (reg: string) => {
+    const num = parseInt(reg.split("/")[0], 10);
+    return isNaN(num) ? 0 : num;
+  };
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -59,6 +65,9 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
     const matchesCategory = categoryFilter === "all" || c.kategoria === categoryFilter;
 
     return matchesSearch && matchesYear && matchesPayment && matchesVertetimi && matchesCategory;
+  }).sort((a, b) => {
+    const diff = parseRegNumber(b.numriRegjistrimit) - parseRegNumber(a.numriRegjistrimit);
+    return sortOrder === "desc" ? diff : -diff;
   });
 
   return (
@@ -117,6 +126,16 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
               {categories.map((cat) => (
                 <SelectItem key={cat} value={cat}>Kategoria {cat}</SelectItem>
               ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={sortOrder} onValueChange={(v: "desc" | "asc") => setSortOrder(v)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Renditja" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="desc">Më të rejat në krye</SelectItem>
+              <SelectItem value="asc">Më të vjetrat në krye</SelectItem>
             </SelectContent>
           </Select>
         </div>
