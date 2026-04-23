@@ -65,6 +65,9 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
     const matchesCategory = categoryFilter === "all" || c.kategoria === categoryFilter;
 
     return matchesSearch && matchesYear && matchesPayment && matchesVertetimi && matchesCategory;
+  }).sort((a, b) => {
+    const diff = parseRegNumber(b.numriRegjistrimit) - parseRegNumber(a.numriRegjistrimit);
+    return sortOrder === "desc" ? diff : -diff;
   });
 
   return (
