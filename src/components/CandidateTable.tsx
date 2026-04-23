@@ -128,6 +128,16 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
               ))}
             </SelectContent>
           </Select>
+
+          <Select value={sortOrder} onValueChange={(v: "desc" | "asc") => setSortOrder(v)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Renditja" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="desc">Më të rejat në krye</SelectItem>
+              <SelectItem value="asc">Më të vjetrat në krye</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="overflow-x-auto">
