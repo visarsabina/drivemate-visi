@@ -11,8 +11,60 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { Pencil, Wrench } from "lucide-react";
 import { toast } from "sonner";
+
+const RRIP_THRESHOLD = 10000;
+const VAJ_THRESHOLD = 1000;
+
+type AlertLevel = "ok" | "warn" | "danger" | "expired";
+
+const getAlertLevel = (
+  current: number | null | undefined,
+  next: number | null | undefined,
+  threshold: number,
+): AlertLevel => {
+  if (current == null || next == null) return "ok";
+  const remaining = next - current;
+  if (remaining <= 0) return "expired";
+  if (remaining <= threshold) return "danger";
+  if (remaining <= threshold * 2) return "warn";
+  return "ok";
+};
+
+const renderKmAlert = (
+  current: number | null | undefined,
+  next: number | null | undefined,
+  threshold: number,
+) => {
+  if (current == null || next == null) return null;
+  const remaining = next - current;
+  const level = getAlertLevel(current, next, threshold);
+  if (level === "expired")
+    return (
+      <Badge variant="destructive" className="ml-2">
+        Skaduar {Math.abs(remaining).toLocaleString()} km
+      </Badge>
+    );
+  if (level === "danger")
+    return (
+      <Badge variant="destructive" className="ml-2">
+        Mbetur {remaining.toLocaleString()} km
+      </Badge>
+    );
+  if (level === "warn")
+    return (
+      <Badge className="ml-2 bg-warning text-warning-foreground hover:bg-warning/90">
+        Mbetur {remaining.toLocaleString()} km
+      </Badge>
+    );
+  return (
+    <Badge variant="secondary" className="ml-2">
+      Mbetur {remaining.toLocaleString()} km
+    </Badge>
+  );
+};
 
 interface Vehicle {
   id: string;
