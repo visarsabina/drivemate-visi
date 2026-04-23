@@ -1,4 +1,4 @@
-import { Users, UserCheck, Clock, XCircle } from "lucide-react";
+import { Users } from "lucide-react";
 import { Candidate } from "@/types/candidate";
 
 interface StatsCardsProps {
@@ -7,19 +7,13 @@ interface StatsCardsProps {
 
 const StatsCards = ({ candidates }: StatsCardsProps) => {
   const total = candidates.length;
-  const active = candidates.filter((c) => c.statusi === "ne_proces").length;
-  const passed = candidates.filter((c) => c.statusi === "kaluar").length;
-  const failed = candidates.filter((c) => c.statusi === "deshtur").length;
 
   const stats = [
     { label: "Gjithsej", value: total, icon: Users, color: "text-primary" },
-    { label: "Në Proces", value: active, icon: Clock, color: "text-warning" },
-    { label: "Kaluar", value: passed, icon: UserCheck, color: "text-success" },
-    { label: "Dështuar", value: failed, icon: XCircle, color: "text-destructive" },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 gap-4">
       {stats.map((stat) => {
         const Icon = stat.icon;
         return (
