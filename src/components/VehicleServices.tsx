@@ -162,7 +162,7 @@ const VehicleServices = () => {
     if (d <= 14)
       return <Badge variant="destructive">Pas {d} ditë</Badge>;
     if (d <= 30)
-      return <Badge className="bg-yellow-500 text-white hover:bg-yellow-500/90">Pas {d} ditë</Badge>;
+      return <Badge className="bg-warning text-warning-foreground hover:bg-warning/90">Pas {d} ditë</Badge>;
     return <Badge variant="secondary">Pas {d} ditë</Badge>;
   };
 
