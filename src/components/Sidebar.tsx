@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -16,6 +16,7 @@ const navItems = [
   { id: "finances", label: "Financat", icon: Wallet },
   { id: "registrations", label: "Regjistrimet", icon: Inbox },
   { id: "vehicles", label: "Mjetet", icon: Car },
+  { id: "vehicle-services", label: "Servisat", icon: Wrench },
   { id: "employees", label: "Punëtorët", icon: Briefcase },
   { id: "licenses", label: "Licencat", icon: IdCard },
   { id: "users", label: "Përdoruesit", icon: ShieldCheck },

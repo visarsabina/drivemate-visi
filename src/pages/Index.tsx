@@ -12,6 +12,7 @@ import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import Finances from "@/components/Finances";
 import Registrations from "@/components/Registrations";
 import Vehicles from "@/components/Vehicles";
+import VehicleServices from "@/components/VehicleServices";
 import Employees from "@/components/Employees";
 import Licenses from "@/components/Licenses";
 import Users from "@/components/Users";
@@ -69,6 +70,7 @@ const Index = () => {
     finances: "Financat",
     registrations: "Regjistrimet nga Vizitorët",
     vehicles: "Mjetet e Auto-shkollës",
+    "vehicle-services": "Servisat e Veturave",
     employees: "Punëtorët",
     licenses: "Licencat",
     users: "Përdoruesit",
@@ -166,6 +168,8 @@ const Index = () => {
           {activeView === "registrations" && <Registrations />}
 
           {activeView === "vehicles" && <Vehicles />}
+
+          {activeView === "vehicle-services" && <VehicleServices />}
 
           {activeView === "employees" && <Employees />}
 
