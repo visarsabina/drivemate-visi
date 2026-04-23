@@ -179,6 +179,45 @@ export type Database = {
         }
         Relationships: []
       }
+      vehicle_services: {
+        Row: {
+          created_at: string
+          id: string
+          next_service_date: string | null
+          next_service_km: number | null
+          notes: string | null
+          service_date: string | null
+          service_km: number | null
+          service_type: string
+          updated_at: string
+          vehicle_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          next_service_date?: string | null
+          next_service_km?: number | null
+          notes?: string | null
+          service_date?: string | null
+          service_km?: number | null
+          service_type: string
+          updated_at?: string
+          vehicle_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          next_service_date?: string | null
+          next_service_km?: number | null
+          notes?: string | null
+          service_date?: string | null
+          service_km?: number | null
+          service_type?: string
+          updated_at?: string
+          vehicle_name?: string
+        }
+        Relationships: []
+      }
       vehicles: {
         Row: {
           attestation_expiry_date: string | null
