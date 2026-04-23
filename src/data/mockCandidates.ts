@@ -55,7 +55,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -74,7 +74,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -93,7 +93,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -112,7 +112,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -131,7 +131,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -245,7 +245,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -283,7 +283,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -321,7 +321,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -340,7 +340,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -359,7 +359,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -378,7 +378,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -397,7 +397,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -416,7 +416,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -435,7 +435,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -530,7 +530,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -549,7 +549,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -663,7 +663,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -682,7 +682,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -739,7 +739,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -853,7 +853,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -891,7 +891,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -948,7 +948,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -967,7 +967,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -986,7 +986,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1138,7 +1138,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1157,7 +1157,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1214,7 +1214,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1233,7 +1233,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1442,7 +1442,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1537,7 +1537,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1613,7 +1613,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1632,7 +1632,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1651,7 +1651,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -1784,7 +1784,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -2487,7 +2487,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -2734,7 +2734,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -2962,7 +2962,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -2981,7 +2981,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -3000,7 +3000,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -3019,7 +3019,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -3285,7 +3285,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -3431,7 +3431,7 @@ export const mockCandidates: Candidate[] = [
     vendlindja: "",
     telefon: "",
     dataLindjes: "",
-    kategoria: "BC2",
+    kategoria: "BC1",
     certifikataShendetsore: "",
     vendi: "",
     statusi: "regjistuar",
@@ -3450,7 +3450,7 @@ export const mockCandidates: Candidate[] = [
     vendlindja: "",
     telefon: "",
     dataLindjes: "",
-    kategoria: "BC3",
+    kategoria: "BC1",
     certifikataShendetsore: "",
     vendi: "",
     statusi: "regjistuar",
@@ -3494,7 +3494,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -3513,7 +3513,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -3532,7 +3532,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -3893,7 +3893,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -4501,7 +4501,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -4520,7 +4520,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -4729,7 +4729,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -4805,7 +4805,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -4824,7 +4824,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -4881,7 +4881,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -4900,7 +4900,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -5223,7 +5223,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -5242,7 +5242,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -5318,7 +5318,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -5337,7 +5337,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -5356,7 +5356,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
@@ -5375,7 +5375,7 @@ export const mockCandidates: Candidate[] = [
     statusi: "regjistuar",
     dataRegjistrimit: "2026-01-01",
     shenimet: "",
-    shumaMarreveshjes: 250,
+    shumaMarreveshjes: 0,
     payments: [],
   },
   {
