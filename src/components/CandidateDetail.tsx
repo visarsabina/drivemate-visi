@@ -3,13 +3,16 @@ import { Candidate } from "@/types/candidate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer, CreditCard } from "lucide-react";
+import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer, CreditCard, Pencil } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import { parsePersonalNumber } from "@/lib/personalNumber";
 
 const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
   const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
@@ -62,12 +65,34 @@ interface CandidateDetailProps {
   candidate: Candidate;
   onBack: () => void;
   onVertetimiPrinted?: (candidateId: string) => void;
+  onUpdate?: (candidate: Candidate) => void;
 }
 
-const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted }: CandidateDetailProps) => {
+const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: CandidateDetailProps) => {
   const [activeDoc, setActiveDoc] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [numriPageses, setNumriPageses] = useState("");
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editForm, setEditForm] = useState<Candidate>(candidate);
+
+  const openEditDialog = () => {
+    setEditForm(candidate);
+    setShowEditDialog(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editForm.emri || !editForm.mbiemri) {
+      toast({ title: "Gabim", description: "Emri dhe mbiemri janë të detyrueshëm", variant: "destructive" });
+      return;
+    }
+    if (editForm.numriPersonal && !parsePersonalNumber(editForm.numriPersonal)) {
+      toast({ title: "Gabim", description: "Numri personal nuk është valid (10 shifra)", variant: "destructive" });
+      return;
+    }
+    onUpdate?.(editForm);
+    setShowEditDialog(false);
+    toast({ title: "U ruajt", description: "Të dhënat e kandidatit u përditësuan" });
+  };
   const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
   const borxhi = candidate.shumaMarreveshjes - totalPaguar;
 
