@@ -3,13 +3,16 @@ import { Candidate } from "@/types/candidate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer, CreditCard } from "lucide-react";
+import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer, CreditCard, Pencil } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import { parsePersonalNumber } from "@/lib/personalNumber";
 
 const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
   const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
@@ -62,12 +65,34 @@ interface CandidateDetailProps {
   candidate: Candidate;
   onBack: () => void;
   onVertetimiPrinted?: (candidateId: string) => void;
+  onUpdate?: (candidate: Candidate) => void;
 }
 
-const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted }: CandidateDetailProps) => {
+const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: CandidateDetailProps) => {
   const [activeDoc, setActiveDoc] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [numriPageses, setNumriPageses] = useState("");
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editForm, setEditForm] = useState<Candidate>(candidate);
+
+  const openEditDialog = () => {
+    setEditForm(candidate);
+    setShowEditDialog(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editForm.emri || !editForm.mbiemri) {
+      toast({ title: "Gabim", description: "Emri dhe mbiemri janë të detyrueshëm", variant: "destructive" });
+      return;
+    }
+    if (editForm.numriPersonal && !parsePersonalNumber(editForm.numriPersonal)) {
+      toast({ title: "Gabim", description: "Numri personal nuk është valid (10 shifra)", variant: "destructive" });
+      return;
+    }
+    onUpdate?.(editForm);
+    setShowEditDialog(false);
+    toast({ title: "U ruajt", description: "Të dhënat e kandidatit u përditësuan" });
+  };
   const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
   const borxhi = candidate.shumaMarreveshjes - totalPaguar;
 
@@ -130,9 +155,14 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted }: CandidateDet
 
   return (
     <div className="space-y-6">
-      <Button variant="ghost" onClick={onBack} className="gap-2">
-        <ArrowLeft className="w-4 h-4" /> Kthehu tek lista
-      </Button>
+      <div className="flex items-center justify-between">
+        <Button variant="ghost" onClick={onBack} className="gap-2">
+          <ArrowLeft className="w-4 h-4" /> Kthehu tek lista
+        </Button>
+        <Button variant="outline" onClick={openEditDialog} className="gap-2">
+          <Pencil className="w-4 h-4" /> Modifiko
+        </Button>
+      </div>
 
       <div className="glass-card rounded-xl p-6">
         <div className="flex items-start justify-between mb-4">
@@ -249,6 +279,90 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted }: CandidateDet
             }}>
               <Printer className="w-4 h-4" /> Printo
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifiko Kandidatin</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2">
+            <div className="space-y-2">
+              <Label>Nr. Regjistrimit</Label>
+              <Input value={editForm.numriRegjistrimit} onChange={(e) => setEditForm({ ...editForm, numriRegjistrimit: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Nr. Personal</Label>
+              <Input value={editForm.numriPersonal} onChange={(e) => setEditForm({ ...editForm, numriPersonal: e.target.value })} maxLength={10} />
+            </div>
+            <div className="space-y-2">
+              <Label>Emri *</Label>
+              <Input value={editForm.emri} onChange={(e) => setEditForm({ ...editForm, emri: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Mbiemri *</Label>
+              <Input value={editForm.mbiemri} onChange={(e) => setEditForm({ ...editForm, mbiemri: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Emri i Babait</Label>
+              <Input value={editForm.emriBabait} onChange={(e) => setEditForm({ ...editForm, emriBabait: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Vendlindja</Label>
+              <Input value={editForm.vendlindja} onChange={(e) => setEditForm({ ...editForm, vendlindja: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Telefoni</Label>
+              <Input value={editForm.telefon} onChange={(e) => setEditForm({ ...editForm, telefon: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Data e Lindjes</Label>
+              <Input type="date" value={editForm.dataLindjes} onChange={(e) => setEditForm({ ...editForm, dataLindjes: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Kategoria</Label>
+              <Select value={editForm.kategoria} onValueChange={(v) => setEditForm({ ...editForm, kategoria: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="A">A</SelectItem>
+                  <SelectItem value="A1">A1</SelectItem>
+                  <SelectItem value="B">B</SelectItem>
+                  <SelectItem value="B1">B1</SelectItem>
+                  <SelectItem value="C">C</SelectItem>
+                  <SelectItem value="C1">C1</SelectItem>
+                  <SelectItem value="D">D</SelectItem>
+                  <SelectItem value="D1">D1</SelectItem>
+                  <SelectItem value="BE">BE</SelectItem>
+                  <SelectItem value="CE">CE</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Çertifikata Shëndetësore</Label>
+              <Input value={editForm.certifikataShendetsore} onChange={(e) => setEditForm({ ...editForm, certifikataShendetsore: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Vendi</Label>
+              <Input value={editForm.vendi} onChange={(e) => setEditForm({ ...editForm, vendi: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Data Regjistrimit</Label>
+              <Input type="date" value={editForm.dataRegjistrimit} onChange={(e) => setEditForm({ ...editForm, dataRegjistrimit: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Shuma e Marrëveshjes (€)</Label>
+              <Input type="number" step="0.01" value={editForm.shumaMarreveshjes} onChange={(e) => setEditForm({ ...editForm, shumaMarreveshjes: parseFloat(e.target.value) || 0 })} />
+            </div>
+            <div className="space-y-2 sm:col-span-2">
+              <Label>Shënime</Label>
+              <Input value={editForm.shenimet} onChange={(e) => setEditForm({ ...editForm, shenimet: e.target.value })} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>Anulo</Button>
+            <Button onClick={handleSaveEdit}>Ruaj Ndryshimet</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

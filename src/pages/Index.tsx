@@ -53,6 +53,11 @@ const Index = () => {
     );
   };
 
+  const handleUpdateCandidate = (updated: Candidate) => {
+    setCandidates((prev) => prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c)));
+    setSelectedCandidate(updated);
+  };
+
   const handleToggleDocuments = (candidateId: string, value: boolean) => {
     setCandidates((prev) =>
       prev.map((c) =>
@@ -156,6 +161,7 @@ const Index = () => {
               candidate={candidates.find(c => c.id === selectedCandidate.id) || selectedCandidate}
               onBack={() => { setSelectedCandidate(null); setActiveView("candidates"); }}
               onVertetimiPrinted={handleVertetimiPrinted}
+              onUpdate={handleUpdateCandidate}
             />
           )}
 
