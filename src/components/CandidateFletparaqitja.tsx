@@ -86,9 +86,10 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   .remarks-box .rb { font-weight: bold; font-size: 10pt; line-height: 1.2; flex: 1; display: flex; flex-direction: column; justify-content: center; }
   .remarks-box .rb .big { font-size: 16pt; }
   .sig-section { display: flex; gap: 0; margin-top: 0; }
-  .sig-box { flex: 1; border: 1px solid #000; padding: 1.5mm 2mm; min-height: 12mm; }
+  .sig-box { flex: 1; border: 1px solid #000; padding: 0; min-height: 14mm; display: flex; flex-direction: column; }
   .sig-box + .sig-box { border-left: none; }
-  .sig-title { font-size: 8.5pt; font-weight: bold; text-align: center; }
+  .sig-title { font-size: 8.5pt; font-weight: bold; text-align: center; padding: 1mm 2mm; border-bottom: 1px solid #000; }
+  .sig-body { flex: 1; min-height: 10mm; }
   .dashed { border-top: 1px dashed #000; margin: 3mm 0; }
   .tel { font-size: 10pt; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding: 0 6mm 1px; min-width: 55mm; }
   .small-table { width: 100%; border-collapse: collapse; margin-top: 1.5mm; }
@@ -154,9 +155,11 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   <div class="sig-section">
     <div class="sig-box">
       <div class="sig-title">10. Nënshkrimi I paraqitësit / Data / Potpis<br/>podnosioca / Datum / Officer's Signature / Date</div>
+      <div class="sig-body"></div>
     </div>
     <div class="sig-box">
       <div class="sig-title">11. Nënshkrimi I nënpunsit zyrtar / Data /Potpis<br/>službenog lica / Datum / Aplican't Signature / Date</div>
+      <div class="sig-body"></div>
     </div>
   </div>
 
