@@ -282,6 +282,90 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: Ca
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifiko Kandidatin</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2">
+            <div className="space-y-2">
+              <Label>Nr. Regjistrimit</Label>
+              <Input value={editForm.numriRegjistrimit} onChange={(e) => setEditForm({ ...editForm, numriRegjistrimit: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Nr. Personal</Label>
+              <Input value={editForm.numriPersonal} onChange={(e) => setEditForm({ ...editForm, numriPersonal: e.target.value })} maxLength={10} />
+            </div>
+            <div className="space-y-2">
+              <Label>Emri *</Label>
+              <Input value={editForm.emri} onChange={(e) => setEditForm({ ...editForm, emri: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Mbiemri *</Label>
+              <Input value={editForm.mbiemri} onChange={(e) => setEditForm({ ...editForm, mbiemri: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Emri i Babait</Label>
+              <Input value={editForm.emriBabait} onChange={(e) => setEditForm({ ...editForm, emriBabait: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Vendlindja</Label>
+              <Input value={editForm.vendlindja} onChange={(e) => setEditForm({ ...editForm, vendlindja: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Telefoni</Label>
+              <Input value={editForm.telefon} onChange={(e) => setEditForm({ ...editForm, telefon: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Data e Lindjes</Label>
+              <Input type="date" value={editForm.dataLindjes} onChange={(e) => setEditForm({ ...editForm, dataLindjes: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Kategoria</Label>
+              <Select value={editForm.kategoria} onValueChange={(v) => setEditForm({ ...editForm, kategoria: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="A">A</SelectItem>
+                  <SelectItem value="A1">A1</SelectItem>
+                  <SelectItem value="B">B</SelectItem>
+                  <SelectItem value="B1">B1</SelectItem>
+                  <SelectItem value="C">C</SelectItem>
+                  <SelectItem value="C1">C1</SelectItem>
+                  <SelectItem value="D">D</SelectItem>
+                  <SelectItem value="D1">D1</SelectItem>
+                  <SelectItem value="BE">BE</SelectItem>
+                  <SelectItem value="CE">CE</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Çertifikata Shëndetësore</Label>
+              <Input value={editForm.certifikataShendetsore} onChange={(e) => setEditForm({ ...editForm, certifikataShendetsore: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Vendi</Label>
+              <Input value={editForm.vendi} onChange={(e) => setEditForm({ ...editForm, vendi: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Data Regjistrimit</Label>
+              <Input type="date" value={editForm.dataRegjistrimit} onChange={(e) => setEditForm({ ...editForm, dataRegjistrimit: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Shuma e Marrëveshjes (€)</Label>
+              <Input type="number" step="0.01" value={editForm.shumaMarreveshjes} onChange={(e) => setEditForm({ ...editForm, shumaMarreveshjes: parseFloat(e.target.value) || 0 })} />
+            </div>
+            <div className="space-y-2 sm:col-span-2">
+              <Label>Shënime</Label>
+              <Input value={editForm.shenimet} onChange={(e) => setEditForm({ ...editForm, shenimet: e.target.value })} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>Anulo</Button>
+            <Button onClick={handleSaveEdit}>Ruaj Ndryshimet</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
