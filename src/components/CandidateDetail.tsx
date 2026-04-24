@@ -155,9 +155,14 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: Ca
 
   return (
     <div className="space-y-6">
-      <Button variant="ghost" onClick={onBack} className="gap-2">
-        <ArrowLeft className="w-4 h-4" /> Kthehu tek lista
-      </Button>
+      <div className="flex items-center justify-between">
+        <Button variant="ghost" onClick={onBack} className="gap-2">
+          <ArrowLeft className="w-4 h-4" /> Kthehu tek lista
+        </Button>
+        <Button variant="outline" onClick={openEditDialog} className="gap-2">
+          <Pencil className="w-4 h-4" /> Modifiko
+        </Button>
+      </div>
 
       <div className="glass-card rounded-xl p-6">
         <div className="flex items-start justify-between mb-4">
