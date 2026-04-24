@@ -9,6 +9,7 @@ import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Auth from "./pages/Auth.tsx";
 import Staff from "./pages/Staff.tsx";
+import Install from "./pages/Install.tsx";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/stafi" element={<Staff />} />
+            <Route path="/install" element={<Install />} />
             <Route path="/auth" element={<Auth />} />
             {/* Legacy login route -> redirect to secure auth */}
             <Route path="/login" element={<Navigate to="/auth" replace />} />
