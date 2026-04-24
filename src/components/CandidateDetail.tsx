@@ -13,6 +13,33 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import { parsePersonalNumber } from "@/lib/personalNumber";
+import { z } from "zod";
+
+const editCandidateSchema = z.object({
+  emri: z.string().trim().min(1, "Emri është i detyrueshëm").max(100, "Emri max 100 karaktere"),
+  mbiemri: z.string().trim().min(1, "Mbiemri është i detyrueshëm").max(100, "Mbiemri max 100 karaktere"),
+  emriBabait: z.string().trim().max(100, "Max 100 karaktere").optional().or(z.literal("")),
+  vendlindja: z.string().trim().max(100, "Max 100 karaktere").optional().or(z.literal("")),
+  vendi: z.string().trim().max(100, "Max 100 karaktere").optional().or(z.literal("")),
+  shenimet: z.string().trim().max(500, "Shënimet max 500 karaktere").optional().or(z.literal("")),
+  certifikataShendetsore: z.string().trim().max(100, "Max 100 karaktere").optional().or(z.literal("")),
+  numriRegjistrimit: z.string().trim().min(1, "Nr. regjistrimit i detyrueshëm").max(20, "Max 20 karaktere"),
+  numriPersonal: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || /^\d{10}$/.test(v), "Numri personal duhet të jetë saktësisht 10 shifra"),
+  telefon: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || /^[0-9+\s-]{6,20}$/.test(v), "Telefoni duhet të përmbajë vetëm numra (6-20 shifra)"),
+  dataLindjes: z.string().refine((v) => v === "" || !isNaN(Date.parse(v)), "Data e lindjes nuk është valide"),
+  dataRegjistrimit: z.string().refine((v) => v === "" || !isNaN(Date.parse(v)), "Data e regjistrimit nuk është valide"),
+  kategoria: z.string().min(1, "Kategoria është e detyrueshme"),
+  shumaMarreveshjes: z
+    .number({ invalid_type_error: "Shuma duhet të jetë numër" })
+    .min(0, "Shuma nuk mund të jetë negative")
+    .max(100000, "Shuma është shumë e madhe"),
+});
 
 const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
   const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
@@ -81,14 +108,38 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: Ca
   };
 
   const handleSaveEdit = () => {
-    if (!editForm.emri || !editForm.mbiemri) {
-      toast({ title: "Gabim", description: "Emri dhe mbiemri janë të detyrueshëm", variant: "destructive" });
+    const result = editCandidateSchema.safeParse({
+      emri: editForm.emri,
+      mbiemri: editForm.mbiemri,
+      emriBabait: editForm.emriBabait ?? "",
+      vendlindja: editForm.vendlindja ?? "",
+      vendi: editForm.vendi ?? "",
+      shenimet: editForm.shenimet ?? "",
+      certifikataShendetsore: editForm.certifikataShendetsore ?? "",
+      numriRegjistrimit: editForm.numriRegjistrimit,
+      numriPersonal: editForm.numriPersonal ?? "",
+      telefon: editForm.telefon ?? "",
+      dataLindjes: editForm.dataLindjes ?? "",
+      dataRegjistrimit: editForm.dataRegjistrimit ?? "",
+      kategoria: editForm.kategoria,
+      shumaMarreveshjes: editForm.shumaMarreveshjes,
+    });
+
+    if (!result.success) {
+      const firstError = result.error.errors[0];
+      toast({ title: "Validim i dështuar", description: firstError.message, variant: "destructive" });
       return;
     }
-    if (editForm.numriPersonal && !parsePersonalNumber(editForm.numriPersonal)) {
-      toast({ title: "Gabim", description: "Numri personal nuk është valid (10 shifra)", variant: "destructive" });
-      return;
+
+    // Extra check using existing personal-number helper for consistency
+    if (editForm.numriPersonal) {
+      const pn = parsePersonalNumber(editForm.numriPersonal);
+      if (!pn.valid) {
+        toast({ title: "Numri personal jo valid", description: pn.error ?? "I pavlefshëm", variant: "destructive" });
+        return;
+      }
     }
+
     onUpdate?.(editForm);
     setShowEditDialog(false);
     toast({ title: "U ruajt", description: "Të dhënat e kandidatit u përditësuan" });
