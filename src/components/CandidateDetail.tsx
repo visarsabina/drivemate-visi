@@ -346,7 +346,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: Ca
             </div>
             <div className="space-y-2">
               <Label>Nr. Personal</Label>
-              <Input value={editForm.numriPersonal} onChange={(e) => setEditForm({ ...editForm, numriPersonal: e.target.value })} maxLength={10} />
+              <Input value={editForm.numriPersonal} onChange={(e) => setEditForm({ ...editForm, numriPersonal: e.target.value.replace(/\D/g, "").slice(0, 10) })} maxLength={10} inputMode="numeric" placeholder="10 shifra" />
             </div>
             <div className="space-y-2">
               <Label>Emri *</Label>
@@ -366,7 +366,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: Ca
             </div>
             <div className="space-y-2">
               <Label>Telefoni</Label>
-              <Input value={editForm.telefon} onChange={(e) => setEditForm({ ...editForm, telefon: e.target.value })} />
+              <Input value={editForm.telefon} onChange={(e) => setEditForm({ ...editForm, telefon: e.target.value.replace(/[^\d+\s-]/g, "").slice(0, 20) })} inputMode="tel" maxLength={20} placeholder="Vetëm numra" />
             </div>
             <div className="space-y-2">
               <Label>Data e Lindjes</Label>
@@ -404,7 +404,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: Ca
             </div>
             <div className="space-y-2">
               <Label>Shuma e Marrëveshjes (€)</Label>
-              <Input type="number" step="0.01" value={editForm.shumaMarreveshjes} onChange={(e) => setEditForm({ ...editForm, shumaMarreveshjes: parseFloat(e.target.value) || 0 })} />
+              <Input type="number" step="0.01" min={0} max={100000} value={editForm.shumaMarreveshjes} onChange={(e) => { const v = parseFloat(e.target.value); setEditForm({ ...editForm, shumaMarreveshjes: isNaN(v) ? 0 : Math.max(0, v) }); }} />
             </div>
             <div className="space-y-2 sm:col-span-2">
               <Label>Shënime</Label>
