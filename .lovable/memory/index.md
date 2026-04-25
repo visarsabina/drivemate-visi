@@ -1,14 +1,13 @@
-# Memory: index.md
-Updated: now
-
 # Project Memory
 
 ## Core
 Project "Auto shkolla Visi". Professional dashboard UI with blue/teal colors in glass-card style.
 Admin panel uses Supabase Auth + user_roles table; non-Cloud features use local state.
 Dashboard must offer quick access to Libreza, Vërtetimi, Fletparaqitja, and Kontrata.
+Multi-tenant: every per-tenant insert MUST include tenant_id from useTenant() hook.
 
 ## Memories
+- [Multi-Tenant Architecture](mem://features/multi-tenant) — Tenants table, user_tenants junction, useTenant hook, domain-based public registration
 - [Candidate Management](mem://features/candidate-management) — Candidate data fields, registration number logic, and list view status indicators
 - [Payments Module](mem://features/payments) — Transaction history, automatic debt calculation, and payment slips
 - [Candidate Booklet](mem://features/documents/candidate-booklet) — 4-section booklet auto-populated with profile data
