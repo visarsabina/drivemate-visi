@@ -92,6 +92,7 @@ const expiryStatus = (date: string | null) => {
 import { formatDateDMY as formatDate } from "@/lib/date";
 
 const Vehicles = () => {
+  const { tenantId } = useTenant();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);

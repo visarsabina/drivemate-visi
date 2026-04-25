@@ -101,6 +101,7 @@ const formatKm = (n: number | null | undefined) =>
   n != null ? `${n.toLocaleString()} km` : "-";
 
 const VehicleServices = () => {
+  const { tenantId } = useTenant();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [services, setServices] = useState<VehicleService[]>([]);
   const [editing, setEditing] = useState<Vehicle | null>(null);

@@ -76,6 +76,7 @@ const expiryStatus = (date: string | null) => {
 import { formatDateDMY as formatDate } from "@/lib/date";
 
 const Licenses = () => {
+  const { tenantId } = useTenant();
   const [licenses, setLicenses] = useState<License[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
