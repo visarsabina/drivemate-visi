@@ -59,10 +59,19 @@ const stats = [
 
 const Home = () => {
   const navigate = useNavigate();
+  const { isAdmin, roleChecked, session } = useAuth();
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
   const [staff, setStaff] = useState<StaffMember[]>([]);
+
+  // Auto-redirect logged-in admins straight to the panel (PWA "remember me")
+  useEffect(() => {
+    if (session && roleChecked && isAdmin) {
+      navigate("/admin", { replace: true });
+    }
+  }, [session, roleChecked, isAdmin, navigate]);
+
 
   useEffect(() => {
     supabase
