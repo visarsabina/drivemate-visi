@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -100,6 +101,7 @@ const formatKm = (n: number | null | undefined) =>
   n != null ? `${n.toLocaleString()} km` : "-";
 
 const VehicleServices = () => {
+  const { tenantId } = useTenant();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [services, setServices] = useState<VehicleService[]>([]);
   const [editing, setEditing] = useState<Vehicle | null>(null);
@@ -165,7 +167,11 @@ const VehicleServices = () => {
     if (existing) {
       return supabase.from("vehicle_services").update(payload).eq("id", existing.id);
     }
-    return supabase.from("vehicle_services").insert(payload);
+    if (!tenantId) {
+      toast.error("Tenant nuk u gjet");
+      return null;
+    }
+    return supabase.from("vehicle_services").insert({ ...payload, tenant_id: tenantId });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

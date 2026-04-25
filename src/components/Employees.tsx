@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -82,6 +83,7 @@ const expiryStatus = (date: string | null) => {
 import { formatDateDMY as formatDate } from "@/lib/date";
 
 const Employees = () => {
+  const { tenantId } = useTenant();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -179,9 +181,15 @@ const Employees = () => {
       photo_url: photoUrl || null,
     };
 
+    if (!editingId && !tenantId) {
+      toast.error("Tenant nuk u gjet");
+      setUploading(false);
+      return;
+    }
+
     const { error } = editingId
       ? await supabase.from("employees").update(payload).eq("id", editingId)
-      : await supabase.from("employees").insert(payload);
+      : await supabase.from("employees").insert({ ...payload, tenant_id: tenantId! });
 
     setUploading(false);
     if (error) {

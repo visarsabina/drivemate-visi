@@ -21,6 +21,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { resolveTenantByDomain } from "@/hooks/useTenant";
 
 const schema = z.object({
   fullName: z
@@ -96,11 +97,23 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "" }: Regist
     setErrors({});
     setSubmitting(true);
 
+    const tenantId = await resolveTenantByDomain();
+    if (!tenantId) {
+      setSubmitting(false);
+      toast({
+        title: "Gabim",
+        description: "Autoshkolla nuk u gjet për këtë domain.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const { error } = await supabase.from("registrations").insert({
       full_name: result.data.fullName,
       email: result.data.email,
       phone: result.data.phone,
       category: result.data.category,
+      tenant_id: tenantId,
     });
 
     if (error) {

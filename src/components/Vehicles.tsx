@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -91,6 +92,7 @@ const expiryStatus = (date: string | null) => {
 import { formatDateDMY as formatDate } from "@/lib/date";
 
 const Vehicles = () => {
+  const { tenantId } = useTenant();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -176,9 +178,15 @@ const Vehicles = () => {
       photo_url: photoUrl || null,
     };
 
+    if (!editingId && !tenantId) {
+      toast.error("Tenant nuk u gjet");
+      setUploading(false);
+      return;
+    }
+
     const { error } = editingId
       ? await supabase.from("vehicles").update(payload).eq("id", editingId)
-      : await supabase.from("vehicles").insert(payload);
+      : await supabase.from("vehicles").insert({ ...payload, tenant_id: tenantId! });
 
     setUploading(false);
     if (error) {
