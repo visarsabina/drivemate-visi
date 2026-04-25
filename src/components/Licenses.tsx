@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -137,9 +138,15 @@ const Licenses = () => {
       expiry_date: form.expiry_date || null,
     };
 
+    if (!editingId && !tenantId) {
+      toast.error("Tenant nuk u gjet");
+      setSaving(false);
+      return;
+    }
+
     const { error } = editingId
       ? await supabase.from("licenses").update(payload).eq("id", editingId)
-      : await supabase.from("licenses").insert(payload);
+      : await supabase.from("licenses").insert({ ...payload, tenant_id: tenantId! });
 
     setSaving(false);
     if (error) {
