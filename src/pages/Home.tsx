@@ -538,8 +538,8 @@ const Home = () => {
           <div className="grid sm:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <img src={logo} alt="Autoshkolla Visi" width={32} height={32} className="brightness-200" />
-                <span className="font-bold text-lg">Autoshkolla Visi</span>
+                <img src={logoSrc} alt={schoolName} width={32} height={32} className="brightness-200 rounded object-contain" />
+                <span className="font-bold text-lg">{schoolName}</span>
               </div>
               <p className="text-sm opacity-60">Partneri juaj i besuar për marrjen e patentës së shoferit.</p>
             </div>
