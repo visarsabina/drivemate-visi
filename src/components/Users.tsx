@@ -248,44 +248,72 @@ const Users = () => {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      {u.is_admin ? (
+                      <div className="flex justify-end gap-2 flex-wrap">
+                        {u.is_admin ? (
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={isSelf || actionLoading === u.user_id}
+                              >
+                                <ShieldOff className="w-4 h-4 mr-1" />
+                                Hiq Admin
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Hiqe rolin admin?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  {u.email} nuk do të ketë më qasje në panelin admin.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Anulo</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => revokeAdmin(u.user_id, u.email)}>
+                                  Hiqe
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => grantAdmin(u.user_id, u.email)}
+                            disabled={actionLoading === u.user_id}
+                          >
+                            <ShieldCheck className="w-4 h-4 mr-1" />
+                            Bëje Admin
+                          </Button>
+                        )}
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
                               variant="outline"
                               size="sm"
                               disabled={isSelf || actionLoading === u.user_id}
+                              className="text-destructive hover:text-destructive"
                             >
-                              <ShieldOff className="w-4 h-4 mr-1" />
-                              Hiq Admin
+                              Hiq nga shkolla
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Hiqe rolin admin?</AlertDialogTitle>
+                              <AlertDialogTitle>Hiqe nga autoshkolla?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                {u.email} nuk do të ketë më qasje në panelin admin.
+                                {u.email} nuk do të ketë më qasje në të dhënat e autoshkollës. Llogaria e tij nuk fshihet.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Anulo</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => revokeAdmin(u.user_id, u.email)}>
+                              <AlertDialogAction onClick={() => removeFromTenant(u.user_id, u.email)}>
                                 Hiqe
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => grantAdmin(u.user_id, u.email)}
-                          disabled={actionLoading === u.user_id}
-                        >
-                          <ShieldCheck className="w-4 h-4 mr-1" />
-                          Bëje Admin
-                        </Button>
-                      )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
