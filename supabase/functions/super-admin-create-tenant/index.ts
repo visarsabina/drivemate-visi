@@ -129,8 +129,10 @@ Deno.serve(async (req) => {
       adminUserId = createdUser.user!.id;
     }
 
-    // Create tenant + link admin via the SECURITY DEFINER function
-    const { data: tenantId, error: rpcErr } = await admin.rpc(
+    // Create tenant + link admin via the SECURITY DEFINER function.
+    // Use the caller's JWT here so database helpers that rely on auth.uid()
+    // can correctly verify the super_admin role.
+    const { data: tenantId, error: rpcErr } = await userClient.rpc(
       "create_tenant_with_admin",
       {
         _name: payload.name,
