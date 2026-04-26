@@ -60,30 +60,41 @@ const stats = [
 
 const Home = () => {
   const navigate = useNavigate();
+  const { slug } = useParams<{ slug?: string }>();
   const { isAdmin, roleChecked, session } = useAuth();
+  const { branding, loading: brandingLoading, notFound } = usePublicTenantBranding(slug);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
   const [staff, setStaff] = useState<StaffMember[]>([]);
 
   // Auto-redirect logged-in admins straight to the panel (PWA "remember me")
+  // Only when viewing the root site (no specific /school/:slug)
   useEffect(() => {
-    if (session && roleChecked && isAdmin) {
+    if (!slug && session && roleChecked && isAdmin) {
       navigate("/admin", { replace: true });
     }
-  }, [session, roleChecked, isAdmin, navigate]);
+  }, [slug, session, roleChecked, isAdmin, navigate]);
 
 
   useEffect(() => {
+    if (!branding?.id) return;
     supabase
       .from("staff")
       .select("id, name, role, categories, photo_url")
       .eq("is_active", true)
+      .eq("tenant_id", branding.id)
       .order("display_order", { ascending: true })
       .then(({ data, error }) => {
         if (!error && data) setStaff(data as StaffMember[]);
       });
-  }, []);
+  }, [branding?.id]);
+
+  const logoSrc = branding?.logo_url || defaultLogo;
+  const schoolName = branding?.name || "Autoshkolla Visi";
+  const phoneLines = branding?.phone ? branding.phone.split(/[,/]/).map((s) => s.trim()).filter(Boolean) : ["044 241 200", "049 256 019"];
+  const emailLines = branding?.email ? [branding.email] : ["visiautoshkolla@gmail.com"];
+  const addressLines = branding?.address ? [branding.address] : ["Rr. Zahir Pajaziti"];
 
   const openRegister = (category = "") => {
     setRegisterCategory(category);
