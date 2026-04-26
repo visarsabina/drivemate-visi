@@ -22,24 +22,45 @@ const Auth = () => {
   useEffect(() => {
     if (authLoading) return;
     if (!session) return;
-    // Wait until the role check actually completes before deciding
     if (!roleChecked) return;
 
-    if (isAdmin) {
-      navigate("/admin", { replace: true });
-      return;
-    }
+    let cancelled = false;
+    (async () => {
+      // Super-admin takes priority
+      const { data: superRow } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session.user.id)
+        .eq("role", "super_admin")
+        .maybeSingle();
 
-    // Session exists, role check finished, user is NOT admin -> reject
-    if (hasAttemptedLogin) {
-      toast({
-        title: "Qasje e ndaluar",
-        description: "Kjo llogari nuk ka rolin e administratorit.",
-        variant: "destructive",
-      });
-      supabase.auth.signOut();
-      setHasAttemptedLogin(false);
-    }
+      if (cancelled) return;
+
+      if (superRow) {
+        navigate("/super-admin", { replace: true });
+        return;
+      }
+
+      if (isAdmin) {
+        navigate("/admin", { replace: true });
+        return;
+      }
+
+      // Session exists, role check finished, user is NOT admin -> reject
+      if (hasAttemptedLogin) {
+        toast({
+          title: "Qasje e ndaluar",
+          description: "Kjo llogari nuk ka rolin e administratorit.",
+          variant: "destructive",
+        });
+        supabase.auth.signOut();
+        setHasAttemptedLogin(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [session, isAdmin, roleChecked, authLoading, hasAttemptedLogin, navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
