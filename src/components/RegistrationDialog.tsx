@@ -49,9 +49,13 @@ interface RegistrationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   defaultCategory?: string;
+  /** Optional tenant id override (e.g. when on /school/:slug). */
+  tenantId?: string | null;
+  /** Optional school name to show in the dialog title. */
+  schoolName?: string;
 }
 
-const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "" }: RegistrationDialogProps) => {
+const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId: tenantIdProp, schoolName }: RegistrationDialogProps) => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
