@@ -1,7 +1,8 @@
 import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench } from "lucide-react";
-import logo from "@/assets/logo.png";
+import defaultLogo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useTenantBranding } from "@/hooks/useTenantBranding";
 
 interface SidebarProps {
   activeView: string;
