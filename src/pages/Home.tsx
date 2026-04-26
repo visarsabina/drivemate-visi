@@ -508,9 +508,9 @@ const Home = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Phone, title: "Telefoni", lines: ["044 241 200", "049 256 019"] },
-              { icon: Mail, title: "Email", lines: ["visiautoshkolla@gmail.com"] },
-              { icon: MapPin, title: "Adresa", lines: ["Rr. Zahir Pajaziti"] },
+              { icon: Phone, title: "Telefoni", lines: phoneLines },
+              { icon: Mail, title: "Email", lines: emailLines },
+              { icon: MapPin, title: "Adresa", lines: addressLines },
               { icon: Clock, title: "Orari", lines: ["Hënë - Shtunë", "09:30 - 18:00"] },
             ].map((c) => {
               const Icon = c.icon;
