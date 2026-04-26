@@ -81,7 +81,7 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
           <LogOut className="w-4 h-4" />
           Dilni
         </button>
-        <p className="text-xs text-sidebar-foreground/40 text-center">© 2024 Auto Shkolla Visi</p>
+        <p className="text-xs text-sidebar-foreground/40 text-center">© {new Date().getFullYear()} {tenantName}</p>
       </div>
     </aside>
   );
