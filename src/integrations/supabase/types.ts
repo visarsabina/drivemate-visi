@@ -411,6 +411,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_tenant_with_admin: {
+        Args: {
+          _address: string
+          _admin_user_id: string
+          _director_name: string
+          _domain: string
+          _email: string
+          _name: string
+          _phone: string
+          _primary_color: string
+          _slug: string
+        }
+        Returns: string
+      }
       get_all_users_with_roles: {
         Args: never
         Returns: {
@@ -432,8 +446,43 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_super_admin: { Args: never; Returns: boolean }
+      list_all_tenants_with_stats: {
+        Args: never
+        Returns: {
+          address: string
+          admin_count: number
+          created_at: string
+          director_name: string
+          domain: string
+          email: string
+          employees_count: number
+          id: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          phone: string
+          primary_color: string
+          slug: string
+          vehicles_count: number
+        }[]
+      }
+      list_users_for_super_admin: {
+        Args: never
+        Returns: {
+          created_at: string
+          email: string
+          is_super_admin: boolean
+          tenant_count: number
+          user_id: string
+        }[]
+      }
       revoke_admin_role: {
         Args: { _target_user_id: string }
+        Returns: undefined
+      }
+      set_tenant_active: {
+        Args: { _is_active: boolean; _tenant_id: string }
         Returns: undefined
       }
       user_belongs_to_tenant: { Args: { _tenant_id: string }; Returns: boolean }
