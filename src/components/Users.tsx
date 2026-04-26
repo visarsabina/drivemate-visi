@@ -42,7 +42,7 @@ const Users = () => {
 
   const loadUsers = async () => {
     setLoading(true);
-    const { data, error } = await supabase.rpc("get_all_users_with_roles");
+    const { data, error } = await supabase.rpc("list_users_in_my_tenant");
     if (error) {
       toast.error("Gabim gjatë ngarkimit të përdoruesve: " + error.message);
     } else {
@@ -90,39 +90,29 @@ const Users = () => {
     }
     setInviting(true);
 
-    // Save current session to restore after signup
-    const { data: { session: currentSession } } = await supabase.auth.getSession();
+    const { data, error } = await supabase.functions.invoke(
+      "admin-create-user-in-tenant",
+      {
+        body: {
+          email: inviteEmail,
+          password: invitePassword,
+          as_admin: inviteAsAdmin,
+        },
+      },
+    );
 
-    const { data, error } = await supabase.auth.signUp({
-      email: inviteEmail,
-      password: invitePassword,
-      options: { emailRedirectTo: window.location.origin },
-    });
-
-    if (error) {
-      toast.error("Gabim: " + error.message);
+    if (error || (data as { error?: string })?.error) {
+      const msg = (data as { error?: string })?.error ?? error?.message ?? "Gabim";
+      toast.error("Gabim: " + msg);
       setInviting(false);
       return;
     }
 
-    // Restore admin session (signUp logs in as new user)
-    if (currentSession) {
-      await supabase.auth.setSession({
-        access_token: currentSession.access_token,
-        refresh_token: currentSession.refresh_token,
-      });
-    }
-
-    if (data.user && inviteAsAdmin) {
-      const { error: roleError } = await supabase.rpc("grant_admin_role", { _target_user_id: data.user.id });
-      if (roleError) {
-        toast.error("Përdoruesi u krijua, por roli admin nuk u shtua: " + roleError.message);
-      } else {
-        toast.success(`Përdoruesi ${inviteEmail} u krijua si admin`);
-      }
-    } else {
-      toast.success(`Përdoruesi ${inviteEmail} u krijua`);
-    }
+    toast.success(
+      inviteAsAdmin
+        ? `Përdoruesi ${inviteEmail} u krijua si admin`
+        : `Përdoruesi ${inviteEmail} u krijua`,
+    );
 
     setInviteEmail("");
     setInvitePassword("");
@@ -130,6 +120,20 @@ const Users = () => {
     setInviteOpen(false);
     setInviting(false);
     await loadUsers();
+  };
+
+  const removeFromTenant = async (userId: string, email: string) => {
+    setActionLoading(userId);
+    const { error } = await supabase.rpc("remove_user_from_my_tenant", {
+      _target_user_id: userId,
+    });
+    if (error) {
+      toast.error("Gabim: " + error.message);
+    } else {
+      toast.success(`${email} u hoq nga autoshkolla`);
+      await loadUsers();
+    }
+    setActionLoading(null);
   };
 
   return (
@@ -244,44 +248,72 @@ const Users = () => {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      {u.is_admin ? (
+                      <div className="flex justify-end gap-2 flex-wrap">
+                        {u.is_admin ? (
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={isSelf || actionLoading === u.user_id}
+                              >
+                                <ShieldOff className="w-4 h-4 mr-1" />
+                                Hiq Admin
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Hiqe rolin admin?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  {u.email} nuk do të ketë më qasje në panelin admin.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Anulo</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => revokeAdmin(u.user_id, u.email)}>
+                                  Hiqe
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => grantAdmin(u.user_id, u.email)}
+                            disabled={actionLoading === u.user_id}
+                          >
+                            <ShieldCheck className="w-4 h-4 mr-1" />
+                            Bëje Admin
+                          </Button>
+                        )}
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
                               variant="outline"
                               size="sm"
                               disabled={isSelf || actionLoading === u.user_id}
+                              className="text-destructive hover:text-destructive"
                             >
-                              <ShieldOff className="w-4 h-4 mr-1" />
-                              Hiq Admin
+                              Hiq nga shkolla
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Hiqe rolin admin?</AlertDialogTitle>
+                              <AlertDialogTitle>Hiqe nga autoshkolla?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                {u.email} nuk do të ketë më qasje në panelin admin.
+                                {u.email} nuk do të ketë më qasje në të dhënat e autoshkollës. Llogaria e tij nuk fshihet.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Anulo</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => revokeAdmin(u.user_id, u.email)}>
+                              <AlertDialogAction onClick={() => removeFromTenant(u.user_id, u.email)}>
                                 Hiqe
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => grantAdmin(u.user_id, u.email)}
-                          disabled={actionLoading === u.user_id}
-                        >
-                          <ShieldCheck className="w-4 h-4 mr-1" />
-                          Bëje Admin
-                        </Button>
-                      )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { usePublicTenantBranding } from "@/hooks/useTenantBranding";
 import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,7 +17,7 @@ import busDImg from "@/assets/bus-d.jpg";
 import truckC1Img from "@/assets/truck-c1.jpg";
 import truckCImg from "@/assets/truck-c.jpg";
 import truckCeImg from "@/assets/truck-ce.jpg";
-import logo from "@/assets/logo.png";
+import defaultLogo from "@/assets/logo.png";
 
 const categories = [
   { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "20 orë teori + 20 praktike", price: "250€", icon: Car, image: carBImg },
@@ -59,30 +60,41 @@ const stats = [
 
 const Home = () => {
   const navigate = useNavigate();
+  const { slug } = useParams<{ slug?: string }>();
   const { isAdmin, roleChecked, session } = useAuth();
+  const { branding, loading: brandingLoading, notFound } = usePublicTenantBranding(slug);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
   const [staff, setStaff] = useState<StaffMember[]>([]);
 
   // Auto-redirect logged-in admins straight to the panel (PWA "remember me")
+  // Only when viewing the root site (no specific /school/:slug)
   useEffect(() => {
-    if (session && roleChecked && isAdmin) {
+    if (!slug && session && roleChecked && isAdmin) {
       navigate("/admin", { replace: true });
     }
-  }, [session, roleChecked, isAdmin, navigate]);
+  }, [slug, session, roleChecked, isAdmin, navigate]);
 
 
   useEffect(() => {
+    if (!branding?.id) return;
     supabase
       .from("staff")
       .select("id, name, role, categories, photo_url")
       .eq("is_active", true)
+      .eq("tenant_id", branding.id)
       .order("display_order", { ascending: true })
       .then(({ data, error }) => {
         if (!error && data) setStaff(data as StaffMember[]);
       });
-  }, []);
+  }, [branding?.id]);
+
+  const logoSrc = branding?.logo_url || defaultLogo;
+  const schoolName = branding?.name || "Autoshkolla Visi";
+  const phoneLines = branding?.phone ? branding.phone.split(/[,/]/).map((s) => s.trim()).filter(Boolean) : ["044 241 200", "049 256 019"];
+  const emailLines = branding?.email ? [branding.email] : ["visiautoshkolla@gmail.com"];
+  const addressLines = branding?.address ? [branding.address] : ["Rr. Zahir Pajaziti"];
 
   const openRegister = (category = "") => {
     setRegisterCategory(category);
@@ -94,14 +106,28 @@ const Home = () => {
     setMobileMenu(false);
   };
 
+  if (notFound) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-6">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold mb-3">Autoshkolla nuk u gjet</h1>
+          <p className="text-muted-foreground mb-6">
+            Adresa "{slug}" nuk i përket asnjë autoshkolle aktive.
+          </p>
+          <Button onClick={() => navigate("/")}>Kthehu në kryefaqe</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="landing-theme min-h-screen bg-background">
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="Autoshkolla Visi" width={36} height={36} />
-            <span className="font-bold text-lg">Autoshkolla Visi</span>
+            <img src={logoSrc} alt={schoolName} width={36} height={36} className="rounded object-contain" />
+            <span className="font-bold text-lg">{schoolName}</span>
           </div>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium">
             <button onClick={() => scrollTo("hero")} className="hover:text-primary transition-colors">Kryefaqja</button>
@@ -496,9 +522,9 @@ const Home = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Phone, title: "Telefoni", lines: ["044 241 200", "049 256 019"] },
-              { icon: Mail, title: "Email", lines: ["visiautoshkolla@gmail.com"] },
-              { icon: MapPin, title: "Adresa", lines: ["Rr. Zahir Pajaziti"] },
+              { icon: Phone, title: "Telefoni", lines: phoneLines },
+              { icon: Mail, title: "Email", lines: emailLines },
+              { icon: MapPin, title: "Adresa", lines: addressLines },
               { icon: Clock, title: "Orari", lines: ["Hënë - Shtunë", "09:30 - 18:00"] },
             ].map((c) => {
               const Icon = c.icon;
@@ -526,8 +552,8 @@ const Home = () => {
           <div className="grid sm:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <img src={logo} alt="Autoshkolla Visi" width={32} height={32} className="brightness-200" />
-                <span className="font-bold text-lg">Autoshkolla Visi</span>
+                <img src={logoSrc} alt={schoolName} width={32} height={32} className="brightness-200 rounded object-contain" />
+                <span className="font-bold text-lg">{schoolName}</span>
               </div>
               <p className="text-sm opacity-60">Partneri juaj i besuar për marrjen e patentës së shoferit.</p>
             </div>
@@ -550,7 +576,7 @@ const Home = () => {
             </div>
           </div>
           <div className="border-t border-background/20 pt-6 text-center text-sm opacity-50">
-            © 2024 Autoshkolla Visi. Të gjitha të drejtat e rezervuara.
+            © {new Date().getFullYear()} {schoolName}. Të gjitha të drejtat e rezervuara.
           </div>
         </div>
       </footer>
@@ -559,6 +585,8 @@ const Home = () => {
         open={registerOpen}
         onOpenChange={setRegisterOpen}
         defaultCategory={registerCategory}
+        tenantId={branding?.id ?? null}
+        schoolName={schoolName}
       />
     </div>
   );

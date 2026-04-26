@@ -411,6 +411,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_existing_user_to_my_tenant: {
+        Args: { _as_admin: boolean; _target_user_id: string }
+        Returns: undefined
+      }
       create_tenant_with_admin: {
         Args: {
           _address: string
@@ -476,6 +480,19 @@ export type Database = {
           tenant_count: number
           user_id: string
         }[]
+      }
+      list_users_in_my_tenant: {
+        Args: never
+        Returns: {
+          created_at: string
+          email: string
+          is_admin: boolean
+          user_id: string
+        }[]
+      }
+      remove_user_from_my_tenant: {
+        Args: { _target_user_id: string }
+        Returns: undefined
       }
       revoke_admin_role: {
         Args: { _target_user_id: string }

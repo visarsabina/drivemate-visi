@@ -1,7 +1,8 @@
 import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench } from "lucide-react";
-import logo from "@/assets/logo.png";
+import defaultLogo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useTenantBranding } from "@/hooks/useTenantBranding";
 
 interface SidebarProps {
   activeView: string;
@@ -25,19 +26,23 @@ const navItems = [
 const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
+  const { branding } = useTenantBranding();
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/auth", { replace: true });
   };
 
+  const logoSrc = branding?.logo_url || defaultLogo;
+  const tenantName = branding?.name || "Auto Shkolla Visi";
+
   return (
     <aside className="w-64 h-screen bg-sidebar text-sidebar-foreground flex flex-col overflow-y-auto">
       <div className="p-6 flex items-center gap-3 border-b border-sidebar-border shrink-0">
-        <img src={logo} alt="Auto Shkolla Visi" width={40} height={40} />
-        <div>
-          <h1 className="text-lg font-bold text-sidebar-primary-foreground">Auto Shkolla</h1>
-          <p className="text-xs text-sidebar-foreground/60">VISI</p>
+        <img src={logoSrc} alt={tenantName} width={40} height={40} className="rounded object-contain" />
+        <div className="min-w-0">
+          <h1 className="text-lg font-bold text-sidebar-primary-foreground truncate">{tenantName}</h1>
+          <p className="text-xs text-sidebar-foreground/60 truncate uppercase">{branding?.slug ?? "visi"}</p>
         </div>
       </div>
 
@@ -76,7 +81,7 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
           <LogOut className="w-4 h-4" />
           Dilni
         </button>
-        <p className="text-xs text-sidebar-foreground/40 text-center">© 2024 Auto Shkolla Visi</p>
+        <p className="text-xs text-sidebar-foreground/40 text-center">© {new Date().getFullYear()} {tenantName}</p>
       </div>
     </aside>
   );
