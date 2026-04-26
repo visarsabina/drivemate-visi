@@ -571,6 +571,8 @@ const Home = () => {
         open={registerOpen}
         onOpenChange={setRegisterOpen}
         defaultCategory={registerCategory}
+        tenantId={branding?.id ?? null}
+        schoolName={schoolName}
       />
     </div>
   );
