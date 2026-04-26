@@ -90,39 +90,29 @@ const Users = () => {
     }
     setInviting(true);
 
-    // Save current session to restore after signup
-    const { data: { session: currentSession } } = await supabase.auth.getSession();
+    const { data, error } = await supabase.functions.invoke(
+      "admin-create-user-in-tenant",
+      {
+        body: {
+          email: inviteEmail,
+          password: invitePassword,
+          as_admin: inviteAsAdmin,
+        },
+      },
+    );
 
-    const { data, error } = await supabase.auth.signUp({
-      email: inviteEmail,
-      password: invitePassword,
-      options: { emailRedirectTo: window.location.origin },
-    });
-
-    if (error) {
-      toast.error("Gabim: " + error.message);
+    if (error || (data as { error?: string })?.error) {
+      const msg = (data as { error?: string })?.error ?? error?.message ?? "Gabim";
+      toast.error("Gabim: " + msg);
       setInviting(false);
       return;
     }
 
-    // Restore admin session (signUp logs in as new user)
-    if (currentSession) {
-      await supabase.auth.setSession({
-        access_token: currentSession.access_token,
-        refresh_token: currentSession.refresh_token,
-      });
-    }
-
-    if (data.user && inviteAsAdmin) {
-      const { error: roleError } = await supabase.rpc("grant_admin_role", { _target_user_id: data.user.id });
-      if (roleError) {
-        toast.error("Përdoruesi u krijua, por roli admin nuk u shtua: " + roleError.message);
-      } else {
-        toast.success(`Përdoruesi ${inviteEmail} u krijua si admin`);
-      }
-    } else {
-      toast.success(`Përdoruesi ${inviteEmail} u krijua`);
-    }
+    toast.success(
+      inviteAsAdmin
+        ? `Përdoruesi ${inviteEmail} u krijua si admin`
+        : `Përdoruesi ${inviteEmail} u krijua`,
+    );
 
     setInviteEmail("");
     setInvitePassword("");
@@ -130,6 +120,20 @@ const Users = () => {
     setInviteOpen(false);
     setInviting(false);
     await loadUsers();
+  };
+
+  const removeFromTenant = async (userId: string, email: string) => {
+    setActionLoading(userId);
+    const { error } = await supabase.rpc("remove_user_from_my_tenant", {
+      _target_user_id: userId,
+    });
+    if (error) {
+      toast.error("Gabim: " + error.message);
+    } else {
+      toast.success(`${email} u hoq nga autoshkolla`);
+      await loadUsers();
+    }
+    setActionLoading(null);
   };
 
   return (
