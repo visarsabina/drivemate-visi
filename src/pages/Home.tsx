@@ -562,7 +562,7 @@ const Home = () => {
             </div>
           </div>
           <div className="border-t border-background/20 pt-6 text-center text-sm opacity-50">
-            © 2024 Autoshkolla Visi. Të gjitha të drejtat e rezervuara.
+            © {new Date().getFullYear()} {schoolName}. Të gjitha të drejtat e rezervuara.
           </div>
         </div>
       </footer>
