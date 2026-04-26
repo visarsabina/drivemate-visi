@@ -10,7 +10,9 @@ import NotFound from "./pages/NotFound.tsx";
 import Auth from "./pages/Auth.tsx";
 import Staff from "./pages/Staff.tsx";
 import Install from "./pages/Install.tsx";
+import SuperAdmin from "./pages/SuperAdmin.tsx";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import SuperAdminRoute from "@/components/SuperAdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +37,14 @@ const App = () => (
                 <ProtectedRoute>
                   <Index />
                 </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/super-admin"
+              element={
+                <SuperAdminRoute>
+                  <SuperAdmin />
+                </SuperAdminRoute>
               }
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
