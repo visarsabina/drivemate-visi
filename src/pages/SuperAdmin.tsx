@@ -380,11 +380,21 @@ const SuperAdmin = () => {
                     id="slug"
                     required
                     value={form.slug}
-                    onChange={(e) =>
-                      setForm({ ...form, slug: e.target.value })}
+                    onChange={(e) => {
+                      const normalized = e.target.value
+                        .toLowerCase()
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .replace(/[^a-z0-9-]+/g, "-")
+                        .replace(/^-+|-+$/g, "");
+                      setForm({ ...form, slug: normalized });
+                    }}
                     placeholder="tina"
                     pattern="[a-z0-9-]+"
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Vetëm shkronja të vogla, numra dhe vija (-). Pa hapësira ose karaktere speciale.
+                  </p>
                 </div>
                 <div className="sm:col-span-2">
                   <Label htmlFor="domain">Domeni (opsional)</Label>
