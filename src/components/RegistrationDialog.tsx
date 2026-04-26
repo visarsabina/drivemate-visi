@@ -101,7 +101,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
     setErrors({});
     setSubmitting(true);
 
-    const tenantId = await resolveTenantByDomain();
+    const tenantId = tenantIdProp ?? (await resolveTenantByDomain());
     if (!tenantId) {
       setSubmitting(false);
       toast({
