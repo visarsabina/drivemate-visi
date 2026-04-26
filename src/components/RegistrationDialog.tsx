@@ -158,7 +158,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Regjistrohu në Autoshkollën Visi</DialogTitle>
+              <DialogTitle>Regjistrohu në {schoolName ?? "Autoshkollën Visi"}</DialogTitle>
               <DialogDescription>
                 Plotëso formularin dhe ne do t'ju kontaktojmë së shpejti.
               </DialogDescription>
