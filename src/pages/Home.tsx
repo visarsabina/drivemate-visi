@@ -106,6 +106,20 @@ const Home = () => {
     setMobileMenu(false);
   };
 
+  if (notFound) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-6">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold mb-3">Autoshkolla nuk u gjet</h1>
+          <p className="text-muted-foreground mb-6">
+            Adresa "{slug}" nuk i përket asnjë autoshkolle aktive.
+          </p>
+          <Button onClick={() => navigate("/")}>Kthehu në kryefaqe</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="landing-theme min-h-screen bg-background">
       {/* Navbar */}
