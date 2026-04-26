@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { usePublicTenantBranding } from "@/hooks/useTenantBranding";
 import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,7 +17,7 @@ import busDImg from "@/assets/bus-d.jpg";
 import truckC1Img from "@/assets/truck-c1.jpg";
 import truckCImg from "@/assets/truck-c.jpg";
 import truckCeImg from "@/assets/truck-ce.jpg";
-import logo from "@/assets/logo.png";
+import defaultLogo from "@/assets/logo.png";
 
 const categories = [
   { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "20 orë teori + 20 praktike", price: "250€", icon: Car, image: carBImg },
