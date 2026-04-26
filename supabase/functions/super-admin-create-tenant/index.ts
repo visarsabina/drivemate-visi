@@ -45,20 +45,25 @@ Deno.serve(async (req) => {
 
     const { data: userData, error: userErr } = await userClient.auth.getUser();
     if (userErr || !userData.user) {
+      console.error("getUser failed:", userErr);
       return json({ error: "Invalid token" }, 401);
     }
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
-    // Check super_admin role
-    const { data: roleRow } = await admin
+    // Check super_admin role using service role (bypasses RLS)
+    const { data: roleRows, error: roleErr } = await admin
       .from("user_roles")
       .select("role")
       .eq("user_id", userData.user.id)
-      .eq("role", "super_admin")
-      .maybeSingle();
+      .eq("role", "super_admin");
 
-    if (!roleRow) {
+    console.log("Role check for user", userData.user.id, "result:", roleRows, "error:", roleErr);
+
+    if (roleErr) {
+      return json({ error: "Role check failed: " + roleErr.message }, 500);
+    }
+    if (!roleRows || roleRows.length === 0) {
       return json({ error: "Access denied: super_admin role required" }, 403);
     }
 
