@@ -42,7 +42,7 @@ const Users = () => {
 
   const loadUsers = async () => {
     setLoading(true);
-    const { data, error } = await supabase.rpc("get_all_users_with_roles");
+    const { data, error } = await supabase.rpc("list_users_in_my_tenant");
     if (error) {
       toast.error("Gabim gjatë ngarkimit të përdoruesve: " + error.message);
     } else {
