@@ -21,6 +21,7 @@ export type Database = {
           health_certificate_date: string | null
           health_certificate_expiry_date: string | null
           id: string
+          instructor_id: string | null
           license_date: string | null
           license_expiry_date: string | null
           license_number: string | null
@@ -35,6 +36,7 @@ export type Database = {
           health_certificate_date?: string | null
           health_certificate_expiry_date?: string | null
           id?: string
+          instructor_id?: string | null
           license_date?: string | null
           license_expiry_date?: string | null
           license_number?: string | null
@@ -49,6 +51,7 @@ export type Database = {
           health_certificate_date?: string | null
           health_certificate_expiry_date?: string | null
           id?: string
+          instructor_id?: string | null
           license_date?: string | null
           license_expiry_date?: string | null
           license_number?: string | null
@@ -450,6 +453,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_instructor: { Args: never; Returns: boolean }
       is_super_admin: { Args: never; Returns: boolean }
       list_all_tenants_with_stats: {
         Args: never
@@ -471,6 +475,13 @@ export type Database = {
           vehicles_count: number
         }[]
       }
+      list_instructors_in_my_tenant: {
+        Args: never
+        Returns: {
+          email: string
+          user_id: string
+        }[]
+      }
       list_users_for_super_admin: {
         Args: never
         Returns: {
@@ -487,6 +498,7 @@ export type Database = {
           created_at: string
           email: string
           is_admin: boolean
+          is_instructor: boolean
           user_id: string
         }[]
       }
@@ -505,7 +517,7 @@ export type Database = {
       user_belongs_to_tenant: { Args: { _tenant_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "user" | "super_admin"
+      app_role: "admin" | "user" | "super_admin" | "instructor"
       registration_status: "new" | "contacted" | "enrolled" | "rejected"
     }
     CompositeTypes: {
@@ -634,7 +646,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user", "super_admin"],
+      app_role: ["admin", "user", "super_admin", "instructor"],
       registration_status: ["new", "contacted", "enrolled", "rejected"],
     },
   },

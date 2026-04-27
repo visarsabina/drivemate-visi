@@ -6,6 +6,7 @@ interface AuthContextValue {
   session: Session | null;
   user: User | null;
   isAdmin: boolean;
+  isInstructor: boolean;
   roleChecked: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isInstructor, setIsInstructor] = useState(false);
   const [roleChecked, setRoleChecked] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }, 100);
       } else {
         setIsAdmin(false);
+        setIsInstructor(false);
         setRoleChecked(true);
       }
     });
@@ -55,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAdminRole = async (userId: string, accessToken?: string) => {
     try {
-      const url = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/user_roles?select=role&user_id=eq.${userId}&role=in.(admin,super_admin)`;
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/user_roles?select=role&user_id=eq.${userId}&role=in.(admin,super_admin,instructor)`;
       const res = await fetch(url, {
         headers: {
           apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
@@ -63,10 +66,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         },
       });
       const data = await res.json();
-      setIsAdmin(Array.isArray(data) && data.length > 0);
+      const roles = Array.isArray(data) ? data.map((r: { role: string }) => r.role) : [];
+      setIsAdmin(roles.includes("admin") || roles.includes("super_admin"));
+      setIsInstructor(roles.includes("instructor"));
     } catch (err) {
       console.error("Role check failed:", err);
       setIsAdmin(false);
+      setIsInstructor(false);
     } finally {
       setRoleChecked(true);
     }
@@ -75,11 +81,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     setIsAdmin(false);
+    setIsInstructor(false);
     setRoleChecked(true);
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, isAdmin, roleChecked, loading, signOut }}>
+    <AuthContext.Provider value={{ session, user, isAdmin, isInstructor, roleChecked, loading, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Loader2 } from "lucide-react";
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const { session, isAdmin, roleChecked, loading } = useAuth();
+  const { session, isAdmin, isInstructor, roleChecked, loading } = useAuth();
 
   if (loading || (session && !roleChecked)) {
     return (
@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  if (!session || !isAdmin) {
+  if (!session || (!isAdmin && !isInstructor)) {
     return <Navigate to="/auth" replace />;
   }
 
