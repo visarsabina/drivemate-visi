@@ -29,10 +29,16 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
   const { branding } = useTenantBranding();
+  const { isSuperAdmin } = useIsSuperAdmin();
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/auth", { replace: true });
+  };
+
+  const handleBackToSuperAdmin = () => {
+    setImpersonatedTenantId(null);
+    navigate("/super-admin");
   };
 
   const logoSrc = branding?.logo_url || defaultLogo;
