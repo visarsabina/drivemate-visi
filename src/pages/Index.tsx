@@ -19,13 +19,17 @@ import Users from "@/components/Users";
 import VehicleAlerts from "@/components/VehicleAlerts";
 import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
+import InstructorDashboard from "@/components/InstructorDashboard";
+import { useAuth } from "@/context/AuthContext";
 import { mockCandidates } from "@/data/mockCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
-  const [activeView, setActiveView] = useState("dashboard");
+  const { isAdmin, isInstructor } = useAuth();
+  const defaultView = !isAdmin && isInstructor ? "instructor" : "dashboard";
+  const [activeView, setActiveView] = useState(defaultView);
   const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
@@ -68,6 +72,7 @@ const Index = () => {
 
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
+    instructor: "Kandidatët e Mi",
     candidates: "Lista e Kandidatëve",
     "candidate-detail": "Paneli i Kandidatit",
     add: "Shto Kandidat",
