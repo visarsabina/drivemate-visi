@@ -116,7 +116,7 @@ export const useTenantBranding = () => {
         return;
       }
 
-      const cached = cache.get(ut.tenant_id);
+      const cached = cache.get(tenantId);
       if (cached) {
         if (!cancelled) {
           setBranding(cached);
@@ -129,7 +129,7 @@ export const useTenantBranding = () => {
       const { data: t } = await supabase
         .from("tenants")
         .select("id, name, slug, domain, logo_url, primary_color, phone, address, email, director_name")
-        .eq("id", ut.tenant_id)
+        .eq("id", tenantId)
         .maybeSingle();
 
       if (!cancelled) {
