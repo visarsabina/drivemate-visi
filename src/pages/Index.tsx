@@ -116,6 +116,8 @@ const Index = () => {
         </header>
 
         <div className="p-4 lg:p-8 space-y-6">
+          {activeView === "instructor" && <InstructorDashboard />}
+
           {activeView === "dashboard" && (
             <>
               <StatsCards candidates={candidates} />
