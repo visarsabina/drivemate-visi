@@ -1,8 +1,10 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft } from "lucide-react";
 import defaultLogo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
+import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
+import { setImpersonatedTenantId } from "@/hooks/useTenant";
 
 interface SidebarProps {
   activeView: string;
