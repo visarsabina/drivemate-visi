@@ -83,13 +83,32 @@ export const useTenantBranding = () => {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const { data: ut } = await supabase
-        .from("user_tenants")
-        .select("tenant_id")
+
+      // Super admin? use impersonated tenant id
+      let tenantId: string | null = null;
+      const { data: superRow } = await supabase
+        .from("user_roles")
+        .select("role")
         .eq("user_id", user.id)
+        .eq("role", "super_admin")
         .maybeSingle();
 
-      if (!ut?.tenant_id) {
+      if (superRow) {
+        try {
+          tenantId = localStorage.getItem("sa_impersonated_tenant_id");
+        } catch {
+          tenantId = null;
+        }
+      } else {
+        const { data: ut } = await supabase
+          .from("user_tenants")
+          .select("tenant_id")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        tenantId = ut?.tenant_id ?? null;
+      }
+
+      if (!tenantId) {
         if (!cancelled) {
           setBranding(null);
           setLoading(false);
