@@ -2,9 +2,29 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 
+const IMPERSONATE_KEY = "sa_impersonated_tenant_id";
+
+export const getImpersonatedTenantId = (): string | null => {
+  try {
+    return localStorage.getItem(IMPERSONATE_KEY);
+  } catch {
+    return null;
+  }
+};
+
+export const setImpersonatedTenantId = (tenantId: string | null) => {
+  try {
+    if (tenantId) localStorage.setItem(IMPERSONATE_KEY, tenantId);
+    else localStorage.removeItem(IMPERSONATE_KEY);
+  } catch {
+    /* ignore */
+  }
+};
+
 /**
  * Returns the tenant_id of the currently authenticated user.
- * Returns null while loading or if the user has no tenant assigned.
+ * For super admins, returns the impersonated tenant_id from localStorage
+ * (set when they click on a tenant in /super-admin).
  */
 export const useTenant = () => {
   const { user } = useAuth();
@@ -21,6 +41,24 @@ export const useTenant = () => {
     let cancelled = false;
     (async () => {
       setLoading(true);
+
+      // Check super_admin first — they pick a tenant via SuperAdmin page
+      const { data: superRow } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "super_admin")
+        .maybeSingle();
+
+      if (superRow) {
+        const impersonated = getImpersonatedTenantId();
+        if (!cancelled) {
+          setTenantId(impersonated);
+          setLoading(false);
+        }
+        return;
+      }
+
       const { data, error } = await supabase
         .from("user_tenants")
         .select("tenant_id")
@@ -54,7 +92,6 @@ export const useTenant = () => {
 export const resolveTenantByDomain = async (): Promise<string | null> => {
   const host = window.location.hostname.replace(/^www\./, "");
 
-  // Try exact domain match first
   const { data: byDomain } = await supabase
     .from("tenants")
     .select("id")
@@ -64,7 +101,6 @@ export const resolveTenantByDomain = async (): Promise<string | null> => {
 
   if (byDomain?.id) return byDomain.id;
 
-  // Fallback to default tenant (visi)
   const { data: fallback } = await supabase
     .from("tenants")
     .select("id")

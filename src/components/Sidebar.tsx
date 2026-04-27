@@ -1,8 +1,10 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft } from "lucide-react";
 import defaultLogo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
+import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
+import { setImpersonatedTenantId } from "@/hooks/useTenant";
 
 interface SidebarProps {
   activeView: string;
@@ -27,10 +29,16 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
   const { branding } = useTenantBranding();
+  const { isSuperAdmin } = useIsSuperAdmin();
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/auth", { replace: true });
+  };
+
+  const handleBackToSuperAdmin = () => {
+    setImpersonatedTenantId(null);
+    navigate("/super-admin");
   };
 
   const logoSrc = branding?.logo_url || defaultLogo;
@@ -73,6 +81,15 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             <span className="text-sidebar-foreground/50">I kyçur si:</span>
             <div className="font-medium text-sidebar-foreground truncate">{user.email}</div>
           </div>
+        )}
+        {isSuperAdmin && (
+          <button
+            onClick={handleBackToSuperAdmin}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-sidebar-accent/30 text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Kthehu te Super Admin
+          </button>
         )}
         <button
           onClick={handleSignOut}
