@@ -257,12 +257,23 @@ const SuperAdmin = () => {
                     {tenants.map((t) => (
                       <TableRow key={t.id}>
                         <TableCell>
-                          <div className="font-medium">{t.name}</div>
-                          {t.director_name && (
-                            <div className="text-xs text-muted-foreground">
-                              {t.director_name}
-                            </div>
-                          )}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setImpersonatedTenantId(t.id);
+                              toast.success(`Po hyni në "${t.name}"...`);
+                              navigate("/admin");
+                            }}
+                            className="text-left hover:underline"
+                            title={`Hyr në panelin e ${t.name}`}
+                          >
+                            <div className="font-medium text-primary">{t.name}</div>
+                            {t.director_name && (
+                              <div className="text-xs text-muted-foreground">
+                                {t.director_name}
+                              </div>
+                            )}
+                          </button>
                         </TableCell>
                         <TableCell>
                           <code className="text-xs bg-muted px-2 py-1 rounded">
