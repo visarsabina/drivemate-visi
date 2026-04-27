@@ -82,6 +82,15 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             <div className="font-medium text-sidebar-foreground truncate">{user.email}</div>
           </div>
         )}
+        {isSuperAdmin && (
+          <button
+            onClick={handleBackToSuperAdmin}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-sidebar-accent/30 text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Kthehu te Super Admin
+          </button>
+        )}
         <button
           onClick={handleSignOut}
           className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors"
