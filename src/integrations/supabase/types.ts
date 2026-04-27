@@ -505,7 +505,7 @@ export type Database = {
       user_belongs_to_tenant: { Args: { _tenant_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "user" | "super_admin"
+      app_role: "admin" | "user" | "super_admin" | "instructor"
       registration_status: "new" | "contacted" | "enrolled" | "rejected"
     }
     CompositeTypes: {
@@ -634,7 +634,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user", "super_admin"],
+      app_role: ["admin", "user", "super_admin", "instructor"],
       registration_status: ["new", "contacted", "enrolled", "rejected"],
     },
   },
