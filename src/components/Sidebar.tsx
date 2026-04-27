@@ -11,7 +11,7 @@ interface SidebarProps {
   onViewChange: (view: string) => void;
 }
 
-const navItems = [
+const adminNavItems = [
   { id: "dashboard", label: "Paneli", icon: LayoutDashboard },
   { id: "candidates", label: "Kandidatët", icon: Users },
   { id: "add", label: "Shto Kandidat", icon: UserPlus },
@@ -25,11 +25,18 @@ const navItems = [
   { id: "users", label: "Përdoruesit", icon: ShieldCheck },
 ];
 
+const instructorNavItems = [
+  { id: "instructor", label: "Kandidatët e Mi", icon: Users },
+];
+
 const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const navigate = useNavigate();
-  const { signOut, user } = useAuth();
+  const { signOut, user, isAdmin, isInstructor } = useAuth();
   const { branding } = useTenantBranding();
   const { isSuperAdmin } = useIsSuperAdmin();
+
+  // Instructors who are not also admins see only their limited nav.
+  const navItems = isAdmin ? adminNavItems : isInstructor ? instructorNavItems : adminNavItems;
 
   const handleSignOut = async () => {
     await signOut();
