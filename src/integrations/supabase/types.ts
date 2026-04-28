@@ -14,6 +14,116 @@ export type Database = {
   }
   public: {
     Tables: {
+      candidate_payments: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          data: string
+          id: string
+          shuma: number
+          tenant_id: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          data?: string
+          id?: string
+          shuma: number
+          tenant_id: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          data?: string
+          id?: string
+          shuma?: number
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_payments_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidates: {
+        Row: {
+          certifikata_shendetsore: string | null
+          created_at: string
+          data_lindjes: string | null
+          data_regjistrimit: string
+          dokumente_terhequr: boolean
+          emri: string
+          emri_babait: string | null
+          id: string
+          instructor_id: string | null
+          kategoria: string
+          mbiemri: string
+          numri_personal: string | null
+          numri_regjistrimit: string
+          shenimet: string | null
+          shuma_marreveshjes: number
+          statusi: Database["public"]["Enums"]["candidate_status"]
+          telefon: string | null
+          tenant_id: string
+          updated_at: string
+          vendi: string | null
+          vendlindja: string | null
+          vertetimi_printuar: boolean
+        }
+        Insert: {
+          certifikata_shendetsore?: string | null
+          created_at?: string
+          data_lindjes?: string | null
+          data_regjistrimit?: string
+          dokumente_terhequr?: boolean
+          emri: string
+          emri_babait?: string | null
+          id?: string
+          instructor_id?: string | null
+          kategoria?: string
+          mbiemri: string
+          numri_personal?: string | null
+          numri_regjistrimit: string
+          shenimet?: string | null
+          shuma_marreveshjes?: number
+          statusi?: Database["public"]["Enums"]["candidate_status"]
+          telefon?: string | null
+          tenant_id: string
+          updated_at?: string
+          vendi?: string | null
+          vendlindja?: string | null
+          vertetimi_printuar?: boolean
+        }
+        Update: {
+          certifikata_shendetsore?: string | null
+          created_at?: string
+          data_lindjes?: string | null
+          data_regjistrimit?: string
+          dokumente_terhequr?: boolean
+          emri?: string
+          emri_babait?: string | null
+          id?: string
+          instructor_id?: string | null
+          kategoria?: string
+          mbiemri?: string
+          numri_personal?: string | null
+          numri_regjistrimit?: string
+          shenimet?: string | null
+          shuma_marreveshjes?: number
+          statusi?: Database["public"]["Enums"]["candidate_status"]
+          telefon?: string | null
+          tenant_id?: string
+          updated_at?: string
+          vendi?: string | null
+          vendlindja?: string | null
+          vertetimi_printuar?: boolean
+        }
+        Relationships: []
+      }
       employees: {
         Row: {
           created_at: string
@@ -21,7 +131,6 @@ export type Database = {
           health_certificate_date: string | null
           health_certificate_expiry_date: string | null
           id: string
-          instructor_id: string | null
           license_date: string | null
           license_expiry_date: string | null
           license_number: string | null
@@ -36,7 +145,6 @@ export type Database = {
           health_certificate_date?: string | null
           health_certificate_expiry_date?: string | null
           id?: string
-          instructor_id?: string | null
           license_date?: string | null
           license_expiry_date?: string | null
           license_number?: string | null
@@ -51,7 +159,6 @@ export type Database = {
           health_certificate_date?: string | null
           health_certificate_expiry_date?: string | null
           id?: string
-          instructor_id?: string | null
           license_date?: string | null
           license_expiry_date?: string | null
           license_number?: string | null
@@ -518,6 +625,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user" | "super_admin" | "instructor"
+      candidate_status: "regjistuar" | "ne_proces" | "kaluar" | "deshtur"
       registration_status: "new" | "contacted" | "enrolled" | "rejected"
     }
     CompositeTypes: {
@@ -647,6 +755,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user", "super_admin", "instructor"],
+      candidate_status: ["regjistuar", "ne_proces", "kaluar", "deshtur"],
       registration_status: ["new", "contacted", "enrolled", "rejected"],
     },
   },

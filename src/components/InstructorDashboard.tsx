@@ -10,15 +10,21 @@ import { toast } from "sonner";
 
 interface InstructorCandidate {
   id: string;
-  full_name: string;
-  personal_number: string | null;
-  license_number: string | null;
-  license_date: string | null;
-  license_expiry_date: string | null;
-  health_certificate_date: string | null;
-  health_certificate_expiry_date: string | null;
-  created_at: string;
+  numri_regjistrimit: string;
+  emri: string;
+  mbiemri: string;
+  telefon: string | null;
+  kategoria: string;
+  statusi: string;
+  data_regjistrimit: string;
 }
+
+const statusLabel: Record<string, string> = {
+  regjistuar: "Regjistruar",
+  ne_proces: "Në proces",
+  kaluar: "Kaluar",
+  deshtur: "Dështuar",
+};
 
 const InstructorDashboard = () => {
   const { user } = useAuth();
@@ -32,11 +38,11 @@ const InstructorDashboard = () => {
     (async () => {
       setLoading(true);
       const { data, error } = await supabase
-        .from("employees")
+        .from("candidates")
         .select(
-          "id, full_name, personal_number, license_number, license_date, license_expiry_date, health_certificate_date, health_certificate_expiry_date, created_at",
+          "id, numri_regjistrimit, emri, mbiemri, telefon, kategoria, statusi, data_regjistrimit",
         )
-        .order("created_at", { ascending: false });
+        .order("data_regjistrimit", { ascending: false });
 
       if (!cancelled) {
         if (error) {
@@ -68,12 +74,12 @@ const InstructorDashboard = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Emri i plotë</TableHead>
-              <TableHead>Numri personal</TableHead>
-              <TableHead>Patenta</TableHead>
-              <TableHead>Skadon më</TableHead>
-              <TableHead>Çert. shëndetësore</TableHead>
+              <TableHead>Nr. Regj.</TableHead>
+              <TableHead>Emri Mbiemri</TableHead>
+              <TableHead>Telefoni</TableHead>
+              <TableHead>Kategoria</TableHead>
               <TableHead>Statusi</TableHead>
+              <TableHead>Data e Regjistrimit</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -90,37 +96,35 @@ const InstructorDashboard = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              candidates.map((c) => {
-                const expired =
-                  c.license_expiry_date &&
-                  new Date(c.license_expiry_date) < new Date();
-                return (
-                  <TableRow key={c.id}>
-                    <TableCell className="font-medium">{c.full_name}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {c.personal_number || "—"}
-                    </TableCell>
-                    <TableCell>{c.license_number || "—"}</TableCell>
-                    <TableCell>
-                      {c.license_expiry_date ? formatDateDMY(c.license_expiry_date) : "—"}
-                    </TableCell>
-                    <TableCell>
-                      {c.health_certificate_expiry_date
-                        ? formatDateDMY(c.health_certificate_expiry_date)
-                        : "—"}
-                    </TableCell>
-                    <TableCell>
-                      {expired ? (
-                        <Badge variant="destructive">Skaduar</Badge>
-                      ) : (
-                        <Badge className="bg-primary/10 text-primary border-primary/20" variant="outline">
-                          Aktiv
-                        </Badge>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })
+              candidates.map((c) => (
+                <TableRow key={c.id}>
+                  <TableCell className="font-mono text-sm">{c.numri_regjistrimit}</TableCell>
+                  <TableCell className="font-medium">
+                    {c.emri} {c.mbiemri}
+                  </TableCell>
+                  <TableCell>{c.telefon || "—"}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline">{c.kategoria}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="outline"
+                      className={
+                        c.statusi === "kaluar"
+                          ? "bg-green-500/10 text-green-700 border-green-500/30"
+                          : c.statusi === "deshtur"
+                          ? "bg-destructive/10 text-destructive border-destructive/30"
+                          : "bg-primary/10 text-primary border-primary/20"
+                      }
+                    >
+                      {statusLabel[c.statusi] || c.statusi}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {formatDateDMY(c.data_regjistrimit)}
+                  </TableCell>
+                </TableRow>
+              ))
             )}
           </TableBody>
         </Table>

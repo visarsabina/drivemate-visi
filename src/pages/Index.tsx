@@ -21,7 +21,7 @@ import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import { useAuth } from "@/context/AuthContext";
-import { mockCandidates } from "@/data/mockCandidates";
+import { useCandidates } from "@/hooks/useCandidates";
 import { Candidate, Payment } from "@/types/candidate";
 import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,44 +30,37 @@ const Index = () => {
   const { isAdmin, isInstructor } = useAuth();
   const defaultView = !isAdmin && isInstructor ? "instructor" : "dashboard";
   const [activeView, setActiveView] = useState(defaultView);
-  const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
+  const {
+    candidates,
+    addCandidate,
+    updateCandidate,
+    addPayment,
+    setVertetimiPrintuar,
+    setDokumenteTerhequr,
+  } = useCandidates();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
 
-  const handleAddCandidate = (candidate: Candidate) => {
-    setCandidates((prev) => [candidate, ...prev]);
+  const handleAddCandidate = async (candidate: Candidate) => {
+    await addCandidate(candidate);
     setActiveView("candidates");
   };
 
   const handlePayment = (candidateId: string, payment: Payment) => {
-    setCandidates((prev) =>
-      prev.map((c) =>
-        c.id === candidateId
-          ? { ...c, payments: [...c.payments, payment] }
-          : c
-      )
-    );
+    addPayment(candidateId, payment);
   };
 
   const handleVertetimiPrinted = (candidateId: string) => {
-    setCandidates((prev) =>
-      prev.map((c) =>
-        c.id === candidateId ? { ...c, vertetimiPrintuar: true } : c
-      )
-    );
+    setVertetimiPrintuar(candidateId);
   };
 
   const handleUpdateCandidate = (updated: Candidate) => {
-    setCandidates((prev) => prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c)));
+    updateCandidate(updated);
     setSelectedCandidate(updated);
   };
 
   const handleToggleDocuments = (candidateId: string, value: boolean) => {
-    setCandidates((prev) =>
-      prev.map((c) =>
-        c.id === candidateId ? { ...c, dokumenteTerhequr: value } : c
-      )
-    );
+    setDokumenteTerhequr(candidateId, value);
   };
 
   const viewTitles: Record<string, string> = {

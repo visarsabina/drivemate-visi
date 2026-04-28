@@ -21,12 +21,14 @@ import {
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface UserRow {
   user_id: string;
   email: string;
   created_at: string;
   is_admin: boolean;
+  is_instructor: boolean;
 }
 
 const Users = () => {
@@ -37,7 +39,7 @@ const Users = () => {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [invitePassword, setInvitePassword] = useState("");
-  const [inviteAsAdmin, setInviteAsAdmin] = useState(true);
+  const [inviteRole, setInviteRole] = useState<"admin" | "instructor" | "user">("admin");
   const [inviting, setInviting] = useState(false);
 
   const loadUsers = async () => {
@@ -96,7 +98,7 @@ const Users = () => {
         body: {
           email: inviteEmail,
           password: invitePassword,
-          as_admin: inviteAsAdmin,
+          role: inviteRole,
         },
       },
     );
@@ -108,15 +110,13 @@ const Users = () => {
       return;
     }
 
-    toast.success(
-      inviteAsAdmin
-        ? `Përdoruesi ${inviteEmail} u krijua si admin`
-        : `Përdoruesi ${inviteEmail} u krijua`,
-    );
+    const roleLabel =
+      inviteRole === "admin" ? "admin" : inviteRole === "instructor" ? "instruktor" : "përdorues";
+    toast.success(`Përdoruesi ${inviteEmail} u krijua si ${roleLabel}`);
 
     setInviteEmail("");
     setInvitePassword("");
-    setInviteAsAdmin(true);
+    setInviteRole("admin");
     setInviteOpen(false);
     setInviting(false);
     await loadUsers();
@@ -178,15 +178,19 @@ const Users = () => {
                   placeholder="Fjalëkalimi i përkohshëm"
                 />
               </div>
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={inviteAsAdmin}
-                  onChange={(e) => setInviteAsAdmin(e.target.checked)}
-                  className="rounded"
-                />
-                Bëje admin menjëherë
-              </label>
+              <div className="space-y-2">
+                <Label htmlFor="invite-role">Roli</Label>
+                <Select value={inviteRole} onValueChange={(v) => setInviteRole(v as "admin" | "instructor" | "user")}>
+                  <SelectTrigger id="invite-role">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin (qasje e plotë)</SelectItem>
+                    <SelectItem value="instructor">Instruktor (vetëm kandidatët e tij)</SelectItem>
+                    <SelectItem value="user">Përdorues (pa rol të caktuar)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setInviteOpen(false)} disabled={inviting}>
@@ -240,6 +244,10 @@ const Users = () => {
                       {u.is_admin ? (
                         <Badge className="bg-primary/10 text-primary border-primary/20" variant="outline">
                           Admin
+                        </Badge>
+                      ) : u.is_instructor ? (
+                        <Badge className="bg-blue-500/10 text-blue-600 border-blue-500/20" variant="outline">
+                          Instruktor
                         </Badge>
                       ) : (
                         <Badge variant="outline" className="text-muted-foreground">
