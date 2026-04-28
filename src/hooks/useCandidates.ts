@@ -27,6 +27,7 @@ const mapDbToCandidate = (
   shumaMarreveshjes: Number(row.shuma_marreveshjes ?? 0),
   vertetimiPrintuar: !!row.vertetimi_printuar,
   dokumenteTerhequr: !!row.dokumente_terhequr,
+  instructorId: row.instructor_id ?? null,
   payments: payments
     .filter((p) => p.candidate_id === row.id)
     .map((p) => ({

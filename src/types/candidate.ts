@@ -26,4 +26,5 @@ export interface Candidate {
   payments: Payment[];
   vertetimiPrintuar?: boolean;
   dokumenteTerhequr?: boolean;
+  instructorId?: string | null;
 }
