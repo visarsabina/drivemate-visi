@@ -97,7 +97,8 @@ export const useCandidates = () => {
 
   const addCandidate = async (c: Candidate) => {
     if (!tenantId) {
-      toast.error("Tenant nuk u gjet");
+      toast.error("Autoshkolla nuk u gjet. Ju lutem rifreskoni faqen ose hyni përsëri.");
+      console.error("addCandidate: tenantId is null");
       return;
     }
     const payload = candidateToDbInsert(c, tenantId);
@@ -108,6 +109,7 @@ export const useCandidates = () => {
       .select()
       .single();
     if (error) {
+      console.error("addCandidate error:", error);
       toast.error("Ruajtja e kandidatit dështoi: " + error.message);
       return;
     }
