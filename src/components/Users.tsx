@@ -245,6 +245,10 @@ const Users = () => {
                         <Badge className="bg-primary/10 text-primary border-primary/20" variant="outline">
                           Admin
                         </Badge>
+                      ) : u.is_instructor ? (
+                        <Badge className="bg-blue-500/10 text-blue-600 border-blue-500/20" variant="outline">
+                          Instruktor
+                        </Badge>
                       ) : (
                         <Badge variant="outline" className="text-muted-foreground">
                           Përdorues
