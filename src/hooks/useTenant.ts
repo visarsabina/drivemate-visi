@@ -52,8 +52,22 @@ export const useTenant = () => {
 
       if (superRow) {
         const impersonated = getImpersonatedTenantId();
+        if (impersonated) {
+          if (!cancelled) {
+            setTenantId(impersonated);
+            setLoading(false);
+          }
+          return;
+        }
+        // Fallback: if super_admin is also a member of a tenant, use that one
+        // so they can work on it directly without first picking via SuperAdmin.
+        const { data: ownMembership } = await supabase
+          .from("user_tenants")
+          .select("tenant_id")
+          .eq("user_id", user.id)
+          .maybeSingle();
         if (!cancelled) {
-          setTenantId(impersonated);
+          setTenantId(ownMembership?.tenant_id ?? null);
           setLoading(false);
         }
         return;
