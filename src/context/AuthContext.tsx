@@ -58,8 +58,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAdminRole = async (userId: string, accessToken?: string) => {
     try {
-      if (accessToken) await supabase.auth.setSession({ access_token: accessToken, refresh_token: session?.refresh_token ?? "" });
-
       const [adminResult, instructorResult] = await Promise.all([
         supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
         supabase.rpc("is_instructor"),
