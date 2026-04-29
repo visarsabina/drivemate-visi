@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 import { AlertTriangle, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -22,13 +23,16 @@ const daysUntil = (date: string | null): number | null => {
 };
 
 const VehicleAlerts = ({ onViewVehicles }: Props) => {
+  const { tenantId } = useTenant();
   const [expiring, setExpiring] = useState<ExpiringVehicle[]>([]);
 
   useEffect(() => {
+    if (!tenantId) return;
     (async () => {
       const { data } = await supabase
         .from("vehicles")
-        .select("id, name, plate_number, inspection_expiry_date, registration_expiry_date");
+        .select("id, name, plate_number, inspection_expiry_date, registration_expiry_date")
+        .eq("tenant_id", tenantId);
       if (data) {
         const filtered = data.filter((v) => {
           const insp = daysUntil(v.inspection_expiry_date);
@@ -38,7 +42,7 @@ const VehicleAlerts = ({ onViewVehicles }: Props) => {
         setExpiring(filtered);
       }
     })();
-  }, []);
+  }, [tenantId]);
 
   if (expiring.length === 0) return null;
 

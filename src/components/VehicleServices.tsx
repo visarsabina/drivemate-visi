@@ -109,9 +109,10 @@ const VehicleServices = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
+    if (!tenantId) return;
     const [{ data: veh }, { data: svc }] = await Promise.all([
-      supabase.from("vehicles").select("id,name,plate_number").order("name"),
-      supabase.from("vehicle_services").select("*"),
+      supabase.from("vehicles").select("id,name,plate_number").eq("tenant_id", tenantId).order("name"),
+      supabase.from("vehicle_services").select("*").eq("tenant_id", tenantId),
     ]);
     if (veh) setVehicles(veh);
     if (svc) setServices(svc);
@@ -119,7 +120,7 @@ const VehicleServices = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [tenantId]);
 
   const rows: Row[] = vehicles.map((v) => {
     const svcs = services.filter((s) => s.vehicle_name === v.name);
