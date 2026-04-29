@@ -22,13 +22,16 @@ const daysUntil = (date: string | null): number | null => {
 };
 
 const EmployeeAlerts = ({ onViewEmployees }: Props) => {
+  const { tenantId } = useTenant();
   const [expiring, setExpiring] = useState<ExpiringEmployee[]>([]);
 
   useEffect(() => {
+    if (!tenantId) return;
     (async () => {
       const { data } = await supabase
         .from("employees")
-        .select("id, full_name, license_expiry_date, health_certificate_expiry_date");
+        .select("id, full_name, license_expiry_date, health_certificate_expiry_date")
+        .eq("tenant_id", tenantId);
       if (data) {
         const filtered = data.filter((e) => {
           const lic = daysUntil(e.license_expiry_date);
@@ -38,7 +41,7 @@ const EmployeeAlerts = ({ onViewEmployees }: Props) => {
         setExpiring(filtered);
       }
     })();
-  }, []);
+  }, [tenantId]);
 
   if (expiring.length === 0) return null;
 
