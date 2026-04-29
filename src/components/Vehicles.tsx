@@ -105,10 +105,12 @@ const Vehicles = () => {
   const [filter, setFilter] = useState<"all" | "expiring">("all");
 
   const fetchVehicles = async () => {
+    if (!tenantId) return;
     setLoading(true);
     const { data, error } = await supabase
       .from("vehicles")
       .select("*")
+      .eq("tenant_id", tenantId)
       .order("created_at", { ascending: false });
     if (error) {
       toast.error("Gabim gjatë ngarkimit të mjeteve");
@@ -120,7 +122,7 @@ const Vehicles = () => {
 
   useEffect(() => {
     fetchVehicles();
-  }, []);
+  }, [tenantId]);
 
   const openAdd = () => {
     setEditingId(null);
