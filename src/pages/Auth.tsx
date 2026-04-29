@@ -13,7 +13,7 @@ import logo from "@/assets/logo.png";
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { session, isAdmin, roleChecked, loading: authLoading } = useAuth();
+  const { session, isAdmin, isInstructor, roleChecked, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +41,7 @@ const Auth = () => {
         return;
       }
 
-      if (isAdmin) {
+      if (isAdmin || isInstructor) {
         navigate("/admin", { replace: true });
         return;
       }
@@ -50,7 +50,7 @@ const Auth = () => {
       if (hasAttemptedLogin) {
         toast({
           title: "Qasje e ndaluar",
-          description: "Kjo llogari nuk ka rolin e administratorit.",
+          description: "Kjo llogari nuk ka rol administratori ose instruktori.",
           variant: "destructive",
         });
         supabase.auth.signOut();
@@ -61,7 +61,7 @@ const Auth = () => {
     return () => {
       cancelled = true;
     };
-  }, [session, isAdmin, roleChecked, authLoading, hasAttemptedLogin, navigate, toast]);
+  }, [session, isAdmin, isInstructor, roleChecked, authLoading, hasAttemptedLogin, navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
