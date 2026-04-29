@@ -86,10 +86,12 @@ const Licenses = () => {
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const fetchLicenses = async () => {
+    if (!tenantId) return;
     setLoading(true);
     const { data, error } = await supabase
       .from("licenses")
       .select("*")
+      .eq("tenant_id", tenantId)
       .order("category", { ascending: true });
     if (error) {
       toast.error("Gabim gjatë ngarkimit të licencave");
@@ -101,7 +103,7 @@ const Licenses = () => {
 
   useEffect(() => {
     fetchLicenses();
-  }, []);
+  }, [tenantId]);
 
   const openAdd = () => {
     setEditingId(null);
