@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 import { AlertTriangle, Users as UsersIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
