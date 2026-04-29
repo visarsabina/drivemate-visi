@@ -65,10 +65,16 @@ export const useCandidates = () => {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
+    if (!tenantId) {
+      setCandidates([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     const { data: rows, error } = await supabase
       .from("candidates")
       .select("*")
+      .eq("tenant_id", tenantId)
       .order("created_at", { ascending: false });
     if (error) {
       console.error(error);
@@ -83,12 +89,13 @@ export const useCandidates = () => {
       const { data: pData } = await supabase
         .from("candidate_payments")
         .select("*")
+        .eq("tenant_id", tenantId)
         .in("candidate_id", ids);
       payments = pData ?? [];
     }
     setCandidates((rows ?? []).map((r: any) => mapDbToCandidate(r, payments)));
     setLoading(false);
-  }, []);
+  }, [tenantId]);
 
   useEffect(() => {
     if (tenantLoading) return;
