@@ -95,10 +95,12 @@ const Employees = () => {
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const fetchEmployees = async () => {
+    if (!tenantId) return;
     setLoading(true);
     const { data, error } = await supabase
       .from("employees")
       .select("*")
+      .eq("tenant_id", tenantId)
       .order("created_at", { ascending: false });
     if (error) {
       toast.error("Gabim gjatë ngarkimit të punëtorëve");
@@ -110,7 +112,7 @@ const Employees = () => {
 
   useEffect(() => {
     fetchEmployees();
-  }, []);
+  }, [tenantId]);
 
   const openAdd = () => {
     setEditingId(null);
