@@ -16,18 +16,13 @@ export const useIsSuperAdmin = () => {
     }
     let cancelled = false;
     (async () => {
-      const { data, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .eq("role", "super_admin")
-        .maybeSingle();
+      const { data, error } = await supabase.rpc("is_super_admin");
       if (cancelled) return;
       if (error) {
         console.error("super_admin check failed:", error);
         setIsSuperAdmin(false);
       } else {
-        setIsSuperAdmin(!!data);
+        setIsSuperAdmin(Boolean(data));
       }
       setChecked(true);
     })();

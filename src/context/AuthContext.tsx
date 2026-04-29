@@ -25,11 +25,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Set up listener BEFORE checking session
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      if (newSession?.user) setRoleChecked(false);
       setSession(newSession);
       setUser(newSession?.user ?? null);
 
       if (newSession?.user) {
-        setRoleChecked(false);
         // Defer role check so the SDK can attach the new access token to subsequent requests
         setTimeout(() => {
           checkAdminRole(newSession.user.id, newSession.access_token);
@@ -58,17 +58,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAdminRole = async (userId: string, accessToken?: string) => {
     try {
-      const url = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/user_roles?select=role&user_id=eq.${userId}&role=in.(admin,super_admin,instructor)`;
-      const res = await fetch(url, {
-        headers: {
-          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          Authorization: `Bearer ${accessToken ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-      });
-      const data = await res.json();
-      const roles = Array.isArray(data) ? data.map((r: { role: string }) => r.role) : [];
-      setIsAdmin(roles.includes("admin") || roles.includes("super_admin"));
-      setIsInstructor(roles.includes("instructor"));
+      const [adminResult, instructorResult] = await Promise.all([
+        supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+        supabase.rpc("is_instructor"),
+      ]);
+
+      if (adminResult.error) throw adminResult.error;
+      if (instructorResult.error) throw instructorResult.error;
+
+      setIsAdmin(Boolean(adminResult.data));
+      setIsInstructor(Boolean(instructorResult.data));
     } catch (err) {
       console.error("Role check failed:", err);
       setIsAdmin(false);
