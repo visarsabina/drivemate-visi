@@ -27,16 +27,11 @@ const Auth = () => {
     let cancelled = false;
     (async () => {
       // Super-admin takes priority
-      const { data: superRow } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "super_admin")
-        .maybeSingle();
+      const { data: isSuperAdmin } = await supabase.rpc("is_super_admin");
 
       if (cancelled) return;
 
-      if (superRow) {
+      if (isSuperAdmin) {
         navigate("/super-admin", { replace: true });
         return;
       }
