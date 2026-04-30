@@ -185,12 +185,38 @@ export const useCandidates = () => {
     );
   };
 
+  const deleteCandidate = async (candidateId: string) => {
+    if (!tenantId) return false;
+    const { error: payErr } = await supabase
+      .from("candidate_payments")
+      .delete()
+      .eq("candidate_id", candidateId)
+      .eq("tenant_id", tenantId);
+    if (payErr) {
+      toast.error("Fshirja e pagesave dështoi: " + payErr.message);
+      return false;
+    }
+    const { error } = await supabase
+      .from("candidates")
+      .delete()
+      .eq("id", candidateId)
+      .eq("tenant_id", tenantId);
+    if (error) {
+      toast.error("Fshirja dështoi: " + error.message);
+      return false;
+    }
+    setCandidates((prev) => prev.filter((c) => c.id !== candidateId));
+    toast.success("Kandidati u fshi");
+    return true;
+  };
+
   return {
     candidates,
     loading,
     refresh,
     addCandidate,
     updateCandidate,
+    deleteCandidate,
     addPayment,
     setVertetimiPrintuar,
     setDokumenteTerhequr,
