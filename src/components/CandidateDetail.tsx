@@ -3,15 +3,17 @@ import { Candidate } from "@/types/candidate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer, CreditCard, Pencil } from "lucide-react";
+import { BookOpen, FileCheck, FileText, FileSignature, ArrowLeft, Printer, CreditCard, Pencil, Trash2 } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthContext";
 import { parsePersonalNumber } from "@/lib/personalNumber";
 import { z } from "zod";
 
@@ -93,9 +95,11 @@ interface CandidateDetailProps {
   onBack: () => void;
   onVertetimiPrinted?: (candidateId: string) => void;
   onUpdate?: (candidate: Candidate) => void;
+  onDelete?: (candidateId: string) => void;
 }
 
-const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: CandidateDetailProps) => {
+const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDelete }: CandidateDetailProps) => {
+  const { isAdmin } = useAuth();
   const [activeDoc, setActiveDoc] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [numriPageses, setNumriPageses] = useState("");
@@ -210,9 +214,37 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate }: Ca
         <Button variant="ghost" onClick={onBack} className="gap-2">
           <ArrowLeft className="w-4 h-4" /> Kthehu tek lista
         </Button>
-        <Button variant="outline" onClick={openEditDialog} className="gap-2">
-          <Pencil className="w-4 h-4" /> Modifiko
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={openEditDialog} className="gap-2">
+            <Pencil className="w-4 h-4" /> Modifiko
+          </Button>
+          {isAdmin && onDelete && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" className="gap-2 text-destructive hover:text-destructive hover:bg-destructive/10">
+                  <Trash2 className="w-4 h-4" /> Fshij
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Fshij kandidatin?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Je i sigurt që dëshiron të fshish <strong>{candidate.emri} {candidate.mbiemri}</strong>? Ky veprim do të fshijë edhe të gjitha pagesat e kandidatit dhe nuk mund të kthehet mbrapa.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Anulo</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => onDelete(candidate.id)}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Fshij
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+        </div>
       </div>
 
       <div className="glass-card rounded-xl p-6">
