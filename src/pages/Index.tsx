@@ -34,6 +34,7 @@ const Index = () => {
     candidates,
     addCandidate,
     updateCandidate,
+    deleteCandidate,
     addPayment,
     setVertetimiPrintuar,
     setDokumenteTerhequr,
@@ -57,6 +58,14 @@ const Index = () => {
   const handleUpdateCandidate = (updated: Candidate) => {
     updateCandidate(updated);
     setSelectedCandidate(updated);
+  };
+
+  const handleDeleteCandidate = async (candidateId: string) => {
+    const ok = await deleteCandidate(candidateId);
+    if (ok) {
+      setSelectedCandidate(null);
+      setActiveView("candidates");
+    }
   };
 
   const handleToggleDocuments = (candidateId: string, value: boolean) => {

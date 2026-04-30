@@ -214,9 +214,37 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
         <Button variant="ghost" onClick={onBack} className="gap-2">
           <ArrowLeft className="w-4 h-4" /> Kthehu tek lista
         </Button>
-        <Button variant="outline" onClick={openEditDialog} className="gap-2">
-          <Pencil className="w-4 h-4" /> Modifiko
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={openEditDialog} className="gap-2">
+            <Pencil className="w-4 h-4" /> Modifiko
+          </Button>
+          {isAdmin && onDelete && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" className="gap-2 text-destructive hover:text-destructive hover:bg-destructive/10">
+                  <Trash2 className="w-4 h-4" /> Fshij
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Fshij kandidatin?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Je i sigurt që dëshiron të fshish <strong>{candidate.emri} {candidate.mbiemri}</strong>? Ky veprim do të fshijë edhe të gjitha pagesat e kandidatit dhe nuk mund të kthehet mbrapa.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Anulo</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => onDelete(candidate.id)}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Fshij
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+        </div>
       </div>
 
       <div className="glass-card rounded-xl p-6">
