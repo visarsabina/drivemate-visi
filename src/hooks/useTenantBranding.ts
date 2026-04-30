@@ -168,31 +168,17 @@ export const usePublicTenantBranding = (slug?: string) => {
       let row: TenantBranding | null = null;
 
       if (slug) {
-        const { data } = await supabase
-          .from("tenants")
-          .select("id, name, slug, domain, logo_url, primary_color, phone, address, email, director_name")
-          .eq("slug", slug)
-          .eq("is_active", true)
-          .maybeSingle();
-        row = (data as TenantBranding | null) ?? null;
+        const { data } = await supabase.rpc("get_public_tenant_by_slug", { _slug: slug });
+        row = ((data as TenantBranding[] | null)?.[0]) ?? null;
       } else {
         const host = window.location.hostname.replace(/^www\./, "");
-        const { data: byDomain } = await supabase
-          .from("tenants")
-          .select("id, name, slug, domain, logo_url, primary_color, phone, address, email, director_name")
-          .eq("domain", host)
-          .eq("is_active", true)
-          .maybeSingle();
-        row = (byDomain as TenantBranding | null) ?? null;
+        const { data: byDomain } = await supabase.rpc("get_public_tenant_by_domain", { _domain: host });
+        row = ((byDomain as TenantBranding[] | null)?.[0]) ?? null;
 
         if (!row) {
           // Fallback to default tenant for preview/lovable.app domains
-          const { data: fallback } = await supabase
-            .from("tenants")
-            .select("id, name, slug, domain, logo_url, primary_color, phone, address, email, director_name")
-            .eq("slug", "visi")
-            .maybeSingle();
-          row = (fallback as TenantBranding | null) ?? null;
+          const { data: fallback } = await supabase.rpc("get_public_tenant_by_slug", { _slug: "visi" });
+          row = ((fallback as TenantBranding[] | null)?.[0]) ?? null;
         }
       }
 
