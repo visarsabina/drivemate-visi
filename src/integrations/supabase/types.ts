@@ -175,6 +175,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "employees_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       licenses: {
@@ -214,6 +221,13 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "licenses_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
             referencedColumns: ["id"]
           },
         ]
@@ -263,6 +277,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "registrations_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       staff: {
@@ -308,6 +329,13 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "staff_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
             referencedColumns: ["id"]
           },
         ]
@@ -408,6 +436,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "user_tenants_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vehicle_services: {
@@ -456,6 +491,13 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_services_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
             referencedColumns: ["id"]
           },
         ]
@@ -514,11 +556,47 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vehicles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
     Views: {
-      [_ in never]: never
+      tenants_public: {
+        Row: {
+          domain: string | null
+          id: string | null
+          is_active: boolean | null
+          logo_url: string | null
+          name: string | null
+          primary_color: string | null
+          slug: string | null
+        }
+        Insert: {
+          domain?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          logo_url?: string | null
+          name?: string | null
+          primary_color?: string | null
+          slug?: string | null
+        }
+        Update: {
+          domain?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          logo_url?: string | null
+          name?: string | null
+          primary_color?: string | null
+          slug?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_existing_user_to_my_tenant: {
@@ -546,6 +624,36 @@ export type Database = {
           email: string
           is_admin: boolean
           user_id: string
+        }[]
+      }
+      get_public_tenant_by_domain: {
+        Args: { _domain: string }
+        Returns: {
+          address: string
+          director_name: string
+          domain: string
+          email: string
+          id: string
+          logo_url: string
+          name: string
+          phone: string
+          primary_color: string
+          slug: string
+        }[]
+      }
+      get_public_tenant_by_slug: {
+        Args: { _slug: string }
+        Returns: {
+          address: string
+          director_name: string
+          domain: string
+          email: string
+          id: string
+          logo_url: string
+          name: string
+          phone: string
+          primary_color: string
+          slug: string
         }[]
       }
       get_user_tenant_id: { Args: never; Returns: string }
