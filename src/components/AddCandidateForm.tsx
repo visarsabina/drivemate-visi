@@ -71,7 +71,8 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
 
       dataRows.forEach((row, idx) => {
         const numriRegjistrimit = String(row[0] ?? "").trim();
-        const kategoria = String(row[1] ?? "B").trim().toUpperCase() || "B";
+        let kategoria = String(row[1] ?? "B").trim().toUpperCase() || "B";
+        if (["BC1", "BC2", "BC3"].includes(kategoria)) kategoria = "C1";
         const emri = String(row[2] ?? "").trim();
         const emriBabait = String(row[3] ?? "").trim();
         const mbiemri = String(row[4] ?? "").trim();
