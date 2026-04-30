@@ -626,6 +626,36 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_public_tenant_by_domain: {
+        Args: { _domain: string }
+        Returns: {
+          address: string
+          director_name: string
+          domain: string
+          email: string
+          id: string
+          logo_url: string
+          name: string
+          phone: string
+          primary_color: string
+          slug: string
+        }[]
+      }
+      get_public_tenant_by_slug: {
+        Args: { _slug: string }
+        Returns: {
+          address: string
+          director_name: string
+          domain: string
+          email: string
+          id: string
+          logo_url: string
+          name: string
+          phone: string
+          primary_color: string
+          slug: string
+        }[]
+      }
       get_user_tenant_id: { Args: never; Returns: string }
       grant_admin_role: {
         Args: { _target_user_id: string }
