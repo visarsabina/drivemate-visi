@@ -130,9 +130,14 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       }
     }
 
+    const normalizedKategoria = ["BC1", "BC2", "BC3"].includes(form.kategoria.toUpperCase())
+      ? "C1"
+      : form.kategoria;
+
     const newCandidate: Candidate = {
       id: Date.now().toString(),
       ...form,
+      kategoria: normalizedKategoria,
       statusi: "regjistuar" as CandidateStatus,
       shumaMarreveshjes: parseFloat(form.shumaMarreveshjes) || 0,
       payments: [],
