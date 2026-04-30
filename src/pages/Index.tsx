@@ -171,6 +171,7 @@ const Index = () => {
               onBack={() => { setSelectedCandidate(null); setActiveView("candidates"); }}
               onVertetimiPrinted={handleVertetimiPrinted}
               onUpdate={handleUpdateCandidate}
+              onDelete={handleDeleteCandidate}
             />
           )}
 
