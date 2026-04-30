@@ -71,7 +71,8 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
 
       dataRows.forEach((row, idx) => {
         const numriRegjistrimit = String(row[0] ?? "").trim();
-        const kategoria = String(row[1] ?? "B").trim().toUpperCase() || "B";
+        let kategoria = String(row[1] ?? "B").trim().toUpperCase() || "B";
+        if (["BC1", "BC2", "BC3"].includes(kategoria)) kategoria = "C1";
         const emri = String(row[2] ?? "").trim();
         const emriBabait = String(row[3] ?? "").trim();
         const mbiemri = String(row[4] ?? "").trim();
@@ -129,9 +130,14 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       }
     }
 
+    const normalizedKategoria = ["BC1", "BC2", "BC3"].includes(form.kategoria.toUpperCase())
+      ? "C1"
+      : form.kategoria;
+
     const newCandidate: Candidate = {
       id: Date.now().toString(),
       ...form,
+      kategoria: normalizedKategoria,
       statusi: "regjistuar" as CandidateStatus,
       shumaMarreveshjes: parseFloat(form.shumaMarreveshjes) || 0,
       payments: [],
