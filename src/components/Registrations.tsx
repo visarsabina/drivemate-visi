@@ -1,56 +1,80 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Trash2, Mail, Phone, Inbox } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 
 interface Registration {
-  fullName: string;
+  id: string;
+  full_name: string;
   email: string;
   phone: string;
   category: string;
-  createdAt: string;
+  created_at: string;
 }
-
-const STORAGE_KEY = "visi_registrations";
 
 const Registrations = () => {
   const { toast } = useToast();
+  const { tenantId, loading: tenantLoading } = useTenant();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const load = () => {
-    try {
-      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-      setRegistrations(Array.isArray(data) ? data.reverse() : []);
-    } catch {
+  const load = useCallback(async () => {
+    if (!tenantId) {
       setRegistrations([]);
+      setLoading(false);
+      return;
     }
-  };
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("registrations")
+      .select("id, full_name, email, phone, category, created_at")
+      .eq("tenant_id", tenantId)
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.error(error);
+      toast({ title: "Gabim", description: "Ngarkimi i regjistrimeve dështoi", variant: "destructive" });
+      setRegistrations([]);
+    } else {
+      setRegistrations((data ?? []) as Registration[]);
+    }
+    setLoading(false);
+  }, [tenantId, toast]);
 
   useEffect(() => {
+    if (tenantLoading) return;
     load();
-  }, []);
+  }, [tenantLoading, load]);
 
-  const handleDelete = (createdAt: string) => {
-    const all: Registration[] = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    const updated = all.filter((r) => r.createdAt !== createdAt);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    load();
+  const handleDelete = async (id: string) => {
+    const { error } = await supabase.from("registrations").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Gabim", description: "Fshirja dështoi", variant: "destructive" });
+      return;
+    }
+    setRegistrations((prev) => prev.filter((r) => r.id !== id));
     toast({ title: "Regjistrimi u fshi" });
   };
 
-  const handleClearAll = () => {
+  const handleClearAll = async () => {
+    if (!tenantId) return;
     if (!confirm("A jeni të sigurt që doni t'i fshini të gjitha regjistrimet?")) return;
-    localStorage.removeItem(STORAGE_KEY);
-    load();
+    const { error } = await supabase.from("registrations").delete().eq("tenant_id", tenantId);
+    if (error) {
+      toast({ title: "Gabim", description: "Fshirja dështoi", variant: "destructive" });
+      return;
+    }
+    setRegistrations([]);
     toast({ title: "Të gjitha regjistrimet u fshinë" });
   };
 
   const filtered = registrations.filter(
     (r) =>
-      r.fullName.toLowerCase().includes(search.toLowerCase()) ||
+      r.full_name.toLowerCase().includes(search.toLowerCase()) ||
       r.email.toLowerCase().includes(search.toLowerCase()) ||
       r.phone.includes(search) ||
       r.category.toLowerCase().includes(search.toLowerCase())
@@ -77,7 +101,7 @@ const Registrations = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={load}>
+          <Button variant="outline" size="sm" onClick={load} disabled={loading}>
             Rifresko
           </Button>
           {registrations.length > 0 && (
@@ -101,7 +125,9 @@ const Registrations = () => {
           </div>
         </div>
 
-        {registrations.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-16 text-muted-foreground">Duke ngarkuar...</div>
+        ) : registrations.length === 0 ? (
           <div className="text-center py-16 px-4">
             <Inbox className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
             <p className="text-muted-foreground font-medium">Ende nuk ka regjistrime</p>
@@ -131,11 +157,11 @@ const Registrations = () => {
                   </TableRow>
                 ) : (
                   filtered.map((r) => (
-                    <TableRow key={r.createdAt}>
+                    <TableRow key={r.id}>
                       <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
-                        {formatDate(r.createdAt)}
+                        {formatDate(r.created_at)}
                       </TableCell>
-                      <TableCell className="font-medium">{r.fullName}</TableCell>
+                      <TableCell className="font-medium">{r.full_name}</TableCell>
                       <TableCell>
                         <a
                           href={`mailto:${r.email}`}
@@ -163,7 +189,7 @@ const Registrations = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(r.createdAt)}
+                          onClick={() => handleDelete(r.id)}
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />
