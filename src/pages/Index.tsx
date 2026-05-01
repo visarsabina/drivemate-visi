@@ -22,12 +22,16 @@ import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
+import { useTenantBranding } from "@/hooks/useTenantBranding";
+import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
 import { Candidate, Payment } from "@/types/candidate";
-import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
+import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const { isAdmin, isInstructor } = useAuth();
+  const { branding } = useTenantBranding();
+  const { isSuperAdmin } = useIsSuperAdmin();
   const defaultView = !isAdmin && isInstructor ? "instructor" : "dashboard";
   const [activeView, setActiveView] = useState(defaultView);
   const {
@@ -110,11 +114,20 @@ const Index = () => {
       </div>
 
       <main className="flex-1 min-h-screen">
-        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border px-4 lg:px-8 py-4 flex items-center gap-4">
+        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border px-4 lg:px-8 py-4 flex items-center gap-4 flex-wrap">
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg hover:bg-muted">
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           <h2 className="text-xl font-semibold">{viewTitles[activeView]}</h2>
+          <div className="ml-auto flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
+            <Building2 className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">{branding?.name ?? "Auto Shkolla"}</span>
+            {isSuperAdmin && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-primary-foreground ml-1">
+                Super Admin
+              </span>
+            )}
+          </div>
         </header>
 
         <div className="p-4 lg:p-8 space-y-6">
