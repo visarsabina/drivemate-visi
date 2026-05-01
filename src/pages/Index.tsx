@@ -30,6 +30,8 @@ import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const { isAdmin, isInstructor } = useAuth();
+  const { branding } = useTenantBranding();
+  const { isSuperAdmin } = useIsSuperAdmin();
   const defaultView = !isAdmin && isInstructor ? "instructor" : "dashboard";
   const [activeView, setActiveView] = useState(defaultView);
   const {
