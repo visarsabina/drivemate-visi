@@ -22,8 +22,10 @@ import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
+import { useTenantBranding } from "@/hooks/useTenantBranding";
+import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
 import { Candidate, Payment } from "@/types/candidate";
-import { Menu, X, BookOpen, FileCheck, FileText, FileSignature } from "lucide-react";
+import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
