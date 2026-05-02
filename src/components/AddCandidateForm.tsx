@@ -141,6 +141,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       kategoria: normalizedKategoria,
       statusi: "regjistuar" as CandidateStatus,
       shumaMarreveshjes: parseFloat(form.shumaMarreveshjes) || 0,
+      totalLessons: parseInt(form.totalLessons, 10) || 20,
       payments: [],
     };
 
@@ -161,6 +162,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       dataRegjistrimit: new Date().toISOString().split("T")[0],
       shenimet: "",
       shumaMarreveshjes: "",
+      totalLessons: "20",
     });
   };
 
