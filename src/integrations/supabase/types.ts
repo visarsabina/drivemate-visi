@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      candidate_lessons: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          created_by: string | null
+          data: string
+          hours: number
+          id: string
+          tenant_id: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          created_by?: string | null
+          data?: string
+          hours?: number
+          id?: string
+          tenant_id: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          created_by?: string | null
+          data?: string
+          hours?: number
+          id?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
       candidate_payments: {
         Row: {
           candidate_id: string
@@ -69,6 +99,7 @@ export type Database = {
           statusi: Database["public"]["Enums"]["candidate_status"]
           telefon: string | null
           tenant_id: string
+          total_lessons: number
           updated_at: string
           vendi: string | null
           vendlindja: string | null
@@ -93,6 +124,7 @@ export type Database = {
           statusi?: Database["public"]["Enums"]["candidate_status"]
           telefon?: string | null
           tenant_id: string
+          total_lessons?: number
           updated_at?: string
           vendi?: string | null
           vendlindja?: string | null
@@ -117,6 +149,7 @@ export type Database = {
           statusi?: Database["public"]["Enums"]["candidate_status"]
           telefon?: string | null
           tenant_id?: string
+          total_lessons?: number
           updated_at?: string
           vendi?: string | null
           vendlindja?: string | null
