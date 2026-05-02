@@ -56,6 +56,7 @@ const candidateToDbInsert = (c: Candidate, tenantId: string) => ({
   data_regjistrimit: c.dataRegjistrimit || new Date().toISOString().split("T")[0],
   shenimet: c.shenimet || null,
   shuma_marreveshjes: c.shumaMarreveshjes ?? 0,
+  total_lessons: c.totalLessons ?? 20,
   vertetimi_printuar: !!c.vertetimiPrintuar,
   dokumente_terhequr: !!c.dokumenteTerhequr,
 });
