@@ -281,7 +281,17 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
               </Button>
             )}
           </div>
+          <div><span className="text-muted-foreground">Orë vozitjeje:</span> <strong>{candidate.totalLessons ?? 20}</strong></div>
         </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Orët e Vozitjes</h3>
+        <LessonsManager
+          candidateId={candidate.id}
+          candidateName={`${candidate.emri} ${candidate.mbiemri}`}
+          totalLessons={candidate.totalLessons ?? 20}
+        />
       </div>
 
       <div>
