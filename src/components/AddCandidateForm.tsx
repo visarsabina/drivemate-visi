@@ -39,6 +39,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     dataRegjistrimit: new Date().toISOString().split("T")[0],
     shenimet: "",
     shumaMarreveshjes: "",
+    totalLessons: "20",
   });
 
   const handleExcelImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
