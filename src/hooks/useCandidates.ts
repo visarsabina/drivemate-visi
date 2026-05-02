@@ -25,6 +25,7 @@ const mapDbToCandidate = (
   dataRegjistrimit: row.data_regjistrimit ?? "",
   shenimet: row.shenimet ?? "",
   shumaMarreveshjes: Number(row.shuma_marreveshjes ?? 0),
+  totalLessons: Number(row.total_lessons ?? 20),
   vertetimiPrintuar: !!row.vertetimi_printuar,
   dokumenteTerhequr: !!row.dokumente_terhequr,
   instructorId: row.instructor_id ?? null,
