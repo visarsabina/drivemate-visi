@@ -449,6 +449,22 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
               <Label>Shuma e Marrëveshjes (€)</Label>
               <Input type="number" step="0.01" min={0} max={100000} value={editForm.shumaMarreveshjes} onChange={(e) => { const v = parseFloat(e.target.value); setEditForm({ ...editForm, shumaMarreveshjes: isNaN(v) ? 0 : Math.max(0, v) }); }} />
             </div>
+            <div className="space-y-2">
+              <Label>Numri i Orëve të Vozitjes</Label>
+              <Select
+                value={String(editForm.totalLessons ?? 20)}
+                onValueChange={(v) => setEditForm({ ...editForm, totalLessons: parseInt(v, 10) })}
+              >
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3">3 orë</SelectItem>
+                  <SelectItem value="5">5 orë</SelectItem>
+                  <SelectItem value="10">10 orë</SelectItem>
+                  <SelectItem value="15">15 orë</SelectItem>
+                  <SelectItem value="20">20 orë</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="space-y-2 sm:col-span-2">
               <Label>Shënime</Label>
               <Input value={editForm.shenimet} onChange={(e) => setEditForm({ ...editForm, shenimet: e.target.value })} />
