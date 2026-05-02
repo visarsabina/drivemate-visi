@@ -39,6 +39,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
     dataRegjistrimit: new Date().toISOString().split("T")[0],
     shenimet: "",
     shumaMarreveshjes: "",
+    totalLessons: "20",
   });
 
   const handleExcelImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +141,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       kategoria: normalizedKategoria,
       statusi: "regjistuar" as CandidateStatus,
       shumaMarreveshjes: parseFloat(form.shumaMarreveshjes) || 0,
+      totalLessons: parseInt(form.totalLessons, 10) || 20,
       payments: [],
     };
 
@@ -160,6 +162,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       dataRegjistrimit: new Date().toISOString().split("T")[0],
       shenimet: "",
       shumaMarreveshjes: "",
+      totalLessons: "20",
     });
   };
 
@@ -274,6 +277,21 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
           <div className="space-y-2">
             <Label htmlFor="shumaMarreveshjes">Shuma e Marrëveshjes (€)</Label>
             <Input id="shumaMarreveshjes" type="number" value={form.shumaMarreveshjes} onChange={(e) => setForm({ ...form, shumaMarreveshjes: e.target.value })} placeholder="0.00" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="totalLessons">Numri i Orëve të Vozitjes</Label>
+            <Select value={form.totalLessons} onValueChange={(v) => setForm({ ...form, totalLessons: v })}>
+              <SelectTrigger id="totalLessons">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3">3 orë</SelectItem>
+                <SelectItem value="5">5 orë</SelectItem>
+                <SelectItem value="10">10 orë</SelectItem>
+                <SelectItem value="15">15 orë</SelectItem>
+                <SelectItem value="20">20 orë (default)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
 import { useAuth } from "@/context/AuthContext";
-import { Loader2, Users as UsersIcon } from "lucide-react";
+import { Loader2, Users as UsersIcon, ArrowLeft, Clock } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { formatDateDMY } from "@/lib/date";
 import { toast } from "sonner";
+import LessonsManager from "@/components/LessonsManager";
 
 interface InstructorCandidate {
   id: string;
@@ -17,6 +19,7 @@ interface InstructorCandidate {
   kategoria: string;
   statusi: string;
   data_regjistrimit: string;
+  total_lessons: number;
 }
 
 const statusLabel: Record<string, string> = {
@@ -31,6 +34,7 @@ const InstructorDashboard = () => {
   const { tenantId, loading: tenantLoading } = useTenant();
   const [candidates, setCandidates] = useState<InstructorCandidate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<InstructorCandidate | null>(null);
 
   useEffect(() => {
     if (!user || tenantLoading) return;
@@ -40,7 +44,7 @@ const InstructorDashboard = () => {
       const { data, error } = await supabase
         .from("candidates")
         .select(
-          "id, numri_regjistrimit, emri, mbiemri, telefon, kategoria, statusi, data_regjistrimit",
+          "id, numri_regjistrimit, emri, mbiemri, telefon, kategoria, statusi, data_regjistrimit, total_lessons",
         )
         .order("data_regjistrimit", { ascending: false });
 
@@ -58,6 +62,27 @@ const InstructorDashboard = () => {
     };
   }, [user, tenantLoading, tenantId]);
 
+  if (selected) {
+    return (
+      <div className="space-y-4">
+        <Button variant="ghost" onClick={() => setSelected(null)} className="gap-2">
+          <ArrowLeft className="w-4 h-4" /> Kthehu tek lista
+        </Button>
+        <div className="glass-card rounded-xl p-4">
+          <h2 className="text-xl font-bold">{selected.emri} {selected.mbiemri}</h2>
+          <p className="text-sm text-muted-foreground">
+            Nr. Regj: {selected.numri_regjistrimit} · Kategoria: {selected.kategoria}
+          </p>
+        </div>
+        <LessonsManager
+          candidateId={selected.id}
+          candidateName={`${selected.emri} ${selected.mbiemri}`}
+          totalLessons={selected.total_lessons ?? 20}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -66,7 +91,7 @@ const InstructorDashboard = () => {
           Kandidatët e Mi
         </h2>
         <p className="text-sm text-muted-foreground">
-          Lista e kandidatëve të caktuar tek ju nga admini i autoshkollës.
+          Kliko mbi një kandidat për të menaxhuar orët e vozitjes.
         </p>
       </div>
 
@@ -80,24 +105,25 @@ const InstructorDashboard = () => {
               <TableHead>Kategoria</TableHead>
               <TableHead>Statusi</TableHead>
               <TableHead>Data e Regjistrimit</TableHead>
+              <TableHead className="text-right">Orë</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8">
+                <TableCell colSpan={7} className="text-center py-8">
                   <Loader2 className="w-5 h-5 animate-spin inline" />
                 </TableCell>
               </TableRow>
             ) : candidates.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
                   Nuk keni kandidatë të caktuar ende.
                 </TableCell>
               </TableRow>
             ) : (
               candidates.map((c) => (
-                <TableRow key={c.id}>
+                <TableRow key={c.id} className="cursor-pointer" onClick={() => setSelected(c)}>
                   <TableCell className="font-mono text-sm">{c.numri_regjistrimit}</TableCell>
                   <TableCell className="font-medium">
                     {c.emri} {c.mbiemri}
@@ -122,6 +148,11 @@ const InstructorDashboard = () => {
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {formatDateDMY(c.data_regjistrimit)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button size="sm" variant="ghost" className="gap-1 h-8" onClick={(e) => { e.stopPropagation(); setSelected(c); }}>
+                      <Clock className="w-3.5 h-3.5" /> {c.total_lessons ?? 20}
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))

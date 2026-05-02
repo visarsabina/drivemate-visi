@@ -23,6 +23,7 @@ export interface Candidate {
   dataRegjistrimit: string;
   shenimet: string;
   shumaMarreveshjes: number;
+  totalLessons?: number;
   payments: Payment[];
   vertetimiPrintuar?: boolean;
   dokumenteTerhequr?: boolean;

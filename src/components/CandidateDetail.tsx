@@ -9,6 +9,7 @@ import CandidateBooklet from "@/components/CandidateBooklet";
 import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
+import LessonsManager from "@/components/LessonsManager";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -280,7 +281,17 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
               </Button>
             )}
           </div>
+          <div><span className="text-muted-foreground">Orë vozitjeje:</span> <strong>{candidate.totalLessons ?? 20}</strong></div>
         </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Orët e Vozitjes</h3>
+        <LessonsManager
+          candidateId={candidate.id}
+          candidateName={`${candidate.emri} ${candidate.mbiemri}`}
+          totalLessons={candidate.totalLessons ?? 20}
+        />
       </div>
 
       <div>
@@ -437,6 +448,22 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
             <div className="space-y-2">
               <Label>Shuma e Marrëveshjes (€)</Label>
               <Input type="number" step="0.01" min={0} max={100000} value={editForm.shumaMarreveshjes} onChange={(e) => { const v = parseFloat(e.target.value); setEditForm({ ...editForm, shumaMarreveshjes: isNaN(v) ? 0 : Math.max(0, v) }); }} />
+            </div>
+            <div className="space-y-2">
+              <Label>Numri i Orëve të Vozitjes</Label>
+              <Select
+                value={String(editForm.totalLessons ?? 20)}
+                onValueChange={(v) => setEditForm({ ...editForm, totalLessons: parseInt(v, 10) })}
+              >
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3">3 orë</SelectItem>
+                  <SelectItem value="5">5 orë</SelectItem>
+                  <SelectItem value="10">10 orë</SelectItem>
+                  <SelectItem value="15">15 orë</SelectItem>
+                  <SelectItem value="20">20 orë</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2 sm:col-span-2">
               <Label>Shënime</Label>
