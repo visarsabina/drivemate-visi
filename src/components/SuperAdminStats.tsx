@@ -328,7 +328,11 @@ const SuperAdminStats = () => {
                   )
                   : (
                     byTenant.map((t) => (
-                      <TableRow key={t.tenant_id}>
+                      <TableRow
+                        key={t.tenant_id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => openDetails(t.tenant_id)}
+                      >
                         <TableCell className="font-medium">{t.tenant_name}</TableCell>
                         <TableCell className="text-center">{t.candidates_total}</TableCell>
                         <TableCell className="text-center">{t.candidates_active}</TableCell>
@@ -342,6 +346,71 @@ const SuperAdminStats = () => {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{selected?.tenant_name || "Detajet e autoshkollës"}</DialogTitle>
+            <DialogDescription>
+              {selected?.slug && <span>/{selected.slug}</span>}
+              {selected?.is_active === false && (
+                <Badge variant="destructive" className="ml-2">Joaktive</Badge>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          {detailsLoading || !selected || !("candidates_total" in selected) ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {(selected.phone || selected.email || selected.address) && (
+                <div className="text-sm text-muted-foreground space-y-1">
+                  {selected.phone && <p>📞 {selected.phone}</p>}
+                  {selected.email && <p>✉️ {selected.email}</p>}
+                  {selected.address && <p>📍 {selected.address}</p>}
+                </div>
+              )}
+
+              <div>
+                <h4 className="text-sm font-semibold mb-2">Kandidatët sipas statusit</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <StatCard icon={GraduationCap} label="Gjithsej" value={selected.candidates_total} />
+                  <StatCard icon={Users} label="Të regjistruar" value={selected.candidates_regjistuar} tone="amber" />
+                  <StatCard icon={Users} label="Në proces" value={selected.candidates_ne_proces} tone="primary" />
+                  <StatCard icon={UserCheck} label="Kaluar" value={selected.candidates_kaluar} tone="green" />
+                  <StatCard icon={Users} label="Dështuar" value={selected.candidates_deshtur} tone="red" />
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold mb-2">Regjistrimet online</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <StatCard icon={Inbox} label="Të hapura" value={selected.registrations_open} tone="amber" />
+                  <StatCard icon={Inbox} label="Gjithsej" value={selected.registrations_total} tone="muted" />
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold mb-2">Të ardhurat</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <StatCard icon={TrendingUp} label="Ky muaj" value={fmtCurrency(Number(selected.revenue_this_month))} tone="primary" />
+                  <StatCard icon={Wallet} label="Gjithsej" value={fmtCurrency(Number(selected.revenue_total))} tone="green" />
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold mb-2">Asetet</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <StatCard icon={Car} label="Mjete" value={selected.vehicles_total} tone="muted" />
+                  <StatCard icon={Users} label="Punëtorë" value={selected.employees_total} tone="muted" />
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
