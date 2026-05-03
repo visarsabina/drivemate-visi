@@ -772,6 +772,10 @@ export type Database = {
           revenue: number
         }[]
       }
+      super_admin_tenant_details: {
+        Args: { _tenant_id: string }
+        Returns: Json
+      }
       super_admin_tenant_stats: {
         Args: never
         Returns: {
