@@ -105,11 +105,47 @@ const StatCard = ({
   );
 };
 
+interface TenantDetails {
+  tenant_id: string;
+  tenant_name: string;
+  slug: string | null;
+  phone: string | null;
+  email: string | null;
+  address: string | null;
+  is_active: boolean;
+  candidates_total: number;
+  candidates_regjistuar: number;
+  candidates_ne_proces: number;
+  candidates_kaluar: number;
+  candidates_deshtur: number;
+  registrations_open: number;
+  registrations_total: number;
+  revenue_total: number;
+  revenue_this_month: number;
+  vehicles_total: number;
+  employees_total: number;
+}
+
 const SuperAdminStats = () => {
   const [stats, setStats] = useState<GlobalStats | null>(null);
   const [monthly, setMonthly] = useState<MonthlyRow[]>([]);
   const [byTenant, setByTenant] = useState<TenantStat[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<TenantDetails | null>(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
+
+  const openDetails = async (tenantId: string) => {
+    setDetailsLoading(true);
+    setSelected({ tenant_id: tenantId } as TenantDetails);
+    const { data, error } = await supabase.rpc("super_admin_tenant_details", { _tenant_id: tenantId });
+    if (error) {
+      toast.error("Detajet: " + error.message);
+      setSelected(null);
+    } else {
+      setSelected(data as unknown as TenantDetails);
+    }
+    setDetailsLoading(false);
+  };
 
   useEffect(() => {
     let cancelled = false;
