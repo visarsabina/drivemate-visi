@@ -10,6 +10,7 @@ Dashboard must offer quick access to Libreza, Vërtetimi, Fletparaqitja, and Kon
 - [Multi-Tenant Architecture](mem://features/multi-tenant) — tenants, user_tenants, RLS pattern, useTenant hook
 - [Super-Admin Panel](mem://features/super-admin) — super_admin role, /super-admin route, create_tenant_with_admin
 - [Phase 3 — Branding & User Mgmt](mem://features/phase-3) — per-tenant branding, /school/:slug, tenant-scoped user management
+- [Phase 4B — Super-Admin Stats](mem://features/phase-4b) — global stats RPCs + SuperAdminStats component with charts
 - [Candidate Management](mem://features/candidate-management) — Candidate data fields, registration number logic, and list view status indicators
 - [Payments Module](mem://features/payments) — Transaction history, automatic debt calculation, and payment slips
 - [Candidate Booklet](mem://features/documents/candidate-booklet) — 4-section booklet auto-populated with profile data

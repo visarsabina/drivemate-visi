@@ -762,6 +762,27 @@ export type Database = {
         Args: { _is_active: boolean; _tenant_id: string }
         Returns: undefined
       }
+      super_admin_global_stats: { Args: never; Returns: Json }
+      super_admin_monthly_series: {
+        Args: { _months?: number }
+        Returns: {
+          month: string
+          new_candidates: number
+          new_registrations: number
+          revenue: number
+        }[]
+      }
+      super_admin_tenant_stats: {
+        Args: never
+        Returns: {
+          candidates_active: number
+          candidates_total: number
+          revenue_this_month: number
+          revenue_total: number
+          tenant_id: string
+          tenant_name: string
+        }[]
+      }
       user_belongs_to_tenant: { Args: { _tenant_id: string }; Returns: boolean }
     }
     Enums: {
