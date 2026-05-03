@@ -37,6 +37,7 @@ import {
   Car,
   UserCheck,
 } from "lucide-react";
+import SuperAdminStats from "@/components/SuperAdminStats";
 
 interface TenantRow {
   id: string;
