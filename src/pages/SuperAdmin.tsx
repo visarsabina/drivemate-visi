@@ -176,48 +176,8 @@ const SuperAdmin = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Gjithsej</p>
-                  <p className="text-2xl font-bold">{tenants.length}</p>
-                </div>
-                <Building2 className="w-8 h-8 text-primary/40" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Aktive</p>
-                  <p className="text-2xl font-bold text-green-600">
-                    {tenants.filter((t) => t.is_active).length}
-                  </p>
-                </div>
-                <Power className="w-8 h-8 text-green-600/40" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Të çaktivizuara
-                  </p>
-                  <p className="text-2xl font-bold text-muted-foreground">
-                    {tenants.filter((t) => !t.is_active).length}
-                  </p>
-                </div>
-                <PowerOff className="w-8 h-8 text-muted-foreground/40" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Global statistics (Faza 4B) */}
+        <SuperAdminStats />
 
         {/* Tenants table */}
         <Card>
