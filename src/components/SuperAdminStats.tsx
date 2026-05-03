@@ -120,7 +120,7 @@ const SuperAdminStats = () => {
       ]);
       if (cancelled) return;
       if (g.error) toast.error("Statistikat: " + g.error.message);
-      else setStats(g.data as GlobalStats);
+      else setStats(g.data as unknown as GlobalStats);
       if (m.error) toast.error("Seritë mujore: " + m.error.message);
       else setMonthly(((m.data ?? []) as MonthlyRow[]).map((r) => ({ ...r, month: fmtMonth(r.month) })));
       if (t.error) toast.error("Sipas autoshkollave: " + t.error.message);
