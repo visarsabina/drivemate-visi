@@ -404,8 +404,12 @@ const SuperAdminStats = () => {
 
       {/* Tenant ranking */}
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-base">Performanca sipas autoshkollës</CardTitle>
+          <Button variant="outline" size="sm" onClick={exportTenants} disabled={byTenant.length === 0}>
+            <Download className="w-4 h-4 mr-2" />
+            Eksporto CSV
+          </Button>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
