@@ -513,6 +513,12 @@ const SuperAdminStats = () => {
                   <StatCard icon={Users} label="Punëtorë" value={selected.employees_total} tone="muted" />
                 </div>
               </div>
+              <div className="pt-2 border-t">
+                <Button variant="outline" size="sm" onClick={exportTenantDetails} className="w-full sm:w-auto">
+                  <Download className="w-4 h-4 mr-2" />
+                  Eksporto detajet (CSV)
+                </Button>
+              </div>
             </div>
           )}
         </DialogContent>
