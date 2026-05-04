@@ -134,6 +134,8 @@ const SuperAdminStats = () => {
   const [monthly, setMonthly] = useState<MonthlyRow[]>([]);
   const [byTenant, setByTenant] = useState<TenantStat[]>([]);
   const [loading, setLoading] = useState(true);
+  const [seriesLoading, setSeriesLoading] = useState(false);
+  const [months, setMonths] = useState<number>(12);
   const [selected, setSelected] = useState<TenantDetails | null>(null);
   const [detailsLoading, setDetailsLoading] = useState(false);
 
@@ -154,16 +156,13 @@ const SuperAdminStats = () => {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const [g, m, t] = await Promise.all([
+      const [g, t] = await Promise.all([
         supabase.rpc("super_admin_global_stats"),
-        supabase.rpc("super_admin_monthly_series", { _months: 12 }),
         supabase.rpc("super_admin_tenant_stats"),
       ]);
       if (cancelled) return;
       if (g.error) toast.error("Statistikat: " + g.error.message);
       else setStats(g.data as unknown as GlobalStats);
-      if (m.error) toast.error("Seritë mujore: " + m.error.message);
-      else setMonthly(((m.data ?? []) as MonthlyRow[]).map((r) => ({ ...r, month: fmtMonth(r.month) })));
       if (t.error) toast.error("Sipas autoshkollave: " + t.error.message);
       else setByTenant((t.data ?? []) as TenantStat[]);
       setLoading(false);
@@ -172,6 +171,81 @@ const SuperAdminStats = () => {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setSeriesLoading(true);
+      const { data, error } = await supabase.rpc("super_admin_monthly_series", { _months: months });
+      if (cancelled) return;
+      if (error) toast.error("Seritë mujore: " + error.message);
+      else setMonthly(((data ?? []) as MonthlyRow[]).map((r) => ({ ...r, month: fmtMonth(r.month) })));
+      setSeriesLoading(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [months]);
+
+  const downloadCSV = (filename: string, rows: (string | number)[][]) => {
+    const escape = (v: string | number) => {
+      const s = String(v ?? "");
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const csv = rows.map((r) => r.map(escape).join(",")).join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportTenants = () => {
+    downloadCSV(`autoshkolla-renditja-${new Date().toISOString().slice(0, 10)}.csv`, [
+      ["Autoshkolla", "Kandidatë", "Aktivë", "Të ardhura këtë muaj (€)", "Të ardhura gjithsej (€)"],
+      ...byTenant.map((t) => [
+        t.tenant_name,
+        t.candidates_total,
+        t.candidates_active,
+        Number(t.revenue_this_month),
+        Number(t.revenue_total),
+      ]),
+    ]);
+  };
+
+  const exportMonthly = () => {
+    downloadCSV(`seri-mujore-${months}m-${new Date().toISOString().slice(0, 10)}.csv`, [
+      ["Muaji", "Të ardhura (€)", "Kandidatë të rinj", "Regjistrime online"],
+      ...monthly.map((r) => [r.month, Number(r.revenue), r.new_candidates, r.new_registrations]),
+    ]);
+  };
+
+  const exportTenantDetails = () => {
+    if (!selected || !("candidates_total" in selected)) return;
+    const s = selected;
+    downloadCSV(`autoshkolla-${s.slug || s.tenant_id}-${new Date().toISOString().slice(0, 10)}.csv`, [
+      ["Fusha", "Vlera"],
+      ["Autoshkolla", s.tenant_name],
+      ["Slug", s.slug ?? ""],
+      ["Telefon", s.phone ?? ""],
+      ["Email", s.email ?? ""],
+      ["Adresa", s.address ?? ""],
+      ["Aktive", s.is_active ? "Po" : "Jo"],
+      ["Kandidatë gjithsej", s.candidates_total],
+      ["Të regjistruar", s.candidates_regjistuar],
+      ["Në proces", s.candidates_ne_proces],
+      ["Kaluar", s.candidates_kaluar],
+      ["Dështuar", s.candidates_deshtur],
+      ["Regjistrime të hapura", s.registrations_open],
+      ["Regjistrime gjithsej", s.registrations_total],
+      ["Të ardhura këtë muaj (€)", Number(s.revenue_this_month)],
+      ["Të ardhura gjithsej (€)", Number(s.revenue_total)],
+      ["Mjete", s.vehicles_total],
+      ["Punëtorë", s.employees_total],
+    ]);
+  };
 
   if (loading) {
     return (
