@@ -313,11 +313,36 @@ const SuperAdminStats = () => {
         />
       </div>
 
+      {/* Period filter + export */}
+      <Card>
+        <CardContent className="pt-6 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Periudha:</span>
+            <Select value={String(months)} onValueChange={(v) => setMonths(Number(v))}>
+              <SelectTrigger className="w-[160px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3">3 muaj të fundit</SelectItem>
+                <SelectItem value="6">6 muaj të fundit</SelectItem>
+                <SelectItem value="12">12 muaj të fundit</SelectItem>
+                <SelectItem value="24">24 muaj të fundit</SelectItem>
+              </SelectContent>
+            </Select>
+            {seriesLoading && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
+          </div>
+          <Button variant="outline" size="sm" onClick={exportMonthly} disabled={monthly.length === 0}>
+            <Download className="w-4 h-4 mr-2" />
+            Eksporto serinë mujore (CSV)
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Të ardhura mujore (12 muaj)</CardTitle>
+            <CardTitle className="text-base">Të ardhura mujore ({months} muaj)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-64">
