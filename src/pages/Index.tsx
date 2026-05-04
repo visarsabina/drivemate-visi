@@ -137,11 +137,6 @@ const Index = () => {
             <>
               <StatsCards candidates={candidates} />
 
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Kandidatët e Fundit</h3>
-                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
-              </div>
-
               <CategoryYearStats candidates={candidates} />
 
               <VehicleAlerts onViewVehicles={() => setActiveView("vehicles")} />
@@ -166,6 +161,11 @@ const Index = () => {
                     );
                   })}
                 </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Kandidatët e Fundit</h3>
+                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
               </div>
             </>
           )}
