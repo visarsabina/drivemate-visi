@@ -9,7 +9,7 @@ interface CategoryYearStatsProps {
 }
 
 const CategoryYearStats = ({ candidates }: CategoryYearStatsProps) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   const years = useMemo(() => {
     const set = new Set<string>();
