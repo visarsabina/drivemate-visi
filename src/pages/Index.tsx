@@ -215,6 +215,8 @@ const Index = () => {
           {activeView === "kontrata" && <CandidateKontrata candidates={candidates} />}
 
           {activeView === "fletparaqitja" && <CandidateFletparaqitja candidates={candidates} />}
+
+          {activeView === "tests" && <TestGenerator candidates={candidates} initialCandidateId={selectedCandidate?.id ?? null} />}
         </div>
       </main>
     </div>
