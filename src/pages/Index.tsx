@@ -20,12 +20,13 @@ import VehicleAlerts from "@/components/VehicleAlerts";
 import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
+import TestGenerator from "@/components/TestGenerator";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
 import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
 import { Candidate, Payment } from "@/types/candidate";
-import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2 } from "lucide-react";
+import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2, FileQuestion } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
@@ -90,6 +91,7 @@ const Index = () => {
     employees: "Punëtorët",
     licenses: "Licencat",
     users: "Përdoruesit",
+    tests: "Gjenero Testin",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
@@ -101,6 +103,7 @@ const Index = () => {
     { id: "vertetimi", label: "Vërtetimi", icon: FileCheck, description: "Gjenero vërtetimin" },
     { id: "fletparaqitja", label: "Fletparaqitja", icon: FileText, description: "Gjenero fletparaqitjen" },
     { id: "kontrata", label: "Kontrata", icon: FileSignature, description: "Gjenero kontratën" },
+    { id: "tests", label: "Gjenero Testin", icon: FileQuestion, description: "Test 30 pyetje për kandidatin" },
   ];
 
   return (
@@ -145,7 +148,7 @@ const Index = () => {
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                   {dashboardActions.map((action) => {
                     const Icon = action.icon;
                     return (
@@ -213,6 +216,8 @@ const Index = () => {
           {activeView === "kontrata" && <CandidateKontrata candidates={candidates} />}
 
           {activeView === "fletparaqitja" && <CandidateFletparaqitja candidates={candidates} />}
+
+          {activeView === "tests" && <TestGenerator candidates={candidates} initialCandidateId={selectedCandidate?.id ?? null} />}
         </div>
       </main>
     </div>
