@@ -26,7 +26,7 @@ import { useCandidates } from "@/hooks/useCandidates";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
 import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
 import { Candidate, Payment } from "@/types/candidate";
-import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2 } from "lucide-react";
+import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2, FileQuestion } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
@@ -103,6 +103,7 @@ const Index = () => {
     { id: "vertetimi", label: "Vërtetimi", icon: FileCheck, description: "Gjenero vërtetimin" },
     { id: "fletparaqitja", label: "Fletparaqitja", icon: FileText, description: "Gjenero fletparaqitjen" },
     { id: "kontrata", label: "Kontrata", icon: FileSignature, description: "Gjenero kontratën" },
+    { id: "tests", label: "Gjenero Testin", icon: FileQuestion, description: "Test 30 pyetje për kandidatin" },
   ];
 
   return (
