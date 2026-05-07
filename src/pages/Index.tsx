@@ -148,7 +148,7 @@ const Index = () => {
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                   {dashboardActions.map((action) => {
                     const Icon = action.icon;
                     return (
