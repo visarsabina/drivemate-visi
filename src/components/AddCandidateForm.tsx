@@ -270,6 +270,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
                 <SelectItem value="BE">BE - Veturë me rimorkio</SelectItem>
                 <SelectItem value="C1">C1 - Kamion i vogël</SelectItem>
                 <SelectItem value="C">C - Kamion</SelectItem>
+                <SelectItem value="CE">CE - Kamion me rimorkio</SelectItem>
                 <SelectItem value="D">D - Autobus</SelectItem>
               </SelectContent>
             </Select>
