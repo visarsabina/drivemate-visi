@@ -91,6 +91,7 @@ const Index = () => {
     employees: "Punëtorët",
     licenses: "Licencat",
     users: "Përdoruesit",
+    tests: "Gjenero Testin",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
