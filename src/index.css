@@ -75,3 +75,11 @@
   --ring: 45 95% 50%;
 }
 
+
+/* Test generator print styles */
+@media print {
+  .print-hidden { display: none !important; }
+  .print-shell { background: white !important; }
+  .print-shell * { color: black !important; }
+  @page { size: A4; margin: 8mm; }
+}
