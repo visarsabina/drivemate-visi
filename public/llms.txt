@@ -1,0 +1,13 @@
+# Auto Shkolla Visi
+
+> Shkollë vozitjeje në Kosovë që ofron kurse për të gjitha kategoritë e patentës, me instruktorë profesionistë dhe përgatitje për testet teorike e praktike.
+
+## Pages
+
+- [Ballina](/): Informacione për Auto Shkollën Visi, shërbimet dhe kategoritë e patentës.
+- [Stafi](/stafi): Instruktorët dhe stafi i autoshkollës.
+- [Instalo aplikacionin](/install): Udhëzime për të instaluar aplikacionin në telefon.
+
+## Optional
+
+- [Kyçja](/auth): Hyrje për administratorë dhe instruktorë.
