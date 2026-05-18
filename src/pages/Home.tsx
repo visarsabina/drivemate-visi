@@ -140,7 +140,7 @@ const Home = () => {
             <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
             <Button size="sm" onClick={() => navigate("/login")}>Kyçu</Button>
           </div>
-          <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)}>
+          <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Mbyll menynë" : "Hap menynë"} aria-expanded={mobileMenu}>
             {mobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
