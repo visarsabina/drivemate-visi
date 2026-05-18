@@ -140,7 +140,7 @@ const Home = () => {
             <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
             <Button size="sm" onClick={() => navigate("/login")}>Kyçu</Button>
           </div>
-          <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)}>
+          <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Mbyll menynë" : "Hap menynë"} aria-expanded={mobileMenu}>
             {mobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
@@ -182,7 +182,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <button onClick={() => scrollTo("stats")} className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white">
+        <button onClick={() => scrollTo("stats")} className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white" aria-label="Lëviz poshtë te statistikat">
           <ChevronDown className="w-8 h-8" />
         </button>
       </section>

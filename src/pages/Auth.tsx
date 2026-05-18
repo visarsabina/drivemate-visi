@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import logo from "@/assets/logo.png";
@@ -82,7 +82,7 @@ const Auth = () => {
         <CardHeader className="text-center space-y-4">
           <img src={logo} alt="Auto Shkolla Visi" className="w-16 h-16 mx-auto" />
           <div>
-            <CardTitle className="text-2xl">Auto Shkolla Visi</CardTitle>
+            <h1 className="text-2xl font-semibold leading-none tracking-tight">Auto Shkolla Visi</h1>
             <CardDescription>Kyçja për administrator</CardDescription>
           </div>
         </CardHeader>
