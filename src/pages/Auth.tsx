@@ -82,7 +82,7 @@ const Auth = () => {
         <CardHeader className="text-center space-y-4">
           <img src={logo} alt="Auto Shkolla Visi" className="w-16 h-16 mx-auto" />
           <div>
-            <CardTitle className="text-2xl">Auto Shkolla Visi</CardTitle>
+            <h1 className="text-2xl font-semibold leading-none tracking-tight">Auto Shkolla Visi</h1>
             <CardDescription>Kyçja për administrator</CardDescription>
           </div>
         </CardHeader>
