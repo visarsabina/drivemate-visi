@@ -158,7 +158,7 @@ const Home = () => {
       {/* Hero */}
       <section id="hero" className="relative min-h-[90vh] flex items-center pt-16">
         <div className="absolute inset-0">
-          <img src={heroImg} alt="Makina e Auto Shkollës Visi" className="w-full h-full object-cover" width={1920} height={1080} />
+          <img src={heroImg} alt="Makina e Auto Shkollës Visi" className="w-full h-full object-cover" width={1920} height={1080} fetchPriority="high" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-20">
