@@ -158,8 +158,13 @@ const Employees = () => {
     let photoUrl = form.photo_url;
 
     if (photoFile) {
+      if (!tenantId) {
+        toast.error("Tenant nuk u gjet");
+        setUploading(false);
+        return;
+      }
       const ext = photoFile.name.split(".").pop();
-      const path = `${crypto.randomUUID()}.${ext}`;
+      const path = `${tenantId}/${crypto.randomUUID()}.${ext}`;
       const { error: upErr } = await supabase.storage
         .from("employee-photos")
         .upload(path, photoFile);
@@ -168,8 +173,16 @@ const Employees = () => {
         setUploading(false);
         return;
       }
-      const { data: urlData } = supabase.storage.from("employee-photos").getPublicUrl(path);
-      photoUrl = urlData.publicUrl;
+      // Bucket is private; create a long-lived signed URL (10 years) for display.
+      const { data: signed, error: signErr } = await supabase.storage
+        .from("employee-photos")
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (signErr || !signed?.signedUrl) {
+        toast.error("Krijimi i URL-së dështoi");
+        setUploading(false);
+        return;
+      }
+      photoUrl = signed.signedUrl;
     }
 
     const payload = {
