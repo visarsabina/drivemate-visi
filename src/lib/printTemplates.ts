@@ -1,5 +1,6 @@
 // Pure HTML template builders for print views — testable & framework-free.
 import { formatDateDMY } from "@/lib/date";
+import { escapeHtml as esc } from "@/lib/escapeHtml";
 
 const formatDate = (d: string | null | undefined) => formatDateDMY(d);
 
