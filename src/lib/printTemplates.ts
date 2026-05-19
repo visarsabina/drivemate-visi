@@ -158,13 +158,13 @@ export const buildFinancesReportHTML = (
   const body = rows
     .map(
       (r) => `<tr>
-        <td>${r.label}</td>
+        <td>${esc(r.label)}</td>
         <td style="text-align:right">${r.value.toFixed(2)} €</td>
       </tr>`
     )
     .join("");
 
-  return `<!doctype html><html><head><meta charset="utf-8"><title>${title}</title>
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>
       <style>
         @page { size: A4; margin: 20mm; }
         body { font-family: Arial, sans-serif; color: #111; }
@@ -176,10 +176,10 @@ export const buildFinancesReportHTML = (
         .total { margin-top: 16px; text-align: right; font-size: 14px; font-weight: 600; }
         .footer { margin-top: 40px; font-size: 11px; color: #666; text-align: center; }
       </style></head><body>
-      <h1>${title}</h1>
-      <div class="sub">Auto Shkolla Visi — ${subtitle}</div>
+      <h1>${esc(title)}</h1>
+      <div class="sub">Auto Shkolla Visi — ${esc(subtitle)}</div>
       <table>
-        <thead><tr><th>${columnLabel}</th><th style="text-align:right">Totali</th></tr></thead>
+        <thead><tr><th>${esc(columnLabel)}</th><th style="text-align:right">Totali</th></tr></thead>
         <tbody>${body}</tbody>
       </table>
       <div class="total">Total: ${total.toFixed(2)} €</div>
@@ -203,9 +203,9 @@ export const buildDailyPaymentsPrintHTML = (
   const rows = payments
     .map(
       (p) => `<tr>
-        <td>${p.numriRegjistrimit}</td>
-        <td>${p.emri}</td>
-        <td>${p.mbiemri}</td>
+        <td>${esc(p.numriRegjistrimit)}</td>
+        <td>${esc(p.emri)}</td>
+        <td>${esc(p.mbiemri)}</td>
         <td style="text-align:right">${p.shuma.toFixed(2)} €</td>
       </tr>`
     )
@@ -215,7 +215,7 @@ export const buildDailyPaymentsPrintHTML = (
     ? rows
     : `<tr><td colspan="4" style="text-align:center;padding:24px;color:#666">Nuk ka pagesa sot</td></tr>`;
 
-  return `<!doctype html><html><head><meta charset="utf-8"><title>Raporti ditor — ${today}</title>
+  return `<!doctype html><html><head><meta charset="utf-8"><title>Raporti ditor — ${esc(today)}</title>
       <style>
         @page { size: A4; margin: 20mm; }
         body { font-family: Arial, sans-serif; color: #111; }
