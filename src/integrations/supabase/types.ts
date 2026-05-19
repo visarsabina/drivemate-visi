@@ -650,15 +650,6 @@ export type Database = {
         }
         Returns: string
       }
-      get_all_users_with_roles: {
-        Args: never
-        Returns: {
-          created_at: string
-          email: string
-          is_admin: boolean
-          user_id: string
-        }[]
-      }
       get_public_tenant_by_domain: {
         Args: { _domain: string }
         Returns: {
