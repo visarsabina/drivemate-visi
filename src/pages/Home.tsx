@@ -522,23 +522,39 @@ const Home = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Phone, title: "Telefoni", lines: phoneLines },
-              { icon: Mail, title: "Email", lines: emailLines },
-              { icon: MapPin, title: "Adresa", lines: addressLines },
+              { icon: Phone, title: "Telefoni", lines: phoneLines, href: phoneLines[0] ? `tel:${phoneLines[0].replace(/\s/g, "")}` : undefined },
+              { icon: Mail, title: "Email", lines: emailLines, href: emailLines[0] ? `mailto:${emailLines[0]}` : undefined },
+              { icon: MapPin, title: "Adresa", lines: addressLines, href: "https://maps.app.goo.gl/KfLzQf8L6aAybqvu8" },
               { icon: Clock, title: "Orari", lines: ["Hënë - Shtunë", "09:30 - 18:00"] },
             ].map((c) => {
               const Icon = c.icon;
+              const inner = (
+                <CardContent className="p-6">
+                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-2">{c.title}</h3>
+                  {c.lines.map((line) => (
+                    <p key={line} className="text-sm text-muted-foreground">{line}</p>
+                  ))}
+                </CardContent>
+              );
+              const isExternal = c.href?.startsWith("http");
               return (
                 <Card key={c.title} className="text-center hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <Icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <h3 className="font-semibold mb-2">{c.title}</h3>
-                    {c.lines.map((line) => (
-                      <p key={line} className="text-sm text-muted-foreground">{line}</p>
-                    ))}
-                  </CardContent>
+                  {c.href ? (
+                    <a
+                      href={c.href}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                      className="block"
+                      aria-label={`${c.title}: ${c.lines.join(", ")}`}
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    inner
+                  )}
                 </Card>
               );
             })}
