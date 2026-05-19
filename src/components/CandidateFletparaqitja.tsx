@@ -121,11 +121,11 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
   <div class="sec-bar">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
   <div class="data-box">
     <div class="frow"><span class="flbl">1.&nbsp;&nbsp;&nbsp;Mbiemri / Prezime / Family Name:</span><span class="fval">${safe.mbiemri}</span></div>
-    <div class="frow"><span class="flbl">2.&nbsp;&nbsp;&nbsp;Emri i babait / Očevo ime / Father's Name:</span><span class="fval">${effectiveEmriBabait || "&nbsp;"}</span></div>
+    <div class="frow"><span class="flbl">2.&nbsp;&nbsp;&nbsp;Emri i babait / Očevo ime / Father's Name:</span><span class="fval">${__esc(effectiveEmriBabait || "&nbsp;")}</span></div>
     <div class="frow"><span class="flbl">3.&nbsp;&nbsp;&nbsp;Emri / Ime / First Name:</span><span class="fval">${safe.emri}</span></div>
     <div class="frow"><span class="flbl">4.&nbsp;&nbsp;&nbsp;Data e lindjes / Datum rodjenja Date of Birth:</span><span class="fval">${formatDate(safe.dataLindjes)}</span></div>
-    <div class="frow"><span class="flbl">5.&nbsp;&nbsp;&nbsp;Vendi i lindjes / Mesto rodjenja / Place of birth:</span><span class="fval">${effectiveVendlindja || "&nbsp;"}</span></div>
-    <div class="frow"><span class="flbl">6.&nbsp;&nbsp;&nbsp;Komuna / Opština / Municipality:</span><span class="fval">${komuna || candidate.vendi || "&nbsp;"}</span></div>
+    <div class="frow"><span class="flbl">5.&nbsp;&nbsp;&nbsp;Vendi i lindjes / Mesto rodjenja / Place of birth:</span><span class="fval">${__esc(effectiveVendlindja || "&nbsp;")}</span></div>
+    <div class="frow"><span class="flbl">6.&nbsp;&nbsp;&nbsp;Komuna / Opština / Municipality:</span><span class="fval">${__esc((komuna || candidate.vendi || "&nbsp;"))}</span></div>
     <div class="nr-row"><span class="flbl">7.&nbsp;&nbsp;&nbsp;Numri personal / Lični broj / Personal Number:</span><table class="nrp"><tr>${personalBoxes}${emptyBoxes}</tr></table></div>
   </div>
 

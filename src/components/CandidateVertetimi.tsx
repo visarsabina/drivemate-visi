@@ -88,14 +88,14 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   <div class="title">VËRTETIM</div>
 
   <div class="row">
-    <div class="cell" style="flex:1.4;"><span class="val grow">${safe.emri}${vendlindja ? "(" + vendlindja + ")" : ""}${safe.mbiemri}</span></div>
+    <div class="cell" style="flex:1.4;"><span class="val grow">${safe.emri}${__esc(vendlindja ? "(" + vendlindja + ")" : "")}${safe.mbiemri}</span></div>
     <div class="cell"><span class="label">e lindur më:</span><span class="val md">${formatDate(safe.dataLindjes)}</span></div>
-    <div class="cell"><span class="label">në:</span><span class="val md">${vendlindja || "&nbsp;"}</span></div>
-    <div class="cell"><span class="label">Komuna:</span><span class="val md">${komuna || "&nbsp;"}</span></div>
+    <div class="cell"><span class="label">në:</span><span class="val md">${__esc(vendlindja || "&nbsp;")}</span></div>
+    <div class="cell"><span class="label">Komuna:</span><span class="val md">${__esc(komuna || "&nbsp;")}</span></div>
   </div>
 
   <div class="row">
-    <div class="cell"><span class="label">me vendbanim në</span><span class="val md">${vendbanimi || "&nbsp;"}</span></div>
+    <div class="cell"><span class="label">me vendbanim në</span><span class="val md">${__esc(vendbanimi || "&nbsp;")}</span></div>
     <div class="cell"><span class="label">nr. personal</span><div class="nrp">${safe.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</div></div>
     <div class="cell"><span class="label">i regjistruar në auto shkollë më datën:</span></div>
   </div>
@@ -125,11 +125,11 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   </div>
 
   <div class="spread">
-    <div class="cell"><span class="label">Emri dhe mbiemri i ligjëruesit</span><span class="val md">${ligjruesi}</span></div>
+    <div class="cell"><span class="label">Emri dhe mbiemri i ligjëruesit</span><span class="val md">${__esc(ligjruesi)}</span></div>
     <div class="cell"><span class="label">Nënshkrimi i ligjëruesit</span><span class="val md">&nbsp;</span></div>
   </div>
   <div class="spread">
-    <div class="cell"><span class="label">Emri dhe mbiemri i shofer insruktorit</span><span class="val md">${instruktori}</span></div>
+    <div class="cell"><span class="label">Emri dhe mbiemri i shofer insruktorit</span><span class="val md">${__esc(instruktori)}</span></div>
     <div class="cell"><span class="label">Nënshkrimi i shofer insruktorit</span><span class="val md">&nbsp;</span></div>
   </div>
 
