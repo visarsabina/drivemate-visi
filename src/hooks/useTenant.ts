@@ -106,20 +106,15 @@ export const useTenant = () => {
 export const resolveTenantByDomain = async (): Promise<string | null> => {
   const host = window.location.hostname.replace(/^www\./, "");
 
-  const { data: byDomain } = await supabase
-    .from("tenants")
-    .select("id")
-    .eq("domain", host)
-    .eq("is_active", true)
-    .maybeSingle();
+  const { data: byDomain } = await supabase.rpc("get_public_tenant_by_domain", {
+    _domain: host,
+  });
+  const domainRow = Array.isArray(byDomain) ? byDomain[0] : byDomain;
+  if (domainRow?.id) return domainRow.id as string;
 
-  if (byDomain?.id) return byDomain.id;
-
-  const { data: fallback } = await supabase
-    .from("tenants")
-    .select("id")
-    .eq("slug", "visi")
-    .maybeSingle();
-
-  return fallback?.id ?? null;
+  const { data: fallback } = await supabase.rpc("get_public_tenant_by_slug", {
+    _slug: "visi",
+  });
+  const fallbackRow = Array.isArray(fallback) ? fallback[0] : fallback;
+  return (fallbackRow?.id as string) ?? null;
 };
