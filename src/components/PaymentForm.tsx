@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Candidate, Payment } from "@/types/candidate";
 import { toast } from "sonner";
 import { Printer, Plus } from "lucide-react";
+import { escapeHtmlObject } from "@/lib/escapeHtml";
 
 interface PaymentFormProps {
   candidates: Candidate[];
@@ -52,8 +53,9 @@ const PaymentForm = ({ candidates, onPayment }: PaymentFormProps) => {
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
 
-    const transactionsHtml = selectedCandidate.payments
-      .map((p, i) => `<tr><td>${i + 1}</td><td>${p.data}</td><td>${p.shuma.toFixed(2)} €</td></tr>`)
+    const safe = escapeHtmlObject(selectedCandidate);
+    const transactionsHtml = safe.payments
+      .map((p, i) => `<tr><td>${i + 1}</td><td>${p.data}</td><td>${selectedCandidate.payments[i].shuma.toFixed(2)} €</td></tr>`)
       .join("");
 
     printWindow.document.write(`
@@ -86,9 +88,9 @@ const PaymentForm = ({ candidates, onPayment }: PaymentFormProps) => {
         </div>
         <div class="title">Dëshmi Pagese</div>
         <table class="details">
-          <tr><td>Emri</td><td>${selectedCandidate.emri}</td></tr>
-          <tr><td>Mbiemri</td><td>${selectedCandidate.mbiemri}</td></tr>
-          <tr><td>Numri Personal</td><td>${selectedCandidate.numriPersonal}</td></tr>
+          <tr><td>Emri</td><td>${safe.emri}</td></tr>
+          <tr><td>Mbiemri</td><td>${safe.mbiemri}</td></tr>
+          <tr><td>Numri Personal</td><td>${safe.numriPersonal}</td></tr>
           <tr><td>Shuma e Marrëveshjes</td><td class="total">${selectedCandidate.shumaMarreveshjes.toFixed(2)} €</td></tr>
           <tr><td>Totali i Paguar</td><td>${totalPaguar.toFixed(2)} €</td></tr>
           <tr><td>Borxhi</td><td class="debt">${borxhi} €</td></tr>
