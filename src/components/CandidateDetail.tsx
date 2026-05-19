@@ -17,6 +17,7 @@ import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { parsePersonalNumber } from "@/lib/personalNumber";
 import { z } from "zod";
+import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
 
 const editCandidateSchema = z.object({
   emri: z.string().trim().min(1, "Emri është i detyrueshëm").max(100, "Emri max 100 karaktere"),
@@ -44,25 +45,26 @@ const editCandidateSchema = z.object({
     .max(100000, "Shuma është shumë e madhe"),
 });
 
-const printFletepagesa = (candidate: Candidate, numriPageses?: string) => {
-  const totalPaguar = candidate.payments.reduce((sum, p) => sum + p.shuma, 0);
-  const borxhi = candidate.shumaMarreveshjes - totalPaguar;
+const printFletepagesa = (candidateRaw: Candidate, numriPageses?: string) => {
+  const candidate = escapeHtmlObject(candidateRaw);
+  const totalPaguar = candidateRaw.payments.reduce((sum, p) => sum + p.shuma, 0);
+  const borxhi = candidateRaw.shumaMarreveshjes - totalPaguar;
   const printWindow = window.open("", "_blank");
   if (!printWindow) return;
 
   const copyHtml = `
     <div class="copy">
       <h2>FLETËPAGESA</h2>
-      ${numriPageses ? `<p class="nr"><strong>Nr. Pagesës:</strong> ${numriPageses}</p>` : ""}
+      ${numriPageses ? `<p class="nr"><strong>Nr. Pagesës:</strong> ${__esc(numriPageses)}</p>` : ""}
       <table><tr><th>Emri</th><td>${candidate.emri}</td><th>Mbiemri</th><td>${candidate.mbiemri}</td></tr>
       <tr><th>Nr. Personal</th><td>${candidate.numriPersonal}</td><th>Nr. Regjistrimit</th><td>${candidate.numriRegjistrimit}</td></tr>
       <tr><th>Kategoria</th><td>${candidate.kategoria}</td><th>Data</th><td>${(() => { const n = new Date(); return `${String(n.getDate()).padStart(2,"0")}.${String(n.getMonth()+1).padStart(2,"0")}.${n.getFullYear()}`; })()}</td></tr></table>
       <div class="summary">
-        <div><strong>Shuma e Marrëveshjes:</strong> ${candidate.shumaMarreveshjes.toFixed(2)} €</div>
+        <div><strong>Shuma e Marrëveshjes:</strong> ${candidateRaw.shumaMarreveshjes.toFixed(2)} €</div>
         <div><strong>Totali i Paguar:</strong> ${totalPaguar.toFixed(2)} €</div>
         <div><strong>Borxhi:</strong> ${borxhi.toFixed(2)} €</div>
       </div>
-      ${candidate.payments.length > 0 ? `<h3>Historiku i Pagesave</h3><table><thead><tr><th>Nr.</th><th>Data</th><th>Shuma</th></tr></thead><tbody>${candidate.payments.map((p, i) => `<tr><td>${i + 1}</td><td>${p.data}</td><td>${p.shuma.toFixed(2)} €</td></tr>`).join("")}</tbody></table>` : ""}
+      ${candidate.payments.length > 0 ? `<h3>Historiku i Pagesave</h3><table><thead><tr><th>Nr.</th><th>Data</th><th>Shuma</th></tr></thead><tbody>${candidate.payments.map((p, i) => `<tr><td>${i + 1}</td><td>${p.data}</td><td>${candidateRaw.payments[i].shuma.toFixed(2)} €</td></tr>`).join("")}</tbody></table>` : ""}
     </div>`;
 
   printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletëpagesa</title>
