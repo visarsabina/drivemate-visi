@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Printer } from "lucide-react";
+import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
 
 interface CandidateFletparaqitjaProps {
   candidates: Candidate[];
@@ -31,6 +32,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
   const handlePrint = () => {
     if (!candidate) return;
+    const safe = escapeHtmlObject(candidate);
 
     const personalDigits = (candidate.numriPersonal || "").replace(/\D/g, "").slice(0, 10).split("");
     const personalBoxes = Array.from({ length: 10 }).map((_, i) =>
@@ -47,7 +49,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
 
-printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${candidate.emri} ${candidate.mbiemri}</title>
+printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${safe.emri} ${safe.mbiemri}</title>
 <style>
   @page { size: A4 portrait; margin: 5mm 7mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -97,7 +99,7 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
   .small-table th { font-weight: bold; text-align: center; }
 </style></head><body>
 <div class="wrap">
-  <div class="cat-box">${candidate.kategoria}</div>
+  <div class="cat-box">${safe.kategoria}</div>
 
   <div class="header">
     <img src="/kosovo-coat.jpg" alt="" />
@@ -118,10 +120,10 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
 
   <div class="sec-bar">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
   <div class="data-box">
-    <div class="frow"><span class="flbl">1.&nbsp;&nbsp;&nbsp;Mbiemri / Prezime / Family Name:</span><span class="fval">${candidate.mbiemri}</span></div>
+    <div class="frow"><span class="flbl">1.&nbsp;&nbsp;&nbsp;Mbiemri / Prezime / Family Name:</span><span class="fval">${safe.mbiemri}</span></div>
     <div class="frow"><span class="flbl">2.&nbsp;&nbsp;&nbsp;Emri i babait / Očevo ime / Father's Name:</span><span class="fval">${effectiveEmriBabait || "&nbsp;"}</span></div>
-    <div class="frow"><span class="flbl">3.&nbsp;&nbsp;&nbsp;Emri / Ime / First Name:</span><span class="fval">${candidate.emri}</span></div>
-    <div class="frow"><span class="flbl">4.&nbsp;&nbsp;&nbsp;Data e lindjes / Datum rodjenja Date of Birth:</span><span class="fval">${formatDate(candidate.dataLindjes)}</span></div>
+    <div class="frow"><span class="flbl">3.&nbsp;&nbsp;&nbsp;Emri / Ime / First Name:</span><span class="fval">${safe.emri}</span></div>
+    <div class="frow"><span class="flbl">4.&nbsp;&nbsp;&nbsp;Data e lindjes / Datum rodjenja Date of Birth:</span><span class="fval">${formatDate(safe.dataLindjes)}</span></div>
     <div class="frow"><span class="flbl">5.&nbsp;&nbsp;&nbsp;Vendi i lindjes / Mesto rodjenja / Place of birth:</span><span class="fval">${effectiveVendlindja || "&nbsp;"}</span></div>
     <div class="frow"><span class="flbl">6.&nbsp;&nbsp;&nbsp;Komuna / Opština / Municipality:</span><span class="fval">${komuna || candidate.vendi || "&nbsp;"}</span></div>
     <div class="nr-row"><span class="flbl">7.&nbsp;&nbsp;&nbsp;Numri personal / Lični broj / Personal Number:</span><table class="nrp"><tr>${personalBoxes}${emptyBoxes}</tr></table></div>
@@ -166,7 +168,7 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
   <div class="dashed"></div>
 
   <div>
-    <div><span class="tel">Tel: ${candidate.telefon || ""}</span></div>
+    <div><span class="tel">Tel: ${safe.telefon || ""}</span></div>
     <div class="header" style="margin-top:3mm;">
       <img src="/kosovo-coat.jpg" alt="" style="height:10mm;" />
       <div class="h-small">Republika e Kosovës / Republika Kosova / Republika of Kosovo</div>
@@ -186,7 +188,7 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
         <th>Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis<br/>službenog lica / Datum</th>
       </tr>
       <tr>
-        <td style="font-weight:bold; text-align:center; height:14mm;">${candidate.emri} ${candidate.mbiemri}</td>
+        <td style="font-weight:bold; text-align:center; height:14mm;">${safe.emri} ${safe.mbiemri}</td>
         <td style="height:14mm;">&nbsp;</td>
       </tr>
     </table>

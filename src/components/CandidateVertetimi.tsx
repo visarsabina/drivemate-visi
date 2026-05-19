@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Printer } from "lucide-react";
+import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
 
 interface CandidateVertetimiProps {
   candidates: Candidate[];
@@ -48,11 +49,12 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
 
   const handlePrint = () => {
     if (!candidate) return;
+    const safe = escapeHtmlObject(candidate);
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
     onPrinted?.(candidate.id);
 
-    printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${candidate.emri} ${candidate.mbiemri}</title>
+    printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${safe.emri} ${safe.mbiemri}</title>
 <style>
   @page { size: A4 landscape; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -86,22 +88,22 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   <div class="title">VËRTETIM</div>
 
   <div class="row">
-    <div class="cell" style="flex:1.4;"><span class="val grow">${candidate.emri}${vendlindja ? "(" + vendlindja + ")" : ""}${candidate.mbiemri}</span></div>
-    <div class="cell"><span class="label">e lindur më:</span><span class="val md">${formatDate(candidate.dataLindjes)}</span></div>
+    <div class="cell" style="flex:1.4;"><span class="val grow">${safe.emri}${vendlindja ? "(" + vendlindja + ")" : ""}${safe.mbiemri}</span></div>
+    <div class="cell"><span class="label">e lindur më:</span><span class="val md">${formatDate(safe.dataLindjes)}</span></div>
     <div class="cell"><span class="label">në:</span><span class="val md">${vendlindja || "&nbsp;"}</span></div>
     <div class="cell"><span class="label">Komuna:</span><span class="val md">${komuna || "&nbsp;"}</span></div>
   </div>
 
   <div class="row">
     <div class="cell"><span class="label">me vendbanim në</span><span class="val md">${vendbanimi || "&nbsp;"}</span></div>
-    <div class="cell"><span class="label">nr. personal</span><div class="nrp">${candidate.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</div></div>
+    <div class="cell"><span class="label">nr. personal</span><div class="nrp">${safe.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</div></div>
     <div class="cell"><span class="label">i regjistruar në auto shkollë më datën:</span></div>
   </div>
 
   <div class="row">
-    <div class="cell"><span class="val md">${formatDate(candidate.dataRegjistrimit)}</span></div>
-    <div class="cell"><span class="label">nr. Rendor</span><span class="val sm">${candidate.numriRegjistrimit}</span></div>
-    <div class="cell"><span class="label">kreu aftësimin për dhënien e provimit për paten-shofer për kat.</span><span class="val sm">"${candidate.kategoria}"</span><span class="label">, sipas plan</span></div>
+    <div class="cell"><span class="val md">${formatDate(safe.dataRegjistrimit)}</span></div>
+    <div class="cell"><span class="label">nr. Rendor</span><span class="val sm">${safe.numriRegjistrimit}</span></div>
+    <div class="cell"><span class="label">kreu aftësimin për dhënien e provimit për paten-shofer për kat.</span><span class="val sm">"${safe.kategoria}"</span><span class="label">, sipas plan</span></div>
   </div>
 
   <div class="row">
