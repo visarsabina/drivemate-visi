@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Public read employee-photos" ON storage.objects;
