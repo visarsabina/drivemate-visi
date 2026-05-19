@@ -3,6 +3,7 @@ import { Candidate } from "@/types/candidate";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
+import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
 
 interface CandidateBookletProps {
   candidates: Candidate[];
@@ -15,6 +16,7 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
 
   const handlePrint = () => {
     if (!candidate) return;
+    const safe = escapeHtmlObject(candidate);
 
     const formatDate = (d: string) => {
       if (!d) return "";
@@ -40,7 +42,7 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
     const html = `
       <html>
       <head>
-        <title>Libreza - ${candidate.emri} ${candidate.mbiemri}</title>
+        <title>Libreza - ${safe.emri} ${safe.mbiemri}</title>
         <style>
           @page { size: landscape; margin: 10mm; }
           * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -101,34 +103,34 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
             </div>
             <h2>LIBREZË E KANDIDATIT</h2>
             <p style="text-align:center;margin-bottom:15px;">
-              Për aftesimin e kandidatit për shoferë të kategorisë <b><i>"${candidate.kategoria}"</i></b>
+              Për aftesimin e kandidatit për shoferë të kategorisë <b><i>"${safe.kategoria}"</i></b>
             </p>
             <table class="no-border" style="margin-bottom:10px;">
               <tr>
                 <td class="field-label">Emri dhe mbiemri</td>
-                <td class="field-value">${candidate.emri} ${candidate.mbiemri}</td>
+                <td class="field-value">${safe.emri} ${safe.mbiemri}</td>
               </tr>
               <tr>
                 <td class="field-label">Data dhe viti i lindjes</td>
-                <td class="field-value">${formatDate(candidate.dataLindjes)}</td>
+                <td class="field-value">${formatDate(safe.dataLindjes)}</td>
               </tr>
               <tr>
                 <td class="field-label">Nr.personal i leternjoftimit</td>
-                <td class="field-value">${candidate.numriPersonal}</td>
+                <td class="field-value">${safe.numriPersonal}</td>
               </tr>
               <tr>
                 <td class="field-label">Adresa:</td>
-                <td class="field-value">${candidate.vendi}</td>
+                <td class="field-value">${safe.vendi}</td>
               </tr>
               <tr><td colspan="2" style="height:10px;"></td></tr>
               <tr>
                 <td class="field-label">Nr. i regjistrit të kandidatit</td>
-                <td class="field-value">${candidate.numriRegjistrimit}</td>
+                <td class="field-value">${safe.numriRegjistrimit}</td>
               </tr>
               <tr><td colspan="2" style="height:10px;"></td></tr>
               <tr>
                 <td class="field-label">Çertifikatë shëndetësore</td>
-                <td class="field-value">${candidate.certifikataShendetsore}</td>
+                <td class="field-value">${safe.certifikataShendetsore}</td>
               </tr>
               <tr><td colspan="2" style="height:10px;"></td></tr>
               <tr>
@@ -177,7 +179,7 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
 
           <!-- Right: Practice B table -->
           <div class="half">
-            <h3 style="font-weight:bold;font-style:italic;">${candidate.kategoria}</h3>
+            <h3 style="font-weight:bold;font-style:italic;">${safe.kategoria}</h3>
             <h3>Lënda: Te drejtuarit e mjetit me veprim motorik (pjesa praktike)</h3>
             <table>
               <thead>

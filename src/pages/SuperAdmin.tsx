@@ -456,7 +456,7 @@ const SuperAdmin = () => {
                   <Label htmlFor="admin_password">Fjalëkalimi *</Label>
                   <Input
                     id="admin_password"
-                    type="text"
+                    type="password"
                     required
                     minLength={8}
                     value={form.admin_password}

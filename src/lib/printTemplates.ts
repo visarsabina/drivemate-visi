@@ -1,5 +1,6 @@
 // Pure HTML template builders for print views — testable & framework-free.
 import { formatDateDMY } from "@/lib/date";
+import { escapeHtml as esc } from "@/lib/escapeHtml";
 
 const formatDate = (d: string | null | undefined) => formatDateDMY(d);
 
@@ -38,13 +39,13 @@ export const buildEmployeesPrintHTML = (employees: EmployeeForPrint[]): string =
       const urgent = (lic !== null && lic <= 30) || (health !== null && health <= 30);
       return `<tr class="${urgent ? "urgent" : ""}">
         <td>${i + 1}</td>
-        <td>${e.full_name}</td>
-        <td>${e.personal_number || "—"}</td>
-        <td>${e.license_number || "—"}</td>
-        <td>${formatDate(e.license_date)}</td>
-        <td>${formatDate(e.license_expiry_date)}</td>
-        <td>${formatDate(e.health_certificate_date)}</td>
-        <td>${formatDate(e.health_certificate_expiry_date)}</td>
+        <td>${esc(e.full_name)}</td>
+        <td>${esc(e.personal_number || "—")}</td>
+        <td>${esc(e.license_number || "—")}</td>
+        <td>${esc(formatDate(e.license_date))}</td>
+        <td>${esc(formatDate(e.license_expiry_date))}</td>
+        <td>${esc(formatDate(e.health_certificate_date))}</td>
+        <td>${esc(formatDate(e.health_certificate_expiry_date))}</td>
       </tr>`;
     })
     .join("");
@@ -82,11 +83,11 @@ export const buildVehiclesPrintHTML = (vehicles: VehicleForPrint[]): string => {
       const urgent = insp !== null && insp <= 7;
       return `<tr class="${urgent ? "urgent" : ""}">
         <td>${i + 1}</td>
-        <td>${v.name}</td>
-        <td>${v.plate_number}</td>
-        <td>${formatDate(v.registration_date)}</td>
-        <td>${formatDate(v.inspection_expiry_date)}</td>
-        <td>${v.attestation_number || "—"}</td>
+        <td>${esc(v.name)}</td>
+        <td>${esc(v.plate_number)}</td>
+        <td>${esc(formatDate(v.registration_date))}</td>
+        <td>${esc(formatDate(v.inspection_expiry_date))}</td>
+        <td>${esc(v.attestation_number || "—")}</td>
       </tr>`;
     })
     .join("");
@@ -120,10 +121,10 @@ export const buildLicensesPrintHTML = (licenses: LicenseForPrint[]): string => {
       const urgent = d !== null && d <= 30;
       return `<tr class="${urgent ? "urgent" : ""}">
         <td>${i + 1}</td>
-        <td>${l.category}</td>
-        <td>${l.license_number}</td>
-        <td>${formatDate(l.issue_date)}</td>
-        <td>${formatDate(l.expiry_date)}</td>
+        <td>${esc(l.category)}</td>
+        <td>${esc(l.license_number)}</td>
+        <td>${esc(formatDate(l.issue_date))}</td>
+        <td>${esc(formatDate(l.expiry_date))}</td>
       </tr>`;
     })
     .join("");
@@ -157,13 +158,13 @@ export const buildFinancesReportHTML = (
   const body = rows
     .map(
       (r) => `<tr>
-        <td>${r.label}</td>
+        <td>${esc(r.label)}</td>
         <td style="text-align:right">${r.value.toFixed(2)} €</td>
       </tr>`
     )
     .join("");
 
-  return `<!doctype html><html><head><meta charset="utf-8"><title>${title}</title>
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>
       <style>
         @page { size: A4; margin: 20mm; }
         body { font-family: Arial, sans-serif; color: #111; }
@@ -175,10 +176,10 @@ export const buildFinancesReportHTML = (
         .total { margin-top: 16px; text-align: right; font-size: 14px; font-weight: 600; }
         .footer { margin-top: 40px; font-size: 11px; color: #666; text-align: center; }
       </style></head><body>
-      <h1>${title}</h1>
-      <div class="sub">Auto Shkolla Visi — ${subtitle}</div>
+      <h1>${esc(title)}</h1>
+      <div class="sub">Auto Shkolla Visi — ${esc(subtitle)}</div>
       <table>
-        <thead><tr><th>${columnLabel}</th><th style="text-align:right">Totali</th></tr></thead>
+        <thead><tr><th>${esc(columnLabel)}</th><th style="text-align:right">Totali</th></tr></thead>
         <tbody>${body}</tbody>
       </table>
       <div class="total">Total: ${total.toFixed(2)} €</div>
@@ -202,9 +203,9 @@ export const buildDailyPaymentsPrintHTML = (
   const rows = payments
     .map(
       (p) => `<tr>
-        <td>${p.numriRegjistrimit}</td>
-        <td>${p.emri}</td>
-        <td>${p.mbiemri}</td>
+        <td>${esc(p.numriRegjistrimit)}</td>
+        <td>${esc(p.emri)}</td>
+        <td>${esc(p.mbiemri)}</td>
         <td style="text-align:right">${p.shuma.toFixed(2)} €</td>
       </tr>`
     )
@@ -214,7 +215,7 @@ export const buildDailyPaymentsPrintHTML = (
     ? rows
     : `<tr><td colspan="4" style="text-align:center;padding:24px;color:#666">Nuk ka pagesa sot</td></tr>`;
 
-  return `<!doctype html><html><head><meta charset="utf-8"><title>Raporti ditor — ${today}</title>
+  return `<!doctype html><html><head><meta charset="utf-8"><title>Raporti ditor — ${esc(today)}</title>
       <style>
         @page { size: A4; margin: 20mm; }
         body { font-family: Arial, sans-serif; color: #111; }

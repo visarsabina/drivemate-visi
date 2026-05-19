@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Printer } from "lucide-react";
+import { escapeHtmlObject } from "@/lib/escapeHtml";
 
 interface CandidateKontrataProps {
   candidates: Candidate[];
@@ -22,10 +23,11 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 
   const handlePrint = () => {
     if (!candidate) return;
+    const safe = escapeHtmlObject(candidate);
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
 
-    printWindow.document.write(`<!DOCTYPE html><html><head><title>Kontrata - ${candidate.emri} ${candidate.mbiemri}</title>
+    printWindow.document.write(`<!DOCTYPE html><html><head><title>Kontrata - ${safe.emri} ${safe.mbiemri}</title>
 <style>
   @page { size: A4 portrait; margin: 20mm 25mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -58,7 +60,7 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 </div>
 
 <div class="paragraph">
-  2. Kandidati/ja <span class="u-long"><strong>${candidate.emri} ${candidate.mbiemri}</strong></span> nga <span class="u"><strong>${candidate.vendi || ""}</strong></span> K.K <span class="u"><strong>${candidate.vendi || ""}</strong></span>.
+  2. Kandidati/ja <span class="u-long"><strong>${safe.emri} ${safe.mbiemri}</strong></span> nga <span class="u"><strong>${safe.vendi || ""}</strong></span> K.K <span class="u"><strong>${safe.vendi || ""}</strong></span>.
 </div>
 
 <div class="section-num">1</div>
@@ -88,14 +90,14 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 
 <div class="section-num">6.</div>
 <div class="paragraph">
-  Qmimi per Oret mesimore nga lendet e caktuara është <span class="u"><strong>${candidate.shumaMarreveshjes.toFixed(2)}</strong></span> euro.
+  Qmimi per Oret mesimore nga lendet e caktuara është <span class="u"><strong>${safe.shumaMarreveshjes.toFixed(2)}</strong></span> euro.
 </div>
 <div class="paragraph">
   Kohë zgjatja e Aftesimit Për bëhet nga pjesa Teorike prej <span class="u"><strong>20</strong></span> oreve dhe pjesa praktike prej <span class="u"><strong>20</strong></span> oreve .
 </div>
 <div class="paragraph">
   Pagesa per aftesimin e kadidatit/es do të bëhet te në zyre të Autoshkolles " VISI " në
-  <span class="u"><strong>${candidate.shumaMarreveshjes.toFixed(2)} €</strong></span> për mes arkes fiskale.
+  <span class="u"><strong>${safe.shumaMarreveshjes.toFixed(2)} €</strong></span> për mes arkes fiskale.
 </div>
 <div class="paragraph">
   Për mos përmbushjen e kushteue dhe obligimeve kontraktuese nga ana e ndonjeres prej paleve kontraktuese në kete kontrat kompetente eshte Gjykata Komunale në &nbsp;<strong><u>PODUJEVË</u></strong>.
@@ -116,7 +118,7 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
   </div>
   <div class="center-text">Auto Shkolla " VISI "</div>
   <div class="date-line">
-    Më datën: <span class="u"><strong>${formatDate(candidate.dataRegjistrimit)}</strong></span>
+    Më datën: <span class="u"><strong>${formatDate(safe.dataRegjistrimit)}</strong></span>
   </div>
 </div>
 
