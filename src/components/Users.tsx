@@ -172,7 +172,7 @@ const Users = () => {
                 <Label htmlFor="invite-password">Fjalëkalimi (min. 6 karaktere)</Label>
                 <Input
                   id="invite-password"
-                  type="text"
+                  type="password"
                   value={invitePassword}
                   onChange={(e) => setInvitePassword(e.target.value)}
                   placeholder="Fjalëkalimi i përkohshëm"
