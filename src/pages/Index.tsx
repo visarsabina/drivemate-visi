@@ -117,16 +117,16 @@ const Index = () => {
       </div>
 
       <main className="flex-1 min-h-screen">
-        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border px-4 lg:px-8 py-4 flex items-center gap-4 flex-wrap">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg hover:bg-muted">
+        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border px-3 lg:px-8 py-3 lg:py-4 flex items-center gap-2 lg:gap-4 flex-wrap">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg hover:bg-muted shrink-0">
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
-          <h2 className="text-xl font-semibold">{viewTitles[activeView]}</h2>
-          <div className="ml-auto flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
-            <Building2 className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">{branding?.name ?? "Auto Shkolla"}</span>
+          <h2 className="text-base lg:text-xl font-semibold truncate min-w-0">{viewTitles[activeView]}</h2>
+          <div className="ml-auto flex items-center gap-1.5 px-2 lg:px-3 py-1 lg:py-1.5 rounded-lg bg-primary/10 border border-primary/20 max-w-[55%] lg:max-w-none">
+            <Building2 className="w-4 h-4 text-primary shrink-0" />
+            <span className="text-xs lg:text-sm font-medium text-primary truncate">{branding?.name ?? "Auto Shkolla"}</span>
             {isSuperAdmin && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-primary-foreground ml-1">
+              <span className="hidden sm:inline text-xs px-2 py-0.5 rounded-full bg-primary text-primary-foreground ml-1 shrink-0">
                 Super Admin
               </span>
             )}
