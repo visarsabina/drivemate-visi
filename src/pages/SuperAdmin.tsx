@@ -55,6 +55,12 @@ interface TenantRow {
   admin_count: number;
   vehicles_count: number;
   employees_count: number;
+  subscription_status: "trial" | "active" | "expired" | "cancelled";
+  trial_ends_at: string | null;
+  subscription_ends_at: string | null;
+  monthly_fee: number;
+  last_payment_date: string | null;
+  days_remaining: number | null;
 }
 
 const emptyForm = {
