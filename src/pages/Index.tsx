@@ -148,18 +148,18 @@ const Index = () => {
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
                   {dashboardActions.map((action) => {
                     const Icon = action.icon;
                     return (
                       <Button
                         key={action.id}
                         variant="outline"
-                        className="h-auto flex flex-col items-center gap-3 p-6 hover:bg-primary/5 hover:border-primary/30"
+                        className="h-auto flex flex-col items-center gap-2 lg:gap-3 p-4 lg:p-6 hover:bg-primary/5 hover:border-primary/30"
                         onClick={() => setActiveView(action.id)}
                       >
-                        <Icon className="w-8 h-8 text-primary" />
-                        <span className="text-sm font-medium text-center">{action.label}</span>
+                        <Icon className="w-6 h-6 lg:w-8 lg:h-8 text-primary" />
+                        <span className="text-xs lg:text-sm font-medium text-center leading-tight">{action.label}</span>
                       </Button>
                     );
                   })}
