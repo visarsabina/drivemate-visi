@@ -21,6 +21,7 @@ import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import TestGenerator from "@/components/TestGenerator";
+import SubscriptionBanner from "@/components/SubscriptionBanner";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
@@ -134,6 +135,7 @@ const Index = () => {
         </header>
 
         <div className="p-3 lg:p-8 space-y-4 lg:space-y-6">
+          <SubscriptionBanner />
           {activeView === "instructor" && <InstructorDashboard />}
 
           {activeView === "dashboard" && (
