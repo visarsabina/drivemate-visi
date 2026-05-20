@@ -230,41 +230,41 @@ const SuperAdmin = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
               <Building2 className="w-5 h-5 text-primary" />
             </div>
-            <div>
-              <h1 className="text-lg font-semibold">Super Admin</h1>
-              <p className="text-xs text-muted-foreground">
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-lg font-semibold leading-tight">Super Admin</h1>
+              <p className="text-[11px] sm:text-xs text-muted-foreground truncate">
                 {user?.email}
               </p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={handleSignOut}>
-            <LogOut className="w-4 h-4 mr-2" />
-            Dilni
+          <Button variant="outline" size="sm" onClick={handleSignOut} className="shrink-0">
+            <LogOut className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline">Dilni</span>
           </Button>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 space-y-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Global statistics (Faza 4B) */}
         <SuperAdminStats />
 
         {/* Tenants table */}
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 space-y-0">
             <div>
               <CardTitle>Autoshkollat</CardTitle>
             </div>
-            <Button onClick={() => setCreateOpen(true)}>
+            <Button onClick={() => setCreateOpen(true)} className="w-full sm:w-auto">
               <Plus className="w-4 h-4 mr-2" />
               Shto autoshkollë
             </Button>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-2 sm:px-6">
             {loading ? (
               <div className="flex justify-center py-12">
                 <Loader2 className="w-6 h-6 animate-spin text-primary" />
@@ -274,134 +274,195 @@ const SuperAdmin = () => {
                 Asnjë autoshkollë e regjistruar
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Emri</TableHead>
-                      <TableHead>Slug</TableHead>
-                      <TableHead>Domeni</TableHead>
-                      <TableHead className="text-center">Admin</TableHead>
-                      <TableHead className="text-center">Mjete</TableHead>
-                      <TableHead className="text-center">Punëtorë</TableHead>
-                      <TableHead>Statusi</TableHead>
-                      <TableHead>Abonimi</TableHead>
-                      <TableHead className="text-right">Veprime</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {tenants.map((t) => (
-                      <TableRow key={t.id}>
-                        <TableCell>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setImpersonatedTenantId(t.id);
-                              toast.success(`Po hyni në "${t.name}"...`);
-                              navigate("/admin");
-                            }}
-                            className="text-left hover:underline"
-                            title={`Hyr në panelin e ${t.name}`}
-                          >
-                            <div className="font-medium text-primary">{t.name}</div>
-                            {t.director_name && (
-                              <div className="text-xs text-muted-foreground">
-                                {t.director_name}
-                              </div>
-                            )}
-                          </button>
-                        </TableCell>
-                        <TableCell>
-                          <code className="text-xs bg-muted px-2 py-1 rounded">
-                            {t.slug}
-                          </code>
-                        </TableCell>
-                        <TableCell>
-                          {t.domain
-                            ? (
-                              <a
-                                href={`https://${t.domain}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-sm text-primary inline-flex items-center gap-1 hover:underline"
-                              >
-                                <Globe className="w-3 h-3" />
-                                {t.domain}
-                              </a>
-                            )
-                            : (
-                              <span className="text-xs text-muted-foreground">
-                                —
-                              </span>
-                            )}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <span className="inline-flex items-center gap-1 text-sm">
-                            <UserCheck className="w-3 h-3 text-muted-foreground" />
-                            {t.admin_count}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <span className="inline-flex items-center gap-1 text-sm">
-                            <Car className="w-3 h-3 text-muted-foreground" />
-                            {t.vehicles_count}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <span className="inline-flex items-center gap-1 text-sm">
-                            <Users className="w-3 h-3 text-muted-foreground" />
-                            {t.employees_count}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          {t.is_active
-                            ? (
-                              <Badge className="bg-green-500/15 text-green-700 hover:bg-green-500/20 border-green-500/30">
-                                Aktive
-                              </Badge>
-                            )
-                            : (
-                              <Badge variant="secondary">Çaktivizuar</Badge>
-                            )}
-                        </TableCell>
-                        <TableCell>
-                          <button type="button" onClick={() => openSub(t)} className="cursor-pointer">
-                            {renderSubBadge(t)}
-                          </button>
-                          <div className="text-[10px] text-muted-foreground mt-0.5">{Number(t.monthly_fee || 0)}€/muaj</div>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-1">
-                            <Button variant="ghost" size="sm" onClick={() => openSub(t)} title="Menaxho abonimin">
-                              <CreditCard className="w-4 h-4 mr-1" />
-                              Abonimi
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => toggleActive(t)}
-                            >
-                              {t.is_active
-                                ? (
-                                  <>
-                                    <PowerOff className="w-4 h-4 mr-1" />
-                                    Çaktivizo
-                                  </>
-                                )
-                                : (
-                                  <>
-                                    <Power className="w-4 h-4 mr-1" />
-                                    Aktivizo
-                                  </>
-                                )}
-                            </Button>
-                          </div>
-                        </TableCell>
+              <>
+                {/* Mobile card list */}
+                <div className="md:hidden space-y-3">
+                  {tenants.map((t) => (
+                    <div key={t.id} className="rounded-lg border border-border p-3 space-y-2 bg-card">
+                      <div className="flex items-start justify-between gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setImpersonatedTenantId(t.id);
+                            toast.success(`Po hyni në "${t.name}"...`);
+                            navigate("/admin");
+                          }}
+                          className="text-left min-w-0 flex-1"
+                        >
+                          <div className="font-medium text-primary truncate">{t.name}</div>
+                          {t.director_name && (
+                            <div className="text-xs text-muted-foreground truncate">{t.director_name}</div>
+                          )}
+                          <code className="text-[10px] bg-muted px-1.5 py-0.5 rounded inline-block mt-1">{t.slug}</code>
+                        </button>
+                        {t.is_active ? (
+                          <Badge className="bg-green-500/15 text-green-700 hover:bg-green-500/20 border-green-500/30 shrink-0">Aktive</Badge>
+                        ) : (
+                          <Badge variant="secondary" className="shrink-0">Çaktivizuar</Badge>
+                        )}
+                      </div>
+
+                      {t.domain && (
+                        <a href={`https://${t.domain}`} target="_blank" rel="noreferrer" className="text-xs text-primary inline-flex items-center gap-1 hover:underline">
+                          <Globe className="w-3 h-3" />
+                          {t.domain}
+                        </a>
+                      )}
+
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1"><UserCheck className="w-3 h-3" />{t.admin_count}</span>
+                        <span className="inline-flex items-center gap-1"><Car className="w-3 h-3" />{t.vehicles_count}</span>
+                        <span className="inline-flex items-center gap-1"><Users className="w-3 h-3" />{t.employees_count}</span>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-2 pt-1">
+                        <button type="button" onClick={() => openSub(t)} className="flex flex-col items-start">
+                          {renderSubBadge(t)}
+                          <span className="text-[10px] text-muted-foreground mt-0.5">{Number(t.monthly_fee || 0)}€/muaj</span>
+                        </button>
+                        <div className="flex gap-1">
+                          <Button variant="ghost" size="sm" onClick={() => openSub(t)} className="h-8 px-2">
+                            <CreditCard className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => toggleActive(t)} className="h-8 px-2">
+                            {t.is_active ? <PowerOff className="w-4 h-4" /> : <Power className="w-4 h-4" />}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop table */}
+                <div className="hidden md:block overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Emri</TableHead>
+                        <TableHead>Slug</TableHead>
+                        <TableHead>Domeni</TableHead>
+                        <TableHead className="text-center">Admin</TableHead>
+                        <TableHead className="text-center">Mjete</TableHead>
+                        <TableHead className="text-center">Punëtorë</TableHead>
+                        <TableHead>Statusi</TableHead>
+                        <TableHead>Abonimi</TableHead>
+                        <TableHead className="text-right">Veprime</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {tenants.map((t) => (
+                        <TableRow key={t.id}>
+                          <TableCell>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setImpersonatedTenantId(t.id);
+                                toast.success(`Po hyni në "${t.name}"...`);
+                                navigate("/admin");
+                              }}
+                              className="text-left hover:underline"
+                              title={`Hyr në panelin e ${t.name}`}
+                            >
+                              <div className="font-medium text-primary">{t.name}</div>
+                              {t.director_name && (
+                                <div className="text-xs text-muted-foreground">
+                                  {t.director_name}
+                                </div>
+                              )}
+                            </button>
+                          </TableCell>
+                          <TableCell>
+                            <code className="text-xs bg-muted px-2 py-1 rounded">
+                              {t.slug}
+                            </code>
+                          </TableCell>
+                          <TableCell>
+                            {t.domain
+                              ? (
+                                <a
+                                  href={`https://${t.domain}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-sm text-primary inline-flex items-center gap-1 hover:underline"
+                                >
+                                  <Globe className="w-3 h-3" />
+                                  {t.domain}
+                                </a>
+                              )
+                              : (
+                                <span className="text-xs text-muted-foreground">
+                                  —
+                                </span>
+                              )}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <span className="inline-flex items-center gap-1 text-sm">
+                              <UserCheck className="w-3 h-3 text-muted-foreground" />
+                              {t.admin_count}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <span className="inline-flex items-center gap-1 text-sm">
+                              <Car className="w-3 h-3 text-muted-foreground" />
+                              {t.vehicles_count}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <span className="inline-flex items-center gap-1 text-sm">
+                              <Users className="w-3 h-3 text-muted-foreground" />
+                              {t.employees_count}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            {t.is_active
+                              ? (
+                                <Badge className="bg-green-500/15 text-green-700 hover:bg-green-500/20 border-green-500/30">
+                                  Aktive
+                                </Badge>
+                              )
+                              : (
+                                <Badge variant="secondary">Çaktivizuar</Badge>
+                              )}
+                          </TableCell>
+                          <TableCell>
+                            <button type="button" onClick={() => openSub(t)} className="cursor-pointer">
+                              {renderSubBadge(t)}
+                            </button>
+                            <div className="text-[10px] text-muted-foreground mt-0.5">{Number(t.monthly_fee || 0)}€/muaj</div>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end gap-1">
+                              <Button variant="ghost" size="sm" onClick={() => openSub(t)} title="Menaxho abonimin">
+                                <CreditCard className="w-4 h-4 mr-1" />
+                                Abonimi
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => toggleActive(t)}
+                              >
+                                {t.is_active
+                                  ? (
+                                    <>
+                                      <PowerOff className="w-4 h-4 mr-1" />
+                                      Çaktivizo
+                                    </>
+                                  )
+                                  : (
+                                    <>
+                                      <Power className="w-4 h-4 mr-1" />
+                                      Aktivizo
+                                    </>
+                                  )}
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </>
             )}
           </CardContent>
         </Card>
