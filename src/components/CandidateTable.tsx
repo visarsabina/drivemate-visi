@@ -45,10 +45,12 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
   }, [candidates]);
 
   const filtered = candidates.filter((c) => {
+    const q = search.toLowerCase();
     const matchesSearch =
-      c.emri.toLowerCase().includes(search.toLowerCase()) ||
-      c.mbiemri.toLowerCase().includes(search.toLowerCase()) ||
+      c.emri.toLowerCase().includes(q) ||
+      c.mbiemri.toLowerCase().includes(q) ||
       c.numriRegjistrimit.includes(search) ||
+      (c.numriPersonal ?? "").includes(search) ||
       c.telefon.includes(search);
 
     const matchesYear = yearFilter === "all" || c.dataRegjistrimit.startsWith(yearFilter);
