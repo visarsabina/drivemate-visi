@@ -382,11 +382,17 @@ export type Database = {
           email: string | null
           id: string
           is_active: boolean
+          last_payment_date: string | null
           logo_url: string | null
+          monthly_fee: number
           name: string
           phone: string | null
           primary_color: string | null
           slug: string
+          subscription_ends_at: string | null
+          subscription_notes: string | null
+          subscription_status: string
+          trial_ends_at: string | null
           updated_at: string
         }
         Insert: {
@@ -397,11 +403,17 @@ export type Database = {
           email?: string | null
           id?: string
           is_active?: boolean
+          last_payment_date?: string | null
           logo_url?: string | null
+          monthly_fee?: number
           name: string
           phone?: string | null
           primary_color?: string | null
           slug: string
+          subscription_ends_at?: string | null
+          subscription_notes?: string | null
+          subscription_status?: string
+          trial_ends_at?: string | null
           updated_at?: string
         }
         Update: {
@@ -412,11 +424,17 @@ export type Database = {
           email?: string | null
           id?: string
           is_active?: boolean
+          last_payment_date?: string | null
           logo_url?: string | null
+          monthly_fee?: number
           name?: string
           phone?: string | null
           primary_color?: string | null
           slug?: string
+          subscription_ends_at?: string | null
+          subscription_notes?: string | null
+          subscription_status?: string
+          trial_ends_at?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -650,6 +668,7 @@ export type Database = {
         }
         Returns: string
       }
+      get_my_tenant_subscription: { Args: never; Returns: Json }
       get_public_tenant_by_domain: {
         Args: { _domain: string }
         Returns: {
@@ -700,17 +719,23 @@ export type Database = {
           address: string
           admin_count: number
           created_at: string
+          days_remaining: number
           director_name: string
           domain: string
           email: string
           employees_count: number
           id: string
           is_active: boolean
+          last_payment_date: string
           logo_url: string
+          monthly_fee: number
           name: string
           phone: string
           primary_color: string
           slug: string
+          subscription_ends_at: string
+          subscription_status: string
+          trial_ends_at: string
           vehicles_count: number
         }[]
       }
@@ -777,6 +802,17 @@ export type Database = {
           tenant_id: string
           tenant_name: string
         }[]
+      }
+      super_admin_update_subscription: {
+        Args: {
+          _ends_at: string
+          _last_payment_date: string
+          _monthly_fee: number
+          _notes: string
+          _status: string
+          _tenant_id: string
+        }
+        Returns: undefined
       }
       user_belongs_to_tenant: { Args: { _tenant_id: string }; Returns: boolean }
     }
