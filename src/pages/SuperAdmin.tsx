@@ -85,6 +85,73 @@ const SuperAdmin = () => {
   const [createOpen, setCreateOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [subTenant, setSubTenant] = useState<TenantRow | null>(null);
+  const [subForm, setSubForm] = useState({
+    status: "trial" as "trial" | "active" | "expired" | "cancelled",
+    ends_at: "",
+    monthly_fee: 29,
+    last_payment_date: "",
+    notes: "",
+  });
+  const [savingSub, setSavingSub] = useState(false);
+
+  const openSub = (t: TenantRow) => {
+    setSubTenant(t);
+    setSubForm({
+      status: t.subscription_status,
+      ends_at: t.subscription_ends_at ?? "",
+      monthly_fee: Number(t.monthly_fee || 29),
+      last_payment_date: t.last_payment_date ?? "",
+      notes: "",
+    });
+  };
+
+  const saveSub = async () => {
+    if (!subTenant) return;
+    setSavingSub(true);
+    const { error } = await supabase.rpc("super_admin_update_subscription", {
+      _tenant_id: subTenant.id,
+      _status: subForm.status,
+      _ends_at: subForm.ends_at || null,
+      _monthly_fee: subForm.monthly_fee || null,
+      _last_payment_date: subForm.last_payment_date || null,
+      _notes: subForm.notes || null,
+    });
+    setSavingSub(false);
+    if (error) {
+      toast.error("Gabim: " + error.message);
+      return;
+    }
+    toast.success("Abonimi u përditësua");
+    setSubTenant(null);
+    load();
+  };
+
+  const renderSubBadge = (t: TenantRow) => {
+    const days = t.days_remaining;
+    if (t.subscription_status === "trial") {
+      const expired = days !== null && days < 0;
+      return (
+        <Badge variant={expired ? "destructive" : "secondary"} className={expired ? "" : "bg-amber-500/15 text-amber-700 border-amber-500/30 hover:bg-amber-500/20"}>
+          {expired ? "Trial skaduar" : `Trial · ${days}d`}
+        </Badge>
+      );
+    }
+    if (t.subscription_status === "active") {
+      const warn = days !== null && days <= 7;
+      const expired = days !== null && days < 0;
+      if (expired) return <Badge variant="destructive">Skaduar</Badge>;
+      return (
+        <Badge className={warn
+          ? "bg-amber-500/15 text-amber-700 border-amber-500/30 hover:bg-amber-500/20"
+          : "bg-green-500/15 text-green-700 border-green-500/30 hover:bg-green-500/20"}>
+          Aktiv{days !== null ? ` · ${days}d` : ""}
+        </Badge>
+      );
+    }
+    if (t.subscription_status === "cancelled") return <Badge variant="secondary">Anulluar</Badge>;
+    return <Badge variant="destructive">Skaduar</Badge>;
+  };
 
   const load = async () => {
     setLoading(true);
