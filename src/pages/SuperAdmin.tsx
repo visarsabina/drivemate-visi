@@ -285,6 +285,7 @@ const SuperAdmin = () => {
                       <TableHead className="text-center">Mjete</TableHead>
                       <TableHead className="text-center">Punëtorë</TableHead>
                       <TableHead>Statusi</TableHead>
+                      <TableHead>Abonimi</TableHead>
                       <TableHead className="text-right">Veprime</TableHead>
                     </TableRow>
                   </TableHeader>
