@@ -643,13 +643,39 @@ const SuperAdmin = () => {
               </p>
             )}
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                if (!subTenant) return;
+                setSavingSub(true);
+                const today = new Date().toISOString().slice(0, 10);
+                const nextEnd = new Date();
+                nextEnd.setMonth(nextEnd.getMonth() + 1);
+                const { error } = await supabase.rpc("super_admin_record_subscription_payment", {
+                  _tenant_id: subTenant.id,
+                  _amount: subForm.monthly_fee,
+                  _payment_date: today,
+                  _period_end: nextEnd.toISOString().slice(0, 10),
+                  _notes: subForm.notes || null,
+                });
+                setSavingSub(false);
+                if (error) { toast.error("Gabim: " + error.message); return; }
+                toast.success(`Pagesa prej ${subForm.monthly_fee}€ u regjistrua`);
+                setSubTenant(null);
+                load();
+              }}
+              disabled={savingSub || !subForm.monthly_fee}
+            >
+              {savingSub && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Regjistro pagesë ({subForm.monthly_fee}€)
+            </Button>
             <Button variant="outline" onClick={() => setSubTenant(null)} disabled={savingSub}>
               Anulo
             </Button>
             <Button onClick={saveSub} disabled={savingSub}>
               {savingSub && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Ruaj
+              Ruaj ndryshimet
             </Button>
           </DialogFooter>
         </DialogContent>
