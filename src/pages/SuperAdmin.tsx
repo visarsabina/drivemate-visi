@@ -364,26 +364,38 @@ const SuperAdmin = () => {
                               <Badge variant="secondary">Çaktivizuar</Badge>
                             )}
                         </TableCell>
+                        <TableCell>
+                          <button type="button" onClick={() => openSub(t)} className="cursor-pointer">
+                            {renderSubBadge(t)}
+                          </button>
+                          <div className="text-[10px] text-muted-foreground mt-0.5">{Number(t.monthly_fee || 0)}€/muaj</div>
+                        </TableCell>
                         <TableCell className="text-right">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => toggleActive(t)}
-                          >
-                            {t.is_active
-                              ? (
-                                <>
-                                  <PowerOff className="w-4 h-4 mr-1" />
-                                  Çaktivizo
-                                </>
-                              )
-                              : (
-                                <>
-                                  <Power className="w-4 h-4 mr-1" />
-                                  Aktivizo
-                                </>
-                              )}
-                          </Button>
+                          <div className="flex justify-end gap-1">
+                            <Button variant="ghost" size="sm" onClick={() => openSub(t)} title="Menaxho abonimin">
+                              <CreditCard className="w-4 h-4 mr-1" />
+                              Abonimi
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => toggleActive(t)}
+                            >
+                              {t.is_active
+                                ? (
+                                  <>
+                                    <PowerOff className="w-4 h-4 mr-1" />
+                                    Çaktivizo
+                                  </>
+                                )
+                                : (
+                                  <>
+                                    <Power className="w-4 h-4 mr-1" />
+                                    Aktivizo
+                                  </>
+                                )}
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
