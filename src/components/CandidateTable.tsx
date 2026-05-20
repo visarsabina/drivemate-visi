@@ -45,10 +45,12 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
   }, [candidates]);
 
   const filtered = candidates.filter((c) => {
+    const q = search.toLowerCase();
     const matchesSearch =
-      c.emri.toLowerCase().includes(search.toLowerCase()) ||
-      c.mbiemri.toLowerCase().includes(search.toLowerCase()) ||
+      c.emri.toLowerCase().includes(q) ||
+      c.mbiemri.toLowerCase().includes(q) ||
       c.numriRegjistrimit.includes(search) ||
+      (c.numriPersonal ?? "").includes(search) ||
       c.telefon.includes(search);
 
     const matchesYear = yearFilter === "all" || c.dataRegjistrimit.startsWith(yearFilter);
@@ -79,7 +81,7 @@ const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: Ca
         <div className="relative max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Kërko kandidatë..."
+            placeholder="Kërko me emër, mbiemër, numër personal, telefon..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
