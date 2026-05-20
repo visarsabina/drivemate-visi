@@ -373,6 +373,54 @@ export type Database = {
           },
         ]
       }
+      tenant_subscription_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          created_by: string | null
+          id: string
+          notes: string | null
+          payment_date: string
+          period_end: string | null
+          tenant_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          payment_date?: string
+          period_end?: string | null
+          tenant_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          payment_date?: string
+          period_end?: string | null
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_subscription_payments_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenant_subscription_payments_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenants: {
         Row: {
           address: string | null
@@ -788,6 +836,16 @@ export type Database = {
           revenue: number
         }[]
       }
+      super_admin_record_subscription_payment: {
+        Args: {
+          _amount: number
+          _notes: string
+          _payment_date: string
+          _period_end: string
+          _tenant_id: string
+        }
+        Returns: string
+      }
       super_admin_tenant_details: {
         Args: { _tenant_id: string }
         Returns: Json
@@ -801,6 +859,17 @@ export type Database = {
           revenue_total: number
           tenant_id: string
           tenant_name: string
+        }[]
+      }
+      super_admin_tenant_subscription_payments: {
+        Args: { _tenant_id: string }
+        Returns: {
+          amount: number
+          created_at: string
+          id: string
+          notes: string
+          payment_date: string
+          period_end: string
         }[]
       }
       super_admin_update_subscription: {
