@@ -577,6 +577,83 @@ const SuperAdmin = () => {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* Subscription dialog */}
+      <Dialog open={!!subTenant} onOpenChange={(o) => !o && setSubTenant(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Abonimi · {subTenant?.name}</DialogTitle>
+            <DialogDescription>
+              Menaxho statusin e abonimit. Trial: 14 ditë falas. Pa pagesë automatike — sistemi tregon vetëm banner kur skadon.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label>Statusi</Label>
+              <select
+                value={subForm.status}
+                onChange={(e) => setSubForm({ ...subForm, status: e.target.value as typeof subForm.status })}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              >
+                <option value="trial">Trial (provë)</option>
+                <option value="active">Aktiv (i paguar)</option>
+                <option value="expired">Skaduar</option>
+                <option value="cancelled">Anulluar</option>
+              </select>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Tarifa mujore (€)</Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  value={subForm.monthly_fee}
+                  onChange={(e) => setSubForm({ ...subForm, monthly_fee: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <Label>Skadon më</Label>
+                <Input
+                  type="date"
+                  value={subForm.ends_at}
+                  onChange={(e) => setSubForm({ ...subForm, ends_at: e.target.value })}
+                  disabled={subForm.status === "trial"}
+                />
+              </div>
+            </div>
+            <div>
+              <Label>Pagesa e fundit</Label>
+              <Input
+                type="date"
+                value={subForm.last_payment_date}
+                onChange={(e) => setSubForm({ ...subForm, last_payment_date: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Shënime</Label>
+              <Input
+                value={subForm.notes}
+                onChange={(e) => setSubForm({ ...subForm, notes: e.target.value })}
+                placeholder="P.sh. paguar me bank transfer"
+              />
+            </div>
+            {subTenant?.subscription_status === "trial" && subTenant.trial_ends_at && (
+              <p className="text-xs text-muted-foreground">
+                Trial skadon më: <strong>{subTenant.trial_ends_at}</strong>
+              </p>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSubTenant(null)} disabled={savingSub}>
+              Anulo
+            </Button>
+            <Button onClick={saveSub} disabled={savingSub}>
+              {savingSub && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Ruaj
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
