@@ -275,18 +275,6 @@ const SuperAdminStats = () => {
           tone="primary"
         />
         <StatCard
-          icon={UserCheck}
-          label="Kaluar"
-          value={stats.candidates_passed}
-          tone="green"
-        />
-        <StatCard
-          icon={Users}
-          label="Dështuar"
-          value={stats.candidates_failed}
-          tone="red"
-        />
-        <StatCard
           icon={Wallet}
           label="Të ardhura gjithsej"
           value={fmtCurrency(stats.revenue_total)}
@@ -297,19 +285,6 @@ const SuperAdminStats = () => {
           label="Ky muaj"
           value={fmtCurrency(stats.revenue_this_month)}
           tone="primary"
-        />
-        <StatCard
-          icon={Inbox}
-          label="Regjistrime online"
-          value={stats.registrations_open}
-          hint="Të papërpunuara"
-          tone="amber"
-        />
-        <StatCard
-          icon={Car}
-          label="Mjete & Punëtorë"
-          value={`${stats.vehicles_total} / ${stats.employees_total}`}
-          tone="muted"
         />
       </div>
 
