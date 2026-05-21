@@ -67,8 +67,8 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       }
 
       const today = new Date().toISOString().split("T")[0];
-      let added = 1;
-      let skipped = 1;
+      let added = 0;
+      let skipped = 0;
 
       dataRows.forEach((row, idx) => {
         const numriRegjistrimit = String(row[0] ?? "").trim();
