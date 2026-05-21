@@ -99,9 +99,10 @@ interface CandidateDetailProps {
   onVertetimiPrinted?: (candidateId: string) => void;
   onUpdate?: (candidate: Candidate) => void;
   onDelete?: (candidateId: string) => void;
+  onGoToPayments?: (candidateId: string) => void;
 }
 
-const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDelete }: CandidateDetailProps) => {
+const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDelete, onGoToPayments }: CandidateDetailProps) => {
   const { isAdmin } = useAuth();
   const [activeDoc, setActiveDoc] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
@@ -320,7 +321,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
         <div>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Historiku i Pagesave</h3>
-            <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowPaymentDialog(true)}>
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => onGoToPayments?.(candidate.id)}>
               <CreditCard className="w-4 h-4" /> Pagesa
             </Button>
           </div>

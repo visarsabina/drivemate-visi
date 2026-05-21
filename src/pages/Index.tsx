@@ -47,6 +47,7 @@ const Index = () => {
   } = useCandidates();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
+  const [paymentInitialCandidateId, setPaymentInitialCandidateId] = useState<string | undefined>(undefined);
 
   const handleAddCandidate = async (candidate: Candidate) => {
     await addCandidate(candidate);
@@ -190,12 +191,13 @@ const Index = () => {
               onVertetimiPrinted={handleVertetimiPrinted}
               onUpdate={handleUpdateCandidate}
               onDelete={handleDeleteCandidate}
+              onGoToPayments={(id) => { setPaymentInitialCandidateId(id); setActiveView("payment"); }}
             />
           )}
 
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 
-          {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} />}
+          {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} initialCandidateId={paymentInitialCandidateId} />}
 
           {activeView === "finances" && <Finances candidates={candidates} />}
 
