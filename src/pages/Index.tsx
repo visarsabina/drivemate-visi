@@ -191,12 +191,13 @@ const Index = () => {
               onVertetimiPrinted={handleVertetimiPrinted}
               onUpdate={handleUpdateCandidate}
               onDelete={handleDeleteCandidate}
+              onGoToPayments={(id) => { setPaymentInitialCandidateId(id); setActiveView("payment"); }}
             />
           )}
 
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 
-          {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} />}
+          {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} initialCandidateId={paymentInitialCandidateId} />}
 
           {activeView === "finances" && <Finances candidates={candidates} />}
 
