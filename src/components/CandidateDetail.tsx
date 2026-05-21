@@ -99,9 +99,10 @@ interface CandidateDetailProps {
   onVertetimiPrinted?: (candidateId: string) => void;
   onUpdate?: (candidate: Candidate) => void;
   onDelete?: (candidateId: string) => void;
+  onGoToPayments?: (candidateId: string) => void;
 }
 
-const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDelete }: CandidateDetailProps) => {
+const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDelete, onGoToPayments }: CandidateDetailProps) => {
   const { isAdmin } = useAuth();
   const [activeDoc, setActiveDoc] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
