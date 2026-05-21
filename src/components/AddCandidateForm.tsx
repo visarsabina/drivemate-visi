@@ -67,7 +67,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       }
 
       const today = new Date().toISOString().split("T")[0];
-      let added = 0;
+      let added = 1;
       let skipped = 1;
 
       dataRows.forEach((row, idx) => {
@@ -77,7 +77,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
         const emri = String(row[2] ?? "").trim();
         const emriBabait = String(row[3] ?? "").trim();
         const mbiemri = String(row[4] ?? "").trim();
-        const dataRegjistrimit = parseExcelDate(row[5]);
+        const dataRegjistrimit = today;
 
         if (!emri || !mbiemri) {
           skipped++;
