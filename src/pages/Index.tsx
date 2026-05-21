@@ -47,6 +47,7 @@ const Index = () => {
   } = useCandidates();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
+  const [paymentInitialCandidateId, setPaymentInitialCandidateId] = useState<string | undefined>(undefined);
 
   const handleAddCandidate = async (candidate: Candidate) => {
     await addCandidate(candidate);
