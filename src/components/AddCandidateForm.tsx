@@ -70,6 +70,36 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
       let added = 0;
       let skipped = 0;
 
+      const parseExcelDate = (val: any): string => {
+        if (val === null || val === undefined || val === "") return today;
+        // Excel serial number
+        if (typeof val === "number") {
+          const utcDays = Math.floor(val - 25569);
+          const d = new Date(utcDays * 86400 * 1000);
+          if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
+        }
+        const s = String(val).trim();
+        // YYYY-MM-DD or YYYY/MM/DD
+        let m = s.match(/^(\d{4})[-./](\d{1,2})[-./](\d{1,2})$/);
+        if (m) return `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`;
+        // DD-MM-YYYY or DD.MM.YYYY or DD/MM/YYYY
+        m = s.match(/^(\d{1,2})[-./](\d{1,2})[-./](\d{4})$/);
+        if (m) return `${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;
+        // YY-MM-DD (e.g. 22-03-15)
+        m = s.match(/^(\d{2})[-./](\d{1,2})[-./](\d{1,2})$/);
+        if (m) {
+          const yr = parseInt(m[1], 10);
+          const fullYr = yr < 50 ? 2000 + yr : 1900 + yr;
+          return `${fullYr}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`;
+        }
+        // Just a year
+        m = s.match(/^(\d{4})$/);
+        if (m) return `${m[1]}-01-01`;
+        const d = new Date(s);
+        if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
+        return today;
+      };
+
       dataRows.forEach((row, idx) => {
         const numriRegjistrimit = String(row[0] ?? "").trim();
         let kategoria = String(row[1] ?? "B").trim().toUpperCase() || "B";
@@ -77,6 +107,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
         const emri = String(row[2] ?? "").trim();
         const emriBabait = String(row[3] ?? "").trim();
         const mbiemri = String(row[4] ?? "").trim();
+        const dataRegjistrimit = parseExcelDate(row[5]);
 
         if (!emri || !mbiemri) {
           skipped++;
@@ -97,7 +128,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
           certifikataShendetsore: "",
           vendi: "",
           statusi: "regjistuar" as CandidateStatus,
-          dataRegjistrimit: today,
+          dataRegjistrimit,
           shenimet: "Importuar nga Excel",
           shumaMarreveshjes: kategoria === "C" ? 250 : 0,
           payments: [],
@@ -190,7 +221,9 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
         </div>
       </div>
       <p className="text-xs text-muted-foreground mb-4">
-        Formati i Excel: <strong>Nr.Regj | Kategoria | Emri | Emri i Babait | Mbiemri</strong>
+        Formati i Excel: <strong>Nr.Regj | Kategoria | Emri | Emri i Babait | Mbiemri | Data e Regjistrimit</strong>
+        <br />
+        <span className="text-[11px]">Data pranohet si: <code>dd.mm.yyyy</code>, <code>yyyy-mm-dd</code>, ose vetëm viti <code>2023</code>. Nëse lihet bosh, përdoret data e sotme.</span>
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
