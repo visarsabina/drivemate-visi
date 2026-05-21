@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -12,12 +12,17 @@ import { escapeHtmlObject } from "@/lib/escapeHtml";
 interface PaymentFormProps {
   candidates: Candidate[];
   onPayment: (candidateId: string, payment: Payment) => void;
+  initialCandidateId?: string;
 }
 
-const PaymentForm = ({ candidates, onPayment }: PaymentFormProps) => {
-  const [selectedCandidateId, setSelectedCandidateId] = useState("");
+const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormProps) => {
+  const [selectedCandidateId, setSelectedCandidateId] = useState(initialCandidateId ?? "");
   const [shumaPaguar, setShumaPaguar] = useState("");
   const [dataPageses, setDataPageses] = useState(new Date().toISOString().split("T")[0]);
+
+  useEffect(() => {
+    if (initialCandidateId) setSelectedCandidateId(initialCandidateId);
+  }, [initialCandidateId]);
 
   const selectedCandidate = candidates.find((c) => c.id === selectedCandidateId);
   const totalPaguar = selectedCandidate
