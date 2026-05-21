@@ -191,9 +191,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
         </div>
       </div>
       <p className="text-xs text-muted-foreground mb-4">
-        Formati i Excel: <strong>Nr.Regj | Kategoria | Emri | Emri i Babait | Mbiemri | Data e Regjistrimit</strong>
-        <br />
-        <span className="text-[11px]">Data pranohet si: <code>dd.mm.yyyy</code>, <code>yyyy-mm-dd</code>, ose vetëm viti <code>2023</code>. Nëse lihet bosh, përdoret data e sotme.</span>
+        Formati i Excel: <strong>Nr.Regj | Kategoria | Emri | Emri i Babait | Mbiemri</strong>
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
