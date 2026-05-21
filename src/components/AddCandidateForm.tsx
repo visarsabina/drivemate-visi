@@ -68,37 +68,7 @@ const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
 
       const today = new Date().toISOString().split("T")[0];
       let added = 0;
-      let skipped = 0;
-
-      const parseExcelDate = (val: any): string => {
-        if (val === null || val === undefined || val === "") return today;
-        // Excel serial number
-        if (typeof val === "number") {
-          const utcDays = Math.floor(val - 25569);
-          const d = new Date(utcDays * 86400 * 1000);
-          if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
-        }
-        const s = String(val).trim();
-        // YYYY-MM-DD or YYYY/MM/DD
-        let m = s.match(/^(\d{4})[-./](\d{1,2})[-./](\d{1,2})$/);
-        if (m) return `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`;
-        // DD-MM-YYYY or DD.MM.YYYY or DD/MM/YYYY
-        m = s.match(/^(\d{1,2})[-./](\d{1,2})[-./](\d{4})$/);
-        if (m) return `${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;
-        // YY-MM-DD (e.g. 22-03-15)
-        m = s.match(/^(\d{2})[-./](\d{1,2})[-./](\d{1,2})$/);
-        if (m) {
-          const yr = parseInt(m[1], 10);
-          const fullYr = yr < 50 ? 2000 + yr : 1900 + yr;
-          return `${fullYr}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`;
-        }
-        // Just a year
-        m = s.match(/^(\d{4})$/);
-        if (m) return `${m[1]}-01-01`;
-        const d = new Date(s);
-        if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
-        return today;
-      };
+      let skipped = 1;
 
       dataRows.forEach((row, idx) => {
         const numriRegjistrimit = String(row[0] ?? "").trim();
