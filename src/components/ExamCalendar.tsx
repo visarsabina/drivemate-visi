@@ -277,11 +277,6 @@ const ExamCalendar = ({ candidates }: Props) => {
             </div>
 
             <div>
-              <Label>Vendi (opsional)</Label>
-              <Input value={formLocation} onChange={(e) => setFormLocation(e.target.value)} placeholder="p.sh. Qendra e provimeve" />
-            </div>
-
-            <div>
               <Label>Shënime (opsional)</Label>
               <Textarea value={formNotes} onChange={(e) => setFormNotes(e.target.value)} rows={2} />
             </div>
