@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      candidate_exams: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          created_by: string | null
+          exam_date: string
+          exam_time: string
+          exam_type: Database["public"]["Enums"]["exam_type"]
+          id: string
+          location: string | null
+          notes: string | null
+          status: Database["public"]["Enums"]["exam_status"]
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          created_by?: string | null
+          exam_date: string
+          exam_time: string
+          exam_type?: Database["public"]["Enums"]["exam_type"]
+          id?: string
+          location?: string | null
+          notes?: string | null
+          status?: Database["public"]["Enums"]["exam_status"]
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          created_by?: string | null
+          exam_date?: string
+          exam_time?: string
+          exam_type?: Database["public"]["Enums"]["exam_type"]
+          id?: string
+          location?: string | null
+          notes?: string | null
+          status?: Database["public"]["Enums"]["exam_status"]
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       candidate_lessons: {
         Row: {
           candidate_id: string
@@ -888,6 +933,8 @@ export type Database = {
     Enums: {
       app_role: "admin" | "user" | "super_admin" | "instructor"
       candidate_status: "regjistuar" | "ne_proces" | "kaluar" | "deshtur"
+      exam_status: "planifikuar" | "kaluar" | "deshtur" | "anuluar"
+      exam_type: "teori" | "praktike"
       registration_status: "new" | "contacted" | "enrolled" | "rejected"
     }
     CompositeTypes: {
@@ -1018,6 +1065,8 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "user", "super_admin", "instructor"],
       candidate_status: ["regjistuar", "ne_proces", "kaluar", "deshtur"],
+      exam_status: ["planifikuar", "kaluar", "deshtur", "anuluar"],
+      exam_type: ["teori", "praktike"],
       registration_status: ["new", "contacted", "enrolled", "rejected"],
     },
   },
