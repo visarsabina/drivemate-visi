@@ -52,7 +52,7 @@ const ExamCalendar = ({ candidates }: Props) => {
   const [formCandidate, setFormCandidate] = useState("");
   const [formDate, setFormDate] = useState<Date | undefined>(new Date());
   const [formTime, setFormTime] = useState("09:00");
-  const [formType, setFormType] = useState<"teori" | "praktike">("teori");
+  const [formType, setFormType] = useState<"teori" | "praktike">("praktike");
   const [formNotes, setFormNotes] = useState("");
   const [candidateSearch, setCandidateSearch] = useState("");
   const [candidatePopoverOpen, setCandidatePopoverOpen] = useState(false);
@@ -100,7 +100,7 @@ const ExamCalendar = ({ candidates }: Props) => {
     setCandidatePopoverOpen(false);
     setFormDate(selectedDate);
     setFormTime("09:00");
-    setFormType("teori");
+    setFormType("praktike");
     setFormNotes("");
     setDialogOpen(true);
   };
@@ -319,7 +319,14 @@ const ExamCalendar = ({ candidates }: Props) => {
               </div>
               <div>
                 <Label>Ora</Label>
-                <Input type="time" value={formTime} onChange={(e) => setFormTime(e.target.value)} />
+                <Select value={formTime} onValueChange={setFormTime}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent className="max-h-56">
+                    {Array.from({ length: 24 }, (_, i) => [`${String(i).padStart(2, "0")}:00`, `${String(i).padStart(2, "0")}:30`]).flat().map((t) => (
+                      <SelectItem key={t} value={t}>{t}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
