@@ -247,31 +247,58 @@ const ExamCalendar = ({ candidates }: Props) => {
           <div className="space-y-3">
             <div>
               <Label>Kandidati</Label>
-              <Select value={formCandidate} onValueChange={(v) => { setFormCandidate(v); setCandidateSearch(""); }}>
-                <SelectTrigger><SelectValue placeholder="Zgjidh kandidatin" /></SelectTrigger>
-                <SelectContent>
-                  <div className="p-2 pb-1">
-                    <Input
+              <Popover open={candidatePopoverOpen} onOpenChange={setCandidatePopoverOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={candidatePopoverOpen}
+                    className="w-full justify-between"
+                  >
+                    {formCandidate
+                      ? (() => {
+                          const c = candidates.find((x) => x.id === formCandidate);
+                          return c ? `${c.emri} ${c.mbiemri} (${c.numriRegjistrimit})` : "Zgjidh kandidatin";
+                        })()
+                      : "Zgjidh kandidatin"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                  <Command>
+                    <CommandInput
                       placeholder="Kërko me emër, Nr. personal, Nr. regj..."
                       value={candidateSearch}
-                      onChange={(e) => setCandidateSearch(e.target.value)}
-                      className="h-8 text-sm"
-                      onPointerDown={(e) => e.stopPropagation()}
+                      onValueChange={setCandidateSearch}
+                      className="h-9"
                     />
-                  </div>
-                  <div className="max-h-56 overflow-y-auto">
-                    {filteredCandidates.length === 0 ? (
-                      <div className="px-2 py-3 text-sm text-muted-foreground text-center">Nuk u gjet asnjë kandidat</div>
-                    ) : (
-                      filteredCandidates.map((c) => (
-                        <SelectItem key={c.id} value={c.id}>
-                          {c.emri} {c.mbiemri} {c.numriRegjistrimit ? `(${c.numriRegjistrimit})` : ""}
-                        </SelectItem>
-                      ))
-                    )}
-                  </div>
-                </SelectContent>
-              </Select>
+                    <CommandList>
+                      <CommandEmpty>Nuk u gjet asnjë kandidat</CommandEmpty>
+                      <CommandGroup>
+                        {filteredCandidates.map((c) => (
+                          <CommandItem
+                            key={c.id}
+                            value={`${c.emri} ${c.mbiemri} ${c.numriRegjistrimit} ${c.numriPersonal ?? ""}`}
+                            onSelect={() => {
+                              setFormCandidate(c.id);
+                              setCandidateSearch("");
+                              setCandidatePopoverOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                formCandidate === c.id ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {c.emri} {c.mbiemri} ({c.numriRegjistrimit})
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
