@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { sq } from "date-fns/locale";
-import { CalendarIcon, Plus, Trash2, Clock, MapPin } from "lucide-react";
+import { CalendarIcon, Plus, Trash2, Clock, Tag } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
 import { Candidate } from "@/types/candidate";
