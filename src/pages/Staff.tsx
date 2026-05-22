@@ -33,16 +33,24 @@ const Staff = () => {
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", "Njihuni me instruktorët e Autoshkollës Visi. Filtroni sipas kategorive B, C1, C, CE, D.");
 
-    supabase
-      .from("staff")
-      .select("id, name, role, categories, photo_url")
-      .eq("is_active", true)
-      .order("display_order", { ascending: true })
-      .then(({ data, error }) => {
-        if (!error && data) setStaff(data as StaffMember[]);
+    (async () => {
+      const host = window.location.hostname.replace(/^www\./, "");
+      const { data: byDomain } = await supabase.rpc("get_public_tenant_by_domain", { _domain: host });
+      let tenantId = (Array.isArray(byDomain) ? byDomain[0] : byDomain)?.id as string | undefined;
+      if (!tenantId) {
+        const { data: bySlug } = await supabase.rpc("get_public_tenant_by_slug", { _slug: "visi" });
+        tenantId = (Array.isArray(bySlug) ? bySlug[0] : bySlug)?.id as string | undefined;
+      }
+      if (!tenantId) {
         setLoading(false);
-      });
+        return;
+      }
+      const { data, error } = await supabase.rpc("get_public_staff_by_tenant", { _tenant_id: tenantId });
+      if (!error && data) setStaff(data as StaffMember[]);
+      setLoading(false);
+    })();
   }, []);
+
 
   const filtered = useMemo(() => {
     if (filter === "Të gjitha") return staff;
