@@ -105,6 +105,30 @@ const ExamCalendar = ({ candidates }: Props) => {
   const selectedKey = format(selectedDate, "yyyy-MM-dd");
   const dayExams = examsByDate.get(selectedKey) ?? [];
 
+  // Fshih automatikisht terminet që kanë kaluar më shumë se 2 ditë
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+
+  const visibleExams = useMemo(
+    () => exams.filter((e) => differenceInCalendarDays(today, parseISO(e.exam_date)) <= 2),
+    [exams, today]
+  );
+
+  const examsByDate = useMemo(() => {
+    const map = new Map<string, ExamRow[]>();
+    visibleExams.forEach((e) => {
+      const arr = map.get(e.exam_date) ?? [];
+      arr.push(e);
+      map.set(e.exam_date, arr);
+    });
+    return map;
+  }, [visibleExams]);
+
+  const selectedKey = format(selectedDate, "yyyy-MM-dd");
+
   const candidateName = (id: string) => {
     const c = candidates.find((x) => x.id === id);
     return c ? `${c.emri} ${c.mbiemri}` : "—";
@@ -115,7 +139,7 @@ const ExamCalendar = ({ candidates }: Props) => {
     setCandidateSearch("");
     setCandidatePopoverOpen(false);
     setFormDate(selectedDate);
-    setFormTime("09:00");
+    setFormTime("08:30");
     setFormType("praktike");
     setFormNotes("");
     setDialogOpen(true);
@@ -131,6 +155,28 @@ const ExamCalendar = ({ candidates }: Props) => {
       c.numriRegjistrimit.toLowerCase().includes(q)
     );
   }, [candidates, candidateSearch]);
+
+  // Terminet që shfaqen sipas pamjes (ditore/javore/mujore)
+  const rangeExams = useMemo(() => {
+    if (viewMode === "day") {
+      return examsByDate.get(selectedKey) ?? [];
+    }
+    const interval =
+      viewMode === "week"
+        ? { start: startOfWeek(selectedDate, { weekStartsOn: 1 }), end: endOfWeek(selectedDate, { weekStartsOn: 1 }) }
+        : { start: startOfMonth(selectedDate), end: endOfMonth(selectedDate) };
+    return visibleExams.filter((e) => isWithinInterval(parseISO(e.exam_date), interval));
+  }, [viewMode, examsByDate, selectedKey, visibleExams, selectedDate]);
+
+  const rangeLabel = useMemo(() => {
+    if (viewMode === "day") return format(selectedDate, "EEEE, dd MMMM yyyy", { locale: sq });
+    if (viewMode === "week") {
+      const s = startOfWeek(selectedDate, { weekStartsOn: 1 });
+      const e = endOfWeek(selectedDate, { weekStartsOn: 1 });
+      return `${format(s, "dd MMM", { locale: sq })} – ${format(e, "dd MMM yyyy", { locale: sq })}`;
+    }
+    return format(selectedDate, "MMMM yyyy", { locale: sq });
+  }, [viewMode, selectedDate]);
 
   const saveExam = async () => {
     if (!tenantId) return;
