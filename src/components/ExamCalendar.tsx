@@ -53,6 +53,7 @@ const ExamCalendar = ({ candidates }: Props) => {
   const [formTime, setFormTime] = useState("09:00");
   const [formType, setFormType] = useState<"teori" | "praktike">("teori");
   const [formNotes, setFormNotes] = useState("");
+  const [candidateSearch, setCandidateSearch] = useState("");
 
   const refresh = async () => {
     if (!tenantId) return;
