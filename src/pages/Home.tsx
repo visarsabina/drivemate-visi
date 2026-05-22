@@ -80,15 +80,12 @@ const Home = () => {
   useEffect(() => {
     if (!branding?.id) return;
     supabase
-      .from("staff")
-      .select("id, name, role, categories, photo_url")
-      .eq("is_active", true)
-      .eq("tenant_id", branding.id)
-      .order("display_order", { ascending: true })
+      .rpc("get_public_staff_by_tenant", { _tenant_id: branding.id })
       .then(({ data, error }) => {
         if (!error && data) setStaff(data as StaffMember[]);
       });
   }, [branding?.id]);
+
 
   const logoSrc = branding?.logo_url || defaultLogo;
   const schoolName = branding?.name || "Autoshkolla Visi";
