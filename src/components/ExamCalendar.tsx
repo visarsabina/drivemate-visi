@@ -231,27 +231,46 @@ const ExamCalendar = ({ candidates }: Props) => {
         </Card>
 
         <Card className="p-4">
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             <CalendarIcon className="w-4 h-4 text-primary" />
-            <h3 className="font-semibold capitalize">
-              {format(selectedDate, "EEEE, dd MMMM yyyy", { locale: sq })}
-            </h3>
-            <Badge variant="secondary" className="ml-auto">{dayExams.length} provime</Badge>
+            <h3 className="font-semibold capitalize">{rangeLabel}</h3>
+            <div className="ml-auto flex items-center gap-2">
+              <div className="inline-flex rounded-md border bg-muted/30 p-0.5">
+                {(["day", "week", "month"] as ViewMode[]).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setViewMode(m)}
+                    className={cn(
+                      "px-2.5 py-1 text-xs rounded-sm capitalize transition-colors",
+                      viewMode === m ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {m === "day" ? "Ditore" : m === "week" ? "Javore" : "Mujore"}
+                  </button>
+                ))}
+              </div>
+              <Badge variant="secondary">{rangeExams.length} provime</Badge>
+            </div>
           </div>
 
           {loading ? (
             <p className="text-sm text-muted-foreground">Duke u ngarkuar...</p>
-          ) : dayExams.length === 0 ? (
+          ) : rangeExams.length === 0 ? (
             <div className="text-center py-10 text-muted-foreground text-sm">
-              Asnjë provim i caktuar për këtë ditë
+              Asnjë provim i caktuar për këtë periudhë
             </div>
           ) : (
             <div className="space-y-2">
-              {dayExams.map((exam) => (
+              {rangeExams.map((exam) => (
                 <div key={exam.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-lg border bg-card hover:bg-muted/30 transition-colors">
-                  <div className="flex items-center gap-2 sm:w-24 shrink-0">
+                  <div className="flex items-center gap-2 sm:w-36 shrink-0">
                     <Clock className="w-4 h-4 text-primary" />
                     <span className="font-mono font-semibold">{exam.exam_time.slice(0, 5)}</span>
+                    {viewMode !== "day" && (
+                      <span className="text-xs text-muted-foreground">
+                        {format(parseISO(exam.exam_date), "dd MMM", { locale: sq })}
+                      </span>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-medium truncate">{candidateName(exam.candidate_id)}</div>
@@ -288,6 +307,7 @@ const ExamCalendar = ({ candidates }: Props) => {
             </div>
           )}
         </Card>
+
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
