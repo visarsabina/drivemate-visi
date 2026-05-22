@@ -97,6 +97,7 @@ const ExamCalendar = ({ candidates }: Props) => {
   const openNewDialog = () => {
     setFormCandidate("");
     setCandidateSearch("");
+    setCandidatePopoverOpen(false);
     setFormDate(selectedDate);
     setFormTime("09:00");
     setFormType("teori");
