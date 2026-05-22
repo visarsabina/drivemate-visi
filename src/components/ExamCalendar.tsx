@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { sq } from "date-fns/locale";
-import { CalendarIcon, Plus, Trash2, Clock, MapPin } from "lucide-react";
+import { CalendarIcon, Plus, Trash2, Clock, Tag } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
 import { Candidate } from "@/types/candidate";
@@ -52,7 +52,6 @@ const ExamCalendar = ({ candidates }: Props) => {
   const [formDate, setFormDate] = useState<Date | undefined>(new Date());
   const [formTime, setFormTime] = useState("09:00");
   const [formType, setFormType] = useState<"teori" | "praktike">("teori");
-  const [formLocation, setFormLocation] = useState("");
   const [formNotes, setFormNotes] = useState("");
 
   const refresh = async () => {
@@ -97,7 +96,6 @@ const ExamCalendar = ({ candidates }: Props) => {
     setFormDate(selectedDate);
     setFormTime("09:00");
     setFormType("teori");
-    setFormLocation("");
     setFormNotes("");
     setDialogOpen(true);
   };
@@ -114,7 +112,6 @@ const ExamCalendar = ({ candidates }: Props) => {
       exam_date: format(formDate, "yyyy-MM-dd"),
       exam_time: formTime,
       exam_type: formType,
-      location: formLocation || null,
       notes: formNotes || null,
     });
     if (error) {
@@ -197,9 +194,12 @@ const ExamCalendar = ({ candidates }: Props) => {
                       <span className={cn("px-2 py-0.5 rounded-md text-xs border capitalize", statusColors[exam.status])}>
                         {exam.status}
                       </span>
-                      {exam.location && (
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{exam.location}</span>
-                      )}
+                      {(() => {
+                        const c = candidates.find((x) => x.id === exam.candidate_id);
+                        return c?.kategoria ? (
+                          <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{c.kategoria}</span>
+                        ) : null;
+                      })()}
                     </div>
                     {exam.notes && <p className="text-xs text-muted-foreground mt-1">{exam.notes}</p>}
                   </div>
@@ -274,11 +274,6 @@ const ExamCalendar = ({ candidates }: Props) => {
                   <SelectItem value="praktike">Praktikë</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-
-            <div>
-              <Label>Vendi (opsional)</Label>
-              <Input value={formLocation} onChange={(e) => setFormLocation(e.target.value)} placeholder="p.sh. Qendra e provimeve" />
             </div>
 
             <div>
