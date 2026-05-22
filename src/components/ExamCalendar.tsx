@@ -96,7 +96,6 @@ const ExamCalendar = ({ candidates }: Props) => {
     setFormDate(selectedDate);
     setFormTime("09:00");
     setFormType("teori");
-    setFormLocation("");
     setFormNotes("");
     setDialogOpen(true);
   };
