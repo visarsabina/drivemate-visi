@@ -245,14 +245,29 @@ const ExamCalendar = ({ candidates }: Props) => {
           <div className="space-y-3">
             <div>
               <Label>Kandidati</Label>
-              <Select value={formCandidate} onValueChange={setFormCandidate}>
+              <Select value={formCandidate} onValueChange={(v) => { setFormCandidate(v); setCandidateSearch(""); }}>
                 <SelectTrigger><SelectValue placeholder="Zgjidh kandidatin" /></SelectTrigger>
                 <SelectContent>
-                  {candidates.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.emri} {c.mbiemri} {c.numriRegjistrimit ? `(${c.numriRegjistrimit})` : ""}
-                    </SelectItem>
-                  ))}
+                  <div className="p-2 pb-1">
+                    <Input
+                      placeholder="Kërko me emër, Nr. personal, Nr. regj..."
+                      value={candidateSearch}
+                      onChange={(e) => setCandidateSearch(e.target.value)}
+                      className="h-8 text-sm"
+                      onPointerDown={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                  <div className="max-h-56 overflow-y-auto">
+                    {filteredCandidates.length === 0 ? (
+                      <div className="px-2 py-3 text-sm text-muted-foreground text-center">Nuk u gjet asnjë kandidat</div>
+                    ) : (
+                      filteredCandidates.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.emri} {c.mbiemri} {c.numriRegjistrimit ? `(${c.numriRegjistrimit})` : ""}
+                        </SelectItem>
+                      ))
+                    )}
+                  </div>
                 </SelectContent>
               </Select>
             </div>
