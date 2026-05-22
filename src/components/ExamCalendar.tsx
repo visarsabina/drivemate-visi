@@ -92,18 +92,6 @@ const ExamCalendar = ({ candidates }: Props) => {
 
   useEffect(() => { refresh(); }, [tenantId]);
 
-  const examsByDate = useMemo(() => {
-    const map = new Map<string, ExamRow[]>();
-    exams.forEach((e) => {
-      const arr = map.get(e.exam_date) ?? [];
-      arr.push(e);
-      map.set(e.exam_date, arr);
-    });
-    return map;
-  }, [exams]);
-
-  const selectedKey = format(selectedDate, "yyyy-MM-dd");
-  const dayExams = examsByDate.get(selectedKey) ?? [];
 
   // Fshih automatikisht terminet që kanë kaluar më shumë se 2 ditë
   const today = useMemo(() => {
