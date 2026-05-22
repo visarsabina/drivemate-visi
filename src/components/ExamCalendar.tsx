@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { format } from "date-fns";
+import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, parseISO, differenceInCalendarDays } from "date-fns";
 import { sq } from "date-fns/locale";
 import { CalendarIcon, Plus, Trash2, Clock, Tag, ChevronsUpDown, Search, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -42,16 +42,32 @@ const statusColors: Record<string, string> = {
   anuluar: "bg-muted text-muted-foreground border-border",
 };
 
+// Termine vetëm nga 08:30 deri 15:00 (30 min)
+const TIME_SLOTS: string[] = (() => {
+  const out: string[] = [];
+  for (let h = 8; h <= 15; h++) {
+    for (const m of [0, 30]) {
+      if (h === 8 && m === 0) continue;
+      if (h === 15 && m === 30) continue;
+      out.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+    }
+  }
+  return out;
+})();
+
+type ViewMode = "day" | "week" | "month";
+
 const ExamCalendar = ({ candidates }: Props) => {
   const { tenantId } = useTenant();
   const [exams, setExams] = useState<ExamRow[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [viewMode, setViewMode] = useState<ViewMode>("day");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [formCandidate, setFormCandidate] = useState("");
   const [formDate, setFormDate] = useState<Date | undefined>(new Date());
-  const [formTime, setFormTime] = useState("09:00");
+  const [formTime, setFormTime] = useState("08:30");
   const [formType, setFormType] = useState<"teori" | "praktike">("praktike");
   const [formNotes, setFormNotes] = useState("");
   const [candidateSearch, setCandidateSearch] = useState("");
@@ -76,18 +92,30 @@ const ExamCalendar = ({ candidates }: Props) => {
 
   useEffect(() => { refresh(); }, [tenantId]);
 
+
+  // Fshih automatikisht terminet që kanë kaluar më shumë se 2 ditë
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+
+  const visibleExams = useMemo(
+    () => exams.filter((e) => differenceInCalendarDays(today, parseISO(e.exam_date)) <= 2),
+    [exams, today]
+  );
+
   const examsByDate = useMemo(() => {
     const map = new Map<string, ExamRow[]>();
-    exams.forEach((e) => {
+    visibleExams.forEach((e) => {
       const arr = map.get(e.exam_date) ?? [];
       arr.push(e);
       map.set(e.exam_date, arr);
     });
     return map;
-  }, [exams]);
+  }, [visibleExams]);
 
   const selectedKey = format(selectedDate, "yyyy-MM-dd");
-  const dayExams = examsByDate.get(selectedKey) ?? [];
 
   const candidateName = (id: string) => {
     const c = candidates.find((x) => x.id === id);
@@ -99,7 +127,7 @@ const ExamCalendar = ({ candidates }: Props) => {
     setCandidateSearch("");
     setCandidatePopoverOpen(false);
     setFormDate(selectedDate);
-    setFormTime("09:00");
+    setFormTime("08:30");
     setFormType("praktike");
     setFormNotes("");
     setDialogOpen(true);
@@ -115,6 +143,28 @@ const ExamCalendar = ({ candidates }: Props) => {
       c.numriRegjistrimit.toLowerCase().includes(q)
     );
   }, [candidates, candidateSearch]);
+
+  // Terminet që shfaqen sipas pamjes (ditore/javore/mujore)
+  const rangeExams = useMemo(() => {
+    if (viewMode === "day") {
+      return examsByDate.get(selectedKey) ?? [];
+    }
+    const interval =
+      viewMode === "week"
+        ? { start: startOfWeek(selectedDate, { weekStartsOn: 1 }), end: endOfWeek(selectedDate, { weekStartsOn: 1 }) }
+        : { start: startOfMonth(selectedDate), end: endOfMonth(selectedDate) };
+    return visibleExams.filter((e) => isWithinInterval(parseISO(e.exam_date), interval));
+  }, [viewMode, examsByDate, selectedKey, visibleExams, selectedDate]);
+
+  const rangeLabel = useMemo(() => {
+    if (viewMode === "day") return format(selectedDate, "EEEE, dd MMMM yyyy", { locale: sq });
+    if (viewMode === "week") {
+      const s = startOfWeek(selectedDate, { weekStartsOn: 1 });
+      const e = endOfWeek(selectedDate, { weekStartsOn: 1 });
+      return `${format(s, "dd MMM", { locale: sq })} – ${format(e, "dd MMM yyyy", { locale: sq })}`;
+    }
+    return format(selectedDate, "MMMM yyyy", { locale: sq });
+  }, [viewMode, selectedDate]);
 
   const saveExam = async () => {
     if (!tenantId) return;
@@ -181,27 +231,46 @@ const ExamCalendar = ({ candidates }: Props) => {
         </Card>
 
         <Card className="p-4">
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             <CalendarIcon className="w-4 h-4 text-primary" />
-            <h3 className="font-semibold capitalize">
-              {format(selectedDate, "EEEE, dd MMMM yyyy", { locale: sq })}
-            </h3>
-            <Badge variant="secondary" className="ml-auto">{dayExams.length} provime</Badge>
+            <h3 className="font-semibold capitalize">{rangeLabel}</h3>
+            <div className="ml-auto flex items-center gap-2">
+              <div className="inline-flex rounded-md border bg-muted/30 p-0.5">
+                {(["day", "week", "month"] as ViewMode[]).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setViewMode(m)}
+                    className={cn(
+                      "px-2.5 py-1 text-xs rounded-sm capitalize transition-colors",
+                      viewMode === m ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {m === "day" ? "Ditore" : m === "week" ? "Javore" : "Mujore"}
+                  </button>
+                ))}
+              </div>
+              <Badge variant="secondary">{rangeExams.length} provime</Badge>
+            </div>
           </div>
 
           {loading ? (
             <p className="text-sm text-muted-foreground">Duke u ngarkuar...</p>
-          ) : dayExams.length === 0 ? (
+          ) : rangeExams.length === 0 ? (
             <div className="text-center py-10 text-muted-foreground text-sm">
-              Asnjë provim i caktuar për këtë ditë
+              Asnjë provim i caktuar për këtë periudhë
             </div>
           ) : (
             <div className="space-y-2">
-              {dayExams.map((exam) => (
+              {rangeExams.map((exam) => (
                 <div key={exam.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-lg border bg-card hover:bg-muted/30 transition-colors">
-                  <div className="flex items-center gap-2 sm:w-24 shrink-0">
+                  <div className="flex items-center gap-2 sm:w-36 shrink-0">
                     <Clock className="w-4 h-4 text-primary" />
                     <span className="font-mono font-semibold">{exam.exam_time.slice(0, 5)}</span>
+                    {viewMode !== "day" && (
+                      <span className="text-xs text-muted-foreground">
+                        {format(parseISO(exam.exam_date), "dd MMM", { locale: sq })}
+                      </span>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-medium truncate">{candidateName(exam.candidate_id)}</div>
@@ -238,6 +307,7 @@ const ExamCalendar = ({ candidates }: Props) => {
             </div>
           )}
         </Card>
+
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -322,7 +392,7 @@ const ExamCalendar = ({ candidates }: Props) => {
                 <Select value={formTime} onValueChange={setFormTime}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent className="max-h-56">
-                    {Array.from({ length: 24 }, (_, i) => [`${String(i).padStart(2, "0")}:00`, `${String(i).padStart(2, "0")}:30`]).flat().map((t) => (
+                    {TIME_SLOTS.map((t) => (
                       <SelectItem key={t} value={t}>{t}</SelectItem>
                     ))}
                   </SelectContent>
