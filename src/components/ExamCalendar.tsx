@@ -94,12 +94,24 @@ const ExamCalendar = ({ candidates }: Props) => {
 
   const openNewDialog = () => {
     setFormCandidate("");
+    setCandidateSearch("");
     setFormDate(selectedDate);
     setFormTime("09:00");
     setFormType("teori");
     setFormNotes("");
     setDialogOpen(true);
   };
+
+  const filteredCandidates = useMemo(() => {
+    const q = candidateSearch.trim().toLowerCase();
+    if (!q) return candidates;
+    return candidates.filter((c) =>
+      c.emri.toLowerCase().includes(q) ||
+      c.mbiemri.toLowerCase().includes(q) ||
+      (c.numriPersonal ?? "").toLowerCase().includes(q) ||
+      c.numriRegjistrimit.toLowerCase().includes(q)
+    );
+  }, [candidates, candidateSearch]);
 
   const saveExam = async () => {
     if (!tenantId) return;
