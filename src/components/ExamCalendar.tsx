@@ -392,7 +392,7 @@ const ExamCalendar = ({ candidates }: Props) => {
                 <Select value={formTime} onValueChange={setFormTime}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent className="max-h-56">
-                    {Array.from({ length: 24 }, (_, i) => [`${String(i).padStart(2, "0")}:00`, `${String(i).padStart(2, "0")}:30`]).flat().map((t) => (
+                    {TIME_SLOTS.map((t) => (
                       <SelectItem key={t} value={t}>{t}</SelectItem>
                     ))}
                   </SelectContent>
