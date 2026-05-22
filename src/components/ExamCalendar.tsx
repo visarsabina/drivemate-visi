@@ -197,9 +197,12 @@ const ExamCalendar = ({ candidates }: Props) => {
                       <span className={cn("px-2 py-0.5 rounded-md text-xs border capitalize", statusColors[exam.status])}>
                         {exam.status}
                       </span>
-                      {exam.location && (
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{exam.location}</span>
-                      )}
+                      {(() => {
+                        const c = candidates.find((x) => x.id === exam.candidate_id);
+                        return c?.kategoria ? (
+                          <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{c.kategoria}</span>
+                        ) : null;
+                      })()}
                     </div>
                     {exam.notes && <p className="text-xs text-muted-foreground mt-1">{exam.notes}</p>}
                   </div>
