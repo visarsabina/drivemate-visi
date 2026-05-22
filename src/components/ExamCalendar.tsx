@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { sq } from "date-fns/locale";
-import { CalendarIcon, Plus, Trash2, Clock, Tag } from "lucide-react";
+import { CalendarIcon, Plus, Trash2, Clock, Tag, ChevronsUpDown, Search, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
 import { Candidate } from "@/types/candidate";
@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { formatDateDMY } from "@/lib/date";
