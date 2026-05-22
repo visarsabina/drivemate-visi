@@ -218,7 +218,7 @@ const ExamCalendar = ({ candidates }: Props) => {
       </div>
 
       <div className="grid lg:grid-cols-[auto_1fr] gap-4">
-        <Card className="p-3 flex justify-center">
+        <Card className="p-3 flex flex-col items-center gap-2">
           <Calendar
             mode="single"
             selected={selectedDate}
@@ -228,6 +228,10 @@ const ExamCalendar = ({ candidates }: Props) => {
             modifiersClassNames={{ hasExam: "bg-primary/20 font-bold text-primary rounded-md" }}
             className={cn("p-3 pointer-events-auto")}
           />
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => setSelectedDate(new Date())}>Sot</Button>
+            <Button variant="outline" size="sm" onClick={() => { const t = new Date(); t.setDate(t.getDate() + 1); setSelectedDate(t); }}>Të nesërmen</Button>
+          </div>
         </Card>
 
         <Card className="p-4">
