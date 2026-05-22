@@ -55,6 +55,7 @@ const ExamCalendar = ({ candidates }: Props) => {
   const [formType, setFormType] = useState<"teori" | "praktike">("teori");
   const [formNotes, setFormNotes] = useState("");
   const [candidateSearch, setCandidateSearch] = useState("");
+  const [candidatePopoverOpen, setCandidatePopoverOpen] = useState(false);
 
   const refresh = async () => {
     if (!tenantId) return;
