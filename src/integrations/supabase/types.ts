@@ -762,6 +762,17 @@ export type Database = {
         Returns: string
       }
       get_my_tenant_subscription: { Args: never; Returns: Json }
+      get_public_staff_by_tenant: {
+        Args: { _tenant_id: string }
+        Returns: {
+          categories: string
+          display_order: number
+          id: string
+          name: string
+          photo_url: string
+          role: string
+        }[]
+      }
       get_public_tenant_by_domain: {
         Args: { _domain: string }
         Returns: {
