@@ -42,16 +42,32 @@ const statusColors: Record<string, string> = {
   anuluar: "bg-muted text-muted-foreground border-border",
 };
 
+// Termine vetëm nga 08:30 deri 15:00 (30 min)
+const TIME_SLOTS: string[] = (() => {
+  const out: string[] = [];
+  for (let h = 8; h <= 15; h++) {
+    for (const m of [0, 30]) {
+      if (h === 8 && m === 0) continue;
+      if (h === 15 && m === 30) continue;
+      out.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+    }
+  }
+  return out;
+})();
+
+type ViewMode = "day" | "week" | "month";
+
 const ExamCalendar = ({ candidates }: Props) => {
   const { tenantId } = useTenant();
   const [exams, setExams] = useState<ExamRow[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [viewMode, setViewMode] = useState<ViewMode>("day");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [formCandidate, setFormCandidate] = useState("");
   const [formDate, setFormDate] = useState<Date | undefined>(new Date());
-  const [formTime, setFormTime] = useState("09:00");
+  const [formTime, setFormTime] = useState("08:30");
   const [formType, setFormType] = useState<"teori" | "praktike">("praktike");
   const [formNotes, setFormNotes] = useState("");
   const [candidateSearch, setCandidateSearch] = useState("");
