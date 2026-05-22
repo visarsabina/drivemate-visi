@@ -16,6 +16,7 @@ import VehicleServices from "@/components/VehicleServices";
 import Employees from "@/components/Employees";
 import Licenses from "@/components/Licenses";
 import Users from "@/components/Users";
+import ExamCalendar from "@/components/ExamCalendar";
 import VehicleAlerts from "@/components/VehicleAlerts";
 import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
@@ -86,6 +87,7 @@ const Index = () => {
     "candidate-detail": "Paneli i Kandidatit",
     add: "Shto Kandidat",
     payment: "Pagesa",
+    exams: "Provimet",
     finances: "Financat",
     registrations: "Regjistrimet nga Vizitorët",
     vehicles: "Mjetet e Auto-shkollës",
@@ -198,6 +200,8 @@ const Index = () => {
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 
           {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} initialCandidateId={paymentInitialCandidateId} />}
+
+          {activeView === "exams" && <ExamCalendar candidates={candidates} />}
 
           {activeView === "finances" && <Finances candidates={candidates} />}
 
