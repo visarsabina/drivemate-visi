@@ -108,7 +108,6 @@ const Index = () => {
     { id: "vertetimi", label: "Vërtetimi", icon: FileCheck, description: "Gjenero vërtetimin" },
     { id: "fletparaqitja", label: "Fletparaqitja", icon: FileText, description: "Gjenero fletparaqitjen" },
     { id: "kontrata", label: "Kontrata", icon: FileSignature, description: "Gjenero kontratën" },
-    { id: "tests", label: "Gjenero Testin", icon: FileQuestion, description: "Test 30 pyetje për kandidatin" },
   ];
 
   return (
