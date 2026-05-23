@@ -22,6 +22,7 @@ import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import TestGenerator from "@/components/TestGenerator";
+import TodayPracticalExams from "@/components/TodayPracticalExams";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
@@ -107,7 +108,6 @@ const Index = () => {
     { id: "vertetimi", label: "Vërtetimi", icon: FileCheck, description: "Gjenero vërtetimin" },
     { id: "fletparaqitja", label: "Fletparaqitja", icon: FileText, description: "Gjenero fletparaqitjen" },
     { id: "kontrata", label: "Kontrata", icon: FileSignature, description: "Gjenero kontratën" },
-    { id: "tests", label: "Gjenero Testin", icon: FileQuestion, description: "Test 30 pyetje për kandidatin" },
   ];
 
   return (
@@ -150,6 +150,8 @@ const Index = () => {
               <VehicleAlerts onViewVehicles={() => setActiveView("vehicles")} />
 
               <EmployeeAlerts onViewEmployees={() => setActiveView("employees")} />
+
+              <TodayPracticalExams candidates={candidates} />
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
