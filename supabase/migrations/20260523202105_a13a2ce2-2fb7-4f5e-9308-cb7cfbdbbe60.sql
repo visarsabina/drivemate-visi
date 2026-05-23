@@ -1,0 +1,1 @@
+UPDATE public.staff SET photo_url='https://hgbwdywlrgnpzfhviovs.supabase.co/storage/v1/object/public/staff-photos/nesibe-zeka.jpeg' WHERE id='77fdb3fb-221b-4aac-85b2-34639f6d0969';
