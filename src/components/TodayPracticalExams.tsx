@@ -33,7 +33,12 @@ const TodayPracticalExams = ({ candidates }: Props) => {
         .eq("exam_date", today)
         .eq("exam_type", "praktike")
         .order("exam_time", { ascending: true });
-      setExams((data ?? []) as ExamRow[]);
+      const sorted = ((data ?? []) as ExamRow[]).slice().sort((a, b) => {
+        const tA = a.exam_time ?? "";
+        const tB = b.exam_time ?? "";
+        return tA.localeCompare(tB);
+      });
+      setExams(sorted);
       setLoading(false);
     };
     load();
