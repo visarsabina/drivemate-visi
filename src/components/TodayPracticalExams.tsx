@@ -62,10 +62,12 @@ const TodayPracticalExams = ({ candidates }: Props) => {
         <ul className="divide-y divide-border">
           {rows.map((r) => (
             <li key={r.id} className="flex items-center justify-between py-2.5">
-              <span className="font-medium">{r.name}</span>
-              <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                <Clock className="w-4 h-4" />
-                {r.time}
+              <span className="flex items-center gap-2">
+                <span className="font-medium">{r.name}</span>
+                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md">
+                  <Clock className="w-3 h-3" />
+                  {r.time}
+                </span>
               </span>
             </li>
           ))}
