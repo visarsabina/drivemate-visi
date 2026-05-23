@@ -22,6 +22,7 @@ import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import TestGenerator from "@/components/TestGenerator";
+import TodayPracticalExams from "@/components/TodayPracticalExams";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
