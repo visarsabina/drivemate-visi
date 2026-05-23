@@ -151,6 +151,8 @@ const Index = () => {
 
               <EmployeeAlerts onViewEmployees={() => setActiveView("employees")} />
 
+              <TodayPracticalExams candidates={candidates} />
+
               <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
