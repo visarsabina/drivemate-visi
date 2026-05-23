@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Clock, CalendarCheck } from "lucide-react";
+import { Clock, CalendarCheck, ArrowUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
 import { Candidate } from "@/types/candidate";
@@ -33,7 +33,12 @@ const TodayPracticalExams = ({ candidates }: Props) => {
         .eq("exam_date", today)
         .eq("exam_type", "praktike")
         .order("exam_time", { ascending: true });
-      setExams((data ?? []) as ExamRow[]);
+      const sorted = ((data ?? []) as ExamRow[]).slice().sort((a, b) => {
+        const tA = a.exam_time ?? "";
+        const tB = b.exam_time ?? "";
+        return tA.localeCompare(tB);
+      });
+      setExams(sorted);
       setLoading(false);
     };
     load();
@@ -50,9 +55,15 @@ const TodayPracticalExams = ({ candidates }: Props) => {
 
   return (
     <Card className="p-4 lg:p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <CalendarCheck className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-semibold">Kandidatët për Provim Praktik – Sot</h3>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <CalendarCheck className="w-5 h-5 text-primary" />
+          <h3 className="text-lg font-semibold">Kandidatët për Provim Praktik – Sot</h3>
+        </div>
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md">
+          <ArrowUp className="w-3 h-3" />
+          Të renditur sipas orës
+        </span>
       </div>
       {loading ? (
         <p className="text-sm text-muted-foreground">Duke ngarkuar...</p>
