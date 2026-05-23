@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Clock, CalendarCheck } from "lucide-react";
+import { Clock, CalendarCheck, ArrowUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
 import { Candidate } from "@/types/candidate";
