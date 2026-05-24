@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { format, addDays } from "date-fns";
 import { Clock, CalendarCheck, ArrowUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
@@ -21,16 +21,22 @@ const TodayPracticalExams = ({ candidates }: Props) => {
   const [exams, setExams] = useState<ExamRow[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [showTomorrow, setShowTomorrow] = useState(false);
+
   useEffect(() => {
     const load = async () => {
       if (!tenantId) return;
       setLoading(true);
-      const today = format(new Date(), "yyyy-MM-dd");
+      const now = new Date();
+      const useTomorrow = now.getHours() >= 16;
+      setShowTomorrow(useTomorrow);
+      const targetDate = useTomorrow ? addDays(now, 1) : now;
+      const dateStr = format(targetDate, "yyyy-MM-dd");
       const { data } = await supabase
         .from("candidate_exams")
         .select("id, candidate_id, exam_time")
         .eq("tenant_id", tenantId)
-        .eq("exam_date", today)
+        .eq("exam_date", dateStr)
         .eq("exam_type", "praktike")
         .order("exam_time", { ascending: true });
       const sorted = ((data ?? []) as ExamRow[]).slice().sort((a, b) => {
@@ -58,7 +64,9 @@ const TodayPracticalExams = ({ candidates }: Props) => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <CalendarCheck className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-semibold">Kandidatët për Provim Praktik – Sot</h3>
+          <h3 className="text-lg font-semibold">
+            Kandidatët për Provim Praktik – {showTomorrow ? "Nesër" : "Sot"}
+          </h3>
         </div>
         <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md">
           <ArrowUp className="w-3 h-3" />
@@ -68,7 +76,7 @@ const TodayPracticalExams = ({ candidates }: Props) => {
       {loading ? (
         <p className="text-sm text-muted-foreground">Duke ngarkuar...</p>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Nuk ka kandidatë të planifikuar për sot.</p>
+        <p className="text-sm text-muted-foreground">Nuk ka kandidatë të planifikuar për {showTomorrow ? "nesër" : "sot"}.</p>
       ) : (
         <ul className="divide-y divide-border">
           {rows.map((r) => (
