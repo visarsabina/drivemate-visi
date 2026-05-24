@@ -76,7 +76,7 @@ const TodayPracticalExams = ({ candidates }: Props) => {
       {loading ? (
         <p className="text-sm text-muted-foreground">Duke ngarkuar...</p>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Nuk ka kandidatë të planifikuar për sot.</p>
+        <p className="text-sm text-muted-foreground">Nuk ka kandidatë të planifikuar për {showTomorrow ? "nesër" : "sot"}.</p>
       ) : (
         <ul className="divide-y divide-border">
           {rows.map((r) => (
