@@ -21,16 +21,22 @@ const TodayPracticalExams = ({ candidates }: Props) => {
   const [exams, setExams] = useState<ExamRow[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [showTomorrow, setShowTomorrow] = useState(false);
+
   useEffect(() => {
     const load = async () => {
       if (!tenantId) return;
       setLoading(true);
-      const today = format(new Date(), "yyyy-MM-dd");
+      const now = new Date();
+      const useTomorrow = now.getHours() >= 16;
+      setShowTomorrow(useTomorrow);
+      const targetDate = useTomorrow ? addDays(now, 1) : now;
+      const dateStr = format(targetDate, "yyyy-MM-dd");
       const { data } = await supabase
         .from("candidate_exams")
         .select("id, candidate_id, exam_time")
         .eq("tenant_id", tenantId)
-        .eq("exam_date", today)
+        .eq("exam_date", dateStr)
         .eq("exam_type", "praktike")
         .order("exam_time", { ascending: true });
       const sorted = ((data ?? []) as ExamRow[]).slice().sort((a, b) => {
