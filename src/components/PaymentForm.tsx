@@ -136,7 +136,7 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
       <h2 className="text-xl font-semibold mb-6">Pagesa</h2>
       <div className="space-y-4">
         <div className="space-y-2">
-        <div className="space-y-2">
+
           <Label>Zgjedh Kandidatin</Label>
           <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
             <PopoverTrigger asChild>
