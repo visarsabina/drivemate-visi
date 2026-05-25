@@ -11,7 +11,7 @@ import { escapeHtmlObject } from "@/lib/escapeHtml";
 
 interface PaymentFormProps {
   candidates: Candidate[];
-  onPayment: (candidateId: string, payment: Payment) => void;
+  onPayment: (candidateId: string, payment: Payment) => void | Promise<boolean | void>;
   initialCandidateId?: string;
 }
 
@@ -32,19 +32,29 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
     ? (selectedCandidate.shumaMarreveshjes - totalPaguar).toFixed(2)
     : "0.00";
 
-  const handleAddPayment = () => {
-    if (!selectedCandidate || !shumaPaguar) {
-      toast.error("Ju lutem zgjidhni kandidatin dhe shkruani shumën");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleAddPayment = async () => {
+    if (!selectedCandidate) {
+      toast.error("Ju lutem zgjidhni kandidatin");
+      return;
+    }
+    const shuma = parseFloat(shumaPaguar);
+    if (!shumaPaguar || !Number.isFinite(shuma) || shuma <= 0) {
+      toast.error("Shkruani një shumë të vlefshme (më e madhe se 0)");
       return;
     }
 
     const payment: Payment = {
       id: Date.now().toString(),
-      shuma: parseFloat(shumaPaguar),
+      shuma,
       data: dataPageses,
     };
 
-    onPayment(selectedCandidateId, payment);
+    setSubmitting(true);
+    const result = await Promise.resolve(onPayment(selectedCandidateId, payment));
+    setSubmitting(false);
+    if (result === false) return; // hook already toasted the error
     toast.success("Pagesa u regjistrua me sukses!");
     setShumaPaguar("");
   };
@@ -181,7 +191,7 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Button onClick={handleAddPayment} className="gap-2">
+              <Button onClick={handleAddPayment} disabled={submitting} className="gap-2">
                 <Plus className="w-4 h-4" />
                 Regjistro Pagesën
               </Button>

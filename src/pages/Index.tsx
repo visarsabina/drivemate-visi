@@ -58,7 +58,7 @@ const Index = () => {
   };
 
   const handlePayment = (candidateId: string, payment: Payment) => {
-    addPayment(candidateId, payment);
+    return addPayment(candidateId, payment);
   };
 
   const handleVertetimiPrinted = (candidateId: string) => {

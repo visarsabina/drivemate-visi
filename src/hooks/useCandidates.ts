@@ -162,21 +162,34 @@ export const useCandidates = () => {
     setCandidates((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
   };
 
-  const addPayment = async (candidateId: string, payment: Payment) => {
-    if (!tenantId) return;
+  const addPayment = async (candidateId: string, payment: Payment): Promise<boolean> => {
+    if (!tenantId) {
+      toast.error("Autoshkolla nuk u gjet. Rifresko faqen ose hyni përsëri.");
+      return false;
+    }
+    if (!candidateId) {
+      toast.error("Zgjedh kandidatin para se të regjistrosh pagesën");
+      return false;
+    }
+    const shuma = Number(payment.shuma);
+    if (!Number.isFinite(shuma) || shuma <= 0) {
+      toast.error("Shuma e pagesës duhet të jetë më e madhe se 0");
+      return false;
+    }
     const { data, error } = await supabase
       .from("candidate_payments")
       .insert({
         tenant_id: tenantId,
         candidate_id: candidateId,
-        shuma: payment.shuma,
-        data: payment.data,
+        shuma,
+        data: payment.data || new Date().toISOString().split("T")[0],
       })
       .select()
       .single();
     if (error) {
-      toast.error("Pagesa dështoi: " + error.message);
-      return;
+      console.error("addPayment error:", error);
+      toast.error("Pagesa nuk u ruajt: " + error.message);
+      return false;
     }
     const newPayment: Payment = { id: data.id, shuma: Number(data.shuma), data: data.data };
     setCandidates((prev) =>
@@ -184,6 +197,7 @@ export const useCandidates = () => {
         c.id === candidateId ? { ...c, payments: [...c.payments, newPayment] } : c,
       ),
     );
+    return true;
   };
 
   const setVertetimiPrintuar = async (candidateId: string) => {
