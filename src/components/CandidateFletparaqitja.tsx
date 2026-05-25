@@ -51,7 +51,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
 printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${safe.emri} ${safe.mbiemri}</title>
 <style>
-  @page { size: A4 portrait; margin: 5mm 7mm; }
+  @page { size: A4 portrait; margin: 20mm 7mm 5mm 7mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; }
   body { font-family: 'Times New Roman', serif; font-size: 9pt; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
