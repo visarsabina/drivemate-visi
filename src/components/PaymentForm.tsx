@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Candidate, Payment } from "@/types/candidate";
 import { toast } from "sonner";
-import { Printer, Plus } from "lucide-react";
+import { Printer, Plus, Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { escapeHtmlObject } from "@/lib/escapeHtml";
+
 
 interface PaymentFormProps {
   candidates: Candidate[];
