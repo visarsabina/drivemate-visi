@@ -203,7 +203,7 @@ const Index = () => {
             />
           )}
 
-          {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
+          {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidates={candidates} />}
 
           {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} onDeletePayment={deletePayment} initialCandidateId={paymentInitialCandidateId} />}
 
