@@ -146,6 +146,7 @@ export type Database = {
           tenant_id: string
           total_lessons: number
           updated_at: string
+          user_id: string | null
           vendi: string | null
           vendlindja: string | null
           vertetimi_printuar: boolean
@@ -171,6 +172,7 @@ export type Database = {
           tenant_id: string
           total_lessons?: number
           updated_at?: string
+          user_id?: string | null
           vendi?: string | null
           vendlindja?: string | null
           vertetimi_printuar?: boolean
@@ -196,6 +198,7 @@ export type Database = {
           tenant_id?: string
           total_lessons?: number
           updated_at?: string
+          user_id?: string | null
           vendi?: string | null
           vendlindja?: string | null
           vertetimi_printuar?: boolean
@@ -261,6 +264,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      exam_requests: {
+        Row: {
+          admin_response: string | null
+          candidate_id: string
+          created_at: string
+          exam_type: string
+          id: string
+          notes: string | null
+          requested_date: string
+          requested_time: string
+          status: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          admin_response?: string | null
+          candidate_id: string
+          created_at?: string
+          exam_type?: string
+          id?: string
+          notes?: string | null
+          requested_date: string
+          requested_time: string
+          status?: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          admin_response?: string | null
+          candidate_id?: string
+          created_at?: string
+          exam_type?: string
+          id?: string
+          notes?: string | null
+          requested_date?: string
+          requested_time?: string
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       licenses: {
         Row: {
@@ -761,6 +806,8 @@ export type Database = {
         }
         Returns: string
       }
+      get_my_candidate_id: { Args: never; Returns: string }
+      get_my_candidate_tenant_id: { Args: never; Returns: string }
       get_my_tenant_subscription: { Args: never; Returns: Json }
       get_public_staff_by_tenant: {
         Args: { _tenant_id: string }
@@ -815,6 +862,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_candidate: { Args: never; Returns: boolean }
       is_instructor: { Args: never; Returns: boolean }
       is_super_admin: { Args: never; Returns: boolean }
       list_all_tenants_with_stats: {
