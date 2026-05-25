@@ -11,7 +11,9 @@ import Auth from "./pages/Auth.tsx";
 import Staff from "./pages/Staff.tsx";
 import Install from "./pages/Install.tsx";
 import SuperAdmin from "./pages/SuperAdmin.tsx";
+import CandidatePortal from "./pages/CandidatePortal.tsx";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import CandidateRoute from "@/components/CandidateRoute";
 import SuperAdminRoute from "@/components/SuperAdminRoute";
 
 const queryClient = new QueryClient();
@@ -46,6 +48,14 @@ const App = () => (
                 <SuperAdminRoute>
                   <SuperAdmin />
                 </SuperAdminRoute>
+              }
+            />
+            <Route
+              path="/candidate"
+              element={
+                <CandidateRoute>
+                  <CandidatePortal />
+                </CandidateRoute>
               }
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

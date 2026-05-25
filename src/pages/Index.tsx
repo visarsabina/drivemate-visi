@@ -23,6 +23,7 @@ import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import TestGenerator from "@/components/TestGenerator";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
+import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
@@ -89,6 +90,7 @@ const Index = () => {
     add: "Shto Kandidat",
     payment: "Pagesa",
     exams: "Provimet",
+    "exam-requests": "Kërkesat për Provim",
     finances: "Financat",
     registrations: "Regjistrimet nga Vizitorët",
     vehicles: "Mjetet e Auto-shkollës",
@@ -204,6 +206,8 @@ const Index = () => {
           {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} initialCandidateId={paymentInitialCandidateId} />}
 
           {activeView === "exams" && <ExamCalendar candidates={candidates} />}
+
+          {activeView === "exam-requests" && <ExamRequestsAdmin />}
 
           {activeView === "finances" && <Finances candidates={candidates} />}
 
