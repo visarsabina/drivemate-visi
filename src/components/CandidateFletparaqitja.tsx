@@ -49,7 +49,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
 
-printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${safe.emri} ${safe.mbiemri}</title>
+printWindow.document.write(`<!DOCTYPE html><html><head><title> </title>
 <style>
   @page { size: A4 portrait; margin: 20mm 7mm 5mm 7mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
