@@ -214,7 +214,7 @@ const CandidatePortal = () => {
             </div>
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
-                <Button size="sm" className="gap-2"><CalendarPlus className="w-4 h-4" /> Kërko termin</Button>
+                <Button size="sm" className="gap-2"><CalendarPlus className="w-4 h-4" /> Trego terminin</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader><DialogTitle>Kërkesë e re për termin</DialogTitle></DialogHeader>
