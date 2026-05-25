@@ -197,8 +197,21 @@ const ExamCalendar = ({ candidates }: Props) => {
 
   const deleteExam = async (id: string) => {
     if (!confirm("Fshij këtë provim?")) return;
+    const { data: exam } = await supabase
+      .from("candidate_exams")
+      .select("candidate_id, exam_date, exam_time, exam_type")
+      .eq("id", id)
+      .maybeSingle();
     const { error } = await supabase.from("candidate_exams").delete().eq("id", id);
     if (error) return toast.error(error.message);
+    if (exam) {
+      await supabase
+        .from("exam_requests")
+        .delete()
+        .eq("candidate_id", exam.candidate_id)
+        .eq("requested_date", exam.exam_date)
+        .eq("requested_time", exam.exam_time);
+    }
     toast.success("U fshi");
     refresh();
   };
