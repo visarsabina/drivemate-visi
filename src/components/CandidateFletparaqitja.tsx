@@ -160,34 +160,6 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
     </div>
   </div>
 
-  <div class="dashed"></div>
-
-  <div>
-    <div><span class="tel">Tel: ${safe.telefon || ""}</span></div>
-    <div class="header" style="margin-top:3mm;">
-      <img src="/kosovo-coat.jpg" alt="" style="height:10mm;" />
-      <div class="h-small">Republika e Kosovës / Republika Kosova / Republika of Kosovo</div>
-      <div class="h-small">Qeveria e Kosovës/ Vlada Kosova / Government of Kosova</div>
-      <div class="h-sub">MINISTRIA E INFRASTRUKTURES DHE TRANSPORTIT</div>
-      <div class="h-sub">MINISTRSTVO ZA INFRASTRUKTURE I TRANSOPRTA</div>
-      <div class="h-sub">MINISTRY OF INFRASTRUCTURE AND TRANSPORT</div>
-      <div class="h-small" style="margin-top:1mm;">Fletëza për paraqitjen e provimit për shofer / Listič za prijavljeni vozački ispit / Driving exam reservation slip</div>
-    </div>
-    <div class="meta-row" style="margin-top:2mm;">
-      <div>NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
-      <div>Nr. Regj./Br.Regj./Lbook.no. <span class="u">&nbsp;</span></div>
-    </div>
-    <table class="small-table">
-      <tr>
-        <th style="width:50%;">Emri dhe mbiemri I kandidatit/<br/>Ime i prezime kandidata</th>
-        <th>Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis<br/>službenog lica / Datum</th>
-      </tr>
-      <tr>
-        <td style="font-weight:bold; text-align:center; height:14mm;">${safe.emri} ${safe.mbiemri}</td>
-        <td style="height:14mm;">&nbsp;</td>
-      </tr>
-    </table>
-  </div>
 </div>
 <script>setTimeout(()=>window.print(),400);<\/script>
 </body></html>`);
