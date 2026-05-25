@@ -39,7 +39,7 @@ const AddCandidateForm = ({ onAdd, candidates }: AddCandidateFormProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const defaultPriceFor = (kategoria: string) => (kategoria === "C" ? "250" : "");
   const [form, setForm] = useState({
-    numriRegjistrimit: generateRegNumber(candidates),
+    numriRegjistrimit: "",
     numriPersonal: "",
     emri: "",
     mbiemri: "",
@@ -163,7 +163,7 @@ const AddCandidateForm = ({ onAdd, candidates }: AddCandidateFormProps) => {
     onAdd(newCandidate);
     toast.success("Kandidati u shtua me sukses!");
     setForm({
-      numriRegjistrimit: generateRegNumber(candidates, 1),
+      numriRegjistrimit: "",
       numriPersonal: "",
       emri: "",
       mbiemri: "",
@@ -211,7 +211,7 @@ const AddCandidateForm = ({ onAdd, candidates }: AddCandidateFormProps) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="numriRegjistrimit">Numri i Regjistrimit</Label>
-            <Input id="numriRegjistrimit" value={form.numriRegjistrimit} readOnly className="bg-muted cursor-not-allowed" />
+            <Input id="numriRegjistrimit" value={form.numriRegjistrimit} onChange={(e) => setForm({ ...form, numriRegjistrimit: e.target.value })} placeholder="p.sh. 318/26" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="numriPersonal">Numri Personal * (10 shifra)</Label>
