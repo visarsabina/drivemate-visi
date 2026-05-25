@@ -177,7 +177,10 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
           </Popover>
         </div>
 
+        {selectedCandidate && (
+          <>
             <div className="p-3 rounded-lg bg-muted text-sm space-y-1">
+
               <p><span className="font-medium">Emri:</span> {selectedCandidate.emri} {selectedCandidate.mbiemri}</p>
               <p><span className="font-medium">Nr. Personal:</span> {selectedCandidate.numriPersonal}</p>
               <p><span className="font-medium">Kategoria:</span> {selectedCandidate.kategoria}</p>
