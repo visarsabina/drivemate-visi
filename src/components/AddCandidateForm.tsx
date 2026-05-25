@@ -39,7 +39,7 @@ const AddCandidateForm = ({ onAdd, candidates }: AddCandidateFormProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const defaultPriceFor = (kategoria: string) => (kategoria === "C" ? "250" : "");
   const [form, setForm] = useState({
-    numriRegjistrimit: generateRegNumber(candidates),
+    numriRegjistrimit: "",
     numriPersonal: "",
     emri: "",
     mbiemri: "",
