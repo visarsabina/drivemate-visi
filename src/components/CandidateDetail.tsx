@@ -319,14 +319,19 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
         </div>
       </div>
 
-      {candidate.payments.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Historiku i Pagesave</h3>
-            <Button variant="outline" size="sm" className="gap-2" onClick={() => onGoToPayments?.(candidate.id)}>
-              <CreditCard className="w-4 h-4" /> Pagesa
-            </Button>
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold">Historiku i Pagesave</h3>
+          <Button variant="outline" size="sm" className="gap-2" onClick={() => onGoToPayments?.(candidate.id)}>
+            <CreditCard className="w-4 h-4" /> Pagesa
+          </Button>
+        </div>
+        {candidate.payments.length === 0 ? (
+          <div className="glass-card rounded-xl p-6 text-center text-sm text-muted-foreground">
+            Nuk ka pagesa të regjistruara. Kliko butonin "Pagesa" për të shtuar një pagesë.
           </div>
+        ) : (<>
+
           <div className="glass-card rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
