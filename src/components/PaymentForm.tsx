@@ -11,7 +11,7 @@ import { escapeHtmlObject } from "@/lib/escapeHtml";
 
 interface PaymentFormProps {
   candidates: Candidate[];
-  onPayment: (candidateId: string, payment: Payment) => void;
+  onPayment: (candidateId: string, payment: Payment) => void | Promise<boolean | void>;
   initialCandidateId?: string;
 }
 
