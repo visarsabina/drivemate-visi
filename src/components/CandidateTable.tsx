@@ -17,7 +17,7 @@ interface CandidateTableProps {
 const CandidateTable = ({ candidates, onSelectCandidate, onToggleDocuments }: CandidateTableProps) => {
   const { isAdmin } = useAuth();
   const [search, setSearch] = useState("");
-  const [yearFilter, setYearFilter] = useState<string>("all");
+  const [yearFilter, setYearFilter] = useState<string>(new Date().getFullYear().toString());
   const [paymentFilter, setPaymentFilter] = useState<string>("all");
   const [vertetimiFilter, setVertetimiFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
