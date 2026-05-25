@@ -163,7 +163,7 @@ const AddCandidateForm = ({ onAdd, candidates }: AddCandidateFormProps) => {
     onAdd(newCandidate);
     toast.success("Kandidati u shtua me sukses!");
     setForm({
-      numriRegjistrimit: generateRegNumber(candidateCount + 1),
+      numriRegjistrimit: generateRegNumber(candidates, 1),
       numriPersonal: "",
       emri: "",
       mbiemri: "",
