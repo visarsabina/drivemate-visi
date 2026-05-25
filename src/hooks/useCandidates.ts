@@ -61,6 +61,42 @@ const candidateToDbInsert = (c: Candidate, tenantId: string) => ({
   dokumente_terhequr: !!c.dokumenteTerhequr,
 });
 
+const PAGE_SIZE = 1000;
+
+const fetchAllCandidates = async (tenantId: string) => {
+  const allRows: any[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from("candidates")
+      .select("*")
+      .eq("tenant_id", tenantId)
+      .order("created_at", { ascending: false })
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) return { data: null, error };
+    allRows.push(...(data ?? []));
+    if ((data ?? []).length < PAGE_SIZE) break;
+  }
+  return { data: allRows, error: null };
+};
+
+const fetchAllPayments = async (tenantId: string) => {
+  const allRows: any[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from("candidate_payments")
+      .select("*")
+      .eq("tenant_id", tenantId)
+      .order("created_at", { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) return { data: null, error };
+    allRows.push(...(data ?? []));
+    if ((data ?? []).length < PAGE_SIZE) break;
+  }
+  return { data: allRows, error: null };
+};
+
 export const useCandidates = () => {
   const { tenantId, loading: tenantLoading } = useTenant();
   const [candidates, setCandidates] = useState<Candidate[]>([]);
@@ -73,11 +109,7 @@ export const useCandidates = () => {
       return;
     }
     setLoading(true);
-    const { data: rows, error } = await supabase
-      .from("candidates")
-      .select("*")
-      .eq("tenant_id", tenantId)
-      .order("created_at", { ascending: false });
+    const { data: rows, error } = await fetchAllCandidates(tenantId);
     if (error) {
       console.error(error);
       toast.error("Gabim gjatë ngarkimit të kandidatëve");
@@ -85,14 +117,13 @@ export const useCandidates = () => {
       setLoading(false);
       return;
     }
-    const ids = (rows ?? []).map((r: any) => r.id);
     let payments: any[] = [];
-    if (ids.length > 0) {
-      const { data: pData } = await supabase
-        .from("candidate_payments")
-        .select("*")
-        .eq("tenant_id", tenantId)
-        .in("candidate_id", ids);
+    if ((rows ?? []).length > 0) {
+      const { data: pData, error: pError } = await fetchAllPayments(tenantId);
+      if (pError) {
+        console.error("load payments error:", pError);
+        toast.error("Gabim gjatë ngarkimit të pagesave");
+      }
       payments = pData ?? [];
     }
     setCandidates((rows ?? []).map((r: any) => mapDbToCandidate(r, payments)));
