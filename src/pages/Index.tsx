@@ -45,6 +45,8 @@ const Index = () => {
     updateCandidate,
     deleteCandidate,
     addPayment,
+    deletePayment,
+
     setVertetimiPrintuar,
     setDokumenteTerhequr,
   } = useCandidates();
