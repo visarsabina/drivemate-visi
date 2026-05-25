@@ -12,20 +12,34 @@ import { parsePersonalNumber } from "@/lib/personalNumber";
 
 interface AddCandidateFormProps {
   onAdd: (candidate: Candidate) => void;
-  candidateCount: number;
+  candidates: Candidate[];
 }
 
-const generateRegNumber = (count: number) => {
-  const year = new Date().getFullYear().toString().slice(-2);
-  const num = String(count + 1).padStart(2, "0");
+const getCurrentYearSuffix = () => new Date().getFullYear().toString().slice(-2);
+
+const getNextNumberForYear = (candidates: Candidate[], yearSuffix: string) => {
+  let max = 0;
+  for (const c of candidates) {
+    const m = (c.numriRegjistrimit || "").match(/^(\d+)\s*\/\s*(\d{2})$/);
+    if (m && m[2] === yearSuffix) {
+      const n = parseInt(m[1], 10);
+      if (n > max) max = n;
+    }
+  }
+  return max + 1;
+};
+
+const generateRegNumber = (candidates: Candidate[], offset = 0) => {
+  const year = getCurrentYearSuffix();
+  const num = String(getNextNumberForYear(candidates, year) + offset).padStart(2, "0");
   return `${num}/${year}`;
 };
 
-const AddCandidateForm = ({ onAdd, candidateCount }: AddCandidateFormProps) => {
+const AddCandidateForm = ({ onAdd, candidates }: AddCandidateFormProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const defaultPriceFor = (kategoria: string) => (kategoria === "C" ? "250" : "");
   const [form, setForm] = useState({
-    numriRegjistrimit: generateRegNumber(candidateCount),
+    numriRegjistrimit: generateRegNumber(candidates),
     numriPersonal: "",
     emri: "",
     mbiemri: "",
