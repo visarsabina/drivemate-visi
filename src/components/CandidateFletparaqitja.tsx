@@ -113,6 +113,11 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
     <div class="h-small">DRIVING EXAM RESERVATION FORM</div>
   </div>
 
+  <div class="meta-row">
+    <div>FORMA A1 NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
+    <div>Nr. regj./Br.Regj./Lbook.no.: <span class="u">${safe.numriRegjistrimit || "&nbsp;"}</span></div>
+  </div>
+
   <div class="sec-bar">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
   <div class="data-box">
     <div class="frow"><span class="flbl">1.&nbsp;&nbsp;&nbsp;Mbiemri / Prezime / Family Name:</span><span class="fval">${safe.mbiemri}</span></div>
@@ -160,6 +165,26 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
     </div>
   </div>
 
+</div>
+
+<div class="dashed"></div>
+
+<div class="wrap">
+  <div class="header">
+    <img src="/kosovo-coat.jpg" alt="" />
+    <div class="h-main">REPUBLIKA E KOSOVËS / REPUBLIKA KOSOVA / REPUBLIC OF KOSOVO</div>
+    <div class="form-title">Fletëza për paraqitjen e provimit</div>
+  </div>
+  <table class="small-table">
+    <tr>
+      <th>Emri dhe mbiemri I kandidatit</th>
+      <th>Nënshkrimi I nënëpunësit zyrtar/ Data</th>
+    </tr>
+    <tr>
+      <td style="text-align:center;font-weight:bold;">${safe.emri} ${safe.mbiemri}</td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
 </div>
 <script>setTimeout(()=>window.print(),400);<\/script>
 </body></html>`);
