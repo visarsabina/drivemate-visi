@@ -7,18 +7,27 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Candidate, Payment } from "@/types/candidate";
 import { toast } from "sonner";
-import { Printer, Plus, Check, ChevronsUpDown } from "lucide-react";
+import { Printer, Plus, Check, ChevronsUpDown, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { escapeHtmlObject } from "@/lib/escapeHtml";
+import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 
 interface PaymentFormProps {
   candidates: Candidate[];
   onPayment: (candidateId: string, payment: Payment) => void | Promise<boolean | void>;
+  onDeletePayment?: (candidateId: string, paymentId: string) => Promise<boolean>;
   initialCandidateId?: string;
 }
 
-const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormProps) => {
+
+const PaymentForm = ({ candidates, onPayment, onDeletePayment, initialCandidateId }: PaymentFormProps) => {
+  const { isSuperAdmin } = useIsSuperAdmin();
+
   const [selectedCandidateId, setSelectedCandidateId] = useState(initialCandidateId ?? "");
   const [shumaPaguar, setShumaPaguar] = useState("");
   const [dataPageses, setDataPageses] = useState(new Date().toISOString().split("T")[0]);
@@ -242,6 +251,7 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
                       <TableHead>#</TableHead>
                       <TableHead>Data</TableHead>
                       <TableHead>Shuma</TableHead>
+                      {isSuperAdmin && onDeletePayment && <TableHead className="w-16 text-right">Veprime</TableHead>}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -250,10 +260,39 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
                         <TableCell>{i + 1}</TableCell>
                         <TableCell>{p.data}</TableCell>
                         <TableCell>{p.shuma.toFixed(2)} €</TableCell>
+                        {isSuperAdmin && onDeletePayment && (
+                          <TableCell className="text-right">
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive">
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Fshi pagesën?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Pagesa prej {p.shuma.toFixed(2)} € e datës {p.data} do të fshihet përgjithmonë. Ky veprim nuk mund të kthehet.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Anulo</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => onDeletePayment(selectedCandidate.id, p.id)}
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                  >
+                                    Fshi
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </TableCell>
+                        )}
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
+
               </div>
             )}
           </>

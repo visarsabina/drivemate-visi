@@ -253,6 +253,27 @@ export const useCandidates = () => {
     );
   };
 
+  const deletePayment = async (candidateId: string, paymentId: string): Promise<boolean> => {
+    if (!tenantId) return false;
+    const { error } = await supabase
+      .from("candidate_payments")
+      .delete()
+      .eq("id", paymentId);
+    if (error) {
+      toast.error("Fshirja e pagesës dështoi: " + error.message);
+      return false;
+    }
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.id === candidateId
+          ? { ...c, payments: c.payments.filter((p) => p.id !== paymentId) }
+          : c,
+      ),
+    );
+    toast.success("Pagesa u fshi");
+    return true;
+  };
+
   const deleteCandidate = async (candidateId: string) => {
     if (!tenantId) return false;
     const { error: payErr } = await supabase
@@ -286,7 +307,9 @@ export const useCandidates = () => {
     updateCandidate,
     deleteCandidate,
     addPayment,
+    deletePayment,
     setVertetimiPrintuar,
     setDokumenteTerhequr,
   };
 };
+

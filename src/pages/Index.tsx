@@ -45,6 +45,8 @@ const Index = () => {
     updateCandidate,
     deleteCandidate,
     addPayment,
+    deletePayment,
+
     setVertetimiPrintuar,
     setDokumenteTerhequr,
   } = useCandidates();
@@ -203,7 +205,7 @@ const Index = () => {
 
           {activeView === "add" && <AddCandidateForm onAdd={handleAddCandidate} candidateCount={candidates.length} />}
 
-          {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} initialCandidateId={paymentInitialCandidateId} />}
+          {activeView === "payment" && <PaymentForm candidates={candidates} onPayment={handlePayment} onDeletePayment={deletePayment} initialCandidateId={paymentInitialCandidateId} />}
 
           {activeView === "exams" && <ExamCalendar candidates={candidates} />}
 
