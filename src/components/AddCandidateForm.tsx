@@ -211,7 +211,7 @@ const AddCandidateForm = ({ onAdd, candidates }: AddCandidateFormProps) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="numriRegjistrimit">Numri i Regjistrimit</Label>
-            <Input id="numriRegjistrimit" value={form.numriRegjistrimit} readOnly className="bg-muted cursor-not-allowed" />
+            <Input id="numriRegjistrimit" value={form.numriRegjistrimit} onChange={(e) => setForm({ ...form, numriRegjistrimit: e.target.value })} placeholder="p.sh. 318/26" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="numriPersonal">Numri Personal * (10 shifra)</Label>
