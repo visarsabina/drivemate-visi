@@ -116,7 +116,7 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title> </title>
 
   <div class="meta-row">
     <div>FORMA A1 NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
-    <div>Nr. regj./Br.Regj./Lbook.no.: <span class="u">${safe.numriRegjistrimit || "&nbsp;"}</span></div>
+    <div>Nr. regj./Br.Regj./Lbook.no.: <span class="u">&nbsp;</span></div>
   </div>
 
   <div class="sec-bar">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
