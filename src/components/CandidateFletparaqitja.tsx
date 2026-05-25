@@ -113,11 +113,6 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
     <div class="h-small">DRIVING EXAM RESERVATION FORM</div>
   </div>
 
-  <div class="meta-row">
-    <div>FORMA A1 NJPSH / JVD / DLU: <span class="u">&nbsp;</span></div>
-    <div>Nr. regj./Br.Regj./Lbook.no. <span class="u">&nbsp;</span></div>
-  </div>
-
   <div class="sec-bar">TE DHENAT E PARAQITESIT / PODACI PODNOSIOCA / APLICANT'S DETAILS</div>
   <div class="data-box">
     <div class="frow"><span class="flbl">1.&nbsp;&nbsp;&nbsp;Mbiemri / Prezime / Family Name:</span><span class="fval">${safe.mbiemri}</span></div>
