@@ -136,23 +136,47 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
       <h2 className="text-xl font-semibold mb-6">Pagesa</h2>
       <div className="space-y-4">
         <div className="space-y-2">
+        <div className="space-y-2">
           <Label>Zgjedh Kandidatin</Label>
-          <Select value={selectedCandidateId} onValueChange={setSelectedCandidateId}>
-            <SelectTrigger>
-              <SelectValue placeholder="Zgjedh kandidatin..." />
-            </SelectTrigger>
-            <SelectContent>
-              {candidates.map((c) => (
-                <SelectItem key={c.id} value={c.id}>
-                  {c.emri} {c.mbiemri} — {c.numriPersonal}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" role="combobox" className="w-full justify-between font-normal">
+                {selectedCandidate
+                  ? `${selectedCandidate.emri} ${selectedCandidate.mbiemri} — ${selectedCandidate.numriPersonal}`
+                  : "Zgjedh kandidatin..."}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+              <Command
+                filter={(value, search) => {
+                  return value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
+                }}
+              >
+                <CommandInput placeholder="Kërko sipas emrit ose numrit personal..." />
+                <CommandList>
+                  <CommandEmpty>Nuk u gjet asnjë kandidat.</CommandEmpty>
+                  <CommandGroup>
+                    {candidates.map((c) => (
+                      <CommandItem
+                        key={c.id}
+                        value={`${c.emri} ${c.mbiemri} ${c.numriPersonal ?? ""}`}
+                        onSelect={() => {
+                          setSelectedCandidateId(c.id);
+                          setPickerOpen(false);
+                        }}
+                      >
+                        <Check className={cn("mr-2 h-4 w-4", selectedCandidateId === c.id ? "opacity-100" : "opacity-0")} />
+                        {c.emri} {c.mbiemri} — {c.numriPersonal}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
 
-        {selectedCandidate && (
-          <>
             <div className="p-3 rounded-lg bg-muted text-sm space-y-1">
               <p><span className="font-medium">Emri:</span> {selectedCandidate.emri} {selectedCandidate.mbiemri}</p>
               <p><span className="font-medium">Nr. Personal:</span> {selectedCandidate.numriPersonal}</p>
