@@ -251,6 +251,7 @@ const PaymentForm = ({ candidates, onPayment, onDeletePayment, initialCandidateI
                       <TableHead>#</TableHead>
                       <TableHead>Data</TableHead>
                       <TableHead>Shuma</TableHead>
+                      {isSuperAdmin && onDeletePayment && <TableHead className="w-16 text-right">Veprime</TableHead>}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -259,10 +260,39 @@ const PaymentForm = ({ candidates, onPayment, onDeletePayment, initialCandidateI
                         <TableCell>{i + 1}</TableCell>
                         <TableCell>{p.data}</TableCell>
                         <TableCell>{p.shuma.toFixed(2)} €</TableCell>
+                        {isSuperAdmin && onDeletePayment && (
+                          <TableCell className="text-right">
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive">
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Fshi pagesën?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Pagesa prej {p.shuma.toFixed(2)} € e datës {p.data} do të fshihet përgjithmonë. Ky veprim nuk mund të kthehet.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Anulo</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => onDeletePayment(selectedCandidate.id, p.id)}
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                  >
+                                    Fshi
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </TableCell>
+                        )}
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
+
               </div>
             )}
           </>
