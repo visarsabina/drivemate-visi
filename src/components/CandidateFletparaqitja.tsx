@@ -170,22 +170,35 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title>Fletparaqitja - ${
 <div class="dashed"></div>
 
 <div class="wrap">
-  <div class="header">
-    <img src="/kosovo-coat.jpg" alt="" />
-    <div class="h-main">REPUBLIKA E KOSOVËS / REPUBLIKA KOSOVA / REPUBLIC OF KOSOVO</div>
-    <div class="form-title">Fletëza për paraqitjen e provimit</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1mm;">
+    <div class="tel">Tel:049/240-678</div>
+    <img src="/kosovo-coat.jpg" alt="" style="height:11mm;" />
+    <div style="width:50mm;"></div>
   </div>
-  <table class="small-table">
-    <tr>
-      <th>Emri dhe mbiemri I kandidatit</th>
-      <th>Nënshkrimi I nënëpunësit zyrtar/ Data</th>
-    </tr>
-    <tr>
-      <td style="text-align:center;font-weight:bold;">${safe.emri} ${safe.mbiemri}</td>
-      <td>&nbsp;</td>
-    </tr>
-  </table>
+  <div class="header">
+    <div class="h-sub">Republika e Kosovës / Republika Kosova / Republic of Kosovo</div>
+    <div class="h-sub">Qeveria e Kosovës / Vlada Kosova / Government of Kosova</div>
+    <div class="h-small">MINISTRIA E INFRASTRUKTURES DHE TRANSPORTIT</div>
+    <div class="h-small">MINISTRSTVO ZA INFRASTRUKTURE I TRANSOPRTA</div>
+    <div class="h-small">MINISTRY OF INFRASTRUCTURE AND TRANSPORT</div>
+    <div class="form-title">Fletëza për paraqitjen e provimit për shofer / Listiçca prijavljeni vozački ispit / Driving exam reservation slip</div>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:1.5mm;font-size:9pt;">
+    <div>NJPSH / JVD / DLU: <span style="border-bottom:1px solid #000;display:inline-block;min-width:30mm;">&nbsp;</span></div>
+    <div>Nr. Regj./Br.Regj./Lbook.no. <span style="border-bottom:1px solid #000;display:inline-block;min-width:30mm;text-align:center;font-weight:bold;">${safe.numriRegjistrimit || "&nbsp;"}</span></div>
+  </div>
+  <div style="display:flex;gap:4mm;margin-top:1.5mm;">
+    <div style="flex:1;border:1px solid #000;">
+      <div style="text-align:center;font-weight:bold;font-size:8.5pt;border-bottom:1px solid #000;padding:1mm;">Emri dhe mbiemri I kandidatit/<br/>Ime i prezime kandidata</div>
+      <div style="min-height:14mm;padding:2mm;font-weight:bold;">→ ${safe.emri} ${safe.mbiemri}</div>
+    </div>
+    <div style="flex:1;border:1px solid #000;">
+      <div style="text-align:center;font-weight:bold;font-size:8.5pt;border-bottom:1px solid #000;padding:1mm;">Nënshkrimi I nënëpunësit zyrtar/ Data / Potpis<br/>službenog lica</div>
+      <div style="min-height:14mm;"></div>
+    </div>
+  </div>
 </div>
+
 <script>setTimeout(()=>window.print(),400);<\/script>
 </body></html>`);
     printWindow.document.close();
