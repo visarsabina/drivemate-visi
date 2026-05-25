@@ -123,6 +123,27 @@ export const useCandidates = () => {
       return;
     }
     setCandidates((prev) => [mapDbToCandidate(data, []), ...prev]);
+
+    // Auto-create candidate login account if personal number is valid (10 digits)
+    if (c.numriPersonal && /^\d{10}$/.test(c.numriPersonal)) {
+      const norm = (s: string) =>
+        (s || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]/g, "");
+      let password = `${norm(c.emri)}.${norm(c.mbiemri)}`;
+      if (password.length < 6) password = (password + "123456").slice(0, 8);
+      const { error: fnErr } = await supabase.functions.invoke(
+        "admin-create-candidate-account",
+        { body: { candidate_id: data.id, password } },
+      );
+      if (fnErr) {
+        toast.error("Llogaria e kandidatit nuk u krijua: " + fnErr.message);
+      } else {
+        toast.success(`Llogaria u krijua. Fjalëkalimi: ${password}`);
+      }
+    }
   };
 
   const updateCandidate = async (updated: Candidate) => {
