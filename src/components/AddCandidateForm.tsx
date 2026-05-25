@@ -100,7 +100,7 @@ const AddCandidateForm = ({ onAdd, candidates }: AddCandidateFormProps) => {
 
         const newCandidate: Candidate = {
           id: `${Date.now()}-${idx}`,
-          numriRegjistrimit: numriRegjistrimit || generateRegNumber(candidateCount + added),
+          numriRegjistrimit: numriRegjistrimit || generateRegNumber(candidates, added),
           numriPersonal: "",
           emri,
           mbiemri,
