@@ -191,7 +191,7 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Button onClick={handleAddPayment} className="gap-2">
+              <Button onClick={handleAddPayment} disabled={submitting} className="gap-2">
                 <Plus className="w-4 h-4" />
                 Regjistro Pagesën
               </Button>
