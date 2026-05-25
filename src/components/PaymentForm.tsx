@@ -7,16 +7,23 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Candidate, Payment } from "@/types/candidate";
 import { toast } from "sonner";
-import { Printer, Plus, Check, ChevronsUpDown } from "lucide-react";
+import { Printer, Plus, Check, ChevronsUpDown, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { escapeHtmlObject } from "@/lib/escapeHtml";
+import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 
 interface PaymentFormProps {
   candidates: Candidate[];
   onPayment: (candidateId: string, payment: Payment) => void | Promise<boolean | void>;
+  onDeletePayment?: (candidateId: string, paymentId: string) => Promise<boolean>;
   initialCandidateId?: string;
 }
+
 
 const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormProps) => {
   const [selectedCandidateId, setSelectedCandidateId] = useState(initialCandidateId ?? "");
