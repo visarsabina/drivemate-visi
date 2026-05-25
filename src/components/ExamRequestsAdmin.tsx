@@ -69,13 +69,13 @@ const ExamRequestsAdmin = () => {
       setBusyId(null);
       return;
     }
-    if (status === "approved") {
+    if (status === "approved" && tenantId) {
       const { error: insErr } = await supabase.from("candidate_exams").insert({
-        tenant_id: row.candidate ? tenantId : tenantId,
+        tenant_id: tenantId,
         candidate_id: row.candidate_id,
         exam_date: row.requested_date,
         exam_time: row.requested_time,
-        exam_type: row.exam_type,
+        exam_type: (row.exam_type === "teori" ? "teori" : "praktike") as "teori" | "praktike",
       });
       if (insErr) {
         toast({ title: "U aprovua, por kalendari dështoi", description: insErr.message, variant: "destructive" });
