@@ -22,6 +22,8 @@ const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormP
   const [selectedCandidateId, setSelectedCandidateId] = useState(initialCandidateId ?? "");
   const [shumaPaguar, setShumaPaguar] = useState("");
   const [dataPageses, setDataPageses] = useState(new Date().toISOString().split("T")[0]);
+  const [pickerOpen, setPickerOpen] = useState(false);
+
 
   useEffect(() => {
     if (initialCandidateId) setSelectedCandidateId(initialCandidateId);
