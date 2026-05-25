@@ -10,6 +10,7 @@ import CandidateVertetimi from "@/components/CandidateVertetimi";
 import CandidateKontrata from "@/components/CandidateKontrata";
 import CandidateFletparaqitja from "@/components/CandidateFletparaqitja";
 import LessonsManager from "@/components/LessonsManager";
+import CandidateAccountDialog from "@/components/CandidateAccountDialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -222,6 +223,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
           <Button variant="outline" onClick={openEditDialog} className="gap-2">
             <Pencil className="w-4 h-4" /> Modifiko
           </Button>
+          {isAdmin && <CandidateAccountDialog candidate={candidate} />}
           {isAdmin && onDelete && (
             <AlertDialog>
               <AlertDialogTrigger asChild>

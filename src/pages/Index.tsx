@@ -207,6 +207,8 @@ const Index = () => {
 
           {activeView === "exams" && <ExamCalendar candidates={candidates} />}
 
+          {activeView === "exam-requests" && <ExamRequestsAdmin />}
+
           {activeView === "finances" && <Finances candidates={candidates} />}
 
           {activeView === "registrations" && <Registrations />}
