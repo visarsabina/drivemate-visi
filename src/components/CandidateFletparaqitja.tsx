@@ -33,6 +33,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   const handlePrint = () => {
     if (!candidate) return;
     const safe = escapeHtmlObject(candidate);
+    const coatUrl = `${window.location.origin}/kosovo-coat.jpg`;
 
     const personalDigits = (candidate.numriPersonal || "").replace(/\D/g, "").slice(0, 10).split("");
     const personalBoxes = Array.from({ length: 10 }).map((_, i) =>
@@ -102,7 +103,7 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title> </title>
   <div class="cat-box">${safe.kategoria}</div>
 
   <div class="header">
-    <img src="/kosovo-coat.jpg" alt="" />
+    <img src="${coatUrl}" alt="" />
     <div class="h-main">REPUBLIKA E KOSOVËS / REPUBLIKA KOSOVA / REPUBLIC OF KOSOVO</div>
     <div class="h-main">QEVERIA / VLADA / GOVERNMENT</div>
     <div class="h-sub" style="margin-top:2mm;">MINISTRIA E INFRASTRUKTURES DHE TRANSPORTIT</div>
@@ -172,7 +173,7 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title> </title>
 <div class="wrap">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1mm;">
     <div class="tel">Tel:049/240-678</div>
-    <img src="/kosovo-coat.jpg" alt="" style="height:11mm;" />
+    <img src="${coatUrl}" alt="" style="height:11mm;" />
     <div style="width:50mm;"></div>
   </div>
   <div class="header">
