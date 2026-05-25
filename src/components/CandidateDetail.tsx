@@ -352,8 +352,9 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+        </>)}
+      </div>
+
 
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
         <DialogContent>
