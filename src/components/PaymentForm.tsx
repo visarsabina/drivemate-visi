@@ -25,7 +25,9 @@ interface PaymentFormProps {
 }
 
 
-const PaymentForm = ({ candidates, onPayment, initialCandidateId }: PaymentFormProps) => {
+const PaymentForm = ({ candidates, onPayment, onDeletePayment, initialCandidateId }: PaymentFormProps) => {
+  const { isSuperAdmin } = useIsSuperAdmin();
+
   const [selectedCandidateId, setSelectedCandidateId] = useState(initialCandidateId ?? "");
   const [shumaPaguar, setShumaPaguar] = useState("");
   const [dataPageses, setDataPageses] = useState(new Date().toISOString().split("T")[0]);
