@@ -33,6 +33,7 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   const handlePrint = () => {
     if (!candidate) return;
     const safe = escapeHtmlObject(candidate);
+    const coatUrl = `${window.location.origin}/kosovo-coat.jpg`;
 
     const personalDigits = (candidate.numriPersonal || "").replace(/\D/g, "").slice(0, 10).split("");
     const personalBoxes = Array.from({ length: 10 }).map((_, i) =>
