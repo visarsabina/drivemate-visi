@@ -862,6 +862,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_active_public_tenant: {
+        Args: { _tenant_id: string }
+        Returns: boolean
+      }
       is_candidate: { Args: never; Returns: boolean }
       is_instructor: { Args: never; Returns: boolean }
       is_super_admin: { Args: never; Returns: boolean }
