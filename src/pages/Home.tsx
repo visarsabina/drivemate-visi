@@ -557,18 +557,33 @@ const Home = () => {
             })}
           </div>
 
-          {/* Mini map embed */}
-          <div className="mt-10 rounded-xl overflow-hidden shadow-lg border border-border">
-            <iframe
-              title={`Lokacioni i ${schoolName} në hartë`}
-              src={`https://www.google.com/maps?q=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}&output=embed`}
-              width="100%"
-              height="360"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              style={{ border: 0 }}
-              allowFullScreen
-            />
+          {/* Location */}
+          <div className="mt-10">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold">{schoolName}</h3>
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="gap-2">
+                  <Navigation className="w-4 h-4" />
+                  Drejtimet
+                </Button>
+              </a>
+            </div>
+            <div className="rounded-xl overflow-hidden shadow-lg border border-border">
+              <iframe
+                title={`Lokacioni i ${schoolName} në hartë`}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}&output=embed`}
+                width="100%"
+                height="360"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                style={{ border: 0 }}
+                allowFullScreen
+              />
+            </div>
           </div>
         </div>
       </section>
