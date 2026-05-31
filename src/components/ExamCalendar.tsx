@@ -425,16 +425,30 @@ const ExamCalendar = ({ candidates }: Props) => {
               </div>
             </div>
 
-            <div>
-              <Label>Lloji i provimit</Label>
-              <Select value={formType} onValueChange={(v) => setFormType(v as "teori" | "praktike")}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="teori">Teori</SelectItem>
-                  <SelectItem value="praktike">Praktikë</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Lloji i provimit</Label>
+                <Select value={formType} onValueChange={(v) => setFormType(v as "teori" | "praktike")}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="teori">Teori</SelectItem>
+                    <SelectItem value="praktike">Praktikë</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Kategoria</Label>
+                <Select value={formKategoria} onValueChange={setFormKategoria}>
+                  <SelectTrigger><SelectValue placeholder="Zgjidh" /></SelectTrigger>
+                  <SelectContent className="max-h-56">
+                    {CATEGORIES.map((k) => (
+                      <SelectItem key={k} value={k}>{k}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
 
             <div>
               <Label>Shënime (opsional)</Label>
