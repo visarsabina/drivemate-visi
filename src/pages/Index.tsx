@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import AppSidebar from "@/components/Sidebar";
 import StatsCards from "@/components/StatsCards";
 import CandidateTable from "@/components/CandidateTable";
@@ -38,7 +39,10 @@ const Index = () => {
   const { branding } = useTenantBranding();
   const { isSuperAdmin } = useIsSuperAdmin();
   const defaultView = !isAdmin && isInstructor ? "instructor" : "dashboard";
-  const [activeView, setActiveView] = useState(defaultView);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlView = searchParams.get("view") || defaultView;
+  const urlCandidateId = searchParams.get("id") || undefined;
+  const [activeView, setActiveViewState] = useState(urlView);
   const {
     candidates,
     addCandidate,
@@ -52,7 +56,32 @@ const Index = () => {
   } = useCandidates();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
-  const [paymentInitialCandidateId, setPaymentInitialCandidateId] = useState<string | undefined>(undefined);
+  const [paymentInitialCandidateId, setPaymentInitialCandidateId] = useState<string | undefined>(urlCandidateId);
+
+  // Helper: change view and sync URL
+  const setActiveView = (view: string, opts?: { id?: string }) => {
+    setActiveViewState(view);
+    const params: Record<string, string> = {};
+    if (view !== defaultView) params.view = view;
+    if (opts?.id) params.id = opts.id;
+    setSearchParams(params, { replace: false });
+  };
+
+  // Sync state when URL changes (back/forward navigation)
+  useEffect(() => {
+    const v = searchParams.get("view") || defaultView;
+    const id = searchParams.get("id") || undefined;
+    if (v !== activeView) setActiveViewState(v);
+    if (v === "candidate-detail" && id) {
+      const c = candidates.find(x => x.id === id);
+      if (c && c.id !== selectedCandidate?.id) setSelectedCandidate(c);
+    }
+    if (v === "payment" && id !== paymentInitialCandidateId) {
+      setPaymentInitialCandidateId(id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, candidates]);
+
 
   const handleAddCandidate = async (candidate: Candidate) => {
     await addCandidate(candidate);
@@ -121,7 +150,7 @@ const Index = () => {
       )}
 
       <div className={`fixed inset-y-0 left-0 z-50 transform transition-transform lg:relative lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-        <AppSidebar activeView={activeView} onViewChange={(v) => { setActiveView(v); setSelectedCandidate(null); setSidebarOpen(false); }} />
+        <AppSidebar activeView={activeView} onViewChange={(v) => { setSelectedCandidate(null); setActiveView(v); setSidebarOpen(false); }} />
       </div>
 
       <main className="flex-1 min-h-screen">
@@ -147,7 +176,7 @@ const Index = () => {
 
           {activeView === "dashboard" && (
             <>
-              <StatsCards candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
+              <StatsCards candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
 
               <CategoryYearStats candidates={candidates} />
 
@@ -179,7 +208,7 @@ const Index = () => {
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Kandidatët e Fundit</h3>
-                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
+                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
               </div>
             </>
           )}
@@ -187,7 +216,7 @@ const Index = () => {
           {activeView === "candidates" && (
             <CandidateTable
               candidates={candidates}
-              onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }}
+              onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }}
               onToggleDocuments={handleToggleDocuments}
             />
           )}
@@ -199,7 +228,7 @@ const Index = () => {
               onVertetimiPrinted={handleVertetimiPrinted}
               onUpdate={handleUpdateCandidate}
               onDelete={handleDeleteCandidate}
-              onGoToPayments={(id) => { setPaymentInitialCandidateId(id); setActiveView("payment"); }}
+              onGoToPayments={(id) => { setPaymentInitialCandidateId(id); setActiveView("payment", { id }); }}
             />
           )}
 
