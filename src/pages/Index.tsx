@@ -150,7 +150,7 @@ const Index = () => {
       )}
 
       <div className={`fixed inset-y-0 left-0 z-50 transform transition-transform lg:relative lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-        <AppSidebar activeView={activeView} onViewChange={(v) => { setActiveView(v); setSelectedCandidate(null); setSidebarOpen(false); }} />
+        <AppSidebar activeView={activeView} onViewChange={(v) => { setSelectedCandidate(null); setActiveView(v); setSidebarOpen(false); }} />
       </div>
 
       <main className="flex-1 min-h-screen">
