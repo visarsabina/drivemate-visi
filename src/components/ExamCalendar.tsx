@@ -133,6 +133,7 @@ const ExamCalendar = ({ candidates }: Props) => {
     setFormDate(selectedDate);
     setFormTime("08:30");
     setFormType("praktike");
+    setFormKategoria("B");
     setFormNotes("");
     setDialogOpen(true);
   };
