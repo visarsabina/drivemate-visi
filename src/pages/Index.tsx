@@ -176,7 +176,7 @@ const Index = () => {
 
           {activeView === "dashboard" && (
             <>
-              <StatsCards candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
+              <StatsCards candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
 
               <CategoryYearStats candidates={candidates} />
 
