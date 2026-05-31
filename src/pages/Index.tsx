@@ -216,7 +216,7 @@ const Index = () => {
           {activeView === "candidates" && (
             <CandidateTable
               candidates={candidates}
-              onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }}
+              onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }}
               onToggleDocuments={handleToggleDocuments}
             />
           )}
