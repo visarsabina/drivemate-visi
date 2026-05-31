@@ -304,8 +304,9 @@ const ExamCalendar = ({ candidates }: Props) => {
                       </span>
                       {(() => {
                         const c = candidates.find((x) => x.id === exam.candidate_id);
-                        return c?.kategoria ? (
-                          <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{c.kategoria}</span>
+                        const kat = exam.kategoria ?? c?.kategoria;
+                        return kat ? (
+                          <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{kat}</span>
                         ) : null;
                       })()}
                     </div>
