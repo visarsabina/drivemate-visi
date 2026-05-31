@@ -29,7 +29,10 @@ interface ExamRow {
   status: "planifikuar" | "kaluar" | "deshtur" | "anuluar";
   location: string | null;
   notes: string | null;
+  kategoria: string | null;
 }
+
+const CATEGORIES = ["AM", "A1", "A2", "A", "B1", "B", "BE", "C1", "C", "CE", "D1", "D", "DE", "T"];
 
 interface Props {
   candidates: Candidate[];
