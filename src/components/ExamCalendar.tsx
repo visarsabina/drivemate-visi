@@ -376,6 +376,7 @@ const ExamCalendar = ({ candidates }: Props) => {
                             value={`${c.emri} ${c.mbiemri} ${c.numriRegjistrimit} ${c.numriPersonal ?? ""}`}
                             onSelect={() => {
                               setFormCandidate(c.id);
+                              if (c.kategoria) setFormKategoria(c.kategoria);
                               setCandidateSearch("");
                               setCandidatePopoverOpen(false);
                             }}
