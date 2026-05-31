@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import AppSidebar from "@/components/Sidebar";
 import StatsCards from "@/components/StatsCards";
 import CandidateTable from "@/components/CandidateTable";
