@@ -39,7 +39,10 @@ const Index = () => {
   const { branding } = useTenantBranding();
   const { isSuperAdmin } = useIsSuperAdmin();
   const defaultView = !isAdmin && isInstructor ? "instructor" : "dashboard";
-  const [activeView, setActiveView] = useState(defaultView);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlView = searchParams.get("view") || defaultView;
+  const urlCandidateId = searchParams.get("id") || undefined;
+  const [activeView, setActiveViewState] = useState(urlView);
   const {
     candidates,
     addCandidate,
@@ -53,7 +56,32 @@ const Index = () => {
   } = useCandidates();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
-  const [paymentInitialCandidateId, setPaymentInitialCandidateId] = useState<string | undefined>(undefined);
+  const [paymentInitialCandidateId, setPaymentInitialCandidateId] = useState<string | undefined>(urlCandidateId);
+
+  // Helper: change view and sync URL
+  const setActiveView = (view: string, opts?: { id?: string }) => {
+    setActiveViewState(view);
+    const params: Record<string, string> = {};
+    if (view !== defaultView) params.view = view;
+    if (opts?.id) params.id = opts.id;
+    setSearchParams(params, { replace: false });
+  };
+
+  // Sync state when URL changes (back/forward navigation)
+  useEffect(() => {
+    const v = searchParams.get("view") || defaultView;
+    const id = searchParams.get("id") || undefined;
+    if (v !== activeView) setActiveViewState(v);
+    if (v === "candidate-detail" && id) {
+      const c = candidates.find(x => x.id === id);
+      if (c && c.id !== selectedCandidate?.id) setSelectedCandidate(c);
+    }
+    if (v === "payment" && id !== paymentInitialCandidateId) {
+      setPaymentInitialCandidateId(id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, candidates]);
+
 
   const handleAddCandidate = async (candidate: Candidate) => {
     await addCandidate(candidate);
