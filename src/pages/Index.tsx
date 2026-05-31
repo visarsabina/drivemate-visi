@@ -228,7 +228,7 @@ const Index = () => {
               onVertetimiPrinted={handleVertetimiPrinted}
               onUpdate={handleUpdateCandidate}
               onDelete={handleDeleteCandidate}
-              onGoToPayments={(id) => { setPaymentInitialCandidateId(id); setActiveView("payment"); }}
+              onGoToPayments={(id) => { setPaymentInitialCandidateId(id); setActiveView("payment", { id }); }}
             />
           )}
 
