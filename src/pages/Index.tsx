@@ -208,7 +208,7 @@ const Index = () => {
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Kandidatët e Fundit</h3>
-                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail"); }} />
+                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
               </div>
             </>
           )}
