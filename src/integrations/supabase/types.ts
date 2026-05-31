@@ -23,6 +23,7 @@ export type Database = {
           exam_time: string
           exam_type: Database["public"]["Enums"]["exam_type"]
           id: string
+          kategoria: string | null
           location: string | null
           notes: string | null
           status: Database["public"]["Enums"]["exam_status"]
@@ -37,6 +38,7 @@ export type Database = {
           exam_time: string
           exam_type?: Database["public"]["Enums"]["exam_type"]
           id?: string
+          kategoria?: string | null
           location?: string | null
           notes?: string | null
           status?: Database["public"]["Enums"]["exam_status"]
@@ -51,6 +53,7 @@ export type Database = {
           exam_time?: string
           exam_type?: Database["public"]["Enums"]["exam_type"]
           id?: string
+          kategoria?: string | null
           location?: string | null
           notes?: string | null
           status?: Database["public"]["Enums"]["exam_status"]

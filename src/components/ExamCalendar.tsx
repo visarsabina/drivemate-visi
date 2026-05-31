@@ -29,7 +29,10 @@ interface ExamRow {
   status: "planifikuar" | "kaluar" | "deshtur" | "anuluar";
   location: string | null;
   notes: string | null;
+  kategoria: string | null;
 }
+
+const CATEGORIES = ["AM", "A1", "A2", "A", "B1", "B", "BE", "C1", "C", "CE", "D1", "D", "DE", "T"];
 
 interface Props {
   candidates: Candidate[];
@@ -69,6 +72,7 @@ const ExamCalendar = ({ candidates }: Props) => {
   const [formDate, setFormDate] = useState<Date | undefined>(new Date());
   const [formTime, setFormTime] = useState("08:30");
   const [formType, setFormType] = useState<"teori" | "praktike">("praktike");
+  const [formKategoria, setFormKategoria] = useState<string>("B");
   const [formNotes, setFormNotes] = useState("");
   const [candidateSearch, setCandidateSearch] = useState("");
   const [candidatePopoverOpen, setCandidatePopoverOpen] = useState(false);
@@ -129,6 +133,7 @@ const ExamCalendar = ({ candidates }: Props) => {
     setFormDate(selectedDate);
     setFormTime("08:30");
     setFormType("praktike");
+    setFormKategoria("B");
     setFormNotes("");
     setDialogOpen(true);
   };
@@ -178,6 +183,7 @@ const ExamCalendar = ({ candidates }: Props) => {
       exam_date: format(formDate, "yyyy-MM-dd"),
       exam_time: formTime,
       exam_type: formType,
+      kategoria: formKategoria || null,
       notes: formNotes || null,
     });
     if (error) {
@@ -298,8 +304,9 @@ const ExamCalendar = ({ candidates }: Props) => {
                       </span>
                       {(() => {
                         const c = candidates.find((x) => x.id === exam.candidate_id);
-                        return c?.kategoria ? (
-                          <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{c.kategoria}</span>
+                        const kat = exam.kategoria ?? c?.kategoria;
+                        return kat ? (
+                          <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{kat}</span>
                         ) : null;
                       })()}
                     </div>
@@ -369,6 +376,7 @@ const ExamCalendar = ({ candidates }: Props) => {
                             value={`${c.emri} ${c.mbiemri} ${c.numriRegjistrimit} ${c.numriPersonal ?? ""}`}
                             onSelect={() => {
                               setFormCandidate(c.id);
+                              if (c.kategoria) setFormKategoria(c.kategoria);
                               setCandidateSearch("");
                               setCandidatePopoverOpen(false);
                             }}
@@ -417,16 +425,30 @@ const ExamCalendar = ({ candidates }: Props) => {
               </div>
             </div>
 
-            <div>
-              <Label>Lloji i provimit</Label>
-              <Select value={formType} onValueChange={(v) => setFormType(v as "teori" | "praktike")}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="teori">Teori</SelectItem>
-                  <SelectItem value="praktike">Praktikë</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Lloji i provimit</Label>
+                <Select value={formType} onValueChange={(v) => setFormType(v as "teori" | "praktike")}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="teori">Teori</SelectItem>
+                    <SelectItem value="praktike">Praktikë</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Kategoria</Label>
+                <Select value={formKategoria} onValueChange={setFormKategoria}>
+                  <SelectTrigger><SelectValue placeholder="Zgjidh" /></SelectTrigger>
+                  <SelectContent className="max-h-56">
+                    {CATEGORIES.map((k) => (
+                      <SelectItem key={k} value={k}>{k}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
 
             <div>
               <Label>Shënime (opsional)</Label>
