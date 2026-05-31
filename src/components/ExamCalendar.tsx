@@ -183,6 +183,7 @@ const ExamCalendar = ({ candidates }: Props) => {
       exam_date: format(formDate, "yyyy-MM-dd"),
       exam_time: formTime,
       exam_type: formType,
+      kategoria: formKategoria || null,
       notes: formNotes || null,
     });
     if (error) {
