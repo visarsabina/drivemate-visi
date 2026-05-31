@@ -1,0 +1,1 @@
+ALTER TABLE public.candidate_exams ADD COLUMN IF NOT EXISTS kategoria text;
