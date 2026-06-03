@@ -131,6 +131,7 @@ const Index = () => {
     licenses: "Licencat",
     users: "Përdoruesit",
     tests: "Gjenero Testin",
+    activity: "Historiku i Veprimeve",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
