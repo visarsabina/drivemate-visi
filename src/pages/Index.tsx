@@ -265,6 +265,8 @@ const Index = () => {
           {activeView === "fletparaqitja" && <CandidateFletparaqitja candidates={candidates} />}
 
           {activeView === "tests" && <TestGenerator candidates={candidates} initialCandidateId={selectedCandidate?.id ?? null} />}
+
+          {activeView === "activity" && <ActivityLog />}
         </div>
       </main>
     </div>
