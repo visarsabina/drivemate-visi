@@ -26,6 +26,7 @@ const adminNavItems = [
   { id: "licenses", label: "Licencat", icon: IdCard },
   { id: "tests", label: "Gjenero Testin", icon: FileQuestion },
   { id: "users", label: "Përdoruesit", icon: ShieldCheck },
+  { id: "activity", label: "Historiku", icon: History },
 ];
 
 const instructorNavItems = [
