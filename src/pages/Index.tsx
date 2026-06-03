@@ -26,6 +26,7 @@ import TestGenerator from "@/components/TestGenerator";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
+import ActivityLog from "@/components/ActivityLog";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
