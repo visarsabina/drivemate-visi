@@ -56,6 +56,7 @@ const TodayPracticalExams = ({ candidates }: Props) => {
     const c = candidates.find((c) => c.id === e.candidate_id);
     return {
       id: e.id,
+      candidateId: e.candidate_id,
       time: e.exam_time?.slice(0, 5) ?? "",
       name: c ? `${c.emri} ${c.mbiemri}` : "—",
     };
