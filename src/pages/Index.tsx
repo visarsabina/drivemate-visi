@@ -231,6 +231,7 @@ const Index = () => {
               onUpdate={handleUpdateCandidate}
               onDelete={handleDeleteCandidate}
               onGoToPayments={(id) => { setPaymentInitialCandidateId(id); setActiveView("payment", { id }); }}
+              autoEdit={searchParams.get("edit") === "1"}
             />
           )}
 

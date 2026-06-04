@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Candidate } from "@/types/candidate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -101,9 +101,10 @@ interface CandidateDetailProps {
   onUpdate?: (candidate: Candidate) => void;
   onDelete?: (candidateId: string) => void;
   onGoToPayments?: (candidateId: string) => void;
+  autoEdit?: boolean;
 }
 
-const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDelete, onGoToPayments }: CandidateDetailProps) => {
+const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDelete, onGoToPayments, autoEdit }: CandidateDetailProps) => {
   const { isAdmin } = useAuth();
   const [activeDoc, setActiveDoc] = useState<string | null>(null);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
@@ -111,10 +112,19 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editForm, setEditForm] = useState<Candidate>(candidate);
 
+  useEffect(() => {
+    if (autoEdit) {
+      setEditForm(candidate);
+      setShowEditDialog(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoEdit, candidate.id]);
+
   const openEditDialog = () => {
     setEditForm(candidate);
     setShowEditDialog(true);
   };
+
 
   const handleSaveEdit = () => {
     const result = editCandidateSchema.safeParse({
