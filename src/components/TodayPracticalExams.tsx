@@ -86,7 +86,7 @@ const TodayPracticalExams = ({ candidates }: Props) => {
             <li key={r.id} className="py-2.5">
               <button
                 type="button"
-                onClick={() => navigate(`/admin?view=libreza&id=${r.candidateId}`)}
+                onClick={() => navigate(`/admin?view=candidate-detail&edit=1&id=${r.candidateId}`)}
                 className="w-full flex items-center justify-between text-left hover:bg-muted/40 rounded-md px-2 -mx-2 py-1 transition-colors"
               >
                 <span className="font-medium text-primary hover:underline">{r.name}</span>
