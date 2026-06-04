@@ -63,6 +63,7 @@ type ViewMode = "day" | "week" | "month";
 
 const ExamCalendar = ({ candidates }: Props) => {
   const { tenantId } = useTenant();
+  const navigate = useNavigate();
   const [exams, setExams] = useState<ExamRow[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [viewMode, setViewMode] = useState<ViewMode>("day");
