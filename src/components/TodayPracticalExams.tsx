@@ -19,6 +19,7 @@ interface ExamRow {
 
 const TodayPracticalExams = ({ candidates }: Props) => {
   const { tenantId } = useTenant();
+  const navigate = useNavigate();
   const [exams, setExams] = useState<ExamRow[]>([]);
   const [loading, setLoading] = useState(true);
 
