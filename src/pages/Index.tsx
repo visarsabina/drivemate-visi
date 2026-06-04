@@ -256,7 +256,7 @@ const Index = () => {
 
           {activeView === "users" && <Users />}
 
-          {activeView === "libreza" && <CandidateBooklet candidates={candidates} />}
+          {activeView === "libreza" && <CandidateBooklet candidates={candidates} preselectedId={urlCandidateId} />}
 
           {activeView === "vertetimi" && <CandidateVertetimi candidates={candidates} onPrinted={handleVertetimiPrinted} />}
 
