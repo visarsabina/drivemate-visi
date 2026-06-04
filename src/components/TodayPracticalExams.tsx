@@ -83,14 +83,18 @@ const TodayPracticalExams = ({ candidates }: Props) => {
       ) : (
         <ul className="divide-y divide-border">
           {rows.map((r) => (
-            <li key={r.id} className="flex items-center justify-between py-2.5">
-              <span className="flex items-center gap-2">
-                <span className="font-medium">{r.name}</span>
+            <li key={r.id} className="py-2.5">
+              <button
+                type="button"
+                onClick={() => navigate(`/?view=candidate-detail&id=${r.candidateId}`)}
+                className="w-full flex items-center justify-between text-left hover:bg-muted/40 rounded-md px-2 -mx-2 py-1 transition-colors"
+              >
+                <span className="font-medium text-primary hover:underline">{r.name}</span>
                 <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md">
                   <Clock className="w-3 h-3" />
                   {r.time}
                 </span>
-              </span>
+              </button>
             </li>
           ))}
         </ul>
