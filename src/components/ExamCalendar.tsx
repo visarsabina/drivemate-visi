@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, parseISO, differenceInCalendarDays } from "date-fns";
 import { sq } from "date-fns/locale";
 import { CalendarIcon, Plus, Trash2, Clock, Tag, ChevronsUpDown, Search, Check } from "lucide-react";
@@ -62,6 +63,7 @@ type ViewMode = "day" | "week" | "month";
 
 const ExamCalendar = ({ candidates }: Props) => {
   const { tenantId } = useTenant();
+  const navigate = useNavigate();
   const [exams, setExams] = useState<ExamRow[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [viewMode, setViewMode] = useState<ViewMode>("day");
@@ -296,7 +298,13 @@ const ExamCalendar = ({ candidates }: Props) => {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium truncate">{candidateName(exam.candidate_id)}</div>
+                    <button
+                      type="button"
+                      onClick={() => navigate(`/?view=candidate-detail&id=${exam.candidate_id}`)}
+                      className="font-medium truncate text-left text-primary hover:underline"
+                    >
+                      {candidateName(exam.candidate_id)}
+                    </button>
                     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground mt-1">
                       <Badge variant="outline" className="capitalize">{exam.exam_type}</Badge>
                       <span className={cn("px-2 py-0.5 rounded-md text-xs border capitalize", statusColors[exam.status])}>
