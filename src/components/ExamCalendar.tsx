@@ -300,7 +300,7 @@ const ExamCalendar = ({ candidates }: Props) => {
                   <div className="flex-1 min-w-0">
                     <button
                       type="button"
-                      onClick={() => navigate(`/?view=libreza&id=${exam.candidate_id}`)}
+                      onClick={() => navigate(`/admin?view=libreza&id=${exam.candidate_id}`)}
                       className="font-medium truncate text-left text-primary hover:underline"
                     >
                       {candidateName(exam.candidate_id)}
