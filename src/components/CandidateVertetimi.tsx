@@ -91,10 +91,10 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   <div class="title">VËRTETIM</div>
 
   <div class="row">
-    <div class="cell" style="flex:1.4;"><span class="val grow">${safe.emri}${__esc(vendlindja ? "(" + vendlindja + ")" : "")}${safe.mbiemri}</span></div>
+    <div class="cell" style="flex:0.9;"><span class="val grow">${safe.emri} ${safe.mbiemri}</span></div>
     <div class="cell"><span class="label">e lindur më:</span><span class="val md">${formatDate(safe.dataLindjes)}</span></div>
-    <div class="cell"><span class="label">në:</span><span class="val md">${__esc(vendlindja || "&nbsp;")}</span></div>
-    <div class="cell"><span class="label">Komuna:</span><span class="val md">${__esc(komuna || "&nbsp;")}</span></div>
+    <div class="cell" style="flex:1;"><span class="label">në:</span><span class="val grow">${__esc(vendlindja || "&nbsp;")}</span></div>
+    <div class="cell" style="flex:1;"><span class="label">Komuna:</span><span class="val grow">${__esc(komuna || "&nbsp;")}</span></div>
   </div>
 
   <div class="row">
