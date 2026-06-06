@@ -9,8 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { LogOut, CreditCard, GraduationCap, User as UserIcon, CalendarPlus, Loader2, Clock } from "lucide-react";
+import { LogOut, CreditCard, GraduationCap, User as UserIcon, CalendarPlus, Loader2, Clock, ClipboardList } from "lucide-react";
 import logo from "@/assets/logo.png";
+import CandidateTests from "@/components/CandidateTests";
 
 interface CandidateRow {
   id: string;
@@ -54,6 +55,7 @@ const CandidatePortal = () => {
   const [reqType, setReqType] = useState("praktike");
   const [reqNotes, setReqNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showTests, setShowTests] = useState(false);
 
   useEffect(() => { load(); }, []);
 
@@ -141,6 +143,10 @@ const CandidatePortal = () => {
     );
   }
 
+  if (showTests) {
+    return <CandidateTests candidateId={candidate.id} onClose={() => setShowTests(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-muted/30">
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border px-4 py-3 flex items-center gap-3">
@@ -165,6 +171,17 @@ const CandidatePortal = () => {
               <p className="text-xs text-muted-foreground">Nr. {candidate.numri_regjistrimit} · Kategoria {candidate.kategoria}</p>
             </div>
           </div>
+        </Card>
+
+        <Card className="p-4 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+            <ClipboardList className="w-5 h-5 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold text-sm">Testi i autoshkollës</p>
+            <p className="text-xs text-muted-foreground">10 teste për t'u përgatitur për provim</p>
+          </div>
+          <Button size="sm" onClick={() => setShowTests(true)}>Fillo</Button>
         </Card>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
