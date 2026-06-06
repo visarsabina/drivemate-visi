@@ -55,6 +55,7 @@ const CandidatePortal = () => {
   const [reqType, setReqType] = useState("praktike");
   const [reqNotes, setReqNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showTests, setShowTests] = useState(false);
 
   useEffect(() => { load(); }, []);
 
