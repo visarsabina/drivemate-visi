@@ -13,7 +13,7 @@ type RawQ = { id: string; text: string; options: string[]; correctIndex: number;
 type Q = { id: string; text: string; options: { key: string; text: string }[]; correctKey: string; image?: string | null };
 
 const ALL_QUESTIONS: Q[] = (builtinBank as RawQ[])
-  .map((q) => {
+  .map((q): Q | null => {
     const opts = q.options.map((o) => (o || "").replace(/\s+/g, " ").trim()).filter((o) => o.length > 0 && o.length < 240);
     if (opts.length < 2 || opts.length > OPTION_KEYS.length) return null;
     if (q.correctIndex < 0 || q.correctIndex >= opts.length) return null;
