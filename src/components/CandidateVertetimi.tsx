@@ -60,8 +60,8 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 297mm; height: 210mm; }
   body { font-family: 'Times New Roman', serif; font-size: 12pt; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .page { width: 297mm; height: 210mm; padding: 8mm; position: relative; }
-  .frame { width: 100%; height: 100%; padding: 4mm 10mm; display: flex; flex-direction: column; }
+  .page { width: 297mm; height: 210mm; padding: 6mm; position: relative; }
+  .frame { width: 100%; height: 100%; padding: 6mm 10mm; display: flex; flex-direction: column; border: 2px solid #000; }
   .header { text-align: center; line-height: 1.9; font-size: 12pt; padding: 2mm 4mm 2mm; }
   .title { text-align: center; font-size: 22pt; font-weight: bold; letter-spacing: 2px; margin: 4mm 0 8mm; }
   .row { display: flex; align-items: flex-end; gap: 5mm; margin-bottom: 6mm; flex-wrap: nowrap; }
@@ -70,12 +70,15 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   .val { font-weight: bold; text-align: center; border-bottom: 1px solid #000; padding: 0 3mm 1px; min-width: 28mm; display: inline-block; }
   .val.sm { min-width: 14mm; }
   .val.md { min-width: 22mm; }
+  .val.lg { min-width: 55mm; }
   .val.grow { flex: 1; min-width: 0; }
   .nrp { display: flex; gap: 1px; }
   .nrp span { display: inline-block; border: 1px solid #000; width: 6mm; height: 6mm; text-align: center; line-height: 6mm; font-weight: bold; font-size: 11pt; }
   .mendimi { padding: 2mm 0 4mm; }
   .vula { text-align: center; font-style: italic; padding: 6mm 0 2mm; margin-top: auto; }
   .spread { display: flex; justify-content: space-between; align-items: flex-end; gap: 8mm; margin-bottom: 6mm; }
+  .spread .cell { flex: 1; }
+  .spread .cell .val { flex: 1; min-width: 0; }
 </style></head><body>
 
 <div class="page"><div class="frame">
