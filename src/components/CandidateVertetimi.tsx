@@ -104,7 +104,7 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   </div>
 
   <div class="row">
-    <div class="cell"><span class="label">nr. Rendor</span><span class="val sm">${safe.numriRegjistrimit}</span></div>
+    <div class="cell"><span class="label">Nr. rendor</span><span class="val sm">${safe.numriRegjistrimit}</span></div>
     <div class="cell"><span class="label">kreu aftësimin për dhënien e provimit për paten-shofer për kat.</span><span class="val sm">"${safe.kategoria}"</span><span class="label">, sipas plan</span></div>
   </div>
 
