@@ -100,11 +100,10 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   <div class="row">
     <div class="cell"><span class="label">me vendbanim në</span><span class="val md">${__esc(vendbanimi || "&nbsp;")}</span></div>
     <div class="cell"><span class="label">nr. personal</span><div class="nrp">${safe.numriPersonal.split("").map(d => "<span>" + d + "</span>").join("")}</div></div>
-    <div class="cell"><span class="label">i regjistruar në auto shkollë më datën:</span></div>
+    <div class="cell"><span class="label">i regjistruar në auto shkollë më datën:</span><span class="val md">${formatDate(safe.dataRegjistrimit)}</span></div>
   </div>
 
   <div class="row">
-    <div class="cell"><span class="val md">${formatDate(safe.dataRegjistrimit)}</span></div>
     <div class="cell"><span class="label">nr. Rendor</span><span class="val sm">${safe.numriRegjistrimit}</span></div>
     <div class="cell"><span class="label">kreu aftësimin për dhënien e provimit për paten-shofer për kat.</span><span class="val sm">"${safe.kategoria}"</span><span class="label">, sipas plan</span></div>
   </div>
