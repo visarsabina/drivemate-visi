@@ -5,31 +5,85 @@ import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw } fr
 import builtinBank from "@/data/questionBank.json";
 
 const OPTION_KEYS = ["A", "B", "C", "D", "E"];
-const QUESTIONS_PER_TEST = 30;
 const PASS_THRESHOLD = 85; // percent
-const TEST_COUNT = 10;
+const TEST_COUNT = 20;
 
 type RawQ = { id: string; text: string; options: string[]; correctIndex: number; image?: string | null };
-type Q = { id: string; text: string; options: { key: string; text: string }[]; correctKey: string; image?: string | null };
+type Q = {
+  id: string;
+  text: string;
+  options: { key: string; text: string }[];
+  correctKey: string;
+  image?: string | null;
+};
 
-const ALL_QUESTIONS: Q[] = (builtinBank as RawQ[])
-  .map((q): Q | null => {
-    const opts = q.options.map((o) => (o || "").replace(/\s+/g, " ").trim()).filter((o) => o.length > 0 && o.length < 240);
-    if (opts.length < 2 || opts.length > OPTION_KEYS.length) return null;
-    if (q.correctIndex < 0 || q.correctIndex >= opts.length) return null;
-    const txt = (q.text || "").replace(/\s+/g, " ").trim();
-    if (!txt) return null;
-    return {
-      id: q.id,
-      text: txt,
-      options: opts.map((t, i) => ({ key: OPTION_KEYS[i], text: t })),
-      correctKey: OPTION_KEYS[q.correctIndex],
-      image: q.image ?? null,
-    };
-  })
-  .filter((q): q is Q => q !== null);
+function isTrueFalse(raw: RawQ): boolean {
+  if (raw.options.length !== 2) return false;
+  return raw.options.some((o) => /sakt[ëe]/i.test(o));
+}
 
-// Deterministic PRNG (mulberry32) for stable per-test question sets
+const RAW_VALID: RawQ[] = (builtinBank as RawQ[]).filter((q) => {
+  const opts = q.options.map((o) => (o || "").replace(/\s+/g, " ").trim()).filter((o) => o.length > 0 && o.length < 240);
+  const txt = (q.text || "").replace(/\s+/g, " ").trim();
+  if (!txt) return false;
+  if (opts.length < 2 || opts.length > OPTION_KEYS.length) return false;
+  if (q.correctIndex < 0 || q.correctIndex >= opts.length) return false;
+  return true;
+});
+
+function toQ(raw: RawQ): Q {
+  const opts = raw.options.map((o) => (o || "").replace(/\s+/g, " ").trim()).filter((o) => o.length > 0 && o.length < 240);
+  return {
+    id: raw.id,
+    text: (raw.text || "").replace(/\s+/g, " ").trim(),
+    options: opts.map((t, i) => ({ key: OPTION_KEYS[i], text: t })),
+    correctKey: OPTION_KEYS[raw.correctIndex],
+    image: raw.image ?? null,
+  };
+}
+
+// Categorized pools (raw)
+const hasImg = (q: RawQ) => !!q.image;
+const tLower = (q: RawQ) => (q.text || "").toLowerCase();
+const isSign = (q: RawQ) => /shenj/i.test(q.text || "");
+const isIntersection = (q: RawQ) => /udh[ëe]kryq|kryq[ëe]zim/i.test(q.text || "");
+const isSituation = (q: RawQ) => /situat/i.test(q.text || "");
+const isSemafor = (q: RawQ) => /semafor/i.test(q.text || "");
+const isFigure = (q: RawQ) => /figur/i.test(q.text || "");
+
+const POOLS = {
+  // 5 — image situation A/B/C
+  situationAbc: RAW_VALID.filter((q) => hasImg(q) && !isTrueFalse(q) && q.options.length === 3 && isSituation(q)),
+  // 8 — image traffic sign true/false
+  signTF: RAW_VALID.filter((q) => hasImg(q) && isTrueFalse(q) && isSign(q)),
+  // 3 — image intersection drawings
+  intersection: RAW_VALID.filter((q) => hasImg(q) && isIntersection(q)),
+  // 1 — image with 3 signs A/B/C
+  signAbc: RAW_VALID.filter((q) => hasImg(q) && !isTrueFalse(q) && q.options.length === 3 && isSign(q)),
+  // 5 — image situation true/false
+  situationTF: RAW_VALID.filter((q) => hasImg(q) && isTrueFalse(q) && isSituation(q)),
+  // 1 — image semafor
+  semafor: RAW_VALID.filter((q) => hasImg(q) && isSemafor(q)),
+  // 2 — image figure
+  figure: RAW_VALID.filter((q) => hasImg(q) && isFigure(q)),
+  // 5 — no image
+  noImage: RAW_VALID.filter((q) => !hasImg(q)),
+};
+
+const COMPOSITION: Array<{ key: keyof typeof POOLS; count: number }> = [
+  { key: "situationAbc", count: 5 },
+  { key: "signTF", count: 8 },
+  { key: "intersection", count: 3 },
+  { key: "signAbc", count: 1 },
+  { key: "situationTF", count: 5 },
+  { key: "semafor", count: 1 },
+  { key: "figure", count: 2 },
+  { key: "noImage", count: 5 },
+];
+
+const QUESTIONS_PER_TEST = COMPOSITION.reduce((s, c) => s + c.count, 0); // 30
+
+// Deterministic PRNG
 function mulberry32(seed: number) {
   return function () {
     let t = (seed += 0x6d2b79f5);
@@ -39,14 +93,38 @@ function mulberry32(seed: number) {
   };
 }
 
-function getTestQuestions(testIndex: number): Q[] {
-  const rnd = mulberry32(testIndex * 1000003 + 7);
-  const arr = [...ALL_QUESTIONS];
+function pickFromPool(pool: RawQ[], count: number, seed: number, usedIds: Set<string>): RawQ[] {
+  if (pool.length === 0) return [];
+  const rnd = mulberry32(seed);
+  const arr = [...pool];
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(rnd() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return arr.slice(0, Math.min(QUESTIONS_PER_TEST, arr.length));
+  const picked: RawQ[] = [];
+  for (const q of arr) {
+    if (picked.length >= count) break;
+    if (usedIds.has(q.id)) continue;
+    picked.push(q);
+    usedIds.add(q.id);
+  }
+  // Fallback: if pool too small (e.g. only 2 items but need 1 per test still fine), allow repeats
+  let idx = 0;
+  while (picked.length < count && arr.length > 0) {
+    picked.push(arr[idx % arr.length]);
+    idx++;
+  }
+  return picked;
+}
+
+function getTestQuestions(testIndex: number): Q[] {
+  const usedIds = new Set<string>();
+  const out: RawQ[] = [];
+  COMPOSITION.forEach((c, i) => {
+    const seed = testIndex * 1000003 + i * 7919 + 17;
+    out.push(...pickFromPool(POOLS[c.key], c.count, seed, usedIds));
+  });
+  return out.map(toQ);
 }
 
 type Result = { score: number; total: number; passed: boolean; date: string };
@@ -75,14 +153,22 @@ export default function CandidateTests({ candidateId, onClose }: Props) {
   const [activeTest, setActiveTest] = useState<number | null>(null);
   const [results, setResults] = useState<Record<number, Result>>({});
 
-  useEffect(() => { setResults(loadResults(candidateId)); }, [candidateId]);
+  useEffect(() => {
+    setResults(loadResults(candidateId));
+  }, [candidateId]);
 
   if (activeTest !== null) {
     return (
       <TestRunner
         testIndex={activeTest}
-        onExit={() => { setActiveTest(null); setResults(loadResults(candidateId)); }}
-        onFinish={(r) => { saveResult(candidateId, activeTest, r); setResults(loadResults(candidateId)); }}
+        onExit={() => {
+          setActiveTest(null);
+          setResults(loadResults(candidateId));
+        }}
+        onFinish={(r) => {
+          saveResult(candidateId, activeTest, r);
+          setResults(loadResults(candidateId));
+        }}
       />
     );
   }
@@ -95,7 +181,9 @@ export default function CandidateTests({ candidateId, onClose }: Props) {
         </Button>
         <div className="min-w-0">
           <h1 className="text-base font-semibold truncate">Testet e autoshkollës</h1>
-          <p className="text-xs text-muted-foreground">10 teste · {QUESTIONS_PER_TEST} pyetje · kalueshmëria {PASS_THRESHOLD}%</p>
+          <p className="text-xs text-muted-foreground">
+            {TEST_COUNT} teste · {QUESTIONS_PER_TEST} pyetje · kalueshmëria {PASS_THRESHOLD}%
+          </p>
         </div>
       </header>
 
@@ -112,14 +200,21 @@ export default function CandidateTests({ candidateId, onClose }: Props) {
                   </div>
                   {r ? (
                     <p className={`text-xs mt-1 ${r.passed ? "text-emerald-600" : "text-destructive"}`}>
-                      Rezultati: {r.score}/{r.total} ({Math.round((r.score / r.total) * 100)}%) · {r.passed ? "Kaluar" : "Dështuar"}
+                      Rezultati: {r.score}/{r.total} ({Math.round((r.score / r.total) * 100)}%) ·{" "}
+                      {r.passed ? "Kaluar" : "Dështuar"}
                     </p>
                   ) : (
                     <p className="text-xs text-muted-foreground mt-1">Ende i pa-bërë</p>
                   )}
                 </div>
                 <Button size="sm" onClick={() => setActiveTest(i)} className="shrink-0 gap-2">
-                  {r ? <><RotateCcw className="w-4 h-4" /> Provo sërish</> : <>Fillo</>}
+                  {r ? (
+                    <>
+                      <RotateCcw className="w-4 h-4" /> Provo sërish
+                    </>
+                  ) : (
+                    <>Fillo</>
+                  )}
                 </Button>
               </Card>
             );
@@ -130,12 +225,23 @@ export default function CandidateTests({ candidateId, onClose }: Props) {
   );
 }
 
-function TestRunner({ testIndex, onExit, onFinish }: { testIndex: number; onExit: () => void; onFinish: (r: Result) => void }) {
+function TestRunner({
+  testIndex,
+  onExit,
+  onFinish,
+}: {
+  testIndex: number;
+  onExit: () => void;
+  onFinish: (r: Result) => void;
+}) {
   const questions = useMemo(() => getTestQuestions(testIndex), [testIndex]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
 
-  const score = useMemo(() => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? 1 : 0), 0), [questions, answers]);
+  const score = useMemo(
+    () => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? 1 : 0), 0),
+    [questions, answers]
+  );
   const total = questions.length;
   const pct = total ? Math.round((score / total) * 100) : 0;
   const passed = pct >= PASS_THRESHOLD;
@@ -156,7 +262,9 @@ function TestRunner({ testIndex, onExit, onFinish }: { testIndex: number; onExit
         </Button>
         <div className="min-w-0 flex-1">
           <h1 className="text-base font-semibold truncate">Testi {testIndex + 1}</h1>
-          <p className="text-xs text-muted-foreground">{answeredCount}/{total} të përgjigjura</p>
+          <p className="text-xs text-muted-foreground">
+            {answeredCount}/{total} të përgjigjura
+          </p>
         </div>
       </header>
 
@@ -166,7 +274,9 @@ function TestRunner({ testIndex, onExit, onFinish }: { testIndex: number; onExit
             <div className="flex items-center gap-3">
               <Trophy className={`w-8 h-8 ${passed ? "text-emerald-500" : "text-destructive"}`} />
               <div>
-                <p className="text-lg font-bold">{score}/{total} pikë ({pct}%)</p>
+                <p className="text-lg font-bold">
+                  {score}/{total} pikë ({pct}%)
+                </p>
                 <p className={`text-sm ${passed ? "text-emerald-600" : "text-destructive"}`}>
                   {passed ? "Urime! Ke kaluar testin." : `Nuk e kalove. Duhen ${PASS_THRESHOLD}% për kalim.`}
                 </p>
@@ -178,10 +288,21 @@ function TestRunner({ testIndex, onExit, onFinish }: { testIndex: number; onExit
         {questions.map((q, idx) => {
           const userKey = answers[q.id];
           return (
-            <Card key={q.id} className="p-4">
+            <Card key={`${q.id}-${idx}`} className="p-4">
               <p className="text-sm font-medium mb-3">
-                <span className="text-muted-foreground mr-2">{idx + 1}.</span>{q.text}
+                <span className="text-muted-foreground mr-2">{idx + 1}.</span>
+                {q.text}
               </p>
+              {q.image && (
+                <img
+                  src={`/literatura/${q.image}`}
+                  alt=""
+                  className="mb-3 max-h-64 w-auto rounded-md border border-border"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              )}
               <div className="space-y-2">
                 {q.options.map((opt) => {
                   const selected = userKey === opt.key;
@@ -201,9 +322,14 @@ function TestRunner({ testIndex, onExit, onFinish }: { testIndex: number; onExit
                       onClick={() => setAnswers((p) => ({ ...p, [q.id]: opt.key }))}
                       className={`w-full text-left px-3 py-2 rounded-md border-2 text-sm transition-colors ${cls} disabled:cursor-default`}
                     >
-                      <span className="font-semibold mr-2">{opt.key}.</span>{opt.text}
-                      {submitted && isCorrect && <CheckCircle2 className="w-4 h-4 inline-block ml-2 text-emerald-600" />}
-                      {submitted && selected && !isCorrect && <XCircle className="w-4 h-4 inline-block ml-2 text-destructive" />}
+                      <span className="font-semibold mr-2">{opt.key}.</span>
+                      {opt.text}
+                      {submitted && isCorrect && (
+                        <CheckCircle2 className="w-4 h-4 inline-block ml-2 text-emerald-600" />
+                      )}
+                      {submitted && selected && !isCorrect && (
+                        <XCircle className="w-4 h-4 inline-block ml-2 text-destructive" />
+                      )}
                     </button>
                   );
                 })}
@@ -215,14 +341,27 @@ function TestRunner({ testIndex, onExit, onFinish }: { testIndex: number; onExit
         {!submitted ? (
           <div className="sticky bottom-0 bg-background/90 backdrop-blur-sm border-t border-border p-3 -mx-4">
             <div className="max-w-3xl mx-auto flex items-center gap-3">
-              <p className="text-xs text-muted-foreground flex-1">{answeredCount}/{total} të përgjigjura</p>
-              <Button onClick={handleSubmit} disabled={answeredCount === 0}>Përfundo testin</Button>
+              <p className="text-xs text-muted-foreground flex-1">
+                {answeredCount}/{total} të përgjigjura
+              </p>
+              <Button onClick={handleSubmit} disabled={answeredCount === 0}>
+                Përfundo testin
+              </Button>
             </div>
           </div>
         ) : (
           <div className="flex gap-2">
-            <Button variant="outline" onClick={onExit} className="flex-1">Kthehu te lista</Button>
-            <Button onClick={() => { setAnswers({}); setSubmitted(false); window.scrollTo({ top: 0 }); }} className="flex-1 gap-2">
+            <Button variant="outline" onClick={onExit} className="flex-1">
+              Kthehu te lista
+            </Button>
+            <Button
+              onClick={() => {
+                setAnswers({});
+                setSubmitted(false);
+                window.scrollTo({ top: 0 });
+              }}
+              className="flex-1 gap-2"
+            >
               <RotateCcw className="w-4 h-4" /> Provo sërish
             </Button>
           </div>
