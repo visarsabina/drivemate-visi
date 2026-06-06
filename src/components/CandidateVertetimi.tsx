@@ -133,10 +133,10 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   <div class="spread">
     <div class="cell"><span class="label">Emri dhe mbiemri i shofer insruktorit</span><span class="val md">${__esc(instruktori)}</span></div>
     <div class="cell"><span class="label">Nënshkrimi i shofer insruktorit</span><span class="val md">&nbsp;</span></div>
-    <div class="cell"><span class="label">Data:</span><span class="val md">${formatDate(dataLeshimit)}</span></div>
   </div>
 
   <div class="spread">
+    <div class="cell"><span class="label">Data e lëshimit:</span><span class="val md">${formatDate(dataLeshimit)}</span></div>
     <div class="cell" style="margin-left:auto;"><span class="label">Drejtori:</span><span class="val md"><strong>Fadil Jaha</strong></span></div>
   </div>
 
