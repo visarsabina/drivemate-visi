@@ -143,6 +143,10 @@ const CandidatePortal = () => {
     );
   }
 
+  if (showTests) {
+    return <CandidateTests candidateId={candidate.id} onClose={() => setShowTests(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-muted/30">
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border px-4 py-3 flex items-center gap-3">
