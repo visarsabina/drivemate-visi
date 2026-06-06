@@ -9,8 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { LogOut, CreditCard, GraduationCap, User as UserIcon, CalendarPlus, Loader2, Clock } from "lucide-react";
+import { LogOut, CreditCard, GraduationCap, User as UserIcon, CalendarPlus, Loader2, Clock, ClipboardList } from "lucide-react";
 import logo from "@/assets/logo.png";
+import CandidateTests from "@/components/CandidateTests";
 
 interface CandidateRow {
   id: string;
