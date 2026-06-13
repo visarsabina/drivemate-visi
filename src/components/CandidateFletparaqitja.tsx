@@ -172,7 +172,7 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title> </title>
 
 <div class="wrap">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1mm;">
-    <div class="tel">Tel:049/240-678</div>
+    <div class="tel">Tel:${__esc(candidate.telefon || "")}</div>
     <img src="${coatUrl}" alt="" style="height:11mm;" />
     <div style="width:50mm;"></div>
   </div>
