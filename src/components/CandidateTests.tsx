@@ -237,6 +237,7 @@ function TestRunner({
   const questions = useMemo(() => getTestQuestions(testIndex), [testIndex]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [currentIdx, setCurrentIdx] = useState(0);
 
   const score = useMemo(
     () => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? 1 : 0), 0),
@@ -253,6 +254,10 @@ function TestRunner({
   };
 
   const answeredCount = Object.keys(answers).length;
+  const q = questions[currentIdx];
+  const userKey = q ? answers[q.id] : undefined;
+  const isLast = currentIdx === total - 1;
+  const isFirst = currentIdx === 0;
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -263,12 +268,12 @@ function TestRunner({
         <div className="min-w-0 flex-1">
           <h1 className="text-base font-semibold truncate">Testi {testIndex + 1}</h1>
           <p className="text-xs text-muted-foreground">
-            {answeredCount}/{total} të përgjigjura
+            Pyetja {currentIdx + 1}/{total} · {answeredCount} të përgjigjura
           </p>
         </div>
       </header>
 
-      <main className="p-4 max-w-3xl mx-auto space-y-3">
+      <main className="p-4 max-w-3xl mx-auto space-y-3 pb-24">
         {submitted && (
           <Card className={`p-4 border-2 ${passed ? "border-emerald-500" : "border-destructive"}`}>
             <div className="flex items-center gap-3">
@@ -285,88 +290,98 @@ function TestRunner({
           </Card>
         )}
 
-        {questions.map((q, idx) => {
-          const userKey = answers[q.id];
-          return (
-            <Card key={`${q.id}-${idx}`} className="p-4">
-              <p className="text-sm font-medium mb-3">
-                <span className="text-muted-foreground mr-2">{idx + 1}.</span>
-                {q.text}
-              </p>
-              {q.image && (
-                <img
-                  src={`/literatura/${q.image}`}
-                  alt=""
-                  className="mb-3 max-h-64 w-auto rounded-md border border-border"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              )}
-              <div className="space-y-2">
-                {q.options.map((opt) => {
-                  const selected = userKey === opt.key;
-                  const isCorrect = opt.key === q.correctKey;
-                  let cls = "border-border";
-                  if (submitted) {
-                    if (isCorrect) cls = "border-emerald-500 bg-emerald-500/10";
-                    else if (selected && !isCorrect) cls = "border-destructive bg-destructive/10";
-                  } else if (selected) {
-                    cls = "border-primary bg-primary/10";
-                  }
-                  return (
-                    <button
-                      key={opt.key}
-                      type="button"
-                      disabled={submitted}
-                      onClick={() => setAnswers((p) => ({ ...p, [q.id]: opt.key }))}
-                      className={`w-full text-left px-3 py-2 rounded-md border-2 text-sm transition-colors ${cls} disabled:cursor-default`}
-                    >
-                      <span className="font-semibold mr-2">{opt.key}.</span>
-                      {opt.text}
-                      {submitted && isCorrect && (
-                        <CheckCircle2 className="w-4 h-4 inline-block ml-2 text-emerald-600" />
-                      )}
-                      {submitted && selected && !isCorrect && (
-                        <XCircle className="w-4 h-4 inline-block ml-2 text-destructive" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </Card>
-          );
-        })}
-
-        {!submitted ? (
-          <div className="sticky bottom-0 bg-background/90 backdrop-blur-sm border-t border-border p-3 -mx-4">
-            <div className="max-w-3xl mx-auto flex items-center gap-3">
-              <p className="text-xs text-muted-foreground flex-1">
-                {answeredCount}/{total} të përgjigjura
-              </p>
-              <Button onClick={handleSubmit} disabled={answeredCount === 0}>
-                Përfundo testin
-              </Button>
+        {q && (
+          <Card className="p-4">
+            <p className="text-sm font-medium mb-3">
+              <span className="text-muted-foreground mr-2">{currentIdx + 1}.</span>
+              {q.text}
+            </p>
+            {q.image && (
+              <img
+                src={`/literatura/${q.image}`}
+                alt=""
+                className="mb-3 max-h-64 w-auto rounded-md border border-border"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
+              />
+            )}
+            <div className="space-y-2">
+              {q.options.map((opt) => {
+                const selected = userKey === opt.key;
+                const isCorrect = opt.key === q.correctKey;
+                let cls = "border-border";
+                if (submitted) {
+                  if (isCorrect) cls = "border-emerald-500 bg-emerald-500/10";
+                  else if (selected && !isCorrect) cls = "border-destructive bg-destructive/10";
+                } else if (selected) {
+                  cls = "border-primary bg-primary/10";
+                }
+                return (
+                  <button
+                    key={opt.key}
+                    type="button"
+                    disabled={submitted}
+                    onClick={() => setAnswers((p) => ({ ...p, [q.id]: opt.key }))}
+                    className={`w-full text-left px-3 py-2 rounded-md border-2 text-sm transition-colors ${cls} disabled:cursor-default`}
+                  >
+                    <span className="font-semibold mr-2">{opt.key}.</span>
+                    {opt.text}
+                    {submitted && isCorrect && (
+                      <CheckCircle2 className="w-4 h-4 inline-block ml-2 text-emerald-600" />
+                    )}
+                    {submitted && selected && !isCorrect && (
+                      <XCircle className="w-4 h-4 inline-block ml-2 text-destructive" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
-          </div>
-        ) : (
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={onExit} className="flex-1">
-              Kthehu te lista
-            </Button>
-            <Button
-              onClick={() => {
-                setAnswers({});
-                setSubmitted(false);
-                window.scrollTo({ top: 0 });
-              }}
-              className="flex-1 gap-2"
-            >
-              <RotateCcw className="w-4 h-4" /> Provo sërish
-            </Button>
-          </div>
+          </Card>
         )}
+
+        <div className="sticky bottom-0 bg-background/90 backdrop-blur-sm border-t border-border p-3 -mx-4">
+          <div className="max-w-3xl mx-auto flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
+              disabled={isFirst}
+              className="gap-1"
+            >
+              <ArrowLeft className="w-4 h-4" /> Prapa
+            </Button>
+            <p className="text-xs text-muted-foreground flex-1 text-center">
+              {currentIdx + 1}/{total}
+            </p>
+            {!submitted && isLast ? (
+              <Button onClick={handleSubmit} disabled={answeredCount === 0}>
+                Përfundo
+              </Button>
+            ) : !submitted ? (
+              <Button onClick={() => setCurrentIdx((i) => Math.min(total - 1, i + 1))}>
+                Para →
+              </Button>
+            ) : isLast ? (
+              <Button
+                onClick={() => {
+                  setAnswers({});
+                  setSubmitted(false);
+                  setCurrentIdx(0);
+                  window.scrollTo({ top: 0 });
+                }}
+                className="gap-2"
+              >
+                <RotateCcw className="w-4 h-4" /> Provo sërish
+              </Button>
+            ) : (
+              <Button onClick={() => setCurrentIdx((i) => Math.min(total - 1, i + 1))}>
+                Para →
+              </Button>
+            )}
+          </div>
+        </div>
       </main>
     </div>
   );
 }
+
