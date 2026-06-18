@@ -291,22 +291,28 @@ function TestRunner({
         )}
 
         {q && (
-          <Card className="p-4">
-            <p className="text-sm font-medium mb-3">
-              <span className="text-muted-foreground mr-2">{currentIdx + 1}.</span>
-              {q.text}
-            </p>
-            {q.image && (
-              <img
-                src={`/literatura/${q.image}`}
-                alt=""
-                className="mb-3 max-h-64 w-auto rounded-md border border-border"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                }}
-              />
-            )}
-            <div className="space-y-2">
+          <Card className="p-4 flex flex-col" style={{ minHeight: "560px" }}>
+            <div className="h-16 mb-3">
+              <p className="text-sm font-medium line-clamp-3">
+                <span className="text-muted-foreground mr-2">{currentIdx + 1}.</span>
+                {q.text}
+              </p>
+            </div>
+            <div className="h-56 mb-3 flex items-center justify-center bg-muted/30 rounded-md border border-border overflow-hidden">
+              {q.image ? (
+                <img
+                  src={`/literatura/${q.image}`}
+                  alt=""
+                  className="max-h-full max-w-full object-contain"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              ) : (
+                <span className="text-xs text-muted-foreground">Pa figurë</span>
+              )}
+            </div>
+            <div className="space-y-2 mt-auto">
               {q.options.map((opt) => {
                 const selected = userKey === opt.key;
                 const isCorrect = opt.key === q.correctKey;
