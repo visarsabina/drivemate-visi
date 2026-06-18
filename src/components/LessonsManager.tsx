@@ -129,14 +129,19 @@ const LessonsManager = ({ candidateId, candidateName, totalLessons, readOnly = f
             </div>
             <div className="space-y-1">
               <Label className="text-xs">Orë të mbajtura</Label>
-              <Input
-                type="number"
-                step="0.5"
-                min="0.5"
-                value={hours}
-                onChange={(e) => setHours(e.target.value)}
-                placeholder="p.sh. 2"
-              />
+              <div className="flex gap-2">
+                {["1", "2", "3"].map((h) => (
+                  <Button
+                    key={h}
+                    type="button"
+                    variant={hours === h ? "default" : "outline"}
+                    className="flex-1"
+                    onClick={() => setHours(h)}
+                  >
+                    {h}
+                  </Button>
+                ))}
+              </div>
             </div>
             <Button onClick={handleAdd} disabled={saving} className="gap-2">
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
