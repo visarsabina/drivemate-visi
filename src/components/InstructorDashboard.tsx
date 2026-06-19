@@ -87,6 +87,17 @@ const InstructorDashboard = () => {
 
   return (
     <div className="space-y-6">
+      <div className="flex gap-2">
+        <Button variant={tab === "candidates" ? "default" : "outline"} size="sm" onClick={() => setTab("candidates")}>
+          Kandidatët e Mi
+        </Button>
+        <Button variant={tab === "reports" ? "default" : "outline"} size="sm" onClick={() => setTab("reports")}>
+          Raporti i Orëve
+        </Button>
+      </div>
+
+      {tab === "reports" ? <InstructorReports /> : (
+      <>
       <div>
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <UsersIcon className="w-6 h-6 text-primary" />
