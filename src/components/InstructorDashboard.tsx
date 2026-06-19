@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { formatDateDMY } from "@/lib/date";
 import { toast } from "sonner";
 import LessonsManager from "@/components/LessonsManager";
+import InstructorReports from "@/components/InstructorReports";
 
 interface InstructorCandidate {
   id: string;
