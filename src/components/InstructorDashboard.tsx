@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { formatDateDMY } from "@/lib/date";
 import { toast } from "sonner";
 import LessonsManager from "@/components/LessonsManager";
+import InstructorReports from "@/components/InstructorReports";
 
 interface InstructorCandidate {
   id: string;
@@ -35,6 +36,7 @@ const InstructorDashboard = () => {
   const [candidates, setCandidates] = useState<InstructorCandidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<InstructorCandidate | null>(null);
+  const [tab, setTab] = useState<"candidates" | "reports">("candidates");
 
   useEffect(() => {
     if (!user || tenantLoading) return;
@@ -85,6 +87,17 @@ const InstructorDashboard = () => {
 
   return (
     <div className="space-y-6">
+      <div className="flex gap-2">
+        <Button variant={tab === "candidates" ? "default" : "outline"} size="sm" onClick={() => setTab("candidates")}>
+          Kandidatët e Mi
+        </Button>
+        <Button variant={tab === "reports" ? "default" : "outline"} size="sm" onClick={() => setTab("reports")}>
+          Raporti i Orëve
+        </Button>
+      </div>
+
+      {tab === "reports" ? <InstructorReports /> : (
+      <>
       <div>
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <UsersIcon className="w-6 h-6 text-primary" />
@@ -160,6 +173,8 @@ const InstructorDashboard = () => {
           </TableBody>
         </Table>
       </div>
+      </>
+      )}
     </div>
   );
 };
