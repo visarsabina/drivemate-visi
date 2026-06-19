@@ -126,7 +126,7 @@ const Staff = () => {
               <p className="text-muted-foreground">Nuk ka instruktorë për këtë kategori.</p>
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
               {filtered.map((member) => {
                 const cats = parseCats(member.categories);
                 return (
@@ -134,19 +134,21 @@ const Staff = () => {
                     key={member.id}
                     className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 group"
                   >
-                    <div className="aspect-square bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
-                      {member.photo_url ? (
-                        <img
-                          src={member.photo_url}
-                          alt={`${member.role} ${member.name}`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <User className="w-24 h-24 text-primary/40" />
-                      )}
+                    <div className="pt-6 flex items-center justify-center">
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center ring-2 ring-primary/20">
+                        {member.photo_url ? (
+                          <img
+                            src={member.photo_url}
+                            alt={`${member.role} ${member.name}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <User className="w-10 h-10 text-primary/40" />
+                        )}
+                      </div>
                     </div>
-                    <CardContent className="p-5 text-center">
+                    <CardContent className="p-4 text-center">
                       <h2 className="font-bold text-lg mb-1">{member.name}</h2>
                       <p className="text-sm text-primary font-medium mb-3">{member.role}</p>
                       {cats.length > 0 && (
