@@ -173,6 +173,8 @@ const InstructorDashboard = () => {
           </TableBody>
         </Table>
       </div>
+      </>
+      )}
     </div>
   );
 };
