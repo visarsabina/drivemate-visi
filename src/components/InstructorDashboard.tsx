@@ -36,6 +36,7 @@ const InstructorDashboard = () => {
   const [candidates, setCandidates] = useState<InstructorCandidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<InstructorCandidate | null>(null);
+  const [tab, setTab] = useState<"candidates" | "reports">("candidates");
 
   useEffect(() => {
     if (!user || tenantLoading) return;
