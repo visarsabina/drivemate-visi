@@ -33,6 +33,9 @@ const App = () => (
             <Route path="/stafi" element={<Staff />} />
             <Route path="/install" element={<Install />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/trust" element={<Trust />} />
+            <Route path="/privacy" element={<Trust />} />
+            <Route path="/security" element={<Trust />} />
             {/* Legacy login route -> redirect to secure auth */}
             <Route path="/login" element={<Navigate to="/auth" replace />} />
             <Route
