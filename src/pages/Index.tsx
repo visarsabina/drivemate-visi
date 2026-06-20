@@ -190,19 +190,32 @@ const Index = () => {
 
               <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
-                  {dashboardActions.map((action) => {
+                <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-5">
+                  {dashboardActions.map((action, idx) => {
                     const Icon = action.icon;
+                    const gradients = [
+                      "from-blue-500 to-indigo-600",
+                      "from-emerald-500 to-teal-600",
+                      "from-amber-500 to-orange-600",
+                      "from-pink-500 to-rose-600",
+                      "from-violet-500 to-purple-600",
+                    ];
+                    const grad = gradients[idx % gradients.length];
                     return (
-                      <Button
+                      <button
                         key={action.id}
-                        variant="outline"
-                        className="h-auto flex flex-col items-center gap-2 lg:gap-3 p-4 lg:p-6 hover:bg-primary/5 hover:border-primary/30"
                         onClick={() => setActiveView(action.id)}
+                        className="group flex flex-col items-center gap-1.5 focus:outline-none"
                       >
-                        <Icon className="w-6 h-6 lg:w-8 lg:h-8 text-primary" />
-                        <span className="text-xs lg:text-sm font-medium text-center leading-tight">{action.label}</span>
-                      </Button>
+                        <div
+                          className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${grad} flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-200 group-active:scale-95 group-hover:scale-105`}
+                        >
+                          <Icon className="w-7 h-7 sm:w-9 sm:h-9 text-white" strokeWidth={2} />
+                        </div>
+                        <span className="text-[11px] sm:text-xs font-medium text-center leading-tight text-foreground/80 line-clamp-2 max-w-[80px]">
+                          {action.label}
+                        </span>
+                      </button>
                     );
                   })}
                 </div>
