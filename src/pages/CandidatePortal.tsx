@@ -196,7 +196,7 @@ const CandidatePortal = () => {
             <TabsTrigger value="kerkesat" className="text-[11px] py-1.5">Kërkesat</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="pagesat" className="mt-3">
+          <TabsContent value="pagesat" className="mt-2 flex-1 overflow-y-auto">
             <Card className="p-3">
               <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                 <CreditCard className="w-4 h-4" /> Pagesat
@@ -209,7 +209,7 @@ const CandidatePortal = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="oret" className="mt-3">
+          <TabsContent value="oret" className="mt-2 flex-1 overflow-y-auto">
             <Card className="p-3">
               <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                 <GraduationCap className="w-4 h-4" /> Orët praktike
@@ -222,7 +222,7 @@ const CandidatePortal = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="termini" className="mt-3">
+          <TabsContent value="termini" className="mt-2 flex-1 overflow-y-auto">
             <Card className="p-3">
               <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                 <Clock className="w-4 h-4" /> Termini i ardhshëm
@@ -238,7 +238,7 @@ const CandidatePortal = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="kerkesat" className="mt-3">
+          <TabsContent value="kerkesat" className="mt-2 flex-1 overflow-y-auto">
             <Card className="p-3">
               {requests.length === 0 ? (
                 <p className="text-sm text-muted-foreground">Nuk ke kërkesa. Shtyp “Trego termin” më lart.</p>
