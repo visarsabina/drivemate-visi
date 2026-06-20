@@ -188,12 +188,12 @@ const CandidatePortal = () => {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="pagesat" className="w-full">
-          <TabsList className="w-full grid grid-cols-4 h-auto">
-            <TabsTrigger value="pagesat" className="text-xs py-2">Pagesat</TabsTrigger>
-            <TabsTrigger value="oret" className="text-xs py-2">Orët</TabsTrigger>
-            <TabsTrigger value="termini" className="text-xs py-2">Termini</TabsTrigger>
-            <TabsTrigger value="kerkesat" className="text-xs py-2">Kërkesat</TabsTrigger>
+        <Tabs defaultValue="pagesat" className="w-full flex-1 flex flex-col min-h-0">
+          <TabsList className="w-full grid grid-cols-4 h-auto shrink-0">
+            <TabsTrigger value="pagesat" className="text-[11px] py-1.5">Pagesat</TabsTrigger>
+            <TabsTrigger value="oret" className="text-[11px] py-1.5">Orët</TabsTrigger>
+            <TabsTrigger value="termini" className="text-[11px] py-1.5">Termini</TabsTrigger>
+            <TabsTrigger value="kerkesat" className="text-[11px] py-1.5">Kërkesat</TabsTrigger>
           </TabsList>
 
           <TabsContent value="pagesat" className="mt-3">
