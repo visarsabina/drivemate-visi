@@ -1,0 +1,2 @@
+REVOKE SELECT (monthly_fee, subscription_status, subscription_ends_at, subscription_notes, last_payment_date, trial_ends_at) ON public.tenants FROM authenticated, anon;
+GRANT SELECT (id, name, slug, domain, logo_url, primary_color, phone, address, email, director_name, is_active, created_at, updated_at) ON public.tenants TO authenticated;
