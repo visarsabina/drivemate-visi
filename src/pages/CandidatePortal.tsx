@@ -158,30 +158,30 @@ const CandidatePortal = () => {
         </Button>
       </header>
 
-      <main className="flex-1 overflow-y-auto p-3 space-y-3 max-w-3xl w-full mx-auto">
+      <main className="flex-1 overflow-hidden p-2 space-y-2 max-w-3xl w-full mx-auto flex flex-col">
         {/* Profile */}
-        <Card className="p-3">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-              <UserIcon className="w-5 h-5 text-primary" />
+        <Card className="p-2 shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+              <UserIcon className="w-4 h-4 text-primary" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-sm font-semibold truncate">{candidate.emri} {candidate.mbiemri}</h2>
-              <p className="text-[11px] text-muted-foreground truncate">Nr. {candidate.numri_regjistrimit} · Kategoria {candidate.kategoria}</p>
+              <h2 className="text-sm font-semibold truncate leading-tight">{candidate.emri} {candidate.mbiemri}</h2>
+              <p className="text-[10px] text-muted-foreground truncate">Nr. {candidate.numri_regjistrimit} · Kategoria {candidate.kategoria}</p>
             </div>
           </div>
         </Card>
 
         {/* Quick actions */}
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 gap-2 shrink-0">
           {quickActions.map((a) => {
             const Icon = a.icon;
             return (
-              <button key={a.id} onClick={a.onClick} className="group flex flex-col items-center gap-1 focus:outline-none">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${a.grad} flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-200 group-active:scale-95`}>
-                  <Icon className="w-6 h-6 text-white" strokeWidth={2} />
+              <button key={a.id} onClick={a.onClick} className="group flex items-center gap-2 p-2 rounded-xl bg-card border border-border focus:outline-none active:scale-95 transition-transform">
+                <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${a.grad} flex items-center justify-center shadow shadow-black/10 shrink-0`}>
+                  <Icon className="w-5 h-5 text-white" strokeWidth={2} />
                 </div>
-                <span className="text-[10px] font-medium text-center leading-tight text-foreground/80 line-clamp-2 max-w-[72px]">{a.label}</span>
+                <span className="text-xs font-medium text-foreground/80 truncate">{a.label}</span>
               </button>
             );
           })}
