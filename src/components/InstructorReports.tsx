@@ -80,7 +80,7 @@ const InstructorReports = ({ adminMode = false }: Props) => {
       const from = toISO(startOf(period));
       let query = supabase
         .from("candidate_lessons")
-        .select("id, data, hours, candidate_id, created_by, candidates(emri, mbiemri, numri_regjistrimit)")
+        .select("id, data, hours, candidate_id, created_by")
         .gte("data", from)
         .order("data", { ascending: false });
 
@@ -91,9 +91,31 @@ const InstructorReports = ({ adminMode = false }: Props) => {
       }
 
       const { data, error } = await query;
+      if (cancelled) return;
+      if (error) {
+        toast.error("Gabim: " + error.message);
+        setRows([]);
+        setLoading(false);
+        return;
+      }
+      const lessons = (data ?? []) as any[];
+      const candidateIds = Array.from(new Set(lessons.map(l => l.candidate_id).filter(Boolean)));
+      let candidatesMap = new Map<string, { emri: string; mbiemri: string; numri_regjistrimit: string }>();
+      if (candidateIds.length > 0) {
+        const { data: cands } = await supabase
+          .from("candidates")
+          .select("id, emri, mbiemri, numri_regjistrimit")
+          .in("id", candidateIds);
+        (cands ?? []).forEach((c: any) => candidatesMap.set(c.id, {
+          emri: c.emri, mbiemri: c.mbiemri, numri_regjistrimit: c.numri_regjistrimit,
+        }));
+      }
+      const merged: LessonRow[] = lessons.map(l => ({
+        ...l,
+        candidates: candidatesMap.get(l.candidate_id) ?? null,
+      }));
       if (!cancelled) {
-        if (error) toast.error("Gabim: " + error.message);
-        setRows(((data as any) ?? []) as LessonRow[]);
+        setRows(merged);
         setLoading(false);
       }
     })();
