@@ -25,6 +25,7 @@ const adminNavItems = [
   { id: "employees", label: "Punëtorët", icon: Briefcase },
   { id: "licenses", label: "Licencat", icon: IdCard },
   { id: "tests", label: "Gjenero Testin", icon: FileQuestion },
+  { id: "instructor-reports", label: "Raporti i Orëve", icon: Clock },
   { id: "users", label: "Përdoruesit", icon: ShieldCheck },
   { id: "activity", label: "Historiku", icon: History },
 ];
