@@ -22,6 +22,7 @@ import VehicleAlerts from "@/components/VehicleAlerts";
 import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TestGenerator from "@/components/TestGenerator";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
