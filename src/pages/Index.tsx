@@ -22,6 +22,7 @@ import VehicleAlerts from "@/components/VehicleAlerts";
 import EmployeeAlerts from "@/components/EmployeeAlerts";
 import CategoryYearStats from "@/components/CategoryYearStats";
 import InstructorDashboard from "@/components/InstructorDashboard";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TestGenerator from "@/components/TestGenerator";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
@@ -180,17 +181,9 @@ const Index = () => {
             <>
               <StatsCards candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
 
-              <CategoryYearStats candidates={candidates} />
-
-              <VehicleAlerts onViewVehicles={() => setActiveView("vehicles")} />
-
-              <EmployeeAlerts onViewEmployees={() => setActiveView("employees")} />
-
-              <TodayPracticalExams candidates={candidates} />
-
               <div>
-                <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
-                <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-5">
+                <h3 className="text-base lg:text-lg font-semibold mb-3">Dokumentet</h3>
+                <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-5">
                   {dashboardActions.map((action, idx) => {
                     const Icon = action.icon;
                     const gradients = [
@@ -205,14 +198,14 @@ const Index = () => {
                       <button
                         key={action.id}
                         onClick={() => setActiveView(action.id)}
-                        className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                        className="group flex flex-col items-center gap-1 focus:outline-none"
                       >
                         <div
-                          className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${grad} flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-200 group-active:scale-95 group-hover:scale-105`}
+                          className={`w-14 h-14 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${grad} flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-200 group-active:scale-95 group-hover:scale-105`}
                         >
-                          <Icon className="w-7 h-7 sm:w-9 sm:h-9 text-white" strokeWidth={2} />
+                          <Icon className="w-6 h-6 sm:w-9 sm:h-9 text-white" strokeWidth={2} />
                         </div>
-                        <span className="text-[11px] sm:text-xs font-medium text-center leading-tight text-foreground/80 line-clamp-2 max-w-[80px]">
+                        <span className="text-[10px] sm:text-xs font-medium text-center leading-tight text-foreground/80 line-clamp-2 max-w-[72px]">
                           {action.label}
                         </span>
                       </button>
@@ -221,10 +214,27 @@ const Index = () => {
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Kandidatët e Fundit</h3>
-                <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
-              </div>
+              <Tabs defaultValue="stats" className="w-full">
+                <TabsList className="w-full grid grid-cols-4 h-auto">
+                  <TabsTrigger value="stats" className="text-xs py-2">Statistika</TabsTrigger>
+                  <TabsTrigger value="alerts" className="text-xs py-2">Alertet</TabsTrigger>
+                  <TabsTrigger value="exams" className="text-xs py-2">Provimet</TabsTrigger>
+                  <TabsTrigger value="recent" className="text-xs py-2">Të fundit</TabsTrigger>
+                </TabsList>
+                <TabsContent value="stats" className="mt-3">
+                  <CategoryYearStats candidates={candidates} />
+                </TabsContent>
+                <TabsContent value="alerts" className="mt-3 space-y-3">
+                  <VehicleAlerts onViewVehicles={() => setActiveView("vehicles")} />
+                  <EmployeeAlerts onViewEmployees={() => setActiveView("employees")} />
+                </TabsContent>
+                <TabsContent value="exams" className="mt-3">
+                  <TodayPracticalExams candidates={candidates} />
+                </TabsContent>
+                <TabsContent value="recent" className="mt-3">
+                  <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
+                </TabsContent>
+              </Tabs>
             </>
           )}
 
