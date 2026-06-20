@@ -32,7 +32,7 @@ import { useCandidates } from "@/hooks/useCandidates";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
 import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
 import { Candidate, Payment } from "@/types/candidate";
-import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2, FileQuestion } from "lucide-react";
+import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2, FileQuestion, Users, UserPlus, CreditCard, CalendarDays, Wallet, Car, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
