@@ -225,21 +225,21 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Button variant="ghost" onClick={onBack} className="gap-2">
-          <ArrowLeft className="w-4 h-4" /> Kthehu tek lista
+    <div className="flex flex-col lg:block lg:space-y-6 h-[calc(100dvh-7rem)] lg:h-auto overflow-hidden lg:overflow-visible">
+      <div className="flex items-center justify-between gap-2 shrink-0 mb-2 lg:mb-0">
+        <Button variant="ghost" size="sm" onClick={onBack} className="gap-1.5 px-2 lg:px-3">
+          <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Kthehu tek lista</span><span className="sm:hidden">Kthehu</span>
         </Button>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={openEditDialog} className="gap-2">
-            <Pencil className="w-4 h-4" /> Modifiko
+        <div className="flex gap-1.5">
+          <Button variant="outline" size="sm" onClick={openEditDialog} className="gap-1.5 px-2 lg:px-3">
+            <Pencil className="w-4 h-4" /> <span className="hidden sm:inline">Modifiko</span>
           </Button>
           {isAdmin && <CandidateAccountDialog candidate={candidate} />}
           {isAdmin && onDelete && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="outline" className="gap-2 text-destructive hover:text-destructive hover:bg-destructive/10">
-                  <Trash2 className="w-4 h-4" /> Fshij
+                <Button variant="outline" size="sm" className="gap-1.5 px-2 lg:px-3 text-destructive hover:text-destructive hover:bg-destructive/10">
+                  <Trash2 className="w-4 h-4" /> <span className="hidden sm:inline">Fshij</span>
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -264,108 +264,116 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
         </div>
       </div>
 
-      <div className="glass-card rounded-xl p-3 sm:p-6">
-        <div className="flex items-start justify-between gap-2 mb-3 sm:mb-4">
-          <div className="min-w-0">
-            <h2 className="text-base sm:text-2xl font-bold truncate">{candidate.emri} {candidate.mbiemri}</h2>
-            <p className="text-xs sm:text-sm text-muted-foreground truncate">Nr. Regj: {candidate.numriRegjistrimit}</p>
+      <Tabs defaultValue="info" className="flex-1 min-h-0 flex flex-col lg:block lg:space-y-6">
+        <TabsList className="w-full grid grid-cols-4 h-auto shrink-0">
+          <TabsTrigger value="info" className="text-[11px] lg:text-sm py-1.5">Info</TabsTrigger>
+          <TabsTrigger value="oret" className="text-[11px] lg:text-sm py-1.5">Orët</TabsTrigger>
+          <TabsTrigger value="dok" className="text-[11px] lg:text-sm py-1.5">Dokumentet</TabsTrigger>
+          <TabsTrigger value="pag" className="text-[11px] lg:text-sm py-1.5">Pagesat</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="info" className="mt-2 lg:mt-0 flex-1 min-h-0 overflow-y-auto">
+          <div className="glass-card rounded-xl p-3 sm:p-6">
+            <div className="flex items-start justify-between gap-2 mb-3 sm:mb-4">
+              <div className="min-w-0">
+                <h2 className="text-base sm:text-2xl font-bold truncate">{candidate.emri} {candidate.mbiemri}</h2>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Nr. Regj: {candidate.numriRegjistrimit}</p>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
+                <span className={`text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 rounded-full ${candidate.vertetimiPrintuar ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                  {candidate.vertetimiPrintuar ? "Vërt ✓" : "Vërt ✗"}
+                </span>
+                <StatusBadge status={candidate.statusi} />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-1.5 sm:gap-4 text-xs sm:text-sm">
+              <div className="truncate"><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal}</strong></div>
+              <div className="truncate"><span className="text-muted-foreground">Telefoni:</span> <strong>{candidate.telefon}</strong></div>
+              <div className="truncate"><span className="text-muted-foreground">Lindja:</span> <strong>{formatDate(candidate.dataLindjes)}</strong></div>
+              <div className="truncate"><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria}</strong></div>
+              <div className="truncate"><span className="text-muted-foreground">Vendi:</span> <strong>{candidate.vendi}</strong></div>
+              <div className="truncate"><span className="text-muted-foreground">Regj.:</span> <strong>{candidate.dataRegjistrimit}</strong></div>
+              <div className="col-span-2 lg:col-span-1 truncate"><span className="text-muted-foreground">Çertifikata:</span> <strong>{candidate.certifikataShendetsore}</strong></div>
+              <div className="truncate"><span className="text-muted-foreground">Marrëveshja:</span> <strong>{candidate.shumaMarreveshjes.toFixed(2)} €</strong></div>
+              <div className="truncate"><span className="text-muted-foreground">Paguar:</span> <strong className="text-primary">{totalPaguar.toFixed(2)} €</strong></div>
+              <div className="flex items-center gap-1 truncate">
+                <span className="text-muted-foreground">Borxhi:</span>
+                <strong className={borxhi > 0 ? "text-destructive" : "text-primary"}>{borxhi.toFixed(2)} €</strong>
+                {borxhi > 0 && (
+                  <Button variant="ghost" size="sm" className="h-6 px-1.5" onClick={() => setShowPaymentDialog(true)}>
+                    <Printer className="w-3 h-3" />
+                  </Button>
+                )}
+              </div>
+              <div className="truncate"><span className="text-muted-foreground">Orë:</span> <strong>{candidate.totalLessons ?? 20}</strong></div>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
-            <span className={`text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 rounded-full ${candidate.vertetimiPrintuar ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-              {candidate.vertetimiPrintuar ? "Vërt ✓" : "Vërt ✗"}
-            </span>
-            <StatusBadge status={candidate.statusi} />
+        </TabsContent>
+
+        <TabsContent value="oret" className="mt-2 lg:mt-0 flex-1 min-h-0 overflow-y-auto">
+          <LessonsManager
+            candidateId={candidate.id}
+            candidateName={`${candidate.emri} ${candidate.mbiemri}`}
+            totalLessons={candidate.totalLessons ?? 20}
+          />
+        </TabsContent>
+
+        <TabsContent value="dok" className="mt-2 lg:mt-0 flex-1 min-h-0 overflow-y-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            {documents.map((doc) => {
+              const Icon = doc.icon;
+              return (
+                <Button
+                  key={doc.id}
+                  variant="outline"
+                  className="h-auto flex flex-col items-center gap-2 sm:gap-3 p-4 sm:p-6 hover:bg-primary/5 hover:border-primary/30"
+                  onClick={() => setActiveDoc(doc.id)}
+                >
+                  <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                  <span className="text-xs sm:text-sm font-medium text-center">{doc.label}</span>
+                </Button>
+              );
+            })}
           </div>
-        </div>
+        </TabsContent>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-1.5 sm:gap-4 text-xs sm:text-sm">
-          <div className="truncate"><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal}</strong></div>
-          <div className="truncate"><span className="text-muted-foreground">Telefoni:</span> <strong>{candidate.telefon}</strong></div>
-          <div className="truncate"><span className="text-muted-foreground">Lindja:</span> <strong>{formatDate(candidate.dataLindjes)}</strong></div>
-          <div className="truncate"><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria}</strong></div>
-          <div className="truncate"><span className="text-muted-foreground">Vendi:</span> <strong>{candidate.vendi}</strong></div>
-          <div className="truncate"><span className="text-muted-foreground">Regj.:</span> <strong>{candidate.dataRegjistrimit}</strong></div>
-          <div className="col-span-2 lg:col-span-1 truncate"><span className="text-muted-foreground">Çertifikata:</span> <strong>{candidate.certifikataShendetsore}</strong></div>
-          <div className="truncate"><span className="text-muted-foreground">Marrëveshja:</span> <strong>{candidate.shumaMarreveshjes.toFixed(2)} €</strong></div>
-          <div className="truncate"><span className="text-muted-foreground">Paguar:</span> <strong className="text-primary">{totalPaguar.toFixed(2)} €</strong></div>
-          <div className="flex items-center gap-1 truncate">
-            <span className="text-muted-foreground">Borxhi:</span>
-            <strong className={borxhi > 0 ? "text-destructive" : "text-primary"}>{borxhi.toFixed(2)} €</strong>
-            {borxhi > 0 && (
-              <Button variant="ghost" size="sm" className="h-6 px-1.5" onClick={() => setShowPaymentDialog(true)}>
-                <Printer className="w-3 h-3" />
-              </Button>
-            )}
+        <TabsContent value="pag" className="mt-2 lg:mt-0 flex-1 min-h-0 overflow-y-auto">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm sm:text-lg font-semibold">Historiku i Pagesave</h3>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={() => onGoToPayments?.(candidate.id)}>
+              <CreditCard className="w-4 h-4" /> Pagesa
+            </Button>
           </div>
-          <div className="truncate"><span className="text-muted-foreground">Orë:</span> <strong>{candidate.totalLessons ?? 20}</strong></div>
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-sm sm:text-lg font-semibold mb-2 sm:mb-4">Orët e Vozitjes</h3>
-        <LessonsManager
-          candidateId={candidate.id}
-          candidateName={`${candidate.emri} ${candidate.mbiemri}`}
-          totalLessons={candidate.totalLessons ?? 20}
-        />
-      </div>
-
-
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {documents.map((doc) => {
-            const Icon = doc.icon;
-            return (
-              <Button
-                key={doc.id}
-                variant="outline"
-                className="h-auto flex flex-col items-center gap-3 p-6 hover:bg-primary/5 hover:border-primary/30"
-                onClick={() => setActiveDoc(doc.id)}
-              >
-                <Icon className="w-8 h-8 text-primary" />
-                <span className="text-sm font-medium text-center">{doc.label}</span>
-              </Button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Historiku i Pagesave</h3>
-          <Button variant="outline" size="sm" className="gap-2" onClick={() => onGoToPayments?.(candidate.id)}>
-            <CreditCard className="w-4 h-4" /> Pagesa
-          </Button>
-        </div>
-        {candidate.payments.length === 0 ? (
-          <div className="glass-card rounded-xl p-6 text-center text-sm text-muted-foreground">
-            Nuk ka pagesa të regjistruara. Kliko butonin "Pagesa" për të shtuar një pagesë.
-          </div>
-        ) : (<>
-
-          <div className="glass-card rounded-xl overflow-hidden">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left p-3 font-medium text-muted-foreground">Nr.</th>
-                  <th className="text-left p-3 font-medium text-muted-foreground">Data</th>
-                  <th className="text-left p-3 font-medium text-muted-foreground">Shuma</th>
-                </tr>
-              </thead>
-              <tbody>
-                {candidate.payments.map((p, i) => (
-                  <tr key={p.id} className="border-b border-border/50">
-                    <td className="p-3">{i + 1}</td>
-                    <td className="p-3">{p.data}</td>
-                    <td className="p-3 font-medium text-primary">{p.shuma.toFixed(2)} €</td>
+          {candidate.payments.length === 0 ? (
+            <div className="glass-card rounded-xl p-4 text-center text-xs sm:text-sm text-muted-foreground">
+              Nuk ka pagesa të regjistruara. Kliko butonin "Pagesa" për të shtuar një pagesë.
+            </div>
+          ) : (
+            <div className="glass-card rounded-xl overflow-hidden">
+              <table className="w-full text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left p-2 sm:p-3 font-medium text-muted-foreground">Nr.</th>
+                    <th className="text-left p-2 sm:p-3 font-medium text-muted-foreground">Data</th>
+                    <th className="text-left p-2 sm:p-3 font-medium text-muted-foreground">Shuma</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>)}
-      </div>
+                </thead>
+                <tbody>
+                  {candidate.payments.map((p, i) => (
+                    <tr key={p.id} className="border-b border-border/50">
+                      <td className="p-2 sm:p-3">{i + 1}</td>
+                      <td className="p-2 sm:p-3">{p.data}</td>
+                      <td className="p-2 sm:p-3 font-medium text-primary">{p.shuma.toFixed(2)} €</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+
 
 
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
