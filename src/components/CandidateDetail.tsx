@@ -263,51 +263,52 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
         </div>
       </div>
 
-      <div className="glass-card rounded-xl p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h2 className="text-2xl font-bold">{candidate.emri} {candidate.mbiemri}</h2>
-            <p className="text-muted-foreground">Nr. Regjistrimit: {candidate.numriRegjistrimit}</p>
+      <div className="glass-card rounded-xl p-3 sm:p-6">
+        <div className="flex items-start justify-between gap-2 mb-3 sm:mb-4">
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-2xl font-bold truncate">{candidate.emri} {candidate.mbiemri}</h2>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">Nr. Regj: {candidate.numriRegjistrimit}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${candidate.vertetimiPrintuar ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-              {candidate.vertetimiPrintuar ? "Vërtetim ✓" : "Vërtetim ✗"}
+          <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
+            <span className={`text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 rounded-full ${candidate.vertetimiPrintuar ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+              {candidate.vertetimiPrintuar ? "Vërt ✓" : "Vërt ✗"}
             </span>
             <StatusBadge status={candidate.statusi} />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-          <div><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal}</strong></div>
-          <div><span className="text-muted-foreground">Telefoni:</span> <strong>{candidate.telefon}</strong></div>
-          <div><span className="text-muted-foreground">Data e Lindjes:</span> <strong>{formatDate(candidate.dataLindjes)}</strong></div>
-          <div><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria}</strong></div>
-          <div><span className="text-muted-foreground">Vendi:</span> <strong>{candidate.vendi}</strong></div>
-          <div><span className="text-muted-foreground">Data Regjistrimit:</span> <strong>{candidate.dataRegjistrimit}</strong></div>
-          <div><span className="text-muted-foreground">Çertifikata:</span> <strong>{candidate.certifikataShendetsore}</strong></div>
-          <div><span className="text-muted-foreground">Shuma Marrëveshjes:</span> <strong>{candidate.shumaMarreveshjes.toFixed(2)} €</strong></div>
-          <div><span className="text-muted-foreground">Paguar:</span> <strong className="text-primary">{totalPaguar.toFixed(2)} €</strong></div>
-          <div className="flex items-center gap-2">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-1.5 sm:gap-4 text-xs sm:text-sm">
+          <div className="truncate"><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal}</strong></div>
+          <div className="truncate"><span className="text-muted-foreground">Telefoni:</span> <strong>{candidate.telefon}</strong></div>
+          <div className="truncate"><span className="text-muted-foreground">Lindja:</span> <strong>{formatDate(candidate.dataLindjes)}</strong></div>
+          <div className="truncate"><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria}</strong></div>
+          <div className="truncate"><span className="text-muted-foreground">Vendi:</span> <strong>{candidate.vendi}</strong></div>
+          <div className="truncate"><span className="text-muted-foreground">Regj.:</span> <strong>{candidate.dataRegjistrimit}</strong></div>
+          <div className="col-span-2 lg:col-span-1 truncate"><span className="text-muted-foreground">Çertifikata:</span> <strong>{candidate.certifikataShendetsore}</strong></div>
+          <div className="truncate"><span className="text-muted-foreground">Marrëveshja:</span> <strong>{candidate.shumaMarreveshjes.toFixed(2)} €</strong></div>
+          <div className="truncate"><span className="text-muted-foreground">Paguar:</span> <strong className="text-primary">{totalPaguar.toFixed(2)} €</strong></div>
+          <div className="flex items-center gap-1 truncate">
             <span className="text-muted-foreground">Borxhi:</span>
             <strong className={borxhi > 0 ? "text-destructive" : "text-primary"}>{borxhi.toFixed(2)} €</strong>
             {borxhi > 0 && (
-              <Button variant="ghost" size="sm" className="h-7 px-2 gap-1" onClick={() => setShowPaymentDialog(true)}>
-                <Printer className="w-3.5 h-3.5" /> Printo
+              <Button variant="ghost" size="sm" className="h-6 px-1.5" onClick={() => setShowPaymentDialog(true)}>
+                <Printer className="w-3 h-3" />
               </Button>
             )}
           </div>
-          <div><span className="text-muted-foreground">Orë vozitjeje:</span> <strong>{candidate.totalLessons ?? 20}</strong></div>
+          <div className="truncate"><span className="text-muted-foreground">Orë:</span> <strong>{candidate.totalLessons ?? 20}</strong></div>
         </div>
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold mb-4">Orët e Vozitjes</h3>
+        <h3 className="text-sm sm:text-lg font-semibold mb-2 sm:mb-4">Orët e Vozitjes</h3>
         <LessonsManager
           candidateId={candidate.id}
           candidateName={`${candidate.emri} ${candidate.mbiemri}`}
           totalLessons={candidate.totalLessons ?? 20}
         />
       </div>
+
 
       <div>
         <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
