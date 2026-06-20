@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft, FileQuestion, CalendarDays, CalendarClock, History } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft, FileQuestion, CalendarDays, CalendarClock, History, Clock } from "lucide-react";
 import defaultLogo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -25,6 +25,7 @@ const adminNavItems = [
   { id: "employees", label: "Punëtorët", icon: Briefcase },
   { id: "licenses", label: "Licencat", icon: IdCard },
   { id: "tests", label: "Gjenero Testin", icon: FileQuestion },
+  { id: "instructor-reports", label: "Raporti i Orëve", icon: Clock },
   { id: "users", label: "Përdoruesit", icon: ShieldCheck },
   { id: "activity", label: "Historiku", icon: History },
 ];
