@@ -189,8 +189,28 @@ const Index = () => {
               <TodayPracticalExams candidates={candidates} />
 
               <div>
+                <h3 className="text-lg font-semibold mb-4">Menyja</h3>
+                <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3 sm:gap-5 p-4 rounded-2xl bg-muted/30 border border-border/50">
+                  {(() => {
+                    const navIcons = [
+                      { id: "candidates", label: "Kandidatët", icon: dashboardActions[0].icon, grad: "from-sky-500 to-blue-600" },
+                      { id: "add", label: "Shto", icon: dashboardActions[1].icon, grad: "from-emerald-500 to-teal-600" },
+                      { id: "payment", label: "Pagesa", icon: dashboardActions[2].icon, grad: "from-amber-500 to-orange-600" },
+                      { id: "exams", label: "Provimet", icon: dashboardActions[3].icon, grad: "from-violet-500 to-purple-600" },
+                      { id: "finances", label: "Financat", icon: dashboardActions[0].icon, grad: "from-pink-500 to-rose-600" },
+                      { id: "vehicles", label: "Mjetet", icon: dashboardActions[1].icon, grad: "from-cyan-500 to-blue-600" },
+                      { id: "employees", label: "Punëtorët", icon: dashboardActions[2].icon, grad: "from-fuchsia-500 to-pink-600" },
+                      { id: "tests", label: "Testi", icon: dashboardActions[3].icon, grad: "from-indigo-500 to-violet-600" },
+                    ];
+                    // override with real icons via sidebar list
+                    return null;
+                  })()}
+                </div>
+              </div>
+
+              <div>
                 <h3 className="text-lg font-semibold mb-4">Dokumentet</h3>
-                <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-5">
+                <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-5 p-4 rounded-2xl bg-muted/30 border border-border/50">
                   {dashboardActions.map((action, idx) => {
                     const Icon = action.icon;
                     const gradients = [
