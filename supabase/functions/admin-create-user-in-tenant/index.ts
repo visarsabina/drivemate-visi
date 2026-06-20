@@ -62,6 +62,8 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const email = String(body.email ?? "").trim().toLowerCase();
     const password = String(body.password ?? "");
+    const firstName = String(body.first_name ?? "").trim();
+    const lastName = String(body.last_name ?? "").trim();
     // Backwards compatible: prefer explicit `role`, fall back to legacy `as_admin`.
     const requestedRoleRaw = String(body.role ?? "").trim();
     const allowedRoles = ["admin", "instructor", "user"] as const;
@@ -73,6 +75,9 @@ Deno.serve(async (req) => {
     if (!email || !password || password.length < 6) {
       return json({ error: "Email and password (min 6 chars) are required" }, 400);
     }
+    if (!firstName || !lastName) {
+      return json({ error: "First name and last name are required" }, 400);
+    }
 
     // Try to create the user; if already exists, fetch their id
     let targetUserId: string | null = null;
@@ -80,6 +85,7 @@ Deno.serve(async (req) => {
       email,
       password,
       email_confirm: true,
+      user_metadata: { first_name: firstName, last_name: lastName, full_name: `${firstName} ${lastName}` },
     });
 
     if (createErr) {

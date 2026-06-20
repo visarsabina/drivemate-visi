@@ -26,6 +26,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface UserRow {
   user_id: string;
   email: string;
+  first_name: string | null;
+  last_name: string | null;
   created_at: string;
   is_admin: boolean;
   is_instructor: boolean;
@@ -39,6 +41,8 @@ const Users = () => {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [invitePassword, setInvitePassword] = useState("");
+  const [inviteFirstName, setInviteFirstName] = useState("");
+  const [inviteLastName, setInviteLastName] = useState("");
   const [inviteRole, setInviteRole] = useState<"admin" | "instructor" | "user">("admin");
   const [inviting, setInviting] = useState(false);
 
@@ -86,6 +90,10 @@ const Users = () => {
       toast.error("Plotëso email dhe fjalëkalim");
       return;
     }
+    if (!inviteFirstName.trim() || !inviteLastName.trim()) {
+      toast.error("Plotëso emrin dhe mbiemrin");
+      return;
+    }
     if (invitePassword.length < 6) {
       toast.error("Fjalëkalimi duhet të ketë së paku 6 karaktere");
       return;
@@ -98,6 +106,8 @@ const Users = () => {
         body: {
           email: inviteEmail,
           password: invitePassword,
+          first_name: inviteFirstName.trim(),
+          last_name: inviteLastName.trim(),
           role: inviteRole,
         },
       },
@@ -112,10 +122,12 @@ const Users = () => {
 
     const roleLabel =
       inviteRole === "admin" ? "admin" : inviteRole === "instructor" ? "instruktor" : "përdorues";
-    toast.success(`Përdoruesi ${inviteEmail} u krijua si ${roleLabel}`);
+    toast.success(`${inviteFirstName} ${inviteLastName} u krijua si ${roleLabel}`);
 
     setInviteEmail("");
     setInvitePassword("");
+    setInviteFirstName("");
+    setInviteLastName("");
     setInviteRole("admin");
     setInviteOpen(false);
     setInviting(false);
@@ -158,6 +170,26 @@ const Users = () => {
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-2">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="invite-first-name">Emri</Label>
+                  <Input
+                    id="invite-first-name"
+                    value={inviteFirstName}
+                    onChange={(e) => setInviteFirstName(e.target.value)}
+                    placeholder="Emri"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="invite-last-name">Mbiemri</Label>
+                  <Input
+                    id="invite-last-name"
+                    value={inviteLastName}
+                    onChange={(e) => setInviteLastName(e.target.value)}
+                    placeholder="Mbiemri"
+                  />
+                </div>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="invite-email">Email</Label>
                 <Input
@@ -209,6 +241,7 @@ const Users = () => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Emri Mbiemri</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Data e Regjistrimit</TableHead>
               <TableHead>Roli</TableHead>
@@ -218,25 +251,27 @@ const Users = () => {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                   <Loader2 className="w-5 h-5 animate-spin inline" />
                 </TableCell>
               </TableRow>
             ) : users.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                   Asnjë përdorues
                 </TableCell>
               </TableRow>
             ) : (
               users.map((u) => {
                 const isSelf = currentUser?.id === u.user_id;
+                const fullName = [u.first_name, u.last_name].filter(Boolean).join(" ").trim();
                 return (
                   <TableRow key={u.user_id}>
                     <TableCell className="font-medium">
-                      {u.email}
+                      {fullName || <span className="text-muted-foreground italic">Pa emër</span>}
                       {isSelf && <span className="text-xs text-muted-foreground ml-2">(ti)</span>}
                     </TableCell>
+                    <TableCell className="text-muted-foreground">{u.email}</TableCell>
                     <TableCell className="text-muted-foreground">
                       {formatDateDMY(u.created_at)}
                     </TableCell>

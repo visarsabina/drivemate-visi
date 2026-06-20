@@ -944,6 +944,8 @@ export type Database = {
         Args: never
         Returns: {
           email: string
+          first_name: string
+          last_name: string
           user_id: string
         }[]
       }
@@ -962,8 +964,10 @@ export type Database = {
         Returns: {
           created_at: string
           email: string
+          first_name: string
           is_admin: boolean
           is_instructor: boolean
+          last_name: string
           user_id: string
         }[]
       }
