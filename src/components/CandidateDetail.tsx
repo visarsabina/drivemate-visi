@@ -287,7 +287,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
               </div>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-1.5 sm:gap-4 text-xs sm:text-sm">
+            <div className="grid grid-cols-1 gap-y-1.5 sm:gap-y-2 text-xs sm:text-sm">
               <div className="truncate"><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal}</strong></div>
               <div className="truncate"><span className="text-muted-foreground">Telefoni:</span> <strong>{candidate.telefon}</strong></div>
               <div className="truncate"><span className="text-muted-foreground">Lindja:</span> <strong>{formatDate(candidate.dataLindjes)}</strong></div>
