@@ -32,7 +32,7 @@ import { useCandidates } from "@/hooks/useCandidates";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
 import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
 import { Candidate, Payment } from "@/types/candidate";
-import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2, FileQuestion, Users, UserPlus, CreditCard, CalendarDays, Wallet, Car, Briefcase } from "lucide-react";
+import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2, FileQuestion, Users as UsersIcon, UserPlus, CreditCard, CalendarDays, Wallet, Car, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
@@ -192,7 +192,7 @@ const Index = () => {
                 <h3 className="text-lg font-semibold mb-4">Menyja</h3>
                 <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3 sm:gap-5 p-4 rounded-2xl bg-muted/30 border border-border/50">
                   {[
-                    { id: "candidates", label: "Kandidatët", icon: Users, grad: "from-sky-500 to-blue-600" },
+                    { id: "candidates", label: "Kandidatët", icon: UsersIcon, grad: "from-sky-500 to-blue-600" },
                     { id: "add", label: "Shto", icon: UserPlus, grad: "from-emerald-500 to-teal-600" },
                     { id: "payment", label: "Pagesa", icon: CreditCard, grad: "from-amber-500 to-orange-600" },
                     { id: "exams", label: "Provimet", icon: CalendarDays, grad: "from-violet-500 to-purple-600" },
