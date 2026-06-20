@@ -6,6 +6,8 @@ import { toast } from "sonner";
 interface Instructor {
   user_id: string;
   email: string;
+  first_name?: string | null;
+  last_name?: string | null;
 }
 
 interface InstructorPickerProps {
@@ -62,11 +64,14 @@ const InstructorPicker = ({ candidateId, currentInstructorId, onChange }: Instru
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="none">Pa instruktor</SelectItem>
-        {instructors.map((i) => (
-          <SelectItem key={i.user_id} value={i.user_id}>
-            {i.email}
-          </SelectItem>
-        ))}
+        {instructors.map((i) => {
+          const name = [i.first_name, i.last_name].filter(Boolean).join(" ").trim();
+          return (
+            <SelectItem key={i.user_id} value={i.user_id}>
+              {name ? `${name} (${i.email})` : i.email}
+            </SelectItem>
+          );
+        })}
       </SelectContent>
     </Select>
   );
