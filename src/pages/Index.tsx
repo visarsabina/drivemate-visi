@@ -133,6 +133,7 @@ const Index = () => {
     users: "Përdoruesit",
     tests: "Gjenero Testin",
     activity: "Historiku i Veprimeve",
+    "instructor-reports": "Raporti i Orëve",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
