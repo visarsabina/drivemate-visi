@@ -940,6 +940,19 @@ export type Database = {
           vehicles_count: number
         }[]
       }
+      list_candidate_users_in_my_tenant: {
+        Args: never
+        Returns: {
+          candidate_id: string
+          created_at: string
+          email: string
+          emri: string
+          mbiemri: string
+          numri_personal: string
+          numri_regjistrimit: string
+          user_id: string
+        }[]
+      }
       list_instructors_in_my_tenant: {
         Args: never
         Returns: {
