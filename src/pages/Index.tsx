@@ -191,20 +191,32 @@ const Index = () => {
               <div>
                 <h3 className="text-lg font-semibold mb-4">Menyja</h3>
                 <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3 sm:gap-5 p-4 rounded-2xl bg-muted/30 border border-border/50">
-                  {(() => {
-                    const navIcons = [
-                      { id: "candidates", label: "Kandidatët", icon: dashboardActions[0].icon, grad: "from-sky-500 to-blue-600" },
-                      { id: "add", label: "Shto", icon: dashboardActions[1].icon, grad: "from-emerald-500 to-teal-600" },
-                      { id: "payment", label: "Pagesa", icon: dashboardActions[2].icon, grad: "from-amber-500 to-orange-600" },
-                      { id: "exams", label: "Provimet", icon: dashboardActions[3].icon, grad: "from-violet-500 to-purple-600" },
-                      { id: "finances", label: "Financat", icon: dashboardActions[0].icon, grad: "from-pink-500 to-rose-600" },
-                      { id: "vehicles", label: "Mjetet", icon: dashboardActions[1].icon, grad: "from-cyan-500 to-blue-600" },
-                      { id: "employees", label: "Punëtorët", icon: dashboardActions[2].icon, grad: "from-fuchsia-500 to-pink-600" },
-                      { id: "tests", label: "Testi", icon: dashboardActions[3].icon, grad: "from-indigo-500 to-violet-600" },
-                    ];
-                    // override with real icons via sidebar list
-                    return null;
-                  })()}
+                  {[
+                    { id: "candidates", label: "Kandidatët", icon: Users, grad: "from-sky-500 to-blue-600" },
+                    { id: "add", label: "Shto", icon: UserPlus, grad: "from-emerald-500 to-teal-600" },
+                    { id: "payment", label: "Pagesa", icon: CreditCard, grad: "from-amber-500 to-orange-600" },
+                    { id: "exams", label: "Provimet", icon: CalendarDays, grad: "from-violet-500 to-purple-600" },
+                    { id: "finances", label: "Financat", icon: Wallet, grad: "from-pink-500 to-rose-600" },
+                    { id: "vehicles", label: "Mjetet", icon: Car, grad: "from-cyan-500 to-blue-600" },
+                    { id: "employees", label: "Punëtorët", icon: Briefcase, grad: "from-fuchsia-500 to-pink-600" },
+                    { id: "tests", label: "Testi", icon: FileQuestion, grad: "from-indigo-500 to-violet-600" },
+                  ].map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveView(item.id)}
+                        className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                      >
+                        <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${item.grad} flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-200 group-active:scale-95 group-hover:scale-105`}>
+                          <Icon className="w-7 h-7 sm:w-9 sm:h-9 text-white" strokeWidth={2} />
+                        </div>
+                        <span className="text-[11px] sm:text-xs font-medium text-center leading-tight text-foreground/80 line-clamp-2 max-w-[80px]">
+                          {item.label}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
