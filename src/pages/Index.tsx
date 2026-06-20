@@ -315,6 +315,8 @@ const Index = () => {
           {activeView === "tests" && <TestGenerator candidates={candidates} initialCandidateId={selectedCandidate?.id ?? null} />}
 
           {activeView === "activity" && <ActivityLog />}
+
+          {activeView === "instructor-reports" && <InstructorReports adminMode />}
         </div>
       </main>
     </div>
