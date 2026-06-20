@@ -232,7 +232,30 @@ const Index = () => {
                   <TodayPracticalExams candidates={candidates} />
                 </TabsContent>
                 <TabsContent value="recent" className="mt-3">
-                  <CandidateTable candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
+                  <div className="glass-card rounded-xl divide-y divide-border/50 overflow-hidden">
+                    {[...candidates]
+                      .sort((a, b) => (b.dataRegjistrimit || "").localeCompare(a.dataRegjistrimit || ""))
+                      .slice(0, 10)
+                      .map((c) => {
+                        const paid = (c.payments || []).reduce((s, p) => s + (p.shuma || 0), 0);
+                        const borxhi = Math.max(0, (c.shumaMarreveshjes || 0) - paid);
+                        return (
+                          <button
+                            key={c.id}
+                            onClick={() => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }}
+                            className="w-full text-left p-3 hover:bg-muted/60 transition-colors flex items-center justify-between gap-3"
+                          >
+                            <div className="min-w-0 flex items-center gap-3">
+                              <span className="text-xs font-mono text-muted-foreground shrink-0">#{c.numriRegjistrimit}</span>
+                              <span className="font-medium truncate">{c.emri} {c.mbiemri}</span>
+                            </div>
+                            <span className={`text-sm font-semibold shrink-0 ${borxhi > 0 ? "text-destructive" : "text-emerald-600"}`}>
+                              {borxhi.toFixed(2)} €
+                            </span>
+                          </button>
+                        );
+                      })}
+                  </div>
                 </TabsContent>
               </Tabs>
             </>
