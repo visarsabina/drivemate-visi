@@ -15,6 +15,7 @@ interface CandidateKontrataProps {
 
 const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps) => {
   const [selectedId, setSelectedId] = useState(preselectedId || "");
+  const [open, setOpen] = useState(false);
   const candidate = candidates.find((c) => c.id === selectedId);
 
   const formatDate = (d: string) => {

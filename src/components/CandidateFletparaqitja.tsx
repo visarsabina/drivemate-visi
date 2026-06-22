@@ -16,6 +16,7 @@ interface CandidateFletparaqitjaProps {
 
 const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletparaqitjaProps) => {
   const [selectedId, setSelectedId] = useState(preselectedId || "");
+  const [open, setOpen] = useState(false);
   const [emriBabait, setEmriBabait] = useState("");
   const [vendlindja, setVendlindja] = useState("");
   const [komuna, setKomuna] = useState("");
