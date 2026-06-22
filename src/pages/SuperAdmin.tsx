@@ -37,6 +37,7 @@ import {
   Car,
   UserCheck,
   CreditCard,
+  KeyRound,
 } from "lucide-react";
 import SuperAdminStats from "@/components/SuperAdminStats";
 
@@ -94,6 +95,52 @@ const SuperAdmin = () => {
     notes: "",
   });
   const [savingSub, setSavingSub] = useState(false);
+
+  // Admin password reset state
+  const [pwTenant, setPwTenant] = useState<TenantRow | null>(null);
+  const [pwLoading, setPwLoading] = useState(false);
+  const [pwAdmins, setPwAdmins] = useState<Array<{ id: string; email: string | null; full_name: string | null }>>([]);
+  const [pwSelected, setPwSelected] = useState<string>("");
+  const [pwValue, setPwValue] = useState("");
+  const [pwSaving, setPwSaving] = useState(false);
+
+  const openPw = async (t: TenantRow) => {
+    setPwTenant(t);
+    setPwAdmins([]);
+    setPwSelected("");
+    setPwValue("");
+    setPwLoading(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: { action: "list", tenant_id: t.id },
+    });
+    setPwLoading(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    const admins = (data as { admins: Array<{ id: string; email: string | null; full_name: string | null }> }).admins;
+    setPwAdmins(admins);
+    if (admins.length === 1) setPwSelected(admins[0].id);
+  };
+
+  const savePw = async () => {
+    if (!pwTenant || !pwSelected) return;
+    if (pwValue.length < 6) {
+      toast.error("Fjalëkalimi duhet të ketë së paku 6 karaktere");
+      return;
+    }
+    setPwSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: { action: "reset_password", tenant_id: pwTenant.id, target_user_id: pwSelected, password: pwValue },
+    });
+    setPwSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success("Fjalëkalimi u përditësua");
+    setPwTenant(null);
+  };
 
   const openSub = (t: TenantRow) => {
     setSubTenant(t);
@@ -321,6 +368,9 @@ const SuperAdmin = () => {
                           <span className="text-[10px] text-muted-foreground mt-0.5">{Number(t.monthly_fee || 0)}€/muaj</span>
                         </button>
                         <div className="flex gap-1">
+                          <Button variant="ghost" size="sm" onClick={() => openPw(t)} className="h-8 px-2" title="Ndrysho fjalëkalimin">
+                            <KeyRound className="w-4 h-4" />
+                          </Button>
                           <Button variant="ghost" size="sm" onClick={() => openSub(t)} className="h-8 px-2">
                             <CreditCard className="w-4 h-4" />
                           </Button>
@@ -432,6 +482,10 @@ const SuperAdmin = () => {
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-1">
+                              <Button variant="ghost" size="sm" onClick={() => openPw(t)} title="Ndrysho fjalëkalimin e adminit">
+                                <KeyRound className="w-4 h-4 mr-1" />
+                                Fjalëkalimi
+                              </Button>
                               <Button variant="ghost" size="sm" onClick={() => openSub(t)} title="Menaxho abonimin">
                                 <CreditCard className="w-4 h-4 mr-1" />
                                 Abonimi
@@ -737,6 +791,60 @@ const SuperAdmin = () => {
             <Button onClick={saveSub} disabled={savingSub}>
               {savingSub && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Ruaj ndryshimet
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Admin password reset dialog */}
+      <Dialog open={!!pwTenant} onOpenChange={(o) => !o && setPwTenant(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Ndrysho fjalëkalimin · {pwTenant?.name}</DialogTitle>
+            <DialogDescription>
+              Zgjidh adminin dhe vendos një fjalëkalim të ri. Kredencialet duhet t'i dërgohen klientit.
+            </DialogDescription>
+          </DialogHeader>
+          {pwLoading ? (
+            <div className="flex justify-center py-6">
+              <Loader2 className="w-5 h-5 animate-spin text-primary" />
+            </div>
+          ) : pwAdmins.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4">Asnjë admin i regjistruar për këtë autoshkollë.</p>
+          ) : (
+            <div className="space-y-3">
+              <div>
+                <Label>Admini</Label>
+                <select
+                  value={pwSelected}
+                  onChange={(e) => setPwSelected(e.target.value)}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">— Zgjidh —</option>
+                  {pwAdmins.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.email}{a.full_name ? ` (${a.full_name})` : ""}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label htmlFor="newpw">Fjalëkalimi i ri (min 6)</Label>
+                <Input
+                  id="newpw"
+                  type="text"
+                  value={pwValue}
+                  onChange={(e) => setPwValue(e.target.value)}
+                  placeholder="P.sh. 123456"
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPwTenant(null)} disabled={pwSaving}>Anulo</Button>
+            <Button onClick={savePw} disabled={pwSaving || !pwSelected || pwValue.length < 6}>
+              {pwSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Ruaj fjalëkalimin
             </Button>
           </DialogFooter>
         </DialogContent>
