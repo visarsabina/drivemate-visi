@@ -138,18 +138,49 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Zgjedh Kandidatin</Label>
-            <Select value={selectedId} onValueChange={setSelectedId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Zgjedh kandidatin..." />
-              </SelectTrigger>
-              <SelectContent>
-                {candidates.map((c) => (
-                  <SelectItem key={c.id} value={c.id}>
-                    {c.numriRegjistrimit} - {c.emri} {c.mbiemri}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full justify-between"
+                >
+                  {candidate
+                    ? `${candidate.emri} ${candidate.mbiemri} - ${candidate.numriRegjistrimit}`
+                    : "Zgjedh kandidatin..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Shkruani emrin për të kërkuar..." />
+                  <CommandList>
+                    <CommandEmpty>Nuk u gjet asnjë kandidat.</CommandEmpty>
+                    <CommandGroup>
+                      {candidates.map((c) => (
+                        <CommandItem
+                          key={c.id}
+                          value={`${c.emri} ${c.mbiemri} ${c.numriRegjistrimit}`}
+                          onSelect={() => {
+                            setSelectedId(c.id);
+                            setOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedId === c.id ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {c.numriRegjistrimit} - {c.emri} {c.mbiemri}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
 
           {candidate && (
