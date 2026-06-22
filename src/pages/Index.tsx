@@ -160,7 +160,6 @@ const Index = () => {
 
       <main className="flex-1 min-h-screen">
         <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border px-3 lg:px-8 py-3 lg:py-4 flex items-center gap-2 lg:gap-4 flex-wrap">
-          <button to="/index">
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg hover:bg-muted shrink-0">
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
