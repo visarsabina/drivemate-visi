@@ -96,6 +96,52 @@ const SuperAdmin = () => {
   });
   const [savingSub, setSavingSub] = useState(false);
 
+  // Admin password reset state
+  const [pwTenant, setPwTenant] = useState<TenantRow | null>(null);
+  const [pwLoading, setPwLoading] = useState(false);
+  const [pwAdmins, setPwAdmins] = useState<Array<{ id: string; email: string | null; full_name: string | null }>>([]);
+  const [pwSelected, setPwSelected] = useState<string>("");
+  const [pwValue, setPwValue] = useState("");
+  const [pwSaving, setPwSaving] = useState(false);
+
+  const openPw = async (t: TenantRow) => {
+    setPwTenant(t);
+    setPwAdmins([]);
+    setPwSelected("");
+    setPwValue("");
+    setPwLoading(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: { action: "list", tenant_id: t.id },
+    });
+    setPwLoading(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    const admins = (data as { admins: Array<{ id: string; email: string | null; full_name: string | null }> }).admins;
+    setPwAdmins(admins);
+    if (admins.length === 1) setPwSelected(admins[0].id);
+  };
+
+  const savePw = async () => {
+    if (!pwTenant || !pwSelected) return;
+    if (pwValue.length < 6) {
+      toast.error("Fjalëkalimi duhet të ketë së paku 6 karaktere");
+      return;
+    }
+    setPwSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: { action: "reset_password", tenant_id: pwTenant.id, target_user_id: pwSelected, password: pwValue },
+    });
+    setPwSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success("Fjalëkalimi u përditësua");
+    setPwTenant(null);
+  };
+
   const openSub = (t: TenantRow) => {
     setSubTenant(t);
     setSubForm({
