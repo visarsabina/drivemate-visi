@@ -14,6 +14,7 @@ interface CandidateBookletProps {
 
 const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) => {
   const [selectedId, setSelectedId] = useState(preselectedId || "");
+  const [open, setOpen] = useState(false);
   const candidate = candidates.find((c) => c.id === selectedId);
 
   const handlePrint = () => {
