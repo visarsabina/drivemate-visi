@@ -34,7 +34,7 @@ import { useCandidates } from "@/hooks/useCandidates";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
 import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
 import { Candidate, Payment } from "@/types/candidate";
-import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2, FileQuestion } from "lucide-react";
+import { Menu, X, BookOpen, FileCheck, FileText, FileSignature, Building2, FileQuestion, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
@@ -163,6 +163,15 @@ const Index = () => {
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg hover:bg-muted shrink-0">
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
+          {activeView !== defaultView && (
+            <button
+              onClick={() => setActiveView(defaultView)}
+              className="p-2 rounded-lg hover:bg-muted shrink-0"
+              title="Kthehu prapa"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          )}
           <h2 className="text-base lg:text-xl font-semibold truncate min-w-0">{viewTitles[activeView]}</h2>
           <div className="ml-auto flex items-center gap-1.5 px-2 lg:px-3 py-1 lg:py-1.5 rounded-lg bg-primary/10 border border-primary/20 max-w-[55%] lg:max-w-none">
             <Building2 className="w-4 h-4 text-primary shrink-0" />
