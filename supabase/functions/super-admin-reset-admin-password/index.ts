@@ -27,22 +27,13 @@ Deno.serve(async (req) => {
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
     // Caller must be super_admin
-    const { data: isSa } = await admin.rpc("is_super_admin_for", { _user_id: userData.user.id }).single().then(
-      (r) => r,
-      () => ({ data: null }),
-    );
-    // Fallback: check user_roles directly
-    let isSuper = Boolean(isSa);
-    if (!isSuper) {
-      const { data: r } = await admin
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userData.user.id)
-        .eq("role", "super_admin")
-        .maybeSingle();
-      isSuper = !!r;
-    }
-    if (!isSuper) return json({ error: "Access denied: super_admin required" }, 403);
+    const { data: r } = await admin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userData.user.id)
+      .eq("role", "super_admin")
+      .maybeSingle();
+    if (!r) return json({ error: "Access denied: super_admin required" }, 403);
 
     const body = await req.json().catch(() => ({}));
     const action = String(body.action ?? "list");
