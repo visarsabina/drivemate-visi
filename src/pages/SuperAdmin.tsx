@@ -368,6 +368,9 @@ const SuperAdmin = () => {
                           <span className="text-[10px] text-muted-foreground mt-0.5">{Number(t.monthly_fee || 0)}€/muaj</span>
                         </button>
                         <div className="flex gap-1">
+                          <Button variant="ghost" size="sm" onClick={() => openPw(t)} className="h-8 px-2" title="Ndrysho fjalëkalimin">
+                            <KeyRound className="w-4 h-4" />
+                          </Button>
                           <Button variant="ghost" size="sm" onClick={() => openSub(t)} className="h-8 px-2">
                             <CreditCard className="w-4 h-4" />
                           </Button>
