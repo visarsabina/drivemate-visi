@@ -16,21 +16,23 @@ Deno.serve(async (req) => {
     const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) return json({ error: "Missing Authorization header" }, 401);
-
-    const userClient = createClient(SUPABASE_URL, ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: userData, error: userErr } = await userClient.auth.getUser();
-    if (userErr || !userData.user) return json({ error: "Unauthorized" }, 401);
+    if (!authHeader?.startsWith("Bearer ")) return json({ error: "Unauthorized" }, 401);
+    const token = authHeader.replace("Bearer ", "");
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
+
+    const { data: claimsData, error: claimsErr } = await admin.auth.getClaims(token);
+    if (claimsErr || !claimsData?.claims?.sub) {
+      console.error("getClaims failed:", claimsErr);
+      return json({ error: "Unauthorized" }, 401);
+    }
+    const callerId = claimsData.claims.sub as string;
 
     // Caller must be super_admin
     const { data: r } = await admin
       .from("user_roles")
       .select("role")
-      .eq("user_id", userData.user.id)
+      .eq("user_id", callerId)
       .eq("role", "super_admin")
       .maybeSingle();
     if (!r) return json({ error: "Access denied: super_admin required" }, 403);
