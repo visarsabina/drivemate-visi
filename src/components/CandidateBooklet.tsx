@@ -229,18 +229,49 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
           Zgjidhni kandidatin për të gjeneruar librezën me të dhënat e tij/saj.
         </p>
         <div className="space-y-4">
-          <Select value={selectedId} onValueChange={setSelectedId}>
-            <SelectTrigger>
-              <SelectValue placeholder="Zgjidhni kandidatin" />
-            </SelectTrigger>
-            <SelectContent>
-              {candidates.map((c) => (
-                <SelectItem key={c.id} value={c.id}>
-                  {c.emri} {c.mbiemri} - {c.numriRegjistrimit}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-full justify-between"
+              >
+                {candidate
+                  ? `${candidate.emri} ${candidate.mbiemri} - ${candidate.numriRegjistrimit}`
+                  : "Zgjidhni kandidatin"}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput placeholder="Shkruani emrin për të kërkuar..." />
+                <CommandList>
+                  <CommandEmpty>Nuk u gjet asnjë kandidat.</CommandEmpty>
+                  <CommandGroup>
+                    {candidates.map((c) => (
+                      <CommandItem
+                        key={c.id}
+                        value={`${c.emri} ${c.mbiemri} ${c.numriRegjistrimit}`}
+                        onSelect={() => {
+                          setSelectedId(c.id);
+                          setOpen(false);
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            selectedId === c.id ? "opacity-100" : "opacity-0"
+                          )}
+                        />
+                        {c.emri} {c.mbiemri} - {c.numriRegjistrimit}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
 
           {candidate && (
             <div className="space-y-2 p-4 rounded-lg bg-muted/50">
