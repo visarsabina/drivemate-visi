@@ -482,6 +482,10 @@ const SuperAdmin = () => {
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-1">
+                              <Button variant="ghost" size="sm" onClick={() => openPw(t)} title="Ndrysho fjalëkalimin e adminit">
+                                <KeyRound className="w-4 h-4 mr-1" />
+                                Fjalëkalimi
+                              </Button>
                               <Button variant="ghost" size="sm" onClick={() => openSub(t)} title="Menaxho abonimin">
                                 <CreditCard className="w-4 h-4 mr-1" />
                                 Abonimi
