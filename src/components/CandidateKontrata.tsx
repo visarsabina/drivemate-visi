@@ -32,30 +32,33 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Kontrata - ${safe.emri} ${safe.mbiemri}</title>
 <style>
-  @page { size: A4 portrait; margin: 20mm 25mm; }
+  @page { size: A4 portrait; margin: 12mm 16mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Times New Roman', serif; font-size: 14px; color: #000; padding: 40px 50px; line-height: 1.9; }
-  .title { text-align: center; font-size: 18px; font-weight: bold; text-decoration: underline; margin-bottom: 2px; }
-  .subtitle { text-align: center; font-size: 15px; font-weight: bold; margin-bottom: 20px; }
-  .u { border-bottom: 1px solid #000; display: inline-block; min-width: 100px; padding-bottom: 1px; }
-  .u-long { border-bottom: 1px solid #000; display: inline-block; min-width: 200px; padding-bottom: 1px; }
-  .section-num { text-align: center; font-weight: bold; text-decoration: underline; margin: 12px 0 4px; }
-  .paragraph { margin-bottom: 8px; text-align: justify; }
-  .signatures { margin-top: 40px; }
+  html, body { font-family: 'Times New Roman', Times, serif; font-size: 12px; color: #000; line-height: 1.45; }
+  body { padding: 0; }
+  .page { width: 100%; max-height: 273mm; overflow: hidden; }
+  .title { text-align: center; font-size: 15px; font-weight: bold; text-decoration: underline; margin-bottom: 2px; }
+  .subtitle { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+  .u { border-bottom: 1px solid #000; display: inline-block; min-width: 80px; padding-bottom: 1px; }
+  .u-long { border-bottom: 1px solid #000; display: inline-block; min-width: 170px; padding-bottom: 1px; }
+  .section-num { text-align: center; font-weight: bold; text-decoration: underline; margin: 6px 0 2px; }
+  .paragraph { margin-bottom: 4px; text-align: justify; }
+  .signatures { margin-top: 18px; }
   .sig-row { display: flex; justify-content: space-between; align-items: flex-start; }
   .sig-left { width: 45%; }
   .sig-right { width: 45%; text-align: right; }
-  .sig-line { border-bottom: 1px solid #000; display: inline-block; min-width: 180px; margin-top: 10px; }
-  .center-text { text-align: center; margin-top: 10px; }
-  .date-line { margin-top: 15px; }
-  @media print { body { padding: 20px 30px; } }
+  .sig-line { border-bottom: 1px solid #000; display: inline-block; min-width: 160px; margin-top: 18px; }
+  .center-text { text-align: center; margin-top: 6px; }
+  .date-line { margin-top: 10px; }
+  b, strong { font-weight: bold; }
 </style></head><body>
+<div class="page">
 
 <div class="title">KONTRATË:</div>
 <div class="subtitle">PËR AFTËSIMIN E KANDIDATËVE PËR PATENT SHOFER</div>
 
 <div class="paragraph">
-  E lidhur ne <u>Podujevë</u> në mes të paleve kontraktuese si vijon:
+  E lidhur ne <strong>Podujevë</strong> në mes të paleve kontraktuese si vijon:
 </div>
 
 <div class="paragraph">
@@ -67,46 +70,27 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 </div>
 
 <div class="section-num">1</div>
-<div class="paragraph">
-  Objekti I kesaj kontrate është : Aftesimi i Kandidatit/es për marrjen e patent Shoferit.
-</div>
+<div class="paragraph">Objekti I kesaj kontrate është : Aftesimi i Kandidatit/es për marrjen e patent Shoferit.</div>
 
 <div class="section-num">2</div>
-<div class="paragraph">
-  Autoshkolla është e obliguar që kandidatin/en te e aftësoj sipas ligjit dhe udhzimit administrative në fuqi .
-</div>
+<div class="paragraph">Autoshkolla është e obliguar që kandidatin/en te e aftësoj sipas ligjit dhe udhzimit administrative në fuqi.</div>
 
 <div class="section-num">3.</div>
-<div class="paragraph">
-  Ligjeruesi dhe Shofer Instuktori obligohen që ta aftesojne Kandidatin/en sipas ligjit dhe udhzimit administrative ne fuqi .
-</div>
+<div class="paragraph">Ligjeruesi dhe Shofer Instuktori obligohen që ta aftesojne Kandidatin/en sipas ligjit dhe udhzimit administrative ne fuqi.</div>
 
 <div class="section-num">4.</div>
-<div class="paragraph">
-  Kandidati/ja Obligohet që te marrë pjese në mesimet teorike dhe praktike sipas planprogramit te parapar ne Autoshkolle.
-</div>
+<div class="paragraph">Kandidati/ja Obligohet që te marrë pjese në mesimet teorike dhe praktike sipas planprogramit te parapar ne Autoshkolle.</div>
 
 <div class="section-num">5.</div>
-<div class="paragraph">
-  Autoshkolla Obligohet që Kandidatit/es tja siguroj mjetin per provimin nga pjesa praktike vetem nese është e nevojshme .
-</div>
+<div class="paragraph">Autoshkolla Obligohet që Kandidatit/es tja siguroj mjetin per provimin nga pjesa praktike vetem nese është e nevojshme.</div>
 
 <div class="section-num">6.</div>
-<div class="paragraph">
-  Qmimi per Oret mesimore nga lendet e caktuara është <span class="u"><strong>${safe.shumaMarreveshjes.toFixed(2)}</strong></span> euro.
-</div>
-<div class="paragraph">
-  Kohë zgjatja e Aftesimit Për bëhet nga pjesa Teorike prej <span class="u"><strong>20</strong></span> oreve dhe pjesa praktike prej <span class="u"><strong>20</strong></span> oreve .
-</div>
-<div class="paragraph">
-  Pagesa per aftesimin e kadidatit/es do të bëhet te në zyre të Autoshkolles " VISI " në
-  <span class="u"><strong>${safe.shumaMarreveshjes.toFixed(2)} €</strong></span> për mes arkes fiskale.
-</div>
-<div class="paragraph">
-  Për mos përmbushjen e kushteue dhe obligimeve kontraktuese nga ana e ndonjeres prej paleve kontraktuese në kete kontrat kompetente eshte Gjykata Komunale në &nbsp;<strong><u>PODUJEVË</u></strong>.
-</div>
+<div class="paragraph">Qmimi per Oret mesimore nga lendet e caktuara është <span class="u"><strong>${safe.shumaMarreveshjes.toFixed(2)}</strong></span> euro.</div>
+<div class="paragraph">Kohë zgjatja e Aftesimit Për bëhet nga pjesa Teorike prej <strong>20</strong> oreve dhe pjesa praktike prej <strong>20</strong> oreve.</div>
+<div class="paragraph">Pagesa per aftesimin e kadidatit/es do të bëhet te në zyre të Autoshkolles " VISI " në <span class="u"><strong>${safe.shumaMarreveshjes.toFixed(2)} €</strong></span> për mes arkes fiskale.</div>
+<div class="paragraph">Për mos përmbushjen e kushteue dhe obligimeve kontraktuese nga ana e ndonjeres prej paleve kontraktuese në kete kontrat kompetente eshte Gjykata Komunale në &nbsp;<strong><u>PODUJEVË</u></strong>.</div>
 
-<div class="center-text" style="margin-top:25px; text-decoration:underline; font-weight:bold;">KONTRAKTUESIT :</div>
+<div class="center-text" style="margin-top:14px; text-decoration:underline; font-weight:bold;">KONTRAKTUESIT :</div>
 
 <div class="signatures">
   <div class="sig-row">
@@ -125,6 +109,7 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
   </div>
 </div>
 
+</div>
 <script>window.print();<\/script>
 </body></html>`);
     printWindow.document.close();
