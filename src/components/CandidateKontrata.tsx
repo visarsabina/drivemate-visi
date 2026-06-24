@@ -89,7 +89,7 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
   2. &nbsp;&nbsp;Kandidati/ja &nbsp;${nameVal}&nbsp; i/e lindur me: &nbsp;${birthVal}
 </div>
 
-<div style="margin-top:2px; margin-bottom:4px;">
+<div style="margin-top:6px; margin-bottom:8px;">
   ${underline("60px")}
 </div>
 
