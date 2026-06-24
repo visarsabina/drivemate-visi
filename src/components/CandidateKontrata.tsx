@@ -45,7 +45,7 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 <style>
   @page { size: A4 portrait; margin: 12mm 18mm 10mm 18mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { font-family: 'Times New Roman', Times, serif; font-size: 10.5pt; color: #000; line-height: 1.3; }
+  html, body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; color: #000; line-height: 1.3; }
   body { padding: 0; }
   .page { width: 100%; }
   .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
