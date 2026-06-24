@@ -54,8 +54,8 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
   .header-right { font-size: 14pt; font-weight: bold; }
   .subtitle { text-align: center; font-size: 11pt; font-weight: bold; text-decoration: underline; margin-bottom: 8px; }
   .intro { margin-bottom: 4px; }
-  .party-line { margin-bottom: 2px; }
-  .party-line2 { margin-bottom: 6px; }
+  .party-line { margin-bottom: 6px; }
+  .party-line2 { margin-bottom: 6px; margin-top: 6px; }
   .neni { text-align: center; font-weight: bold; text-decoration: underline; margin-top: 4px; margin-bottom: 1px; }
   .paragraph { margin-bottom: 1px; text-align: justify; }
   .signatures { margin-top: 8px; }
@@ -89,7 +89,7 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
   2. &nbsp;&nbsp;Kandidati/ja &nbsp;${nameVal}&nbsp; i/e lindur me: &nbsp;${birthVal}
 </div>
 
-<div style="margin-top:2px; margin-bottom:4px;">
+<div style="margin-top:6px; margin-bottom:8px;">
   ${underline("60px")}
 </div>
 
