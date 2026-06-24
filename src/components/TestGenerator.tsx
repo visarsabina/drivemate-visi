@@ -638,7 +638,7 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3 print:flex-row print:gap-2">
                           {question.image ? (
                             <img
-                              src={`/q-images/${question.image}`}
+                              src={`/literatura/${question.image}`}
                               alt={`Pyetja ${index + 1}`}
                               loading="lazy"
                               onError={(e) => {
