@@ -43,28 +43,27 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Kontrata - ${safe.emri || ""} ${safe.mbiemri || ""}</title>
 <style>
-  @page { size: A4 portrait; margin: 18mm 20mm 14mm 20mm; }
+  @page { size: A4 portrait; margin: 12mm 18mm 10mm 18mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: #000; line-height: 1.55; }
+  html, body { font-family: 'Times New Roman', Times, serif; font-size: 10.5pt; color: #000; line-height: 1.3; }
   body { padding: 0; }
-  .page { width: 100%; min-height: 261mm; display: flex; flex-direction: column; }
-  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-  .header-left { font-size: 11pt; font-weight: bold; }
-  .header-center { font-size: 16pt; font-weight: bold; text-align: center; flex: 1; }
-  .header-right { font-size: 16pt; font-weight: bold; }
-  .subtitle { text-align: center; font-size: 12.5pt; font-weight: bold; text-decoration: underline; margin-bottom: 16px; }
-  .intro { margin-bottom: 10px; }
-  .party-line { margin-bottom: 6px; }
-  .party-line2 { margin-bottom: 18px; }
-  .neni { text-align: center; font-weight: bold; text-decoration: underline; margin-top: 10px; margin-bottom: 2px; }
-  .paragraph { margin-bottom: 2px; text-align: justify; }
-  .signatures { margin-top: auto; padding-top: 20px; }
-  .sig-title { text-align: center; font-weight: bold; text-decoration: underline; margin-bottom: 12px; }
+  .page { width: 100%; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .header-left { font-size: 10pt; font-weight: bold; }
+  .header-center { font-size: 14pt; font-weight: bold; text-align: center; flex: 1; }
+  .header-right { font-size: 14pt; font-weight: bold; }
+  .subtitle { text-align: center; font-size: 11pt; font-weight: bold; text-decoration: underline; margin-bottom: 8px; }
+  .intro { margin-bottom: 4px; }
+  .party-line { margin-bottom: 2px; }
+  .party-line2 { margin-bottom: 6px; }
+  .neni { text-align: center; font-weight: bold; text-decoration: underline; margin-top: 4px; margin-bottom: 1px; }
+  .paragraph { margin-bottom: 1px; text-align: justify; }
+  .signatures { margin-top: 8px; }
+  .sig-title { text-align: center; font-weight: bold; text-decoration: underline; margin-bottom: 6px; }
   .sig-row { display: flex; justify-content: space-between; align-items: flex-start; }
   .sig-left { width: 42%; }
   .sig-right { width: 42%; text-align: right; }
-  .sig-line { border-bottom: 1px solid #000; display: block; width: 100%; margin-top: 28px; }
-  .page2 { page-break-before: always; padding-top: 0; }
+  .sig-line { border-bottom: 1px solid #000; display: block; width: 100%; margin-top: 20px; }
   b, strong { font-weight: bold; }
 </style></head><body>
 
@@ -90,7 +89,7 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
   2. &nbsp;&nbsp;Kandidati/ja &nbsp;${nameVal}&nbsp; i/e lindur me: &nbsp;${birthVal}
 </div>
 
-<div style="margin-top:4px; margin-bottom:12px;">
+<div style="margin-top:2px; margin-bottom:4px;">
   ${underline("60px")}
 </div>
 
@@ -143,12 +142,9 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
       <span class="sig-line"></span>
     </div>
   </div>
+  <div style="margin-top: 4px;">Data : &nbsp;${regDateVal}</div>
 </div>
 
-</div>
-
-<div class="page2">
-  Data : &nbsp;${regDateVal}
 </div>
 
 <script>window.print();<\/script>
