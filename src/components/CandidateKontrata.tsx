@@ -98,13 +98,13 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
       <span class="sig-line"></span>
     </div>
     <div class="sig-right">
-      Drejtori: &nbsp;<strong><u>Fadil Jaha</u></strong><br/>
+      Drejtori: &nbsp;<strong>Fadil Jaha</strong><br/>
       <span class="sig-line"></span>
     </div>
   </div>
   <div class="center-text">Auto Shkolla "VISI"</div>
   <div class="date-line">
-    Më datën: <span class="u"><strong>${formatDate(safe.dataRegjistrimit)}</strong></span>
+    Më datën: <strong>${formatDate(safe.dataRegjistrimit)}</strong>
   </div>
 </div>
 
