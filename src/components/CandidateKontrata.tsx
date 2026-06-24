@@ -62,33 +62,33 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 </div>
 
 <div class="paragraph">
-  1. Autoshkolla &nbsp;<strong>"VISI"</strong>&nbsp; nga &nbsp;<strong><u>PODUJEVA</u></strong>&nbsp; në njërën anë;
+  1. Auto Shkolla &nbsp;<strong>"VISI"</strong>&nbsp; nga &nbsp;<strong>Podujevë</strong>&nbsp; në njërën anë;
 </div>
 
 <div class="paragraph">
-  2. Kandidati/ja <span class="u-long"><strong>${safe.emri} ${safe.mbiemri}</strong></span> nga <span class="u"><strong>${safe.vendi || ""}</strong></span> K.K <span class="u"><strong>${safe.vendi || ""}</strong></span>.
+  2. Kandidati/ja <strong>${safe.emri} ${safe.mbiemri}</strong> nga <strong>${safe.vendi || ""}</strong> K.K <strong>${safe.vendi || ""}</strong>.
 </div>
 
 <div class="section-num">1.</div>
 <div class="paragraph">Objekti i kësaj kontrate është: Aftësimi i kandidatit/es për marrjen e patent shoferit.</div>
 
 <div class="section-num">2.</div>
-<div class="paragraph">Autoshkolla është e obliguar që kandidatin/en ta aftësojë sipas ligjit dhe udhëzimit administrativ në fuqi.</div>
+<div class="paragraph">Auto Shkolla është e obliguar që kandidatin/en ta aftësojë sipas ligjit dhe udhëzimit administrativ në fuqi.</div>
 
 <div class="section-num">3.</div>
 <div class="paragraph">Ligjëruesi dhe shofer-instruktori obligohen që ta aftësojnë kandidatin/en sipas ligjit dhe udhëzimit administrativ në fuqi.</div>
 
 <div class="section-num">4.</div>
-<div class="paragraph">Kandidati/ja obligohet që të marrë pjesë në mësimet teorike dhe praktike sipas planprogramit të paraparë në Autoshkollë.</div>
+<div class="paragraph">Kandidati/ja obligohet që të marrë pjesë në mësimet teorike dhe praktike sipas planprogramit të paraparë në Auto Shkollë.</div>
 
 <div class="section-num">5.</div>
-<div class="paragraph">Autoshkolla obligohet që kandidatit/es t'ia sigurojë mjetin për provimin nga pjesa praktike vetëm nëse është e nevojshme.</div>
+<div class="paragraph">Auto Shkolla obligohet që kandidatit/es t'ia sigurojë mjetin për provimin nga pjesa praktike vetëm nëse është e nevojshme.</div>
 
 <div class="section-num">6.</div>
-<div class="paragraph">Çmimi për orët mësimore nga lëndët e caktuara është <span class="u"><strong>${safe.shumaMarreveshjes.toFixed(2)}</strong></span> euro.</div>
+<div class="paragraph">Çmimi për orët mësimore nga lënda e caktuar është <strong>${safe.shumaMarreveshjes.toFixed(2)}</strong> € .</div>
 <div class="paragraph">Kohëzgjatja e aftësimit përbëhet nga pjesa teorike prej <strong>20</strong> orëve dhe pjesa praktike prej <strong>20</strong> orëve.</div>
-<div class="paragraph">Pagesa për aftësimin e kandidatit/es do të bëhet në zyrën e Autoshkollës "VISI" në shumën <span class="u"><strong>${safe.shumaMarreveshjes.toFixed(2)} €</strong></span> përmes arkës fiskale.</div>
-<div class="paragraph">Për mospërmbushjen e kushteve dhe obligimeve kontraktuese nga ana e ndonjërës prej palëve kontraktuese në këtë kontratë, kompetente është Gjykata Komunale në &nbsp;<strong><u>PODUJEVË</u></strong>.</div>
+<div class="paragraph">Pagesa për aftësimin e kandidatit/es do të bëhet në zyrën e Auto Shkollës "VISI" në shumën <strong>${safe.shumaMarreveshjes.toFixed(2)} €</strong> përmes arkës fiskale.</div>
+<div class="paragraph">Për mospërmbushjen e kushteve dhe obligimeve kontraktuese nga ana e ndonjërës prej palëve kontraktuese në këtë kontratë, kompetente është Gjykata Komunale në &nbsp;<strong>Podujevë</strong>.</div>
 
 <div class="signatures">
   <div class="center-text" style="text-decoration:underline; font-weight:bold; margin-bottom: 14px;">KONTRAKTUESIT:</div>
@@ -98,13 +98,13 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
       <span class="sig-line"></span>
     </div>
     <div class="sig-right">
-      Drejtori: &nbsp;<strong><u>Fadil Jaha</u></strong><br/>
+      Drejtori: &nbsp;<strong>Fadil Jaha</strong><br/>
       <span class="sig-line"></span>
     </div>
   </div>
   <div class="center-text">Auto Shkolla "VISI"</div>
   <div class="date-line">
-    Më datën: <span class="u"><strong>${formatDate(safe.dataRegjistrimit)}</strong></span>
+    Më datën: <strong>${formatDate(safe.dataRegjistrimit)}</strong>
   </div>
 </div>
 
