@@ -24,6 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import builtinBank from "@/data/questionBank.json";
+import builtinBankC from "@/data/questionBankC.json";
 import { Candidate } from "@/types/candidate";
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
@@ -89,6 +90,18 @@ const normalizeBankQuestion = (q: RawBankQuestion): ParsedQuestion | null => {
 const BUILTIN_QUESTIONS: ParsedQuestion[] = (builtinBank as RawBankQuestion[])
   .map(normalizeBankQuestion)
   .filter((q): q is ParsedQuestion => q !== null);
+
+const BUILTIN_QUESTIONS_C: ParsedQuestion[] = (builtinBankC as RawBankQuestion[])
+  .map(normalizeBankQuestion)
+  .filter((q): q is ParsedQuestion => q !== null);
+
+const getBuiltinBankFor = (category: string): { bank: ParsedQuestion[]; count: number; imageDir: string } => {
+  const cat = (category || "B").toUpperCase();
+  if (cat === "C") {
+    return { bank: BUILTIN_QUESTIONS_C, count: BUILTIN_QUESTIONS_C.length, imageDir: "/literatura-c/" };
+  }
+  return { bank: BUILTIN_QUESTIONS, count: QUESTION_COUNT, imageDir: "/literatura/" };
+};
 
 const shuffleArray = <T,>(items: T[]) => {
   const copy = [...items];
