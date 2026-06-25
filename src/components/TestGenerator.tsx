@@ -421,7 +421,7 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
             <Card className="rounded-md border-border/70 shadow-none">
               <CardContent className="p-4">
                 <p className="text-xs text-muted-foreground">Pyetje në test</p>
-                <p className="mt-1 text-2xl font-semibold">{QUESTION_COUNT}</p>
+                <p className="mt-1 text-2xl font-semibold">{effectiveCount}</p>
               </CardContent>
             </Card>
             <Card className="col-span-2 rounded-md border-border/70 shadow-none sm:col-span-1">
