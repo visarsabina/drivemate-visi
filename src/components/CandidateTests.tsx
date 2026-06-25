@@ -322,7 +322,7 @@ function TestRunner({
             <div className="h-56 mb-3 flex items-center justify-center bg-muted/30 rounded-md border border-border overflow-hidden">
               {q.image ? (
                 <img
-                  src={`/literatura/${q.image}`}
+                  src={`${imageDir}${q.image}`}
                   alt=""
                   className="max-h-full max-w-full object-contain"
                   onError={(e) => {
