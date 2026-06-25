@@ -3,10 +3,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw } from "lucide-react";
 import builtinBank from "@/data/questionBank.json";
+import bankC from "@/data/questionBankC.json";
 
 const OPTION_KEYS = ["A", "B", "C", "D", "E"];
 const PASS_THRESHOLD = 85; // percent
-const TEST_COUNT = 20;
 
 type RawQ = { id: string; text: string; options: string[]; correctIndex: number; image?: string | null };
 type Q = {
