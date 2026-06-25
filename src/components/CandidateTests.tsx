@@ -200,14 +200,14 @@ export default function CandidateTests({ candidateId, category, onClose }: Props
         <div className="min-w-0">
           <h1 className="text-base font-semibold truncate">Testet e autoshkollës</h1>
           <p className="text-xs text-muted-foreground">
-            {TEST_COUNT} teste · {QUESTIONS_PER_TEST} pyetje · kalueshmëria {PASS_THRESHOLD}%
+            {testCount} {testCount === 1 ? "test" : "teste"} · kalueshmëria {PASS_THRESHOLD}%
           </p>
         </div>
       </header>
 
       <main className="p-4 max-w-3xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {Array.from({ length: TEST_COUNT }).map((_, i) => {
+          {Array.from({ length: testCount }).map((_, i) => {
             const r = results[i];
             return (
               <Card key={i} className="p-4 flex items-center justify-between gap-3">
@@ -245,14 +245,17 @@ export default function CandidateTests({ candidateId, category, onClose }: Props
 
 function TestRunner({
   testIndex,
+  questions,
+  imageDir,
   onExit,
   onFinish,
 }: {
   testIndex: number;
+  questions: Q[];
+  imageDir: string;
   onExit: () => void;
   onFinish: (r: Result) => void;
 }) {
-  const questions = useMemo(() => getTestQuestions(testIndex), [testIndex]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
