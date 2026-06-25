@@ -1,0 +1,69 @@
+[
+  {
+    "id": "c-20",
+    "text": "Si do të veproni kur i afroheni kryqëzimit dhe në semafor ndriçon drita e kuqe?",
+    "options": [
+      "Do ti respektoj dritat e semaforit dhe do të ndalem.",
+      "Nuk e kam obligim ti respektoj dritat e semaforit.",
+      "Do të vazhdoj lëvizjen pa u ndalur fare."
+    ],
+    "correctIndex": 0,
+    "image": "c-semafor.png"
+  },
+  {
+    "id": "c-29",
+    "text": "Në këtë kryqëzim unë lëviz i dyti.",
+    "options": ["E saktë.", "E pasaktë."],
+    "correctIndex": 0,
+    "image": "c-kryqezim-29.png"
+  },
+  {
+    "id": "c-34",
+    "text": "Nëse dy mjete të së njëjtës kategori takohen në një rrugë me pjerrtësi, mjeti që lëviz teposhtë duhet të kthehet mbrapa.",
+    "options": ["E saktë.", "E pasaktë."],
+    "correctIndex": 1,
+    "image": null
+  },
+  {
+    "id": "c-32",
+    "text": "Në këtë kryqëzim radhitja e kalimit duhet të jetë: unë, kamioni, biçiklisti.",
+    "options": ["E saktë.", "E pasaktë."],
+    "correctIndex": 1,
+    "image": "c-kryqezim-32.png"
+  },
+  {
+    "id": "c-5",
+    "text": "Në këtë kryqëzim vetura e kuqe lëviz e para.",
+    "options": ["E saktë.", "E pasaktë."],
+    "correctIndex": 0,
+    "image": "c-kryqezim-5.png"
+  },
+  {
+    "id": "c-30",
+    "text": "Në këtë kryqëzim lejohet lëvizja majtas, djathtas dhe drejt.",
+    "options": ["E saktë.", "E pasaktë."],
+    "correctIndex": 1,
+    "image": "c-kryqezim-30.png"
+  },
+  {
+    "id": "c-27",
+    "text": "Cila shenjë tregon fillimin e autoudhës?",
+    "options": ["A.", "B.", "C."],
+    "correctIndex": 1,
+    "image": "c-shenja-autoudha.png"
+  },
+  {
+    "id": "c-35a",
+    "text": "Çfarë paraqet vija e ndërprerë në rrugë?",
+    "options": ["Lejon tejkalimin.", "Rrugën pa dalje.", "Ndalon tejkalimin."],
+    "correctIndex": 0,
+    "image": "c-vija-nderprere.png"
+  },
+  {
+    "id": "c-35b",
+    "text": "Një mjet transportues me mjete të bashkëngjitura mund të lëvizë deri në 90 km/h në autostradë.",
+    "options": ["E saktë.", "E pasaktë."],
+    "correctIndex": 1,
+    "image": null
+  }
+]

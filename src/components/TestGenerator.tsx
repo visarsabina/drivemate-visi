@@ -24,6 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import builtinBank from "@/data/questionBank.json";
+import builtinBankC from "@/data/questionBankC.json";
 import { Candidate } from "@/types/candidate";
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
@@ -89,6 +90,18 @@ const normalizeBankQuestion = (q: RawBankQuestion): ParsedQuestion | null => {
 const BUILTIN_QUESTIONS: ParsedQuestion[] = (builtinBank as RawBankQuestion[])
   .map(normalizeBankQuestion)
   .filter((q): q is ParsedQuestion => q !== null);
+
+const BUILTIN_QUESTIONS_C: ParsedQuestion[] = (builtinBankC as RawBankQuestion[])
+  .map(normalizeBankQuestion)
+  .filter((q): q is ParsedQuestion => q !== null);
+
+const getBuiltinBankFor = (category: string): { bank: ParsedQuestion[]; count: number; imageDir: string } => {
+  const cat = (category || "B").toUpperCase();
+  if (cat === "C") {
+    return { bank: BUILTIN_QUESTIONS_C, count: BUILTIN_QUESTIONS_C.length, imageDir: "/literatura-c/" };
+  }
+  return { bank: BUILTIN_QUESTIONS, count: QUESTION_COUNT, imageDir: "/literatura/" };
+};
 
 const shuffleArray = <T,>(items: T[]) => {
   const copy = [...items];
@@ -217,52 +230,64 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
     }
   };
 
-  const [questionBank, setQuestionBank] = useState<ParsedQuestion[]>(BUILTIN_QUESTIONS);
+  const builtinFor = useMemo(() => getBuiltinBankFor(form.kategoria), [form.kategoria]);
+  const [questionBank, setQuestionBank] = useState<ParsedQuestion[]>(builtinFor.bank);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [bankSource, setBankSource] = useState<"builtin" | "upload">("builtin");
   const [parseError, setParseError] = useState("");
   const [isParsing, setIsParsing] = useState(false);
   const [generatedTest, setGeneratedTest] = useState<GeneratedTest | null>(null);
 
+  // When category changes and we're on builtin source, swap the bank automatically
+  useMemo(() => {
+    if (bankSource === "builtin") {
+      setQuestionBank(builtinFor.bank);
+    }
+  }, [builtinFor, bankSource]);
+
+  const effectiveCount = bankSource === "builtin" ? builtinFor.count : QUESTION_COUNT;
+  const imageDir = bankSource === "builtin" ? builtinFor.imageDir : "/literatura/";
+
   const summary = useMemo(
-    () => ({ total: questionBank.length, enough: questionBank.length >= QUESTION_COUNT }),
-    [questionBank],
+    () => ({ total: questionBank.length, enough: questionBank.length >= effectiveCount }),
+    [questionBank, effectiveCount],
   );
 
   const createGeneratedTest = (candidate: TestCandidate) => {
-    if (questionBank.length < QUESTION_COUNT) {
+    const count = effectiveCount;
+    if (questionBank.length < count) {
       toast.error("Nuk ka pyetje të mjaftueshme");
       return;
     }
 
-    const MIN_NO_IMAGE = 6;
+    const MIN_NO_IMAGE = Math.min(6, Math.max(0, count - 1));
     const withoutImage = shuffleArray(questionBank.filter((q) => !q.image));
     const withImage = shuffleArray(questionBank.filter((q) => !!q.image));
     const noImageCount = Math.min(MIN_NO_IMAGE, withoutImage.length);
     const picked = [
       ...withoutImage.slice(0, noImageCount),
-      ...withImage.slice(0, QUESTION_COUNT - noImageCount),
+      ...withImage.slice(0, count - noImageCount),
     ];
-    if (picked.length < QUESTION_COUNT) {
+    if (picked.length < count) {
       const used = new Set(picked.map((q) => q.id));
       const rest = questionBank.filter((q) => !used.has(q.id));
-      picked.push(...shuffleArray(rest).slice(0, QUESTION_COUNT - picked.length));
+      picked.push(...shuffleArray(rest).slice(0, count - picked.length));
     }
     const selectedQuestions = shuffleArray(picked);
 
-    const minCorrect = Math.ceil((PASS_THRESHOLD / 100) * QUESTION_COUNT);
+    const minCorrect = Math.ceil((PASS_THRESHOLD / 100) * count);
     const possibleTargets = Array.from(
-      { length: QUESTION_COUNT - minCorrect + 1 },
+      { length: count - minCorrect + 1 },
       (_, i) => minCorrect + i,
     );
     const lastScore = generatedTest?.score;
     const availableTargets = possibleTargets.filter(
-      (t) => Math.round((t / QUESTION_COUNT) * 100) !== lastScore,
+      (t) => Math.round((t / count) * 100) !== lastScore,
     );
     const pool = availableTargets.length > 0 ? availableTargets : possibleTargets;
     const correctTarget = pool[Math.floor(Math.random() * pool.length)];
-    const indices = Array.from({ length: QUESTION_COUNT }, (_, i) => i);
-    const wrongIndices = new Set(shuffleArray(indices).slice(0, QUESTION_COUNT - correctTarget));
+    const indices = Array.from({ length: count }, (_, i) => i);
+    const wrongIndices = new Set(shuffleArray(indices).slice(0, count - correctTarget));
 
     const completed = selectedQuestions.map((question, idx) => {
       const shouldBeWrong = wrongIndices.has(idx);
@@ -277,7 +302,7 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
     });
 
     const correctAnswers = completed.filter((q) => q.isCorrect).length;
-    const score = Math.round((correctAnswers / QUESTION_COUNT) * 100);
+    const score = Math.round((correctAnswers / count) * 100);
 
     setGeneratedTest({
       candidate,
@@ -396,7 +421,7 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
             <Card className="rounded-md border-border/70 shadow-none">
               <CardContent className="p-4">
                 <p className="text-xs text-muted-foreground">Pyetje në test</p>
-                <p className="mt-1 text-2xl font-semibold">{QUESTION_COUNT}</p>
+                <p className="mt-1 text-2xl font-semibold">{effectiveCount}</p>
               </CardContent>
             </Card>
             <Card className="col-span-2 rounded-md border-border/70 shadow-none sm:col-span-1">
@@ -638,7 +663,7 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3 print:flex-row print:gap-2">
                           {question.image ? (
                             <img
-                              src={`/literatura/${question.image}`}
+                              src={`${imageDir}${question.image}`}
                               alt={`Pyetja ${index + 1}`}
                               loading="lazy"
                               onError={(e) => {

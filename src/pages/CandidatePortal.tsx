@@ -137,7 +137,7 @@ const CandidatePortal = () => {
   }
 
   if (showTests) {
-    return <CandidateTests candidateId={candidate.id} onClose={() => setShowTests(false)} />;
+    return <CandidateTests candidateId={candidate.id} category={candidate.kategoria} onClose={() => setShowTests(false)} />;
   }
 
   const quickActions = [

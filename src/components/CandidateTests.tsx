@@ -3,10 +3,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw } from "lucide-react";
 import builtinBank from "@/data/questionBank.json";
+import bankC from "@/data/questionBankC.json";
 
 const OPTION_KEYS = ["A", "B", "C", "D", "E"];
 const PASS_THRESHOLD = 85; // percent
-const TEST_COUNT = 20;
 
 type RawQ = { id: string; text: string; options: string[]; correctIndex: number; image?: string | null };
 type Q = {
@@ -146,12 +146,28 @@ function saveResult(candidateId: string, testIndex: number, result: Result) {
 
 interface Props {
   candidateId: string;
+  category?: string;
   onClose: () => void;
 }
 
-export default function CandidateTests({ candidateId, onClose }: Props) {
+// Category-specific test config
+function getTestsForCategory(category?: string): { tests: Q[][]; imageDir: string } {
+  const cat = (category || "B").toUpperCase();
+  if (cat === "C") {
+    const all = (bankC as RawQ[]).map(toQ);
+    return { tests: [all], imageDir: "/literatura-c/" };
+  }
+  // Default (B and others): 20 generated tests from main bank
+  const tests = Array.from({ length: 20 }).map((_, i) => getTestQuestions(i));
+  return { tests, imageDir: "/literatura/" };
+}
+
+export default function CandidateTests({ candidateId, category, onClose }: Props) {
   const [activeTest, setActiveTest] = useState<number | null>(null);
   const [results, setResults] = useState<Record<number, Result>>({});
+
+  const { tests, imageDir } = useMemo(() => getTestsForCategory(category), [category]);
+  const testCount = tests.length;
 
   useEffect(() => {
     setResults(loadResults(candidateId));
@@ -161,6 +177,8 @@ export default function CandidateTests({ candidateId, onClose }: Props) {
     return (
       <TestRunner
         testIndex={activeTest}
+        questions={tests[activeTest]}
+        imageDir={imageDir}
         onExit={() => {
           setActiveTest(null);
           setResults(loadResults(candidateId));
@@ -182,14 +200,14 @@ export default function CandidateTests({ candidateId, onClose }: Props) {
         <div className="min-w-0">
           <h1 className="text-base font-semibold truncate">Testet e autoshkollës</h1>
           <p className="text-xs text-muted-foreground">
-            {TEST_COUNT} teste · {QUESTIONS_PER_TEST} pyetje · kalueshmëria {PASS_THRESHOLD}%
+            {testCount} {testCount === 1 ? "test" : "teste"} · kalueshmëria {PASS_THRESHOLD}%
           </p>
         </div>
       </header>
 
       <main className="p-4 max-w-3xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {Array.from({ length: TEST_COUNT }).map((_, i) => {
+          {Array.from({ length: testCount }).map((_, i) => {
             const r = results[i];
             return (
               <Card key={i} className="p-4 flex items-center justify-between gap-3">
@@ -227,14 +245,17 @@ export default function CandidateTests({ candidateId, onClose }: Props) {
 
 function TestRunner({
   testIndex,
+  questions,
+  imageDir,
   onExit,
   onFinish,
 }: {
   testIndex: number;
+  questions: Q[];
+  imageDir: string;
   onExit: () => void;
   onFinish: (r: Result) => void;
 }) {
-  const questions = useMemo(() => getTestQuestions(testIndex), [testIndex]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -301,7 +322,7 @@ function TestRunner({
             <div className="h-56 mb-3 flex items-center justify-center bg-muted/30 rounded-md border border-border overflow-hidden">
               {q.image ? (
                 <img
-                  src={`/literatura/${q.image}`}
+                  src={`${imageDir}${q.image}`}
                   alt=""
                   className="max-h-full max-w-full object-contain"
                   onError={(e) => {
