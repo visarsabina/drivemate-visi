@@ -146,12 +146,28 @@ function saveResult(candidateId: string, testIndex: number, result: Result) {
 
 interface Props {
   candidateId: string;
+  category?: string;
   onClose: () => void;
 }
 
-export default function CandidateTests({ candidateId, onClose }: Props) {
+// Category-specific test config
+function getTestsForCategory(category?: string): { tests: Q[][]; imageDir: string } {
+  const cat = (category || "B").toUpperCase();
+  if (cat === "C") {
+    const all = (bankC as RawQ[]).map(toQ);
+    return { tests: [all], imageDir: "/literatura-c/" };
+  }
+  // Default (B and others): 20 generated tests from main bank
+  const tests = Array.from({ length: 20 }).map((_, i) => getTestQuestions(i));
+  return { tests, imageDir: "/literatura/" };
+}
+
+export default function CandidateTests({ candidateId, category, onClose }: Props) {
   const [activeTest, setActiveTest] = useState<number | null>(null);
   const [results, setResults] = useState<Record<number, Result>>({});
+
+  const { tests, imageDir } = useMemo(() => getTestsForCategory(category), [category]);
+  const testCount = tests.length;
 
   useEffect(() => {
     setResults(loadResults(candidateId));
@@ -161,6 +177,8 @@ export default function CandidateTests({ candidateId, onClose }: Props) {
     return (
       <TestRunner
         testIndex={activeTest}
+        questions={tests[activeTest]}
+        imageDir={imageDir}
         onExit={() => {
           setActiveTest(null);
           setResults(loadResults(candidateId));
