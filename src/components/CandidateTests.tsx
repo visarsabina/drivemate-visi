@@ -382,14 +382,14 @@ function TestRunner({
               <ArrowLeft className="w-4 h-4" /> Prapa
             </Button>
             <p className="text-xs text-muted-foreground flex-1 text-center">
-              {currentIdx + 1}/{total}
+              {currentIdx + 1}/{totalQ}
             </p>
             {!submitted && isLast ? (
               <Button onClick={handleSubmit} disabled={answeredCount === 0}>
                 Përfundo
               </Button>
             ) : !submitted ? (
-              <Button onClick={() => setCurrentIdx((i) => Math.min(total - 1, i + 1))}>
+              <Button onClick={() => setCurrentIdx((i) => Math.min(totalQ - 1, i + 1))}>
                 Para →
               </Button>
             ) : isLast ? (
@@ -405,7 +405,7 @@ function TestRunner({
                 <RotateCcw className="w-4 h-4" /> Provo sërish
               </Button>
             ) : (
-              <Button onClick={() => setCurrentIdx((i) => Math.min(total - 1, i + 1))}>
+              <Button onClick={() => setCurrentIdx((i) => Math.min(totalQ - 1, i + 1))}>
                 Para →
               </Button>
             )}
