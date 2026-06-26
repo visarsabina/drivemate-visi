@@ -262,11 +262,13 @@ function TestRunner({
   const [submitted, setSubmitted] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
 
+  const totalPoints = useMemo(() => questions.reduce((s, q) => s + q.points, 0), [questions]);
   const score = useMemo(
-    () => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? 1 : 0), 0),
+    () => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? q.points : 0), 0),
     [questions, answers]
   );
-  const total = questions.length;
+  const total = totalPoints;
+  const totalQ = questions.length;
   const pct = total ? Math.round((score / total) * 100) : 0;
   const passed = pct >= PASS_THRESHOLD;
 
