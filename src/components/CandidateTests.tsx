@@ -8,13 +8,14 @@ import bankC from "@/data/questionBankC.json";
 const OPTION_KEYS = ["A", "B", "C", "D", "E"];
 const PASS_THRESHOLD = 85; // percent
 
-type RawQ = { id: string; text: string; options: string[]; correctIndex: number; image?: string | null };
+type RawQ = { id: string; text: string; options: string[]; correctIndex: number; image?: string | null; points?: number };
 type Q = {
   id: string;
   text: string;
   options: { key: string; text: string }[];
   correctKey: string;
   image?: string | null;
+  points: number;
 };
 
 function isTrueFalse(raw: RawQ): boolean {
@@ -32,13 +33,14 @@ const RAW_VALID: RawQ[] = (builtinBank as RawQ[]).filter((q) => {
 });
 
 function toQ(raw: RawQ): Q {
-  const opts = raw.options.map((o) => (o || "").replace(/\s+/g, " ").trim()).filter((o) => o.length > 0 && o.length < 240);
+  const opts = raw.options.map((o) => (o || "").replace(/\s+/g, " ").trim()).filter((o) => o.length > 0 && o.length < 400);
   return {
     id: raw.id,
     text: (raw.text || "").replace(/\s+/g, " ").trim(),
     options: opts.map((t, i) => ({ key: OPTION_KEYS[i], text: t })),
     correctKey: OPTION_KEYS[raw.correctIndex],
     image: raw.image ?? null,
+    points: raw.points ?? 1,
   };
 }
 
@@ -260,11 +262,13 @@ function TestRunner({
   const [submitted, setSubmitted] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
 
+  const totalPoints = useMemo(() => questions.reduce((s, q) => s + q.points, 0), [questions]);
   const score = useMemo(
-    () => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? 1 : 0), 0),
+    () => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? q.points : 0), 0),
     [questions, answers]
   );
-  const total = questions.length;
+  const total = totalPoints;
+  const totalQ = questions.length;
   const pct = total ? Math.round((score / total) * 100) : 0;
   const passed = pct >= PASS_THRESHOLD;
 
@@ -277,7 +281,7 @@ function TestRunner({
   const answeredCount = Object.keys(answers).length;
   const q = questions[currentIdx];
   const userKey = q ? answers[q.id] : undefined;
-  const isLast = currentIdx === total - 1;
+  const isLast = currentIdx === totalQ - 1;
   const isFirst = currentIdx === 0;
 
   return (
@@ -289,7 +293,7 @@ function TestRunner({
         <div className="min-w-0 flex-1">
           <h1 className="text-base font-semibold truncate">Testi {testIndex + 1}</h1>
           <p className="text-xs text-muted-foreground">
-            Pyetja {currentIdx + 1}/{total} · {answeredCount} të përgjigjura
+            Pyetja {currentIdx + 1}/{totalQ} · {answeredCount} të përgjigjura · {total} pikë gjithsej
           </p>
         </div>
       </header>
@@ -378,14 +382,14 @@ function TestRunner({
               <ArrowLeft className="w-4 h-4" /> Prapa
             </Button>
             <p className="text-xs text-muted-foreground flex-1 text-center">
-              {currentIdx + 1}/{total}
+              {currentIdx + 1}/{totalQ}
             </p>
             {!submitted && isLast ? (
               <Button onClick={handleSubmit} disabled={answeredCount === 0}>
                 Përfundo
               </Button>
             ) : !submitted ? (
-              <Button onClick={() => setCurrentIdx((i) => Math.min(total - 1, i + 1))}>
+              <Button onClick={() => setCurrentIdx((i) => Math.min(totalQ - 1, i + 1))}>
                 Para →
               </Button>
             ) : isLast ? (
@@ -401,7 +405,7 @@ function TestRunner({
                 <RotateCcw className="w-4 h-4" /> Provo sërish
               </Button>
             ) : (
-              <Button onClick={() => setCurrentIdx((i) => Math.min(total - 1, i + 1))}>
+              <Button onClick={() => setCurrentIdx((i) => Math.min(totalQ - 1, i + 1))}>
                 Para →
               </Button>
             )}
