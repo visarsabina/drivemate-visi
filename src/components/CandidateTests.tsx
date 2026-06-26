@@ -8,13 +8,14 @@ import bankC from "@/data/questionBankC.json";
 const OPTION_KEYS = ["A", "B", "C", "D", "E"];
 const PASS_THRESHOLD = 85; // percent
 
-type RawQ = { id: string; text: string; options: string[]; correctIndex: number; image?: string | null };
+type RawQ = { id: string; text: string; options: string[]; correctIndex: number; image?: string | null; points?: number };
 type Q = {
   id: string;
   text: string;
   options: { key: string; text: string }[];
   correctKey: string;
   image?: string | null;
+  points: number;
 };
 
 function isTrueFalse(raw: RawQ): boolean {
@@ -32,13 +33,14 @@ const RAW_VALID: RawQ[] = (builtinBank as RawQ[]).filter((q) => {
 });
 
 function toQ(raw: RawQ): Q {
-  const opts = raw.options.map((o) => (o || "").replace(/\s+/g, " ").trim()).filter((o) => o.length > 0 && o.length < 240);
+  const opts = raw.options.map((o) => (o || "").replace(/\s+/g, " ").trim()).filter((o) => o.length > 0 && o.length < 400);
   return {
     id: raw.id,
     text: (raw.text || "").replace(/\s+/g, " ").trim(),
     options: opts.map((t, i) => ({ key: OPTION_KEYS[i], text: t })),
     correctKey: OPTION_KEYS[raw.correctIndex],
     image: raw.image ?? null,
+    points: raw.points ?? 1,
   };
 }
 
