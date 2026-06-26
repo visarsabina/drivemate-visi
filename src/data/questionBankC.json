@@ -1,37 +1,393 @@
 [
-  { "id": "c1", "text": "Automjetet transportuese të mallrave (të treguara në fotografinë), të cilat lëvizin në rrugë publike jashtë vendbanimit, që ka vetëm nga një korsi komunikacioni në një kahe dhe nëse në atë pjesë të rrugës është i ndaluar parakalimi:", "options": ["shoferët janë të obliguar që të lëvizin me automjetet në distancë të sigurtë", "shoferët janë të obliguar që të mbajnë distancë ndërmjet automjeteve më së paku 50 metra", "shoferët janë të obliguar që të mbajnë distancën ndërmjet automjeteve më së paku prej 100 metra"], "correctIndex": 0, "image": "c1.png", "points": 4 },
-  { "id": "c2", "text": "Tahografi është pajisje e cila siguron më së paku shënimin e:", "options": ["shpejtësisë së lëvizjes së automjetit dhe të etapës kohore punuese të shoferit", "të dhënave për vend pozitën e automjetit gjatë kohës së lëvizjes", "harxhimit të lëndës djegëse sipas kilometrave të kaluar"], "correctIndex": 0, "image": "c2.png", "points": 4 },
-  { "id": "c3", "text": "Ngarkesa e automjetit nuk guxon ta kalojë pikën më të largët të pjesës së parme të automjetit më shumë se:", "options": ["1 metër", "1.5 metra", "1,6 metra"], "correctIndex": 0, "image": "c3.png", "points": 4 },
-  { "id": "c4", "text": "Lejën për transport grupor të udhëtarëve me automjet transportues të mallrave e jep:", "options": ["Stacioni për kontrollim teknik të automjeteve", "Ministria e Infrastrukturës", "Ministria e Punëve të Brendshme"], "correctIndex": 1, "image": "c4.png", "points": 4 },
-  { "id": "c5", "text": "Pajisja servo e drejtuesit të automjetit motorik instalohet për shkak të:", "options": ["mbrojtjes së pajisjes për drejtim nga dëmtimet", "mbrojtjes së shoferit gjatë aksidentit eventual me automjetin", "zvogëlimit të fuqisë së nevojshme të vozitësit gjatë drejtimit me timonin e automjetit"], "correctIndex": 2, "image": "c5.png", "points": 4 },
-  { "id": "c6", "text": "A ju lejohet ndërrimi i shiritit për kthim majtas, në këtë situatë?", "options": ["Po, vetëm nëse vetura zhvillon shpejtësinë maksimale.", "Jo, në asnjë rast.", "Po, duhet vështruar trafikun nga prapa (pasqyret, këndin e vdekur) dhe me sinjalizue me tregues të drejtimit."], "correctIndex": 2, "image": "c6.png", "points": 4 },
-  { "id": "c7", "text": "Çka do të keni parasysh në këtë situatë?", "options": ["Devijimin e rrugës.", "Rrugën pa dalje.", "Qafëmalin."], "correctIndex": 0, "image": "c7.png", "points": 4 },
-  { "id": "c8", "text": "Cila sjellje (veprim) është e drejtë?", "options": ["Të frenoj.", "Duhet vazhdojë me njëjtën shpejtësi.", "Nuk ndërrmar asgjë, këmbësorët lëvizin jo drejt."], "correctIndex": 0, "image": "c8.png", "points": 4 },
-  { "id": "c9", "text": "Si do të veproni në këtë situatë?", "options": ["Do të ndalem.", "Do të vazhdoj lëvizjën drejt ose djathtas.", "Do të vazhdoj lëvizjën vetëm majtas."], "correctIndex": 1, "image": "c9.png", "points": 4 },
-  { "id": "c10", "text": "Cila sjellje është e drejtë në këtë situatë?", "options": ["Duhet vazhdojë me njëjtën shpejtësi.", "Largoj këmbën nga pedalja e gazit (nuk i jap gaz).", "Nuk ndërmarr asgjë fëmiu është në trotuar."], "correctIndex": 1, "image": "c10.png", "points": 4 },
-  { "id": "c11", "text": "Shenja e trafikut paralajmëron rrezikun e përgjithshëm në rrugë.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c11.png", "points": 3 },
-  { "id": "c12", "text": "Shenja e trafikut paralajmëron përplasje gurësh.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c12.png", "points": 3 },
-  { "id": "c13", "text": "Shenja e trafikut paralajmëron rrugën jo të rrafshët.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c13.png", "points": 3 },
-  { "id": "c14", "text": "Shenja e trafikut tregon ndaljen e obligueshme.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c14.png", "points": 3 },
-  { "id": "c15", "text": "Shenja e trafikut tregon vendin ku duhet të ndaleni dogana.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c15.png", "points": 3 },
-  { "id": "c16", "text": "Shenja e trafikut tregon rrugën me përparësi kalimi.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c16.png", "points": 3 },
-  { "id": "c17", "text": "Shenja e trafikut tregon obligimin e ndezjes së dritave të shkurtëra kur mjeti merr pjesë në trafik.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c17.png", "points": 3 },
-  { "id": "c18", "text": "Shenja e trafikut tregon ndalimin e trafikut për llojin e caktuar të mjeteve në autostradë (biçikletave, mopedave, traktorëve...).", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c18.png", "points": 3 },
-  { "id": "c19", "text": "Shenja e trafikut tregon kthimin majtas indirekt.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c19.png", "points": 3 },
-  { "id": "c20", "text": "A ju lejohet këmbësorëve kalimi i rrugës sipas dritës në semafor?", "options": ["Jo.", "Po."], "correctIndex": 1, "image": "c20.png", "points": 3 },
-  { "id": "c21", "text": "Çfarë tregon pozita e policit?", "options": ["Pjesëmarrësit e trafikut duhet ta shpejtojnë lëvizjen e mjetit të tyre.", "Pjesëmarësit e trafikut duhet ta ngadalsojnë lëvizjen e mjetit të tyre.", "Pjesëmarrësit e trafikut duhet ta ndalin mjetin e tyre."], "correctIndex": 1, "image": "c21.png", "points": 3 },
-  { "id": "c22", "text": "Çfarë paraqet vija e ndërprerë në rrugë?", "options": ["Lejon tejkalimin.", "Rrugën pa dalje.", "Ndalon tejkalimin."], "correctIndex": 0, "image": "c22.png", "points": 3 },
-  { "id": "c23", "text": "Distanca e sigurisë ndërmjet mjeteve gjatë ngasjes duhet rritur dukshëm nëse rruga është e terur.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c23.png", "points": 4 },
-  { "id": "c24", "text": "Te kjo situatë në trafik ka ardhë nga mos kujdesi i shoferit gjatë hapjes së derës së veturës (mos shikimi pasqyre dhe këndin e vdekur).", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c24.png", "points": 4 },
-  { "id": "c25", "text": "Nga vendi i vendosjes së shenjave nuk lejohet lëvizja me shpejtësi më të madhe se 50 km/h.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c25.png", "points": 4 },
-  { "id": "c26", "text": "Lejohet lëvizja mbrapa në tunel.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c26.png", "points": 4 },
-  { "id": "c27", "text": "Në këtë situatë, shoferi do t'i mundësoj kalimin e rrugës këmbësorit edhe pse lëvizë në mënyrë jo të drejtë.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c27.png", "points": 4 },
-  { "id": "c28", "text": "Në këtë kryqëzim (situatë) vetura e kuqe lëviz e para.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c28.png", "points": 4 },
-  { "id": "c29", "text": "Në këtë kryqëzim detyrimisht unë duhet të kthehem majtas për shkak tabelës plotësuese.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c29.png", "points": 4 },
-  { "id": "c30", "text": "Në këtë kryqëzim, duhet të kujdesemi për këmbësorinin edhe pse nuk është duke lëvizur në mënyrë të drejtë.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c30.png", "points": 4 },
-  { "id": "c31", "text": "Në këtë kryqëzim kamioni do të lëvizë i fundit.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c31.png", "points": 4 },
-  { "id": "c32", "text": "Alkoli gjatë ngasjes nxit dëshirën për shpejtësi të madhe.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c32.png", "points": 2 },
-  { "id": "c33", "text": "Pedalja e friksionit shërben për ndaljen e automjetit vrullshëm.", "options": ["E saktë.", "E pasaktë."], "correctIndex": 1, "image": "c33.png", "points": 2 },
-  { "id": "c34", "text": "Cilat janë parimet e ngasjes defanzive (mbrojtëse)?", "options": ["Reagimi me vonesë.", "Mbajtja e distancës së sigurisë gjatë ngasjes.", "Përdorimi i dritave të gjata, çdo herë gjatë ngasjes."], "correctIndex": 1, "image": "c34.png", "points": 2 },
-  { "id": "c35", "text": "Ngasja pa nxitim dhe frenim të vrullshëm ndikon në ruajtjen e ambientit dhe në kursimin e karburantit (Eko-ngasjes).", "options": ["E saktë.", "E pasaktë."], "correctIndex": 0, "image": "c35.png", "points": 2 }
+  {
+    "id": "c1",
+    "text": "Automjetet transportuese të mallrave (të treguara në fotografinë), të cilat lëvizin në rrugë publike jashtë vendbanimit, që ka vetëm nga një korsi komunikacioni në një kahe dhe nëse në atë pjesë të rrugës është i ndaluar parakalimi:",
+    "options": [
+      "shoferët janë të obliguar që të lëvizin me automjetet në distancë të sigurtë",
+      "shoferët janë të obliguar që të mbajnë distancë ndërmjet automjeteve më së paku 50 metra",
+      "shoferët janë të obliguar që të mbajnë distancën ndërmjet automjeteve më së paku prej 100 metra"
+    ],
+    "correctIndex": 0,
+    "image": "c1.png",
+    "points": 4
+  },
+  {
+    "id": "c2",
+    "text": "Tahografi është pajisje e cila siguron më së paku shënimin e:",
+    "options": [
+      "shpejtësisë së lëvizjes së automjetit dhe të etapës kohore punuese të shoferit",
+      "të dhënave për vend pozitën e automjetit gjatë kohës së lëvizjes",
+      "harxhimit të lëndës djegëse sipas kilometrave të kaluar"
+    ],
+    "correctIndex": 0,
+    "points": 4
+  },
+  {
+    "id": "c3",
+    "text": "Ngarkesa e automjetit nuk guxon ta kalojë pikën më të largët të pjesës së parme të automjetit më shumë se:",
+    "options": [
+      "1 metër",
+      "1.5 metra",
+      "1,6 metra"
+    ],
+    "correctIndex": 0,
+    "points": 4
+  },
+  {
+    "id": "c4",
+    "text": "Lejën për transport grupor të udhëtarëve me automjet transportues të mallrave e jep:",
+    "options": [
+      "Stacioni për kontrollim teknik të automjeteve",
+      "Ministria e Infrastrukturës",
+      "Ministria e Punëve të Brendshme"
+    ],
+    "correctIndex": 1,
+    "points": 4
+  },
+  {
+    "id": "c5",
+    "text": "Pajisja servo e drejtuesit të automjetit motorik instalohet për shkak të:",
+    "options": [
+      "mbrojtjes së pajisjes për drejtim nga dëmtimet",
+      "mbrojtjes së shoferit gjatë aksidentit eventual me automjetin",
+      "zvogëlimit të fuqisë së nevojshme të vozitësit gjatë drejtimit me timonin e automjetit"
+    ],
+    "correctIndex": 2,
+    "points": 4
+  },
+  {
+    "id": "c6",
+    "text": "A ju lejohet ndërrimi i shiritit për kthim majtas, në këtë situatë?",
+    "options": [
+      "Po, vetëm nëse vetura zhvillon shpejtësinë maksimale.",
+      "Jo, në asnjë rast.",
+      "Po, duhet vështruar trafikun nga prapa (pasqyret, këndin e vdekur) dhe me sinjalizue me tregues të drejtimit."
+    ],
+    "correctIndex": 2,
+    "image": "c6.png",
+    "points": 4
+  },
+  {
+    "id": "c7",
+    "text": "Çka do të keni parasysh në këtë situatë?",
+    "options": [
+      "Devijimin e rrugës.",
+      "Rrugën pa dalje.",
+      "Qafëmalin."
+    ],
+    "correctIndex": 0,
+    "image": "c7.png",
+    "points": 4
+  },
+  {
+    "id": "c8",
+    "text": "Cila sjellje (veprim) është e drejtë?",
+    "options": [
+      "Të frenoj.",
+      "Duhet vazhdojë me njëjtën shpejtësi.",
+      "Nuk ndërrmar asgjë, këmbësorët lëvizin jo drejt."
+    ],
+    "correctIndex": 0,
+    "image": "c8.png",
+    "points": 4
+  },
+  {
+    "id": "c9",
+    "text": "Si do të veproni në këtë situatë?",
+    "options": [
+      "Do të ndalem.",
+      "Do të vazhdoj lëvizjën drejt ose djathtas.",
+      "Do të vazhdoj lëvizjën vetëm majtas."
+    ],
+    "correctIndex": 1,
+    "image": "c9.png",
+    "points": 4
+  },
+  {
+    "id": "c10",
+    "text": "Cila sjellje është e drejtë në këtë situatë?",
+    "options": [
+      "Duhet vazhdojë me njëjtën shpejtësi.",
+      "Largoj këmbën nga pedalja e gazit (nuk i jap gaz).",
+      "Nuk ndërmarr asgjë fëmiu është në trotuar."
+    ],
+    "correctIndex": 1,
+    "image": "c10.png",
+    "points": 4
+  },
+  {
+    "id": "c11",
+    "text": "Shenja e trafikut paralajmëron rrezikun e përgjithshëm në rrugë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c11.png",
+    "points": 3
+  },
+  {
+    "id": "c12",
+    "text": "Shenja e trafikut paralajmëron përplasje gurësh.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c12.png",
+    "points": 3
+  },
+  {
+    "id": "c13",
+    "text": "Shenja e trafikut paralajmëron rrugën jo të rrafshët.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c13.png",
+    "points": 3
+  },
+  {
+    "id": "c14",
+    "text": "Shenja e trafikut tregon ndaljen e obligueshme.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c14.png",
+    "points": 3
+  },
+  {
+    "id": "c15",
+    "text": "Shenja e trafikut tregon vendin ku duhet të ndaleni dogana.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c15.png",
+    "points": 3
+  },
+  {
+    "id": "c16",
+    "text": "Shenja e trafikut tregon rrugën me përparësi kalimi.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c16.png",
+    "points": 3
+  },
+  {
+    "id": "c17",
+    "text": "Shenja e trafikut tregon obligimin e ndezjes së dritave të shkurtëra kur mjeti merr pjesë në trafik.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c17.png",
+    "points": 3
+  },
+  {
+    "id": "c18",
+    "text": "Shenja e trafikut tregon ndalimin e trafikut për llojin e caktuar të mjeteve në autostradë (biçikletave, mopedave, traktorëve...).",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c18.png",
+    "points": 3
+  },
+  {
+    "id": "c19",
+    "text": "Shenja e trafikut tregon kthimin majtas indirekt.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c19.png",
+    "points": 3
+  },
+  {
+    "id": "c20",
+    "text": "A ju lejohet këmbësorëve kalimi i rrugës sipas dritës në semafor?",
+    "options": [
+      "Jo.",
+      "Po."
+    ],
+    "correctIndex": 1,
+    "image": "c20.png",
+    "points": 3
+  },
+  {
+    "id": "c21",
+    "text": "Çfarë tregon pozita e policit?",
+    "options": [
+      "Pjesëmarrësit e trafikut duhet ta shpejtojnë lëvizjen e mjetit të tyre.",
+      "Pjesëmarësit e trafikut duhet ta ngadalsojnë lëvizjen e mjetit të tyre.",
+      "Pjesëmarrësit e trafikut duhet ta ndalin mjetin e tyre."
+    ],
+    "correctIndex": 1,
+    "image": "c21.png",
+    "points": 3
+  },
+  {
+    "id": "c22",
+    "text": "Çfarë paraqet vija e ndërprerë në rrugë?",
+    "options": [
+      "Lejon tejkalimin.",
+      "Rrugën pa dalje.",
+      "Ndalon tejkalimin."
+    ],
+    "correctIndex": 0,
+    "image": "c22.png",
+    "points": 3
+  },
+  {
+    "id": "c23",
+    "text": "Distanca e sigurisë ndërmjet mjeteve gjatë ngasjes duhet rritur dukshëm nëse rruga është e terur.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c23.png",
+    "points": 4
+  },
+  {
+    "id": "c24",
+    "text": "Te kjo situatë në trafik ka ardhë nga mos kujdesi i shoferit gjatë hapjes së derës së veturës (mos shikimi pasqyre dhe këndin e vdekur).",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c24.png",
+    "points": 4
+  },
+  {
+    "id": "c25",
+    "text": "Nga vendi i vendosjes së shenjave nuk lejohet lëvizja me shpejtësi më të madhe se 50 km/h.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c25.png",
+    "points": 4
+  },
+  {
+    "id": "c26",
+    "text": "Lejohet lëvizja mbrapa në tunel.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c26.png",
+    "points": 4
+  },
+  {
+    "id": "c27",
+    "text": "Në këtë situatë, shoferi do t'i mundësoj kalimin e rrugës këmbësorit edhe pse lëvizë në mënyrë jo të drejtë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c27.png",
+    "points": 4
+  },
+  {
+    "id": "c28",
+    "text": "Në këtë kryqëzim (situatë) vetura e kuqe lëviz e para.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c28.png",
+    "points": 4
+  },
+  {
+    "id": "c29",
+    "text": "Në këtë kryqëzim detyrimisht unë duhet të kthehem majtas për shkak tabelës plotësuese.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c29.png",
+    "points": 4
+  },
+  {
+    "id": "c30",
+    "text": "Në këtë kryqëzim, duhet të kujdesemi për këmbësorinin edhe pse nuk është duke lëvizur në mënyrë të drejtë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c30.png",
+    "points": 4
+  },
+  {
+    "id": "c31",
+    "text": "Në këtë kryqëzim kamioni do të lëvizë i fundit.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c31.png",
+    "points": 4
+  },
+  {
+    "id": "c32",
+    "text": "Alkoli gjatë ngasjes nxit dëshirën për shpejtësi të madhe.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 2
+  },
+  {
+    "id": "c33",
+    "text": "Pedalja e friksionit shërben për ndaljen e automjetit vrullshëm.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c33.png",
+    "points": 2
+  },
+  {
+    "id": "c34",
+    "text": "Cilat janë parimet e ngasjes defanzive (mbrojtëse)?",
+    "options": [
+      "Reagimi me vonesë.",
+      "Mbajtja e distancës së sigurisë gjatë ngasjes.",
+      "Përdorimi i dritave të gjata, çdo herë gjatë ngasjes."
+    ],
+    "correctIndex": 1,
+    "points": 2
+  },
+  {
+    "id": "c35",
+    "text": "Ngasja pa nxitim dhe frenim të vrullshëm ndikon në ruajtjen e ambientit dhe në kursimin e karburantit (Eko-ngasjes).",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 2
+  }
 ]
