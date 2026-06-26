@@ -281,7 +281,7 @@ function TestRunner({
   const answeredCount = Object.keys(answers).length;
   const q = questions[currentIdx];
   const userKey = q ? answers[q.id] : undefined;
-  const isLast = currentIdx === total - 1;
+  const isLast = currentIdx === totalQ - 1;
   const isFirst = currentIdx === 0;
 
   return (
@@ -293,7 +293,7 @@ function TestRunner({
         <div className="min-w-0 flex-1">
           <h1 className="text-base font-semibold truncate">Testi {testIndex + 1}</h1>
           <p className="text-xs text-muted-foreground">
-            Pyetja {currentIdx + 1}/{total} · {answeredCount} të përgjigjura
+            Pyetja {currentIdx + 1}/{totalQ} · {answeredCount} të përgjigjura · {total} pikë gjithsej
           </p>
         </div>
       </header>
