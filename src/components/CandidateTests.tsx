@@ -265,6 +265,29 @@ function TestRunner({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [overrides, setOverrides] = useState<Record<string, string>>({});
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { isSuperAdmin } = useIsSuperAdmin();
+
+  // Load all override files from the bucket once
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.storage.from(OVERRIDE_BUCKET).list("", { limit: 1000 });
+      if (error || !data || cancelled) return;
+      const map: Record<string, string> = {};
+      for (const f of data) {
+        const base = f.name.replace(/\.[^.]+$/, "");
+        const { data: pub } = supabase.storage.from(OVERRIDE_BUCKET).getPublicUrl(f.name);
+        map[base] = `${pub.publicUrl}?v=${f.updated_at ?? f.created_at ?? ""}`;
+      }
+      setOverrides(map);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const totalPoints = useMemo(() => questions.reduce((s, q) => s + q.points, 0), [questions]);
   const score = useMemo(
@@ -287,6 +310,42 @@ function TestRunner({
   const userKey = q ? answers[q.id] : undefined;
   const isLast = currentIdx === totalQ - 1;
   const isFirst = currentIdx === 0;
+
+  const handleUploadClick = () => {
+    if (!q) return;
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file || !q) return;
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+    const path = `${q.id}.${ext}`;
+    setUploadingId(q.id);
+    try {
+      // remove any existing variants for this id
+      const { data: existing } = await supabase.storage.from(OVERRIDE_BUCKET).list("", { limit: 1000 });
+      const toRemove = (existing || [])
+        .filter((f) => f.name.replace(/\.[^.]+$/, "") === q.id)
+        .map((f) => f.name);
+      if (toRemove.length) await supabase.storage.from(OVERRIDE_BUCKET).remove(toRemove);
+
+      const { error } = await supabase.storage
+        .from(OVERRIDE_BUCKET)
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (error) throw error;
+      const { data: pub } = supabase.storage.from(OVERRIDE_BUCKET).getPublicUrl(path);
+      setOverrides((p) => ({ ...p, [q.id]: `${pub.publicUrl}?v=${Date.now()}` }));
+      toast({ title: "Fotoja u zëvendësua" });
+    } catch (err: any) {
+      toast({ title: "Gabim gjatë ngarkimit", description: err?.message, variant: "destructive" });
+    } finally {
+      setUploadingId(null);
+    }
+  };
+
+  const currentImageSrc = q ? overrides[q.id] || (q.image ? `${imageDir}${q.image}` : "") : "";
 
   return (
     <div className="min-h-screen bg-muted/30">
