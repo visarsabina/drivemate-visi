@@ -270,18 +270,22 @@ function TestRunner({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { isSuperAdmin } = useIsSuperAdmin();
 
-  // Load all override files from the bucket once
+  // Load all override files from the bucket once (signed URLs since bucket is private)
   useEffect(() => {
     let cancelled = false;
     (async () => {
       const { data, error } = await supabase.storage.from(OVERRIDE_BUCKET).list("", { limit: 1000 });
       if (error || !data || cancelled) return;
+      const names = data.map((f) => f.name);
+      if (names.length === 0) return;
+      const { data: signed } = await supabase.storage.from(OVERRIDE_BUCKET).createSignedUrls(names, 60 * 60 * 8);
+      if (cancelled || !signed) return;
       const map: Record<string, string> = {};
-      for (const f of data) {
-        const base = f.name.replace(/\.[^.]+$/, "");
-        const { data: pub } = supabase.storage.from(OVERRIDE_BUCKET).getPublicUrl(f.name);
-        map[base] = `${pub.publicUrl}?v=${f.updated_at ?? f.created_at ?? ""}`;
-      }
+      signed.forEach((s) => {
+        if (!s.path || !s.signedUrl) return;
+        const base = s.path.replace(/\.[^.]+$/, "");
+        map[base] = s.signedUrl;
+      });
       setOverrides(map);
     })();
     return () => {
