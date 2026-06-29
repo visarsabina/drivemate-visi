@@ -49,17 +49,18 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
         <style>
           @page { size: landscape; margin: 10mm; }
           * { margin: 0; padding: 0; box-sizing: border-box; }
-          body { font-family: "Times New Roman", serif; font-size: 13px; }
+          body { font-family: "Times New Roman", serif; font-size: 14px; }
           .page { width: 100%; display: flex; gap: 20px; page-break-after: always; }
           .half { width: 48%; }
+          .page > .half:first-child { margin-left: 2cm; }
           table { border-collapse: collapse; width: 100%; }
           td, th { border: 1px solid #000; padding: 3px 6px; font-size: 11px; }
           .no-border { border: none; }
-          .no-border td { border: none; padding: 7px 0; font-size: 14px; }
-          .no-border td.field-value { font-size: 15px; }
+          .no-border td { border: none; padding: 7px 0; font-size: 16px; }
+          .no-border td.field-value { font-size: 18px; }
           h2 { font-size: 24px; text-align: center; margin: 10px 0; }
           h3 { font-size: 14px; text-align: center; margin: 8px 0; }
-          .header { font-size: 15px; margin-bottom: 8px; line-height: 1.5; }
+          .header { font-size: 16px; margin-bottom: 8px; line-height: 1.5; }
           .field-label { width: 50%; }
           .field-value { font-weight: bold; text-decoration: underline; }
           .box { border: 1px solid #000; padding: 10px; margin-top: 10px; }
@@ -142,14 +143,14 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
                 <td><span class="signature-line"></span></td>
               </tr>
             </table>
-            <div style="margin-top:35px;">
+            <div style="margin-top:80px;">
               <p>Vendi <span class="signature-line"></span></p>
             </div>
-            <div style="margin-top:15px;">
+            <div style="margin-top:30px;">
               <p>Data <span class="signature-line"></span></p>
               <p style="text-align:right;font-size:11px;">v.v</p>
             </div>
-            <p style="margin-top:10px;">Nënshkrimi i personit të autorizuar</p>
+            <p style="margin-top:20px;">Nënshkrimi i personit të autorizuar</p>
             <span class="signature-line"></span>
           </div>
         </div>
