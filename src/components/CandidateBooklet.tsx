@@ -142,7 +142,7 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
                 <td><span class="signature-line"></span></td>
               </tr>
             </table>
-            <div style="text-align:right;margin-top:20px;">
+            <div style="text-align:right;margin-top:35px;">
               <span class="signature-line"></span> Vendi
             </div>
             <div style="margin-top:15px;">
