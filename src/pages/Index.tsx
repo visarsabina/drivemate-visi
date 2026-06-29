@@ -25,6 +25,7 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 import InstructorReports from "@/components/InstructorReports";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TestGenerator from "@/components/TestGenerator";
+import CandidateTests from "@/components/CandidateTests";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
@@ -135,6 +136,7 @@ const Index = () => {
     tests: "Gjenero Testin",
     activity: "Historiku i Veprimeve",
     "instructor-reports": "Raporti i Orëve",
+    "candidate-tests": "Testet e Kandidatit",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
@@ -327,6 +329,10 @@ const Index = () => {
           {activeView === "activity" && <ActivityLog />}
 
           {activeView === "instructor-reports" && <InstructorReports adminMode />}
+
+          {activeView === "candidate-tests" && isSuperAdmin && (
+            <SuperAdminTestsPreview onClose={() => setActiveView(defaultView)} />
+          )}
         </div>
       </main>
     </div>
@@ -334,3 +340,28 @@ const Index = () => {
 };
 
 export default Index;
+
+function SuperAdminTestsPreview({ onClose }: { onClose: () => void }) {
+  const [category, setCategory] = useState<"B" | "C" | null>(null);
+  if (category) {
+    return (
+      <CandidateTests
+        candidateId="super-admin-preview"
+        category={category}
+        onClose={() => setCategory(null)}
+      />
+    );
+  }
+  return (
+    <div className="max-w-md mx-auto space-y-4">
+      <p className="text-sm text-muted-foreground">
+        Zgjedh kategorinë për të hapur testet. Si super-admin mund të zëvendësosh fotot e pyetjeve me butonin <strong>Ndrysho</strong>.
+      </p>
+      <div className="grid grid-cols-2 gap-3">
+        <Button onClick={() => setCategory("B")} className="h-20 text-lg">Kategoria B</Button>
+        <Button onClick={() => setCategory("C")} className="h-20 text-lg">Kategoria C</Button>
+      </div>
+      <Button variant="outline" onClick={onClose} className="w-full">Anulo</Button>
+    </div>
+  );
+}

@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft, FileQuestion, CalendarDays, CalendarClock, History, Clock } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft, FileQuestion, CalendarDays, CalendarClock, History, Clock, ClipboardList } from "lucide-react";
 import defaultLogo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -30,6 +30,10 @@ const adminNavItems = [
   { id: "activity", label: "Historiku", icon: History },
 ];
 
+const superAdminExtraItems = [
+  { id: "candidate-tests", label: "Testet e Kandidatit", icon: ClipboardList },
+];
+
 const instructorNavItems = [
   { id: "instructor", label: "Kandidatët e Mi", icon: Users },
 ];
@@ -41,7 +45,8 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const { isSuperAdmin } = useIsSuperAdmin();
 
   // Instructors who are not also admins see only their limited nav.
-  const navItems = isAdmin ? adminNavItems : isInstructor ? instructorNavItems : adminNavItems;
+  const baseNav = isAdmin ? adminNavItems : isInstructor ? instructorNavItems : adminNavItems;
+  const navItems = isSuperAdmin ? [...baseNav, ...superAdminExtraItems] : baseNav;
 
   const handleSignOut = async () => {
     await signOut();
