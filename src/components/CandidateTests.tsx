@@ -430,10 +430,10 @@ function TestRunner({
                 {q.text}
               </p>
             </div>
-            <div className="h-64 mb-3 flex items-center justify-center bg-white rounded-md border border-border overflow-hidden p-2">
-              {q.image ? (
+            <div className="relative h-64 mb-3 flex items-center justify-center bg-white rounded-md border border-border overflow-hidden p-2">
+              {currentImageSrc ? (
                 <img
-                  src={`${imageDir}${q.image}`}
+                  src={currentImageSrc}
                   alt=""
                   className="h-full w-full object-contain"
                   style={{ objectPosition: "center" }}
@@ -443,6 +443,32 @@ function TestRunner({
                 />
               ) : (
                 <span className="text-xs text-muted-foreground">Pa figurë</span>
+              )}
+              {isSuperAdmin && (
+                <>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={handleUploadClick}
+                    disabled={uploadingId === q.id}
+                    className="absolute top-2 right-2 gap-1 h-7 px-2 shadow"
+                  >
+                    {uploadingId === q.id ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Pencil className="w-3.5 h-3.5" />
+                    )}
+                    Ndrysho
+                  </Button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </>
               )}
             </div>
             <div className="space-y-2 mt-auto">
