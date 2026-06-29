@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Candidate } from "@/types/candidate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,8 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
+import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 
 interface CandidateVertetimiProps {
   candidates: Candidate[];
@@ -42,8 +44,28 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   const [ligjruesi, setLigjruesi] = useState(ligjruesit[0]);
   const [instruktori, setInstruktori] = useState(instruktoret[0]);
   const [dataLeshimit, setDataLeshimit] = useState(new Date().toISOString().split("T")[0]);
+  const [licenses, setLicenses] = useState<Record<string, string>>({});
+
+  const { tenantId } = useTenant();
+
+  useEffect(() => {
+    if (!tenantId) return;
+    supabase
+      .from("licenses")
+      .select("category,license_number")
+      .eq("tenant_id", tenantId)
+      .then(({ data, error }) => {
+        if (error) return;
+        const map: Record<string, string> = {};
+        (data || []).forEach((l: any) => {
+          map[l.category] = l.license_number;
+        });
+        setLicenses(map);
+      });
+  }, [tenantId]);
 
   const candidate = candidates.find((c) => c.id === selectedId);
+  const licenseNumber = candidate?.kategoria ? licenses[candidate.kategoria] || "" : "";
 
   const formatDate = (d: string) => {
     if (!d) return "___.___.______";
@@ -89,7 +111,7 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
 
   <div class="header">
     Auto Shkolla &nbsp;"<strong>VISI</strong>" &nbsp;me seli në &nbsp;<strong>Podujevë</strong>&nbsp; adresa: &nbsp;<strong>Rr. Zahir Pajaziti</strong>&nbsp; dhe me &nbsp;numër të<br/>
-    licencës &nbsp;<strong><u>R-369-01-B/2023</u></strong>&nbsp; lëshon këtë:
+    licencës &nbsp;<strong><u>${__esc(licenseNumber || "________________")}</u></strong>&nbsp; lëshon këtë:
   </div>
 
   <div class="title">VËRTETIM</div>
