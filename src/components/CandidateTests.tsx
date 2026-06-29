@@ -1,12 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw, Pencil, Loader2 } from "lucide-react";
 import builtinBank from "@/data/questionBank.json";
 import bankC from "@/data/questionBankC.json";
+import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 const OPTION_KEYS = ["A", "B", "C", "D", "E"];
 const PASS_THRESHOLD = 85; // percent
+const OVERRIDE_BUCKET = "question-images";
 
 type RawQ = { id: string; text: string; options: string[]; correctIndex: number; image?: string | null; points?: number };
 type Q = {
@@ -261,6 +265,33 @@ function TestRunner({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [overrides, setOverrides] = useState<Record<string, string>>({});
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { isSuperAdmin } = useIsSuperAdmin();
+
+  // Load all override files from the bucket once (signed URLs since bucket is private)
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.storage.from(OVERRIDE_BUCKET).list("", { limit: 1000 });
+      if (error || !data || cancelled) return;
+      const names = data.map((f) => f.name);
+      if (names.length === 0) return;
+      const { data: signed } = await supabase.storage.from(OVERRIDE_BUCKET).createSignedUrls(names, 60 * 60 * 8);
+      if (cancelled || !signed) return;
+      const map: Record<string, string> = {};
+      signed.forEach((s) => {
+        if (!s.path || !s.signedUrl) return;
+        const base = s.path.replace(/\.[^.]+$/, "");
+        map[base] = s.signedUrl;
+      });
+      setOverrides(map);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const totalPoints = useMemo(() => questions.reduce((s, q) => s + q.points, 0), [questions]);
   const score = useMemo(
@@ -283,6 +314,45 @@ function TestRunner({
   const userKey = q ? answers[q.id] : undefined;
   const isLast = currentIdx === totalQ - 1;
   const isFirst = currentIdx === 0;
+
+  const handleUploadClick = () => {
+    if (!q) return;
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file || !q) return;
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+    const path = `${q.id}.${ext}`;
+    setUploadingId(q.id);
+    try {
+      const { data: existing } = await supabase.storage.from(OVERRIDE_BUCKET).list("", { limit: 1000 });
+      const toRemove = (existing || [])
+        .filter((f) => f.name.replace(/\.[^.]+$/, "") === q.id)
+        .map((f) => f.name);
+      if (toRemove.length) await supabase.storage.from(OVERRIDE_BUCKET).remove(toRemove);
+
+      const { error } = await supabase.storage
+        .from(OVERRIDE_BUCKET)
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (error) throw error;
+      const { data: signed } = await supabase.storage
+        .from(OVERRIDE_BUCKET)
+        .createSignedUrl(path, 60 * 60 * 8);
+      if (signed?.signedUrl) {
+        setOverrides((p) => ({ ...p, [q.id]: signed.signedUrl }));
+      }
+      toast({ title: "Fotoja u zëvendësua" });
+    } catch (err: any) {
+      toast({ title: "Gabim gjatë ngarkimit", description: err?.message, variant: "destructive" });
+    } finally {
+      setUploadingId(null);
+    }
+  };
+
+  const currentImageSrc = q ? overrides[q.id] || (q.image ? `${imageDir}${q.image}` : "") : "";
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -360,10 +430,10 @@ function TestRunner({
                 {q.text}
               </p>
             </div>
-            <div className="h-64 mb-3 flex items-center justify-center bg-white rounded-md border border-border overflow-hidden p-2">
-              {q.image ? (
+            <div className="relative h-64 mb-3 flex items-center justify-center bg-white rounded-md border border-border overflow-hidden p-2">
+              {currentImageSrc ? (
                 <img
-                  src={`${imageDir}${q.image}`}
+                  src={currentImageSrc}
                   alt=""
                   className="h-full w-full object-contain"
                   style={{ objectPosition: "center" }}
@@ -373,6 +443,32 @@ function TestRunner({
                 />
               ) : (
                 <span className="text-xs text-muted-foreground">Pa figurë</span>
+              )}
+              {isSuperAdmin && (
+                <>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={handleUploadClick}
+                    disabled={uploadingId === q.id}
+                    className="absolute top-2 right-2 gap-1 h-7 px-2 shadow"
+                  >
+                    {uploadingId === q.id ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Pencil className="w-3.5 h-3.5" />
+                    )}
+                    Ndrysho
+                  </Button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </>
               )}
             </div>
             <div className="space-y-2 mt-auto">
