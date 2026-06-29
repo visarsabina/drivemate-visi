@@ -44,8 +44,28 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   const [ligjruesi, setLigjruesi] = useState(ligjruesit[0]);
   const [instruktori, setInstruktori] = useState(instruktoret[0]);
   const [dataLeshimit, setDataLeshimit] = useState(new Date().toISOString().split("T")[0]);
+  const [licenses, setLicenses] = useState<Record<string, string>>({});
+
+  const { tenantId } = useTenant();
+
+  useEffect(() => {
+    if (!tenantId) return;
+    supabase
+      .from("licenses")
+      .select("category,license_number")
+      .eq("tenant_id", tenantId)
+      .then(({ data, error }) => {
+        if (error) return;
+        const map: Record<string, string> = {};
+        (data || []).forEach((l: any) => {
+          map[l.category] = l.license_number;
+        });
+        setLicenses(map);
+      });
+  }, [tenantId]);
 
   const candidate = candidates.find((c) => c.id === selectedId);
+  const licenseNumber = candidate?.kategoria ? licenses[candidate.kategoria] || "" : "";
 
   const formatDate = (d: string) => {
     if (!d) return "___.___.______";
