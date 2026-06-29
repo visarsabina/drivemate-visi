@@ -111,7 +111,7 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
 
   <div class="header">
     Auto Shkolla &nbsp;"<strong>VISI</strong>" &nbsp;me seli në &nbsp;<strong>Podujevë</strong>&nbsp; adresa: &nbsp;<strong>Rr. Zahir Pajaziti</strong>&nbsp; dhe me &nbsp;numër të<br/>
-    licencës &nbsp;<strong><u>R-369-01-B/2023</u></strong>&nbsp; lëshon këtë:
+    licencës &nbsp;<strong><u>${__esc(licenseNumber || "________________")}</u></strong>&nbsp; lëshon këtë:
   </div>
 
   <div class="title">VËRTETIM</div>
