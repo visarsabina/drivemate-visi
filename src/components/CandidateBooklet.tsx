@@ -27,17 +27,17 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
       return `${parts[2]}.${parts[1]}.${parts[0]}`;
     };
 
-    const practiceRows = (count: number) =>
+    const practiceRows = (count: number, rowHeight = 28) =>
       Array.from({ length: count }, (_, i) => `
         <tr>
-          <td style="text-align:center;height:28px;">${i + 1}.</td>
+          <td style="text-align:center;height:${rowHeight}px;">${i + 1}.</td>
           <td></td><td></td><td></td><td></td><td></td><td></td>
         </tr>
       `).join("");
 
     const theoryRows = Array.from({ length: 12 }, (_, i) => `
       <tr>
-        <td style="text-align:center;height:28px;">${i + 1}.</td>
+        <td style="text-align:center;height:22px;">${i + 1}.</td>
         <td></td><td></td><td></td><td></td>
       </tr>
     `).join("");
@@ -175,7 +175,7 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
             </table>
             <div class="box" style="margin-top:15px;">
               <p style="text-decoration:underline;">Mendimi i ligjëruesit:</p>
-              <br/><br/><br/>
+              <br/><br/>
               <p><u>Emri dhe mbiemri i ligjëruesit:</u> <span class="signature-line"></span></p>
               <p style="margin-top:5px;"><u>Nënshkrimi i ligjëruesit:</u> <span class="signature-line"></span></p>
             </div>
@@ -198,7 +198,7 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
                 </tr>
               </thead>
               <tbody>
-                ${practiceRows(20)}
+                ${practiceRows(20, 22)}
               </tbody>
             </table>
             <div class="box" style="margin-top:15px;">
