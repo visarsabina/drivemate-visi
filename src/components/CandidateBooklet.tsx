@@ -50,9 +50,8 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
           @page { size: landscape; margin: 10mm; }
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body { font-family: "Times New Roman", serif; font-size: 14px; }
-          .page { width: 100%; display: flex; gap: 20px; page-break-after: always; }
-          .half { width: 48%; }
-          .page > .half:first-child { margin-left: 2cm; }
+          .page { width: 100%; display: flex; gap: 2.5cm; page-break-after: always; }
+          .half { width: calc(50% - 1.25cm); }
           table { border-collapse: collapse; width: 100%; }
           td, th { border: 1px solid #000; padding: 3px 6px; font-size: 11px; }
           .no-border { border: none; }
