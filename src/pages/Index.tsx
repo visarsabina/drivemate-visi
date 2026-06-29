@@ -25,6 +25,7 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 import InstructorReports from "@/components/InstructorReports";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TestGenerator from "@/components/TestGenerator";
+import CandidateTests from "@/components/CandidateTests";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
@@ -135,6 +136,7 @@ const Index = () => {
     tests: "Gjenero Testin",
     activity: "Historiku i Veprimeve",
     "instructor-reports": "Raporti i Orëve",
+    "candidate-tests": "Testet e Kandidatit",
     libreza: "Libreza e Kandidatit",
     vertetimi: "Vërtetimi",
     kontrata: "Kontrata",
@@ -327,6 +329,10 @@ const Index = () => {
           {activeView === "activity" && <ActivityLog />}
 
           {activeView === "instructor-reports" && <InstructorReports adminMode />}
+
+          {activeView === "candidate-tests" && isSuperAdmin && (
+            <SuperAdminTestsPreview onClose={() => setActiveView(defaultView)} />
+          )}
         </div>
       </main>
     </div>
