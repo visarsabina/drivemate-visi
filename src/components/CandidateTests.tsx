@@ -323,12 +323,13 @@ function TestRunner({
                 {q.text}
               </p>
             </div>
-            <div className="h-56 mb-3 flex items-center justify-center bg-muted/30 rounded-md border border-border overflow-hidden">
+            <div className="h-64 mb-3 flex items-center justify-center bg-white rounded-md border border-border overflow-hidden p-2">
               {q.image ? (
                 <img
                   src={`${imageDir}${q.image}`}
                   alt=""
-                  className="max-h-full max-w-full object-contain"
+                  className="h-full w-full object-contain"
+                  style={{ objectPosition: "center" }}
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display = "none";
                   }}
