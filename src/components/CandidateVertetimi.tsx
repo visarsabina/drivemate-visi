@@ -67,6 +67,19 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   const candidate = candidates.find((c) => c.id === selectedId);
   const licenseNumber = candidate?.kategoria ? licenses[candidate.kategoria] || "" : "";
 
+  useEffect(() => {
+    if (candidate) {
+      const cat = candidate.kategoria?.toUpperCase();
+      if (cat === "C" || cat === "CE" || cat === "D") {
+        setNumriOreveTeori("15");
+        setNumriOrevePraktike("15");
+      } else {
+        setNumriOreveTeori("20");
+        setNumriOrevePraktike("20");
+      }
+    }
+  }, [candidate]);
+
   const formatDate = (d: string) => {
     if (!d) return "___.___.______";
     const parts = d.split("-");
