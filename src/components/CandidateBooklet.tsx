@@ -143,14 +143,14 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
                 <td><span class="signature-line"></span></td>
               </tr>
             </table>
-            <div style="margin-top:35px;">
+            <div style="margin-top:80px;">
               <p>Vendi <span class="signature-line"></span></p>
             </div>
-            <div style="margin-top:15px;">
+            <div style="margin-top:30px;">
               <p>Data <span class="signature-line"></span></p>
               <p style="text-align:right;font-size:11px;">v.v</p>
             </div>
-            <p style="margin-top:10px;">Nënshkrimi i personit të autorizuar</p>
+            <p style="margin-top:20px;">Nënshkrimi i personit të autorizuar</p>
             <span class="signature-line"></span>
           </div>
         </div>
