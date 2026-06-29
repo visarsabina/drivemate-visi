@@ -27,17 +27,17 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
       return `${parts[2]}.${parts[1]}.${parts[0]}`;
     };
 
-    const practiceRows = (count: number) =>
+    const practiceRows = (count: number, rowHeight = 28) =>
       Array.from({ length: count }, (_, i) => `
         <tr>
-          <td style="text-align:center;height:28px;">${i + 1}.</td>
+          <td style="text-align:center;height:${rowHeight}px;">${i + 1}.</td>
           <td></td><td></td><td></td><td></td><td></td><td></td>
         </tr>
       `).join("");
 
     const theoryRows = Array.from({ length: 12 }, (_, i) => `
       <tr>
-        <td style="text-align:center;height:28px;">${i + 1}.</td>
+        <td style="text-align:center;height:22px;">${i + 1}.</td>
         <td></td><td></td><td></td><td></td>
       </tr>
     `).join("");
