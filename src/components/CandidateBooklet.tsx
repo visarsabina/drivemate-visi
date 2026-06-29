@@ -55,11 +55,12 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
           table { border-collapse: collapse; width: 100%; }
           td, th { border: 1px solid #000; padding: 3px 6px; font-size: 11px; }
           .no-border { border: none; }
-          .no-border td { border: none; padding: 4px 0; }
-          h2 { font-size: 22px; text-align: center; margin: 10px 0; }
+          .no-border td { border: none; padding: 7px 0; font-size: 14px; }
+          .no-border td.field-value { font-size: 15px; }
+          h2 { font-size: 24px; text-align: center; margin: 10px 0; }
           h3 { font-size: 14px; text-align: center; margin: 8px 0; }
-          .header { font-size: 14px; margin-bottom: 5px; }
-          .field-label { width: 55%; }
+          .header { font-size: 15px; margin-bottom: 8px; line-height: 1.5; }
+          .field-label { width: 50%; }
           .field-value { font-weight: bold; text-decoration: underline; }
           .box { border: 1px solid #000; padding: 10px; margin-top: 10px; }
           .signature-line { border-bottom: 1px solid #000; width: 200px; display: inline-block; margin-left: 10px; }
