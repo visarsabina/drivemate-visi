@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Candidate } from "@/types/candidate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,8 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
+import { supabase } from "@/integrations/supabase/client";
+import { useTenant } from "@/hooks/useTenant";
 
 interface CandidateVertetimiProps {
   candidates: Candidate[];
