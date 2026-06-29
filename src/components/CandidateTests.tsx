@@ -328,7 +328,6 @@ function TestRunner({
     const path = `${q.id}.${ext}`;
     setUploadingId(q.id);
     try {
-      // remove any existing variants for this id
       const { data: existing } = await supabase.storage.from(OVERRIDE_BUCKET).list("", { limit: 1000 });
       const toRemove = (existing || [])
         .filter((f) => f.name.replace(/\.[^.]+$/, "") === q.id)
@@ -339,8 +338,12 @@ function TestRunner({
         .from(OVERRIDE_BUCKET)
         .upload(path, file, { upsert: true, contentType: file.type });
       if (error) throw error;
-      const { data: pub } = supabase.storage.from(OVERRIDE_BUCKET).getPublicUrl(path);
-      setOverrides((p) => ({ ...p, [q.id]: `${pub.publicUrl}?v=${Date.now()}` }));
+      const { data: signed } = await supabase.storage
+        .from(OVERRIDE_BUCKET)
+        .createSignedUrl(path, 60 * 60 * 8);
+      if (signed?.signedUrl) {
+        setOverrides((p) => ({ ...p, [q.id]: signed.signedUrl }));
+      }
       toast({ title: "Fotoja u zëvendësua" });
     } catch (err: any) {
       toast({ title: "Gabim gjatë ngarkimit", description: err?.message, variant: "destructive" });
