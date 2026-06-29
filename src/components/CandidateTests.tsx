@@ -300,19 +300,56 @@ function TestRunner({
 
       <main className="p-4 max-w-3xl mx-auto space-y-3 pb-24">
         {submitted && (
-          <Card className={`p-4 border-2 ${passed ? "border-emerald-500" : "border-destructive"}`}>
-            <div className="flex items-center gap-3">
-              <Trophy className={`w-8 h-8 ${passed ? "text-emerald-500" : "text-destructive"}`} />
-              <div>
-                <p className="text-lg font-bold">
-                  {score}/{total} pikë ({pct}%)
-                </p>
-                <p className={`text-sm ${passed ? "text-emerald-600" : "text-destructive"}`}>
-                  {passed ? "Urime! Ke kaluar testin." : `Nuk e kalove. Duhen ${PASS_THRESHOLD}% për kalim.`}
-                </p>
+          <>
+            <Card className={`p-4 border-2 ${passed ? "border-emerald-500" : "border-destructive"}`}>
+              <div className="flex items-center gap-3">
+                <Trophy className={`w-8 h-8 ${passed ? "text-emerald-500" : "text-destructive"}`} />
+                <div>
+                  <p className="text-lg font-bold">
+                    {score}/{total} pikë ({pct}%)
+                  </p>
+                  <p className={`text-sm ${passed ? "text-emerald-600" : "text-destructive"}`}>
+                    {passed ? "Urime! Ke kaluar testin." : `Nuk e kalove. Duhen ${PASS_THRESHOLD}% për kalim.`}
+                  </p>
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+            <Card className="p-3">
+              <p className="text-xs font-medium text-muted-foreground mb-2">
+                Shiko pyetjet — kliko numrin për t'u kthyer te pyetja
+              </p>
+              <div className="grid grid-cols-10 gap-1.5">
+                {questions.map((qq, i) => {
+                  const ua = answers[qq.id];
+                  const status = !ua ? "skip" : ua === qq.correctKey ? "ok" : "bad";
+                  const base = "h-8 rounded text-xs font-semibold border transition-colors";
+                  const cls =
+                    status === "ok"
+                      ? "bg-emerald-500/15 border-emerald-500 text-emerald-700"
+                      : status === "bad"
+                      ? "bg-destructive/15 border-destructive text-destructive"
+                      : "bg-muted border-border text-muted-foreground";
+                  const active = i === currentIdx ? "ring-2 ring-primary" : "";
+                  return (
+                    <button
+                      key={qq.id}
+                      type="button"
+                      onClick={() => setCurrentIdx(i)}
+                      className={`${base} ${cls} ${active}`}
+                      title={status === "ok" ? "Saktë" : status === "bad" ? "Gabim" : "Pa përgjigje"}
+                    >
+                      {i + 1}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex items-center gap-3 mt-3 text-[10px] text-muted-foreground">
+                <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-emerald-500/30 border border-emerald-500" /> Saktë</span>
+                <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-destructive/30 border border-destructive" /> Gabim</span>
+                <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-muted border border-border" /> Pa përgjigje</span>
+              </div>
+            </Card>
+          </>
         )}
 
         {q && (
