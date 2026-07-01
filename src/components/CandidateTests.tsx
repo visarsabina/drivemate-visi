@@ -202,7 +202,7 @@ function getTestsForCategory(category?: string): { tests: Q[][]; imageDir: strin
     return { tests: [all], imageDir: "/literatura-c/" };
   }
   // Default (B and others): 20 generated tests from main bank
-  const tests = Array.from({ length: 20 }).map((_, i) => getTestQuestions(i));
+  const tests = generateAllBTests();
   return { tests, imageDir: "/literatura/" };
 }
 
