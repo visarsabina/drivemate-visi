@@ -38,6 +38,7 @@ import {
   UserCheck,
   CreditCard,
   KeyRound,
+  Pencil,
 } from "lucide-react";
 import SuperAdminStats from "@/components/SuperAdminStats";
 
@@ -103,6 +104,60 @@ const SuperAdmin = () => {
   const [pwSelected, setPwSelected] = useState<string>("");
   const [pwValue, setPwValue] = useState("");
   const [pwSaving, setPwSaving] = useState(false);
+
+  // Edit tenant state
+  const [editTenant, setEditTenant] = useState<TenantRow | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    slug: "",
+    domain: "",
+    phone: "",
+    address: "",
+    email: "",
+    director_name: "",
+    primary_color: "#0ea5e9",
+  });
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  const openEdit = (t: TenantRow) => {
+    setEditTenant(t);
+    setEditForm({
+      name: t.name ?? "",
+      slug: t.slug ?? "",
+      domain: t.domain ?? "",
+      phone: t.phone ?? "",
+      address: t.address ?? "",
+      email: t.email ?? "",
+      director_name: t.director_name ?? "",
+      primary_color: t.primary_color ?? "#0ea5e9",
+    });
+  };
+
+  const saveEdit = async () => {
+    if (!editTenant) return;
+    setSavingEdit(true);
+    const { error } = await supabase
+      .from("tenants")
+      .update({
+        name: editForm.name,
+        slug: editForm.slug,
+        domain: editForm.domain || null,
+        phone: editForm.phone || null,
+        address: editForm.address || null,
+        email: editForm.email || null,
+        director_name: editForm.director_name || null,
+        primary_color: editForm.primary_color || null,
+      })
+      .eq("id", editTenant.id);
+    setSavingEdit(false);
+    if (error) {
+      toast.error("Gabim: " + error.message);
+      return;
+    }
+    toast.success("Autoshkolla u përditësua");
+    setEditTenant(null);
+    load();
+  };
 
   const openPw = async (t: TenantRow) => {
     setPwTenant(t);
@@ -368,6 +423,9 @@ const SuperAdmin = () => {
                           <span className="text-[10px] text-muted-foreground mt-0.5">{Number(t.monthly_fee || 0)}€/muaj</span>
                         </button>
                         <div className="flex gap-1">
+                          <Button variant="ghost" size="sm" onClick={() => openEdit(t)} className="h-8 px-2" title="Modifiko">
+                            <Pencil className="w-4 h-4" />
+                          </Button>
                           <Button variant="ghost" size="sm" onClick={() => openPw(t)} className="h-8 px-2" title="Ndrysho fjalëkalimin">
                             <KeyRound className="w-4 h-4" />
                           </Button>
@@ -482,6 +540,10 @@ const SuperAdmin = () => {
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-1">
+                              <Button variant="ghost" size="sm" onClick={() => openEdit(t)} title="Modifiko autoshkollën">
+                                <Pencil className="w-4 h-4 mr-1" />
+                                Modifiko
+                              </Button>
                               <Button variant="ghost" size="sm" onClick={() => openPw(t)} title="Ndrysho fjalëkalimin e adminit">
                                 <KeyRound className="w-4 h-4 mr-1" />
                                 Fjalëkalimi
@@ -845,6 +907,66 @@ const SuperAdmin = () => {
             <Button onClick={savePw} disabled={pwSaving || !pwSelected || pwValue.length < 6}>
               {pwSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Ruaj fjalëkalimin
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit tenant dialog */}
+      <Dialog open={!!editTenant} onOpenChange={(o) => !o && setEditTenant(null)}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifiko · {editTenant?.name}</DialogTitle>
+            <DialogDescription>Përditëso të dhënat e autoshkollës.</DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <Label>Emri *</Label>
+              <Input value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} />
+            </div>
+            <div>
+              <Label>Slug *</Label>
+              <Input
+                value={editForm.slug}
+                onChange={(e) => {
+                  const v = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "");
+                  setEditForm({ ...editForm, slug: v });
+                }}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Domeni</Label>
+              <Input value={editForm.domain} onChange={(e) => setEditForm({ ...editForm, domain: e.target.value })} placeholder="autoshkollajote.com" />
+            </div>
+            <div>
+              <Label>Drejtori</Label>
+              <Input value={editForm.director_name} onChange={(e) => setEditForm({ ...editForm, director_name: e.target.value })} />
+            </div>
+            <div>
+              <Label>Telefoni</Label>
+              <Input value={editForm.phone} onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })} />
+            </div>
+            <div>
+              <Label>Emaili</Label>
+              <Input type="email" value={editForm.email} onChange={(e) => setEditForm({ ...editForm, email: e.target.value })} />
+            </div>
+            <div>
+              <Label>Ngjyra primare</Label>
+              <div className="flex gap-2">
+                <Input type="color" className="w-16 p-1 h-10" value={editForm.primary_color} onChange={(e) => setEditForm({ ...editForm, primary_color: e.target.value })} />
+                <Input value={editForm.primary_color} onChange={(e) => setEditForm({ ...editForm, primary_color: e.target.value })} />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Adresa</Label>
+              <Input value={editForm.address} onChange={(e) => setEditForm({ ...editForm, address: e.target.value })} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditTenant(null)} disabled={savingEdit}>Anulo</Button>
+            <Button onClick={saveEdit} disabled={savingEdit || !editForm.name || !editForm.slug}>
+              {savingEdit && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Ruaj ndryshimet
             </Button>
           </DialogFooter>
         </DialogContent>
