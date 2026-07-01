@@ -38,6 +38,7 @@ import {
   UserCheck,
   CreditCard,
   KeyRound,
+  Pencil,
 } from "lucide-react";
 import SuperAdminStats from "@/components/SuperAdminStats";
 
