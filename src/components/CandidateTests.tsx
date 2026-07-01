@@ -123,15 +123,53 @@ function pickFromPool(pool: RawQ[], count: number, seed: number, usedIds: Set<st
   return picked;
 }
 
-function getTestQuestions(testIndex: number): Q[] {
-  const usedIds = new Set<string>();
-  const out: RawQ[] = [];
-  COMPOSITION.forEach((c, i) => {
-    const seed = testIndex * 1000003 + i * 7919 + 17;
-    out.push(...pickFromPool(POOLS[c.key], c.count, seed, usedIds));
-  });
-  return out.map(toQ);
+function generateAllBTests(): Q[][] {
+  // Per-category usage counters so questions are spread across all 20 tests
+  const usedByPool: Record<string, Set<string>> = {};
+  (Object.keys(POOLS) as (keyof typeof POOLS)[]).forEach((k) => (usedByPool[k] = new Set()));
+
+  const tests: Q[][] = [];
+  for (let t = 0; t < 20; t++) {
+    const seenInTest = new Set<string>();
+    const out: RawQ[] = [];
+    COMPOSITION.forEach((c, i) => {
+      const pool = POOLS[c.key];
+      const seed = t * 1000003 + i * 7919 + 17;
+      const rnd = mulberry32(seed);
+      const shuffled = [...pool];
+      for (let j = shuffled.length - 1; j > 0; j--) {
+        const k = Math.floor(rnd() * (j + 1));
+        [shuffled[j], shuffled[k]] = [shuffled[k], shuffled[j]];
+      }
+      const picked: RawQ[] = [];
+      // Prefer questions not yet used across all tests
+      for (const q of shuffled) {
+        if (picked.length >= c.count) break;
+        if (seenInTest.has(q.id)) continue;
+        if (usedByPool[c.key].has(q.id)) continue;
+        picked.push(q);
+        seenInTest.add(q.id);
+      }
+      // If pool exhausted, allow reuse (still avoid dup in same test)
+      if (picked.length < c.count) {
+        for (const q of shuffled) {
+          if (picked.length >= c.count) break;
+          if (seenInTest.has(q.id)) continue;
+          picked.push(q);
+          seenInTest.add(q.id);
+        }
+        // Reset the counter so the next tests can start fresh
+        usedByPool[c.key] = new Set(picked.map((q) => q.id));
+      } else {
+        picked.forEach((q) => usedByPool[c.key].add(q.id));
+      }
+      out.push(...picked);
+    });
+    tests.push(out.map(toQ));
+  }
+  return tests;
 }
+
 
 type Result = { score: number; total: number; passed: boolean; date: string };
 
@@ -164,7 +202,7 @@ function getTestsForCategory(category?: string): { tests: Q[][]; imageDir: strin
     return { tests: [all], imageDir: "/literatura-c/" };
   }
   // Default (B and others): 20 generated tests from main bank
-  const tests = Array.from({ length: 20 }).map((_, i) => getTestQuestions(i));
+  const tests = generateAllBTests();
   return { tests, imageDir: "/literatura/" };
 }
 
