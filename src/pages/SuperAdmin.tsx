@@ -540,6 +540,10 @@ const SuperAdmin = () => {
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-1">
+                              <Button variant="ghost" size="sm" onClick={() => openEdit(t)} title="Modifiko autoshkollën">
+                                <Pencil className="w-4 h-4 mr-1" />
+                                Modifiko
+                              </Button>
                               <Button variant="ghost" size="sm" onClick={() => openPw(t)} title="Ndrysho fjalëkalimin e adminit">
                                 <KeyRound className="w-4 h-4 mr-1" />
                                 Fjalëkalimi
