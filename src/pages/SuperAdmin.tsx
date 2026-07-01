@@ -105,6 +105,60 @@ const SuperAdmin = () => {
   const [pwValue, setPwValue] = useState("");
   const [pwSaving, setPwSaving] = useState(false);
 
+  // Edit tenant state
+  const [editTenant, setEditTenant] = useState<TenantRow | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    slug: "",
+    domain: "",
+    phone: "",
+    address: "",
+    email: "",
+    director_name: "",
+    primary_color: "#0ea5e9",
+  });
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  const openEdit = (t: TenantRow) => {
+    setEditTenant(t);
+    setEditForm({
+      name: t.name ?? "",
+      slug: t.slug ?? "",
+      domain: t.domain ?? "",
+      phone: t.phone ?? "",
+      address: t.address ?? "",
+      email: t.email ?? "",
+      director_name: t.director_name ?? "",
+      primary_color: t.primary_color ?? "#0ea5e9",
+    });
+  };
+
+  const saveEdit = async () => {
+    if (!editTenant) return;
+    setSavingEdit(true);
+    const { error } = await supabase
+      .from("tenants")
+      .update({
+        name: editForm.name,
+        slug: editForm.slug,
+        domain: editForm.domain || null,
+        phone: editForm.phone || null,
+        address: editForm.address || null,
+        email: editForm.email || null,
+        director_name: editForm.director_name || null,
+        primary_color: editForm.primary_color || null,
+      })
+      .eq("id", editTenant.id);
+    setSavingEdit(false);
+    if (error) {
+      toast.error("Gabim: " + error.message);
+      return;
+    }
+    toast.success("Autoshkolla u përditësua");
+    setEditTenant(null);
+    load();
+  };
+
   const openPw = async (t: TenantRow) => {
     setPwTenant(t);
     setPwAdmins([]);
