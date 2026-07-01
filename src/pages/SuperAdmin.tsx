@@ -911,6 +911,66 @@ const SuperAdmin = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Edit tenant dialog */}
+      <Dialog open={!!editTenant} onOpenChange={(o) => !o && setEditTenant(null)}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifiko · {editTenant?.name}</DialogTitle>
+            <DialogDescription>Përditëso të dhënat e autoshkollës.</DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <Label>Emri *</Label>
+              <Input value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} />
+            </div>
+            <div>
+              <Label>Slug *</Label>
+              <Input
+                value={editForm.slug}
+                onChange={(e) => {
+                  const v = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "");
+                  setEditForm({ ...editForm, slug: v });
+                }}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Domeni</Label>
+              <Input value={editForm.domain} onChange={(e) => setEditForm({ ...editForm, domain: e.target.value })} placeholder="autoshkollajote.com" />
+            </div>
+            <div>
+              <Label>Drejtori</Label>
+              <Input value={editForm.director_name} onChange={(e) => setEditForm({ ...editForm, director_name: e.target.value })} />
+            </div>
+            <div>
+              <Label>Telefoni</Label>
+              <Input value={editForm.phone} onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })} />
+            </div>
+            <div>
+              <Label>Emaili</Label>
+              <Input type="email" value={editForm.email} onChange={(e) => setEditForm({ ...editForm, email: e.target.value })} />
+            </div>
+            <div>
+              <Label>Ngjyra primare</Label>
+              <div className="flex gap-2">
+                <Input type="color" className="w-16 p-1 h-10" value={editForm.primary_color} onChange={(e) => setEditForm({ ...editForm, primary_color: e.target.value })} />
+                <Input value={editForm.primary_color} onChange={(e) => setEditForm({ ...editForm, primary_color: e.target.value })} />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Adresa</Label>
+              <Input value={editForm.address} onChange={(e) => setEditForm({ ...editForm, address: e.target.value })} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditTenant(null)} disabled={savingEdit}>Anulo</Button>
+            <Button onClick={saveEdit} disabled={savingEdit || !editForm.name || !editForm.slug}>
+              {savingEdit && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              Ruaj ndryshimet
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
