@@ -149,8 +149,10 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
               <p>Data <span class="signature-line"></span></p>
               <p style="text-align:right;font-size:11px;">v.v</p>
             </div>
-            <p style="margin-top:20px;">Nënshkrimi i personit të autorizuar</p>
-            <span class="signature-line"></span>
+            <p style="margin-top:20px; text-align:right;">
+              Nënshkrimi i personit të autorizuar
+              <span class="signature-line"></span>
+            </p>
           </div>
         </div>
 
