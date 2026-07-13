@@ -310,6 +310,15 @@ function TestRunner({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { isSuperAdmin } = useIsSuperAdmin();
 
+  // Text/option overrides loaded from DB
+  type QOverride = { text?: string | null; options?: string[] | null; correct_index?: number | null };
+  const [qOverrides, setQOverrides] = useState<Record<string, QOverride>>({});
+  const [editing, setEditing] = useState(false);
+  const [editText, setEditText] = useState("");
+  const [editOptions, setEditOptions] = useState<string[]>([]);
+  const [editCorrect, setEditCorrect] = useState(0);
+  const [savingEdit, setSavingEdit] = useState(false);
+
   // Load all override files from the bucket once (signed URLs since bucket is private)
   useEffect(() => {
     let cancelled = false;
@@ -333,13 +342,60 @@ function TestRunner({
     };
   }, []);
 
-  const totalPoints = useMemo(() => questions.reduce((s, q) => s + q.points, 0), [questions]);
+  // Load text/option overrides from DB
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const ids = questions.map((q) => q.id);
+      if (ids.length === 0) return;
+      const { data, error } = await (supabase as any)
+        .from("question_overrides")
+        .select("question_id, text, options, correct_key")
+        .in("question_id", ids);
+      if (cancelled || error || !data) return;
+      const map: Record<string, QOverride> = {};
+      data.forEach((row: any) => {
+        const opts = Array.isArray(row.options) ? (row.options as string[]) : null;
+        let idx: number | null = null;
+        if (row.correct_key && opts) {
+          const i = OPTION_KEYS.indexOf(row.correct_key);
+          if (i >= 0 && i < opts.length) idx = i;
+        }
+        map[row.question_id] = { text: row.text, options: opts, correct_index: idx };
+      });
+      setQOverrides(map);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [questions]);
+
+  const effectiveQuestions = useMemo<Q[]>(() => {
+    return questions.map((q) => {
+      const o = qOverrides[q.id];
+      if (!o) return q;
+      const optsText = o.options && o.options.length > 0 ? o.options : q.options.map((x) => x.text);
+      const currentIdx = q.options.findIndex((x) => x.key === q.correctKey);
+      const idx =
+        o.correct_index != null && o.correct_index >= 0 && o.correct_index < optsText.length
+          ? o.correct_index
+          : Math.min(Math.max(currentIdx, 0), optsText.length - 1);
+      return {
+        ...q,
+        text: o.text != null ? o.text : q.text,
+        options: optsText.map((t, i) => ({ key: OPTION_KEYS[i], text: t })),
+        correctKey: OPTION_KEYS[idx],
+      };
+    });
+  }, [questions, qOverrides]);
+
+  const totalPoints = useMemo(() => effectiveQuestions.reduce((s, q) => s + q.points, 0), [effectiveQuestions]);
   const score = useMemo(
-    () => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? q.points : 0), 0),
-    [questions, answers]
+    () => effectiveQuestions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? q.points : 0), 0),
+    [effectiveQuestions, answers]
   );
   const total = totalPoints;
-  const totalQ = questions.length;
+  const totalQ = effectiveQuestions.length;
   const pct = total ? Math.round((score / total) * 100) : 0;
   const passed = pct >= PASS_THRESHOLD;
 
@@ -350,10 +406,59 @@ function TestRunner({
   };
 
   const answeredCount = Object.keys(answers).length;
-  const q = questions[currentIdx];
+  const q = effectiveQuestions[currentIdx];
   const userKey = q ? answers[q.id] : undefined;
   const isLast = currentIdx === totalQ - 1;
   const isFirst = currentIdx === 0;
+
+  const startEdit = () => {
+    if (!q) return;
+    setEditText(q.text);
+    setEditOptions(q.options.map((o) => o.text));
+    setEditCorrect(q.options.findIndex((o) => o.key === q.correctKey));
+    setEditing(true);
+  };
+
+  const cancelEdit = () => setEditing(false);
+
+  const saveEdit = async () => {
+    if (!q) return;
+    const cleaned = editOptions.map((o) => o.trim()).filter((o) => o.length > 0);
+    if (cleaned.length < 2) {
+      toast({ title: "Duhen së paku 2 opsione", variant: "destructive" });
+      return;
+    }
+    const correctIdx = Math.min(Math.max(editCorrect, 0), cleaned.length - 1);
+    setSavingEdit(true);
+    try {
+      const { error } = await (supabase as any).from("question_overrides").upsert(
+        {
+          question_id: q.id,
+          text: editText.trim(),
+          options: cleaned,
+          correct_key: OPTION_KEYS[correctIdx],
+        },
+        { onConflict: "question_id" }
+      );
+      if (error) throw error;
+      setQOverrides((p) => ({
+        ...p,
+        [q.id]: { text: editText.trim(), options: cleaned, correct_index: correctIdx },
+      }));
+      setAnswers((p) => {
+        const n = { ...p };
+        delete n[q.id];
+        return n;
+      });
+      setEditing(false);
+      toast({ title: "Pyetja u ruajt" });
+    } catch (err: any) {
+      toast({ title: "Gabim gjatë ruajtjes", description: err?.message, variant: "destructive" });
+    } finally {
+      setSavingEdit(false);
+    }
+  };
+
 
   const handleUploadClick = () => {
     if (!q) return;
