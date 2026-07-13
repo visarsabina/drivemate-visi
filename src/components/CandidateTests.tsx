@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw, Pencil, Loader2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw, Pencil, Loader2, Trash2, Plus, Save, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import builtinBank from "@/data/questionBank.json";
 import bankC from "@/data/questionBankC.json";
 import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
