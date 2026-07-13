@@ -534,7 +534,7 @@ function TestRunner({
                 Shiko pyetjet — kliko numrin për t'u kthyer te pyetja
               </p>
               <div className="grid grid-cols-10 gap-1.5">
-                {questions.map((qq, i) => {
+                {effectiveQuestions.map((qq, i) => {
                   const ua = answers[qq.id];
                   const status = !ua ? "skip" : ua === qq.correctKey ? "ok" : "bad";
                   const base = "h-8 rounded text-xs font-semibold border transition-colors";
