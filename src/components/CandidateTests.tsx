@@ -567,13 +567,25 @@ function TestRunner({
           </>
         )}
 
-        {q && (
+        {q && !editing && (
           <Card className="p-4 flex flex-col" style={{ minHeight: "560px" }}>
-            <div className="h-16 mb-3">
-              <p className="text-sm font-medium line-clamp-3">
+            <div className="h-16 mb-3 flex items-start justify-between gap-2">
+              <p className="text-sm font-medium line-clamp-3 flex-1">
                 <span className="text-muted-foreground mr-2">{currentIdx + 1}.</span>
                 {q.text}
               </p>
+              {isSuperAdmin && !submitted && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={startEdit}
+                  className="gap-1 h-7 px-2 shrink-0"
+                >
+                  <Pencil className="w-3.5 h-3.5" />
+                  Ndrysho pyetjen
+                </Button>
+              )}
             </div>
             <div className="relative h-64 mb-3 flex items-center justify-center bg-white rounded-md border border-border overflow-hidden p-2">
               {currentImageSrc ? (
@@ -604,7 +616,7 @@ function TestRunner({
                     ) : (
                       <Pencil className="w-3.5 h-3.5" />
                     )}
-                    Ndrysho
+                    Foto
                   </Button>
                   <input
                     ref={fileInputRef}
@@ -649,6 +661,95 @@ function TestRunner({
             </div>
           </Card>
         )}
+
+        {q && editing && (
+          <Card className="p-4 space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-sm font-semibold">Ndrysho pyetjen {currentIdx + 1}</p>
+              <Button size="sm" variant="ghost" onClick={cancelEdit} className="gap-1 h-7 px-2">
+                <X className="w-3.5 h-3.5" /> Anulo
+              </Button>
+            </div>
+            <div>
+              <p className="text-xs font-medium text-muted-foreground mb-1">Teksti i pyetjes</p>
+              <Textarea
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                rows={3}
+                className="text-sm"
+              />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-muted-foreground mb-1">
+                Opsionet — zgjedh të saktin, hiq ato që nuk duhen
+              </p>
+              <div className="space-y-2">
+                {editOptions.map((opt, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setEditCorrect(i)}
+                      className={`shrink-0 w-8 h-8 rounded-md border-2 text-xs font-semibold transition-colors ${
+                        editCorrect === i
+                          ? "bg-emerald-500 text-white border-emerald-500"
+                          : "border-border text-muted-foreground hover:border-emerald-500"
+                      }`}
+                      title="Shëno si përgjigje të saktë"
+                    >
+                      {OPTION_KEYS[i]}
+                    </button>
+                    <Input
+                      value={opt}
+                      onChange={(e) => {
+                        const next = [...editOptions];
+                        next[i] = e.target.value;
+                        setEditOptions(next);
+                      }}
+                      className="text-sm"
+                    />
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => {
+                        const next = editOptions.filter((_, j) => j !== i);
+                        setEditOptions(next);
+                        if (editCorrect === i) setEditCorrect(0);
+                        else if (editCorrect > i) setEditCorrect(editCorrect - 1);
+                      }}
+                      disabled={editOptions.length <= 2}
+                      className="shrink-0 h-8 w-8 text-destructive"
+                      title="Fshi opsionin"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              {editOptions.length < OPTION_KEYS.length && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setEditOptions([...editOptions, ""])}
+                  className="gap-1 mt-2"
+                >
+                  <Plus className="w-3.5 h-3.5" /> Shto opsion
+                </Button>
+              )}
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="outline" onClick={cancelEdit} disabled={savingEdit}>
+                Anulo
+              </Button>
+              <Button onClick={saveEdit} disabled={savingEdit} className="gap-2">
+                {savingEdit ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                Ruaj
+              </Button>
+            </div>
+          </Card>
+        )}
+
 
         <div className="sticky bottom-0 bg-background/90 backdrop-blur-sm border-t border-border p-3 -mx-4">
           <div className="max-w-3xl mx-auto flex items-center gap-2">
