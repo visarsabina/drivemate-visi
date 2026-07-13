@@ -200,8 +200,15 @@ interface Props {
 function getTestsForCategory(category?: string): { tests: Q[][]; imageDir: string } {
   const cat = (category || "B").toUpperCase();
   if (cat === "C") {
-    const all = (bankC as RawQ[]).map(toQ);
-    return { tests: [all], imageDir: "/literatura-c/" };
+    const all = (bankC as (RawQ & { test?: number })[]);
+    const grouped = new Map<number, Q[]>();
+    for (const q of all) {
+      const t = q.test ?? 1;
+      if (!grouped.has(t)) grouped.set(t, []);
+      grouped.get(t)!.push(toQ(q));
+    }
+    const tests = [...grouped.keys()].sort((a, b) => a - b).map((k) => grouped.get(k)!);
+    return { tests, imageDir: "/literatura-c/" };
   }
   // Default (B and others): 20 generated tests from main bank
   const tests = generateAllBTests();
