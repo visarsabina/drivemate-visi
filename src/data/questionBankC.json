@@ -9,7 +9,8 @@
     ],
     "correctIndex": 0,
     "image": "c1.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c2",
@@ -20,7 +21,8 @@
       "harxhimit të lëndës djegëse sipas kilometrave të kaluar"
     ],
     "correctIndex": 0,
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c3",
@@ -31,7 +33,8 @@
       "1,6 metra"
     ],
     "correctIndex": 0,
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c4",
@@ -42,7 +45,8 @@
       "Ministria e Punëve të Brendshme"
     ],
     "correctIndex": 1,
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c5",
@@ -53,7 +57,8 @@
       "zvogëlimit të fuqisë së nevojshme të vozitësit gjatë drejtimit me timonin e automjetit"
     ],
     "correctIndex": 2,
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c6",
@@ -65,7 +70,8 @@
     ],
     "correctIndex": 2,
     "image": "c6.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c7",
@@ -77,7 +83,8 @@
     ],
     "correctIndex": 0,
     "image": "c7.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c8",
@@ -89,7 +96,8 @@
     ],
     "correctIndex": 0,
     "image": "c8.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c9",
@@ -101,7 +109,8 @@
     ],
     "correctIndex": 1,
     "image": "c9.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c10",
@@ -113,7 +122,8 @@
     ],
     "correctIndex": 1,
     "image": "c10.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c11",
@@ -124,7 +134,8 @@
     ],
     "correctIndex": 0,
     "image": "c11.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c12",
@@ -135,7 +146,8 @@
     ],
     "correctIndex": 0,
     "image": "c12.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c13",
@@ -146,7 +158,8 @@
     ],
     "correctIndex": 0,
     "image": "c13.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c14",
@@ -157,7 +170,8 @@
     ],
     "correctIndex": 0,
     "image": "c14.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c15",
@@ -168,7 +182,8 @@
     ],
     "correctIndex": 1,
     "image": "c15.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c16",
@@ -179,7 +194,8 @@
     ],
     "correctIndex": 1,
     "image": "c16.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c17",
@@ -190,7 +206,8 @@
     ],
     "correctIndex": 1,
     "image": "c17.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c18",
@@ -201,7 +218,8 @@
     ],
     "correctIndex": 0,
     "image": "c18.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c19",
@@ -212,7 +230,8 @@
     ],
     "correctIndex": 0,
     "image": "c19.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c20",
@@ -223,7 +242,8 @@
     ],
     "correctIndex": 1,
     "image": "c20.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c21",
@@ -235,7 +255,8 @@
     ],
     "correctIndex": 1,
     "image": "c21.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c22",
@@ -247,7 +268,8 @@
     ],
     "correctIndex": 0,
     "image": "c22.png",
-    "points": 3
+    "points": 3,
+    "test": 1
   },
   {
     "id": "c23",
@@ -258,7 +280,8 @@
     ],
     "correctIndex": 1,
     "image": "c23.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c24",
@@ -269,7 +292,8 @@
     ],
     "correctIndex": 0,
     "image": "c24.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c25",
@@ -280,7 +304,8 @@
     ],
     "correctIndex": 1,
     "image": "c25.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c26",
@@ -291,7 +316,8 @@
     ],
     "correctIndex": 1,
     "image": "c26.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c27",
@@ -302,7 +328,8 @@
     ],
     "correctIndex": 0,
     "image": "c27.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c28",
@@ -313,7 +340,8 @@
     ],
     "correctIndex": 1,
     "image": "c28.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c29",
@@ -324,7 +352,8 @@
     ],
     "correctIndex": 1,
     "image": "c29.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c30",
@@ -335,7 +364,8 @@
     ],
     "correctIndex": 0,
     "image": "c30.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c31",
@@ -346,7 +376,8 @@
     ],
     "correctIndex": 1,
     "image": "c31.png",
-    "points": 4
+    "points": 4,
+    "test": 1
   },
   {
     "id": "c32",
@@ -356,7 +387,8 @@
       "E pasaktë."
     ],
     "correctIndex": 0,
-    "points": 2
+    "points": 2,
+    "test": 1
   },
   {
     "id": "c33",
@@ -367,7 +399,8 @@
     ],
     "correctIndex": 1,
     "image": "c33.png",
-    "points": 2
+    "points": 2,
+    "test": 1
   },
   {
     "id": "c34",
@@ -378,7 +411,8 @@
       "Përdorimi i dritave të gjata, çdo herë gjatë ngasjes."
     ],
     "correctIndex": 1,
-    "points": 2
+    "points": 2,
+    "test": 1
   },
   {
     "id": "c35",
@@ -388,6 +422,133 @@
       "E pasaktë."
     ],
     "correctIndex": 0,
-    "points": 2
+    "points": 2,
+    "test": 1
+  },
+  {
+    "id": "c2_1",
+    "test": 2,
+    "text": "Shoferi i automjetit transportues të mallrave, ku masa më e madhe e lejuar e së cilës është më e madhe se 3.500 kg, kur qarkullon në rrugë publike në vendbanim (si në fotografinë), në të cilën ekzistojnë më së paku dy korsi komunikacioni për lëvizje në të njëjtën kahe:",
+    "options": [
+      "është i obliguar që të qarkullojë nëpër korsinë e komunikacionit përskaj tehut të djathtë të rrugës automobilistike",
+      "është i obliguar që ta shfrytëzojë korsinë e komunikacionit të majtë",
+      "mund të lëvizë në cilëndo korsi të komunikacionit"
+    ],
+    "correctIndex": 0,
+    "image": "c2_1.png",
+    "points": 4
+  },
+  {
+    "id": "c2_2",
+    "test": 2,
+    "text": "„Automjeti transportues i mallrave\" është automjet motorik i dedikuar për:",
+    "options": [
+      "transport të personave",
+      "transport të mallrave dhe sendeve",
+      "transport vetëm të substancave të rrezikshme"
+    ],
+    "correctIndex": 1,
+    "points": 4
+  },
+  {
+    "id": "c2_3",
+    "test": 2,
+    "text": "Pika më e nxjerrur e ngarkesës që bartet me automjetin ngarkues dhe e kalon për më shumë se 1 metër pikën më të largët të anës së pasme të automjetit, shënohet me:",
+    "options": [
+      "pëlhurë të kuqe",
+      "tabelë në formë katrori e ngjyrosur me vija të pjerta paralele me ngjyrë portokalli dhe të bardhë",
+      "dritë dhe materie reflektuese me ngjyrë portokalli"
+    ],
+    "correctIndex": 1,
+    "points": 4
+  },
+  {
+    "id": "c2_4",
+    "test": 2,
+    "text": "Me automjet transportues të mallrave, masa e të cilit është më e madhe se 3.500 kg, me të cilin bëhet bartje grupore e udhëtarëve mund të drejtojë:",
+    "options": [
+      "shoferi i cili drejtimin me automjetin motorik e ka profesion primar dhe i cili më së paku tre vite drejton me automjet të asaj kategorie",
+      "shoferi, i cili më së paku dy vite ka drejtuar me automjet të kategorisë \"C\"",
+      "shoferi, i cili më së paku pesë vite ka drejtuar me automjet të kategorisë \"B\""
+    ],
+    "correctIndex": 0,
+    "points": 4
+  },
+  {
+    "id": "c2_5",
+    "test": 2,
+    "text": "Lëvizja e lirë (llufti) e timonit të automjetit motorik guxon të jetë më së shumti:",
+    "options": [
+      "20 shkallë",
+      "30 shkallë",
+      "40 shkallë"
+    ],
+    "correctIndex": 1,
+    "points": 4
+  },
+  {
+    "id": "c2_6",
+    "test": 2,
+    "text": "Cila sjellje është e drejtë në këtë situatë?",
+    "options": [
+      "Largoj këmbën nga pedalja e gazit (nuk i jap gaz).",
+      "Duhet vazhdojë me të njëjtën shpejtësi.",
+      "Nuk ndërrmarr asgjë, pasi që këmbësori është i moshuar."
+    ],
+    "correctIndex": 0,
+    "image": "c2_6.png",
+    "points": 4
+  },
+  {
+    "id": "c2_7",
+    "test": 2,
+    "text": "Çka duhet të keni parasysh në këtë situatë?",
+    "options": [
+      "Qafë mali.",
+      "Tuneli është larg 500 m nga shenja.",
+      "Në pjesën e rrugës ku lejohet tejkalimi."
+    ],
+    "correctIndex": 1,
+    "image": "c2_7.png",
+    "points": 4
+  },
+  {
+    "id": "c2_8",
+    "test": 2,
+    "text": "Cila sjellje është e drejtë?",
+    "options": [
+      "Më duhet t'i bie buris, ndaj shoferit për shkelje të rregullave të trafikut.",
+      "Largojë këmbën nga gazi (nuk i japi gaz) dhe i'a mundësoj veturës të hyn në trafik.",
+      "Duhet vazhdojë me njëjtën shpejtësi."
+    ],
+    "correctIndex": 1,
+    "image": "c2_8.png",
+    "points": 4
+  },
+  {
+    "id": "c2_9",
+    "test": 2,
+    "text": "Çka duhet të keni parasysh në këtë situatë?",
+    "options": [
+      "Pjesën e rrugës ku ndalohet tejkalimi.",
+      "Kontakti i gomave me rrugën zvogëlohet dukshëm (rrëshqitëshme).",
+      "Nuk më lejohet ndërrimi i shiritave."
+    ],
+    "correctIndex": 1,
+    "image": "c2_9.png",
+    "points": 4
+  },
+  {
+    "id": "c2_10",
+    "test": 2,
+    "text": "Çka duhet të keni parasysh në këtë situatë?",
+    "options": [
+      "Do t'i jap përparësi kalimi këmbësorit.",
+      "Duhet të vazhdoj me shpejtësi të njëjtë.",
+      "Me shenjë akustike (bori) do të lajmëroj këmbësorin të largohet nga rruga."
+    ],
+    "correctIndex": 0,
+    "image": "c2_10.png",
+    "points": 4
   }
 ]
