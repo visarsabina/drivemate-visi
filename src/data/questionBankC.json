@@ -550,5 +550,126 @@
     "correctIndex": 0,
     "image": "c2_10.png",
     "points": 4
+  },
+  {
+    "id": "c2_11",
+    "test": 2,
+    "text": "Shenja e trafikut paralajmëron afërsinë e kthesës së rrezikshme majtas.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_11.png",
+    "points": 3
+  },
+  {
+    "id": "c2_12",
+    "test": 2,
+    "text": "Shenja e trafikut lajmëron vendin ku gjendet aeroporti.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c2_12.png",
+    "points": 3
+  },
+  {
+    "id": "c2_13",
+    "test": 2,
+    "text": "Shenja e trafikut paralajmëron vendparkimin e veturës në trotuar.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c2_13.png",
+    "points": 3
+  },
+  {
+    "id": "c2_14",
+    "test": 2,
+    "text": "Shenja e trafikut tregon rrugën me përparësi kalimi.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c2_14.png",
+    "points": 3
+  },
+  {
+    "id": "c2_15",
+    "test": 2,
+    "text": "Shenja e trafikut tregon rrugën ku trafiku zhvillohet në një kah.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c2_15.png",
+    "points": 3
+  },
+  {
+    "id": "c2_16",
+    "test": 2,
+    "text": "Shenja e trafikut tregon mbarimin e të gjitha ndalesave.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c2_16.png",
+    "points": 3
+  },
+  {
+    "id": "c2_17",
+    "test": 2,
+    "text": "Shenja e trafikut tregon vendkalimin e shënuar për biçiklistë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_17.png",
+    "points": 3
+  },
+  {
+    "id": "c2_18",
+    "test": 2,
+    "text": "Shenja e trafikut tregon kryqëzimin me rrethrrotullim.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_18.png",
+    "points": 3
+  },
+  {
+    "id": "c2_19",
+    "test": 2,
+    "text": "Shenja e trafikut tregon vendkalimin për këmbësorë dhe biçiklistë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_19.png",
+    "points": 3
+  },
+  {
+    "id": "c2_20",
+    "test": 2,
+    "text": "Çka tregon drita e semaforit si në foto?",
+    "options": [
+      "Ndalim kalimi. për këmbësorë.",
+      "Kalimi lirë për këmbësorë.",
+      "Samafori nuk punon."
+    ],
+    "correctIndex": 0,
+    "image": "c2_20.png",
+    "points": 3
   }
 ]
