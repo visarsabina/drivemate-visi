@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw, Pencil, Loader2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle, ClipboardList, Trophy, RotateCcw, Pencil, Loader2, Trash2, Plus, Save, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import builtinBank from "@/data/questionBank.json";
 import bankC from "@/data/questionBankC.json";
 import { useIsSuperAdmin } from "@/hooks/useIsSuperAdmin";
@@ -308,6 +310,15 @@ function TestRunner({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { isSuperAdmin } = useIsSuperAdmin();
 
+  // Text/option overrides loaded from DB
+  type QOverride = { text?: string | null; options?: string[] | null; correct_index?: number | null };
+  const [qOverrides, setQOverrides] = useState<Record<string, QOverride>>({});
+  const [editing, setEditing] = useState(false);
+  const [editText, setEditText] = useState("");
+  const [editOptions, setEditOptions] = useState<string[]>([]);
+  const [editCorrect, setEditCorrect] = useState(0);
+  const [savingEdit, setSavingEdit] = useState(false);
+
   // Load all override files from the bucket once (signed URLs since bucket is private)
   useEffect(() => {
     let cancelled = false;
@@ -331,13 +342,60 @@ function TestRunner({
     };
   }, []);
 
-  const totalPoints = useMemo(() => questions.reduce((s, q) => s + q.points, 0), [questions]);
+  // Load text/option overrides from DB
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const ids = questions.map((q) => q.id);
+      if (ids.length === 0) return;
+      const { data, error } = await (supabase as any)
+        .from("question_overrides")
+        .select("question_id, text, options, correct_key")
+        .in("question_id", ids);
+      if (cancelled || error || !data) return;
+      const map: Record<string, QOverride> = {};
+      data.forEach((row: any) => {
+        const opts = Array.isArray(row.options) ? (row.options as string[]) : null;
+        let idx: number | null = null;
+        if (row.correct_key && opts) {
+          const i = OPTION_KEYS.indexOf(row.correct_key);
+          if (i >= 0 && i < opts.length) idx = i;
+        }
+        map[row.question_id] = { text: row.text, options: opts, correct_index: idx };
+      });
+      setQOverrides(map);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [questions]);
+
+  const effectiveQuestions = useMemo<Q[]>(() => {
+    return questions.map((q) => {
+      const o = qOverrides[q.id];
+      if (!o) return q;
+      const optsText = o.options && o.options.length > 0 ? o.options : q.options.map((x) => x.text);
+      const currentIdx = q.options.findIndex((x) => x.key === q.correctKey);
+      const idx =
+        o.correct_index != null && o.correct_index >= 0 && o.correct_index < optsText.length
+          ? o.correct_index
+          : Math.min(Math.max(currentIdx, 0), optsText.length - 1);
+      return {
+        ...q,
+        text: o.text != null ? o.text : q.text,
+        options: optsText.map((t, i) => ({ key: OPTION_KEYS[i], text: t })),
+        correctKey: OPTION_KEYS[idx],
+      };
+    });
+  }, [questions, qOverrides]);
+
+  const totalPoints = useMemo(() => effectiveQuestions.reduce((s, q) => s + q.points, 0), [effectiveQuestions]);
   const score = useMemo(
-    () => questions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? q.points : 0), 0),
-    [questions, answers]
+    () => effectiveQuestions.reduce((s, q) => s + (answers[q.id] === q.correctKey ? q.points : 0), 0),
+    [effectiveQuestions, answers]
   );
   const total = totalPoints;
-  const totalQ = questions.length;
+  const totalQ = effectiveQuestions.length;
   const pct = total ? Math.round((score / total) * 100) : 0;
   const passed = pct >= PASS_THRESHOLD;
 
@@ -348,10 +406,59 @@ function TestRunner({
   };
 
   const answeredCount = Object.keys(answers).length;
-  const q = questions[currentIdx];
+  const q = effectiveQuestions[currentIdx];
   const userKey = q ? answers[q.id] : undefined;
   const isLast = currentIdx === totalQ - 1;
   const isFirst = currentIdx === 0;
+
+  const startEdit = () => {
+    if (!q) return;
+    setEditText(q.text);
+    setEditOptions(q.options.map((o) => o.text));
+    setEditCorrect(q.options.findIndex((o) => o.key === q.correctKey));
+    setEditing(true);
+  };
+
+  const cancelEdit = () => setEditing(false);
+
+  const saveEdit = async () => {
+    if (!q) return;
+    const cleaned = editOptions.map((o) => o.trim()).filter((o) => o.length > 0);
+    if (cleaned.length < 2) {
+      toast({ title: "Duhen së paku 2 opsione", variant: "destructive" });
+      return;
+    }
+    const correctIdx = Math.min(Math.max(editCorrect, 0), cleaned.length - 1);
+    setSavingEdit(true);
+    try {
+      const { error } = await (supabase as any).from("question_overrides").upsert(
+        {
+          question_id: q.id,
+          text: editText.trim(),
+          options: cleaned,
+          correct_key: OPTION_KEYS[correctIdx],
+        },
+        { onConflict: "question_id" }
+      );
+      if (error) throw error;
+      setQOverrides((p) => ({
+        ...p,
+        [q.id]: { text: editText.trim(), options: cleaned, correct_index: correctIdx },
+      }));
+      setAnswers((p) => {
+        const n = { ...p };
+        delete n[q.id];
+        return n;
+      });
+      setEditing(false);
+      toast({ title: "Pyetja u ruajt" });
+    } catch (err: any) {
+      toast({ title: "Gabim gjatë ruajtjes", description: err?.message, variant: "destructive" });
+    } finally {
+      setSavingEdit(false);
+    }
+  };
+
 
   const handleUploadClick = () => {
     if (!q) return;
@@ -427,7 +534,7 @@ function TestRunner({
                 Shiko pyetjet — kliko numrin për t'u kthyer te pyetja
               </p>
               <div className="grid grid-cols-10 gap-1.5">
-                {questions.map((qq, i) => {
+                {effectiveQuestions.map((qq, i) => {
                   const ua = answers[qq.id];
                   const status = !ua ? "skip" : ua === qq.correctKey ? "ok" : "bad";
                   const base = "h-8 rounded text-xs font-semibold border transition-colors";
@@ -460,13 +567,25 @@ function TestRunner({
           </>
         )}
 
-        {q && (
+        {q && !editing && (
           <Card className="p-4 flex flex-col" style={{ minHeight: "560px" }}>
-            <div className="h-16 mb-3">
-              <p className="text-sm font-medium line-clamp-3">
+            <div className="h-16 mb-3 flex items-start justify-between gap-2">
+              <p className="text-sm font-medium line-clamp-3 flex-1">
                 <span className="text-muted-foreground mr-2">{currentIdx + 1}.</span>
                 {q.text}
               </p>
+              {isSuperAdmin && !submitted && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={startEdit}
+                  className="gap-1 h-7 px-2 shrink-0"
+                >
+                  <Pencil className="w-3.5 h-3.5" />
+                  Ndrysho pyetjen
+                </Button>
+              )}
             </div>
             <div className="relative h-64 mb-3 flex items-center justify-center bg-white rounded-md border border-border overflow-hidden p-2">
               {currentImageSrc ? (
@@ -497,7 +616,7 @@ function TestRunner({
                     ) : (
                       <Pencil className="w-3.5 h-3.5" />
                     )}
-                    Ndrysho
+                    Foto
                   </Button>
                   <input
                     ref={fileInputRef}
@@ -542,6 +661,95 @@ function TestRunner({
             </div>
           </Card>
         )}
+
+        {q && editing && (
+          <Card className="p-4 space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-sm font-semibold">Ndrysho pyetjen {currentIdx + 1}</p>
+              <Button size="sm" variant="ghost" onClick={cancelEdit} className="gap-1 h-7 px-2">
+                <X className="w-3.5 h-3.5" /> Anulo
+              </Button>
+            </div>
+            <div>
+              <p className="text-xs font-medium text-muted-foreground mb-1">Teksti i pyetjes</p>
+              <Textarea
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                rows={3}
+                className="text-sm"
+              />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-muted-foreground mb-1">
+                Opsionet — zgjedh të saktin, hiq ato që nuk duhen
+              </p>
+              <div className="space-y-2">
+                {editOptions.map((opt, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setEditCorrect(i)}
+                      className={`shrink-0 w-8 h-8 rounded-md border-2 text-xs font-semibold transition-colors ${
+                        editCorrect === i
+                          ? "bg-emerald-500 text-white border-emerald-500"
+                          : "border-border text-muted-foreground hover:border-emerald-500"
+                      }`}
+                      title="Shëno si përgjigje të saktë"
+                    >
+                      {OPTION_KEYS[i]}
+                    </button>
+                    <Input
+                      value={opt}
+                      onChange={(e) => {
+                        const next = [...editOptions];
+                        next[i] = e.target.value;
+                        setEditOptions(next);
+                      }}
+                      className="text-sm"
+                    />
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => {
+                        const next = editOptions.filter((_, j) => j !== i);
+                        setEditOptions(next);
+                        if (editCorrect === i) setEditCorrect(0);
+                        else if (editCorrect > i) setEditCorrect(editCorrect - 1);
+                      }}
+                      disabled={editOptions.length <= 2}
+                      className="shrink-0 h-8 w-8 text-destructive"
+                      title="Fshi opsionin"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              {editOptions.length < OPTION_KEYS.length && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setEditOptions([...editOptions, ""])}
+                  className="gap-1 mt-2"
+                >
+                  <Plus className="w-3.5 h-3.5" /> Shto opsion
+                </Button>
+              )}
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="outline" onClick={cancelEdit} disabled={savingEdit}>
+                Anulo
+              </Button>
+              <Button onClick={saveEdit} disabled={savingEdit} className="gap-2">
+                {savingEdit ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                Ruaj
+              </Button>
+            </div>
+          </Card>
+        )}
+
 
         <div className="sticky bottom-0 bg-background/90 backdrop-blur-sm border-t border-border p-3 -mx-4">
           <div className="max-w-3xl mx-auto flex items-center gap-2">
