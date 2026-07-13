@@ -400,6 +400,33 @@ export type Database = {
           },
         ]
       }
+      question_overrides: {
+        Row: {
+          correct_key: string | null
+          created_at: string
+          options: Json | null
+          question_id: string
+          text: string | null
+          updated_at: string
+        }
+        Insert: {
+          correct_key?: string | null
+          created_at?: string
+          options?: Json | null
+          question_id: string
+          text?: string | null
+          updated_at?: string
+        }
+        Update: {
+          correct_key?: string | null
+          created_at?: string
+          options?: Json | null
+          question_id?: string
+          text?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       registrations: {
         Row: {
           category: string
