@@ -671,5 +671,127 @@
     "correctIndex": 0,
     "image": "c2_20.png",
     "points": 3
+  },
+  {
+    "id": "c2_21",
+    "test": 2,
+    "text": "Cilët pjesmarrës në trafik e kanë kalimin e lirë sipas pozitës së policit?",
+    "options": [
+      "Mjetet që vijnë nga krahu i djathtë i policit.",
+      "Mjetet që vijnë nga krahu i majtë i policit.",
+      "Mjetet të cilat vijnë përballë dhe prapa shpinës së policit."
+    ],
+    "correctIndex": 1,
+    "image": "c2_21.png",
+    "points": 3
+  },
+  {
+    "id": "c2_22",
+    "test": 2,
+    "text": "Çfarë paraqet vija e plotë në rrugë?",
+    "options": [
+      "Lejon tejkalimin e automjeteve.",
+      "Vendin ku duhet të ndalet automjeti.",
+      "Ndalon tejkalimin e automjeteve."
+    ],
+    "correctIndex": 2,
+    "image": "c2_22.png",
+    "points": 3
+  },
+  {
+    "id": "c2_23",
+    "test": 2,
+    "text": "Biçiklisti duhet të ketë rroba reflektuese apo ndonjë burim drite, gjatë ngasjes në rrugë me dukshmëri të dobësuar.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_23.png",
+    "points": 4
+  },
+  {
+    "id": "c2_24",
+    "test": 2,
+    "text": "Në pjerrtësi gjatësore jeni takuar me traktorin. Për ta mundësuar përballkalimin ju duhet të lëvizini prapa.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_24.png",
+    "points": 4
+  },
+  {
+    "id": "c2_25",
+    "test": 2,
+    "text": "Ngasja në rrugë të drejtë e gjatë, shoferin e nxit për shpejtësi të madhe.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_25.png",
+    "points": 4
+  },
+  {
+    "id": "c2_26",
+    "test": 2,
+    "text": "Nga vendi i vendosjes së shenjës së trafikut nuk lejohet tejkalimi.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_26.png",
+    "points": 4
+  },
+  {
+    "id": "c2_27",
+    "test": 2,
+    "text": "Në këtë situatë më lejohet ndërrimi i shiritit për kthim majtas nëse nuk ka automjete nga prapa.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c2_27.png",
+    "points": 4
+  },
+  {
+    "id": "c2_28",
+    "test": 2,
+    "text": "Në këtë kryqëzim automjeti i kuq dhe biçiklisti kanë përparsi kalimi.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_28.png",
+    "points": 4
+  },
+  {
+    "id": "c2_29",
+    "test": 2,
+    "text": "Në këtë kryqëzim radhitja e kalimit duhet të jetë: unë, kamioni, biçiklisti.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_29.png",
+    "points": 4
+  },
+  {
+    "id": "c2_30",
+    "test": 2,
+    "text": "Në këtë kryqëzim, do të vazhdoj lëvizjen pa u ndalur.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c2_30.png",
+    "points": 4
   }
 ]
