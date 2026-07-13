@@ -793,5 +793,63 @@
     "correctIndex": 0,
     "image": "c2_30.png",
     "points": 4
+  },
+  {
+    "id": "c2_31",
+    "test": 2,
+    "text": "Në këtë kryqëzim vetura e kuqe lëvizë e para.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 4,
+    "image": "c2_31.png"
+  },
+  {
+    "id": "c2_32",
+    "test": 2,
+    "text": "Alkooli gjatë ngasjes ndikon negativisht.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 2
+  },
+  {
+    "id": "c2_33",
+    "test": 2,
+    "text": "Llampa kontrolluese në foto sinjalizon (tregon) se temperatura e motorit ka kaluar kufirin e lejuar-sistemi I ftohjes në defekt.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 2,
+    "image": "c2_33.png"
+  },
+  {
+    "id": "c2_34",
+    "test": 2,
+    "text": "Çka e karakterizon sigurinë e shoferit në trafikun rrugor?",
+    "options": [
+      "Hyrja në trafik me nxitim.",
+      "Ngasja me shpejtësi maksimale që zhvillon automjeti.",
+      "Kultura në trafikun rrugor."
+    ],
+    "correctIndex": 2,
+    "points": 2
+  },
+  {
+    "id": "c2_35",
+    "test": 2,
+    "text": "Nëse gjatë pritjeve të gjata fiket motori do të ndikon në ruajtjen e ambienti dhe në kursimin e karburantit (Eko- ngasjes).",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 2
   }
 ]
