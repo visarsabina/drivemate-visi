@@ -23,9 +23,9 @@ export default defineTool({
     const sb = sbForUser(ctx);
     const [candidate, payments, lessons, exams] = await Promise.all([
       sb.from("candidates").select("*").eq("id", id).maybeSingle(),
-      sb.from("candidate_payments").select("*").eq("candidate_id", id).order("data_pageses", { ascending: false }),
-      sb.from("candidate_lessons").select("*").eq("candidate_id", id).order("data_orës", { ascending: false }),
-      sb.from("candidate_exams").select("*").eq("candidate_id", id).order("data_provimit", { ascending: false }),
+      sb.from("candidate_payments").select("*").eq("candidate_id", id).order("data", { ascending: false }),
+      sb.from("candidate_lessons").select("*").eq("candidate_id", id).order("data", { ascending: false }),
+      sb.from("candidate_exams").select("*").eq("candidate_id", id).order("exam_date", { ascending: false }),
     ]);
     if (candidate.error)
       return { content: [{ type: "text", text: candidate.error.message }], isError: true };
