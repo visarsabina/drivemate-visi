@@ -13,6 +13,7 @@ import Install from "./pages/Install.tsx";
 import SuperAdmin from "./pages/SuperAdmin.tsx";
 import CandidatePortal from "./pages/CandidatePortal.tsx";
 import Trust from "./pages/Trust.tsx";
+import OAuthConsent from "./pages/OAuthConsent.tsx";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import CandidateRoute from "@/components/CandidateRoute";
 import SuperAdminRoute from "@/components/SuperAdminRoute";
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/trust" element={<Trust />} />
             <Route path="/privacy" element={<Trust />} />
             <Route path="/security" element={<Trust />} />
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             {/* Legacy login route -> redirect to secure auth */}
             <Route path="/login" element={<Navigate to="/auth" replace />} />
             <Route
