@@ -56,7 +56,7 @@ Deno.serve(async (req) => {
       baseURL: "https://ai.gateway.lovable.dev/v1",
       headers: { "Lovable-API-Key": LOVABLE_API_KEY, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
     });
-    const model = provider("google/gemini-2.5-flash");
+    const model = provider("google/gemini-2.5-pro");
 
     // ---- Tools scoped to caller (RLS applies) ----
     const tools = {
@@ -139,26 +139,84 @@ Deno.serve(async (req) => {
         },
       }),
       list_employees: tool({
-        description: "Punëtorët e autoshkollës.",
+        description: "Punëtorët e autoshkollës (instruktorë, staf).",
         inputSchema: z.object({}),
         execute: async () => {
           const { data, error } = await userClient.from("employees").select("id,emri,mbiemri,pozita,telefoni,email").order("emri");
           return error ? { error: error.message } : { count: data?.length ?? 0, employees: data };
         },
       }),
+      list_exams: tool({
+        description: "Liston provimet (teori/praktik) të kandidatëve. Mund të filtrohen sipas datës (from/to YYYY-MM-DD), llojit ose statusit. Përdore për pyetje si 'kush ka provim nesër/sot/këtë javë'.",
+        inputSchema: z.object({
+          from: z.string().optional().describe("Data e fillimit YYYY-MM-DD (përfshirë)."),
+          to: z.string().optional().describe("Data e mbarimit YYYY-MM-DD (përfshirë)."),
+          exam_type: z.string().optional().describe("teori ose praktik"),
+          status: z.string().optional(),
+          limit: z.number().int().min(1).max(100).default(50),
+        }),
+        execute: async ({ from, to, exam_type, status, limit }) => {
+          let q = userClient
+            .from("candidate_exams")
+            .select("id,candidate_id,exam_date,exam_time,exam_type,status,kategoria,location,notes,candidates(emri,mbiemri,numri_personal,telefon,kategoria)")
+            .order("exam_date", { ascending: true })
+            .order("exam_time", { ascending: true })
+            .limit(limit ?? 50);
+          if (from) q = q.gte("exam_date", from);
+          if (to) q = q.lte("exam_date", to);
+          if (exam_type) q = q.eq("exam_type", exam_type as any);
+          if (status) q = q.eq("status", status as any);
+          const { data, error } = await q;
+          if (error) return { error: error.message };
+          return { count: data?.length ?? 0, exams: data };
+        },
+      }),
+      list_lessons: tool({
+        description: "Liston orët e mësimit të kandidatëve. Filtro sipas datës (from/to) ose kandidatit.",
+        inputSchema: z.object({
+          from: z.string().optional(),
+          to: z.string().optional(),
+          candidate_id: z.string().uuid().optional(),
+          limit: z.number().int().min(1).max(200).default(50),
+        }),
+        execute: async ({ from, to, candidate_id, limit }) => {
+          let q = userClient
+            .from("candidate_lessons")
+            .select("id,candidate_id,data,hours,candidates(emri,mbiemri,kategoria)")
+            .order("data", { ascending: false })
+            .limit(limit ?? 50);
+          if (from) q = q.gte("data", from);
+          if (to) q = q.lte("data", to);
+          if (candidate_id) q = q.eq("candidate_id", candidate_id);
+          const { data, error } = await q;
+          if (error) return { error: error.message };
+          return { count: data?.length ?? 0, lessons: data };
+        },
+      }),
     };
 
-    const today = new Date().toISOString().slice(0, 10);
+    const today = new Date();
+    const iso = today.toISOString().slice(0, 10);
+    const tomorrow = new Date(today.getTime() + 86400000).toISOString().slice(0, 10);
     const result = streamText({
       model,
-      system: `Ti je asistenti i autoshkollës. Përgjigju gjithmonë në gjuhën shqipe, shkurt dhe qartë.
-Data e sotme: ${today}.
-Përdor veglat për të kërkuar të dhëna reale nga baza; mos shpik të dhëna.
-Kur liston kandidatë ose transaksione, jep numra, jo tabela të gjata pa nevojë.
-Formato monedhat si "123.45 €".`,
+      system: `Ti je asistenti inteligjent i autoshkollës. Përgjigju GJITHMONË në gjuhën shqipe, qartë dhe konciz.
+
+Data e sotme: ${iso} (nesër: ${tomorrow}).
+
+RREGULLA:
+- Përdor GJITHMONË veglat për të marrë të dhëna reale — mos refuzo pa provuar veglat.
+- Për pyetje "sa kandidatë kam", "përmbledhje", "statistika" → thirr 'stats_summary'.
+- Për pyetje për provime ("kush ka provim sot/nesër/këtë javë") → thirr 'list_exams' me from/to të përshtatshme (p.sh. nesër = from=${tomorrow}&to=${tomorrow}).
+- Për pyetje për orë mësimi → thirr 'list_lessons'.
+- Për borxhet ose një kandidat specifik → 'list_candidates' pastaj 'get_candidate_details'.
+- Nëse data është në formatin dd.mm.yyyy, konvertoje në YYYY-MM-DD para se ta thërrasësh veglën.
+- Pas thirrjes së veglës, PËRGJIGJU GJITHMONË me tekst që përmbledh rezultatin — mos e lërë përgjigjen bosh.
+- Nëse vegla kthen listë të zbrazët, thuaj qartë "Nuk ka rezultate për …".
+- Formato monedhat si "123.45 €".`,
       messages: convertToModelMessages(messages),
       tools,
-      stopWhen: stepCountIs(10),
+      stopWhen: stepCountIs(15),
     });
 
     return result.toUIMessageStreamResponse({ headers: corsHeaders });
