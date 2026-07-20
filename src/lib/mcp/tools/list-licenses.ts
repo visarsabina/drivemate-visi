@@ -19,7 +19,7 @@ export default defineTool({
     if (!ctx.isAuthenticated())
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     const sb = sbForUser(ctx);
-    const { data, error } = await sb.from("licenses").select("*").order("kategoria");
+    const { data, error } = await sb.from("licenses").select("*").order("category");
     if (error)
       return { content: [{ type: "text", text: error.message }], isError: true };
     return {
