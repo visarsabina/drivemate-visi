@@ -26,6 +26,7 @@ import InstructorReports from "@/components/InstructorReports";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TestGenerator from "@/components/TestGenerator";
 import CandidateTests from "@/components/CandidateTests";
+import AdminChat from "@/components/AdminChat";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
@@ -119,6 +120,7 @@ const Index = () => {
 
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
+    assistant: "Asistenti AI",
     instructor: "Kandidatët e Mi",
     candidates: "Lista e Kandidatëve",
     "candidate-detail": "Paneli i Kandidatit",
@@ -327,6 +329,8 @@ const Index = () => {
           {activeView === "tests" && <TestGenerator candidates={candidates} initialCandidateId={selectedCandidate?.id ?? null} />}
 
           {activeView === "activity" && <ActivityLog />}
+
+          {activeView === "assistant" && isAdmin && <AdminChat />}
 
           {activeView === "instructor-reports" && <InstructorReports adminMode />}
 

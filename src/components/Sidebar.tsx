@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft, FileQuestion, CalendarDays, CalendarClock, History, Clock, ClipboardList } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft, FileQuestion, CalendarDays, CalendarClock, History, Clock, ClipboardList, Sparkles } from "lucide-react";
 import defaultLogo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -13,6 +13,7 @@ interface SidebarProps {
 
 const adminNavItems = [
   { id: "dashboard", label: "Paneli", icon: LayoutDashboard },
+  { id: "assistant", label: "Asistenti AI", icon: Sparkles },
   { id: "candidates", label: "Kandidatët", icon: Users },
   { id: "add", label: "Shto Kandidat", icon: UserPlus },
   { id: "payment", label: "Pagesa", icon: CreditCard },
