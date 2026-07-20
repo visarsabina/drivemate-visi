@@ -32,7 +32,7 @@ export default defineTool({
     let q = sb
       .from("candidates")
       .select(
-        "id, emri, mbiemri, numri_personal, telefon, email, kategoria, statusi, nr_rendor, data_regjistrimit",
+        "id, emri, mbiemri, numri_personal, telefon, email:emri, kategoria, statusi, numri_regjistrimit, data_regjistrimit, shuma_marreveshjes, total_lessons",
         { count: "exact" },
       )
       .order("data_regjistrimit", { ascending: false })

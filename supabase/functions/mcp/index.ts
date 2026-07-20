@@ -32,7 +32,7 @@ var list_candidates_default = defineTool({
     const take = limit ?? 50;
     const skip = offset ?? 0;
     let q = sb.from("candidates").select(
-      "id, emri, mbiemri, numri_personal, telefon, email, kategoria, statusi, nr_rendor, data_regjistrimit",
+      "id, emri, mbiemri, numri_personal, telefon, email:emri, kategoria, statusi, numri_regjistrimit, data_regjistrimit, shuma_marreveshjes, total_lessons",
       { count: "exact" }
     ).order("data_regjistrimit", { ascending: false }).range(skip, skip + take - 1);
     if (search && search.trim()) {
