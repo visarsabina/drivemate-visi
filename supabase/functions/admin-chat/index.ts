@@ -158,7 +158,7 @@ Deno.serve(async (req) => {
         execute: async ({ from, to, exam_type, status, limit }) => {
           let q = userClient
             .from("candidate_exams")
-            .select("id,candidate_id,exam_date,exam_time,exam_type,status,kategoria,location,notes,candidates(emri,mbiemri,numri_personal,telefon,kategoria)")
+            .select("id,candidate_id,exam_date,exam_time,exam_type,status,kategoria,location,notes")
             .order("exam_date", { ascending: true })
             .order("exam_time", { ascending: true })
             .limit(limit ?? 50);
@@ -168,7 +168,17 @@ Deno.serve(async (req) => {
           if (status) q = q.eq("status", status as any);
           const { data, error } = await q;
           if (error) return { error: error.message };
-          return { count: data?.length ?? 0, exams: data };
+          const ids = Array.from(new Set((data ?? []).map((e: any) => e.candidate_id)));
+          let candMap: Record<string, any> = {};
+          if (ids.length) {
+            const { data: cands } = await userClient
+              .from("candidates")
+              .select("id,emri,mbiemri,numri_personal,telefon,kategoria")
+              .in("id", ids);
+            for (const c of cands ?? []) candMap[c.id] = c;
+          }
+          const exams = (data ?? []).map((e: any) => ({ ...e, candidate: candMap[e.candidate_id] ?? null }));
+          return { count: exams.length, exams };
         },
       }),
       list_lessons: tool({
@@ -182,7 +192,7 @@ Deno.serve(async (req) => {
         execute: async ({ from, to, candidate_id, limit }) => {
           let q = userClient
             .from("candidate_lessons")
-            .select("id,candidate_id,data,hours,candidates(emri,mbiemri,kategoria)")
+            .select("id,candidate_id,data,hours")
             .order("data", { ascending: false })
             .limit(limit ?? 50);
           if (from) q = q.gte("data", from);
@@ -190,7 +200,17 @@ Deno.serve(async (req) => {
           if (candidate_id) q = q.eq("candidate_id", candidate_id);
           const { data, error } = await q;
           if (error) return { error: error.message };
-          return { count: data?.length ?? 0, lessons: data };
+          const ids = Array.from(new Set((data ?? []).map((l: any) => l.candidate_id)));
+          let candMap: Record<string, any> = {};
+          if (ids.length) {
+            const { data: cands } = await userClient
+              .from("candidates")
+              .select("id,emri,mbiemri,kategoria")
+              .in("id", ids);
+            for (const c of cands ?? []) candMap[c.id] = c;
+          }
+          const lessons = (data ?? []).map((l: any) => ({ ...l, candidate: candMap[l.candidate_id] ?? null }));
+          return { count: lessons.length, lessons };
         },
       }),
     };
