@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,9 @@ const candidateEmail = (personal: string) => `c${personal}@candidate.local`;
 
 const Auth = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const nextParam = searchParams.get("next");
+  const safeNext = nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : null;
   const { toast } = useToast();
   const { session, isAdmin, isInstructor, isCandidate, roleChecked, loading: authLoading } = useAuth();
   const [mode, setMode] = useState<"admin" | "candidate">("admin");
@@ -33,6 +36,10 @@ const Auth = () => {
     (async () => {
       const { data: isSuperAdmin } = await supabase.rpc("is_super_admin");
       if (cancelled) return;
+      if (safeNext) {
+        window.location.href = safeNext;
+        return;
+      }
       if (isSuperAdmin) { navigate("/super-admin", { replace: true }); return; }
       if (isAdmin || isInstructor) { navigate("/admin", { replace: true }); return; }
       if (isCandidate) { navigate("/candidate", { replace: true }); return; }
