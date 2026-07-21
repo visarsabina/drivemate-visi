@@ -37,13 +37,21 @@ const schema = z.object({
 interface Props {
   tenantId?: string | null;
   schoolName?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  autoOpen?: boolean;
 }
 
 const STORAGE_KEY = "extra-lessons-promo-seen";
 
-const ExtraLessonsPromo = ({ tenantId: tenantIdProp, schoolName }: Props) => {
+const ExtraLessonsPromo = ({ tenantId: tenantIdProp, schoolName, open: openProp, onOpenChange, autoOpen = true }: Props) => {
   const { toast } = useToast();
-  const [open, setOpen] = useState(false);
+  const [openInternal, setOpenInternal] = useState(false);
+  const open = openProp ?? openInternal;
+  const setOpen = (v: boolean) => {
+    if (onOpenChange) onOpenChange(v);
+    else setOpenInternal(v);
+  };
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -54,13 +62,14 @@ const ExtraLessonsPromo = ({ tenantId: tenantIdProp, schoolName }: Props) => {
   });
 
   useEffect(() => {
+    if (!autoOpen || openProp !== undefined) return;
     if (sessionStorage.getItem(STORAGE_KEY)) return;
     const t = setTimeout(() => {
-      setOpen(true);
+      setOpenInternal(true);
       sessionStorage.setItem(STORAGE_KEY, "1");
     }, 1500);
     return () => clearTimeout(t);
-  }, []);
+  }, [autoOpen, openProp]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
