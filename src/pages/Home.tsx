@@ -633,6 +633,7 @@ const Home = () => {
         tenantId={branding?.id ?? null}
         schoolName={schoolName}
       />
+      <ExtraLessonsPromo tenantId={branding?.id ?? null} schoolName={schoolName} />
     </div>
   );
 };
