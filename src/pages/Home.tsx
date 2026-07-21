@@ -67,6 +67,7 @@ const Home = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
+  const [promoOpen, setPromoOpen] = useState(false);
   const [staff, setStaff] = useState<StaffMember[]>([]);
 
   // Auto-redirect logged-in admins straight to the panel (PWA "remember me")
