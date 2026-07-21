@@ -346,7 +346,7 @@ const Index = () => {
 export default Index;
 
 function SuperAdminTestsPreview({ onClose }: { onClose: () => void }) {
-  const [category, setCategory] = useState<"B" | "C" | null>(null);
+  const [category, setCategory] = useState<"B" | "C" | "C1" | "CE" | "D" | null>(null);
   if (category) {
     return (
       <CandidateTests
@@ -356,14 +356,18 @@ function SuperAdminTestsPreview({ onClose }: { onClose: () => void }) {
       />
     );
   }
+  const cats: Array<"B" | "C" | "C1" | "CE" | "D"> = ["B", "C", "C1", "CE", "D"];
   return (
     <div className="max-w-md mx-auto space-y-4">
       <p className="text-sm text-muted-foreground">
         Zgjedh kategorinë për të hapur testet. Si super-admin mund të zëvendësosh fotot e pyetjeve me butonin <strong>Ndrysho</strong>.
       </p>
       <div className="grid grid-cols-2 gap-3">
-        <Button onClick={() => setCategory("B")} className="h-20 text-lg">Kategoria B</Button>
-        <Button onClick={() => setCategory("C")} className="h-20 text-lg">Kategoria C</Button>
+        {cats.map((c) => (
+          <Button key={c} onClick={() => setCategory(c)} className="h-20 text-lg">
+            Kategoria {c}
+          </Button>
+        ))}
       </div>
       <Button variant="outline" onClick={onClose} className="w-full">Anulo</Button>
     </div>
