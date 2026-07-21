@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import RegistrationDialog from "@/components/RegistrationDialog";
+import ExtraLessonsPromo from "@/components/ExtraLessonsPromo";
 import heroImg from "@/assets/hero-driving.jpg";
 import classroomImg from "@/assets/classroom.jpg";
 import successImg from "@/assets/success-student.jpg";
@@ -632,6 +633,7 @@ const Home = () => {
         tenantId={branding?.id ?? null}
         schoolName={schoolName}
       />
+      <ExtraLessonsPromo tenantId={branding?.id ?? null} schoolName={schoolName} />
     </div>
   );
 };
