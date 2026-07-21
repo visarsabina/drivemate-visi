@@ -346,7 +346,7 @@ const Index = () => {
 export default Index;
 
 function SuperAdminTestsPreview({ onClose }: { onClose: () => void }) {
-  const [category, setCategory] = useState<"B" | "C" | "C1" | "CE" | "D" | null>(null);
+  const [category, setCategory] = useState<"B" | "C" | "C1" | "D" | null>(null);
   if (category) {
     return (
       <CandidateTests
@@ -356,7 +356,7 @@ function SuperAdminTestsPreview({ onClose }: { onClose: () => void }) {
       />
     );
   }
-  const cats: Array<"B" | "C" | "C1" | "CE" | "D"> = ["B", "C", "C1", "CE", "D"];
+  const cats: Array<"B" | "C" | "C1" | "D"> = ["B", "C", "C1", "D"];
   return (
     <div className="max-w-md mx-auto space-y-4">
       <p className="text-sm text-muted-foreground">

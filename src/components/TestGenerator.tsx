@@ -32,7 +32,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 const QUESTION_COUNT = 30;
 const PASS_THRESHOLD = 85;
 const OPTION_KEYS = ["A", "B", "C", "D", "E"];
-const CATEGORY_OPTIONS = ["A", "A1", "AM", "B", "B1", "BE", "C", "C1", "CE", "D"];
+const CATEGORY_OPTIONS = ["A", "A1", "AM", "B", "B1", "BE", "C", "C1", "D"];
+
 
 type RawBankQuestion = {
   id: string;

@@ -199,8 +199,8 @@ interface Props {
 // Category-specific test config
 function getTestsForCategory(category?: string): { tests: Q[][]; imageDir: string } {
   const cat = (category || "B").toUpperCase();
-  // Categories C, C1, CE and D share the heavy-vehicle question bank
-  if (cat === "C" || cat === "C1" || cat === "CE" || cat === "D") {
+  // Categories C, C1 and D share the heavy-vehicle question bank
+  if (cat === "C" || cat === "C1" || cat === "D") {
     const all = (bankC as (RawQ & { test?: number })[]);
     const grouped = new Map<number, Q[]>();
     for (const q of all) {
