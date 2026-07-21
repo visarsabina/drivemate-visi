@@ -98,7 +98,7 @@ const BUILTIN_QUESTIONS_C: ParsedQuestion[] = (builtinBankC as RawBankQuestion[]
 
 const getBuiltinBankFor = (category: string): { bank: ParsedQuestion[]; count: number; imageDir: string } => {
   const cat = (category || "B").toUpperCase();
-  if (cat === "C" || cat === "C1" || cat === "CE" || cat === "D") {
+  if (cat === "C" || cat === "C1" || cat === "D") {
     return { bank: BUILTIN_QUESTIONS_C, count: BUILTIN_QUESTIONS_C.length, imageDir: "/literatura-c/" };
   }
   return { bank: BUILTIN_QUESTIONS, count: QUESTION_COUNT, imageDir: "/literatura/" };
