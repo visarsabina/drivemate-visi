@@ -647,7 +647,7 @@ const Home = () => {
         tenantId={branding?.id ?? null}
         schoolName={schoolName}
       />
-      <ExtraLessonsPromo tenantId={branding?.id ?? null} schoolName={schoolName} />
+      <ExtraLessonsPromo tenantId={branding?.id ?? null} schoolName={schoolName} open={promoOpen} onOpenChange={setPromoOpen} autoOpen={false} />
     </div>
   );
 };
