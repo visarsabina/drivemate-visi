@@ -32,7 +32,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 const QUESTION_COUNT = 30;
 const PASS_THRESHOLD = 85;
 const OPTION_KEYS = ["A", "B", "C", "D", "E"];
-const CATEGORY_OPTIONS = ["A", "A1", "AM", "B", "B1", "BE", "C", "C1", "CE", "D"];
+const CATEGORY_OPTIONS = ["A", "A1", "AM", "B", "B1", "BE", "C", "C1", "D"];
+
 
 type RawBankQuestion = {
   id: string;
@@ -97,7 +98,7 @@ const BUILTIN_QUESTIONS_C: ParsedQuestion[] = (builtinBankC as RawBankQuestion[]
 
 const getBuiltinBankFor = (category: string): { bank: ParsedQuestion[]; count: number; imageDir: string } => {
   const cat = (category || "B").toUpperCase();
-  if (cat === "C" || cat === "C1" || cat === "CE" || cat === "D") {
+  if (cat === "C" || cat === "C1" || cat === "D") {
     return { bank: BUILTIN_QUESTIONS_C, count: BUILTIN_QUESTIONS_C.length, imageDir: "/literatura-c/" };
   }
   return { bank: BUILTIN_QUESTIONS, count: QUESTION_COUNT, imageDir: "/literatura/" };
