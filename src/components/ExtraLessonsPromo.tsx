@@ -62,14 +62,15 @@ const ExtraLessonsPromo = ({ tenantId: tenantIdProp, schoolName, open: openProp,
   });
 
   useEffect(() => {
-    if (!autoOpen || openProp !== undefined) return;
+    if (!autoOpen) return;
     if (sessionStorage.getItem(STORAGE_KEY)) return;
     const t = setTimeout(() => {
-      setOpenInternal(true);
+      setOpen(true);
       sessionStorage.setItem(STORAGE_KEY, "1");
     }, 1500);
     return () => clearTimeout(t);
-  }, [autoOpen, openProp]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
