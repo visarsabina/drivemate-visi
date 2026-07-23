@@ -664,9 +664,9 @@ const SuperAdmin = () => {
                                 <Pencil className="w-4 h-4 mr-1" />
                                 Modifiko
                               </Button>
-                              <Button variant="ghost" size="sm" onClick={() => openPw(t)} title="Ndrysho fjalëkalimin e adminit">
+                              <Button variant="ghost" size="sm" onClick={() => openPw(t)} title="Menaxho adminat">
                                 <KeyRound className="w-4 h-4 mr-1" />
-                                Fjalëkalimi
+                                Adminat
                               </Button>
                               <Button variant="ghost" size="sm" onClick={() => openSub(t)} title="Menaxho abonimin">
                                 <CreditCard className="w-4 h-4 mr-1" />
