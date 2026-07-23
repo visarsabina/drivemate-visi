@@ -22,14 +22,11 @@ Deno.serve(async (req) => {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) return json({ error: "Missing Authorization header" }, 401);
 
-    const userClient = createClient(SUPABASE_URL, ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: userData, error: userErr } = await userClient.auth.getUser();
+    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
+    const token = authHeader.replace(/^Bearer\s+/i, "");
+    const { data: userData, error: userErr } = await admin.auth.getUser(token);
     if (userErr || !userData.user) return json({ error: "Unauthorized" }, 401);
     const callerId = userData.user.id;
-
-    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
     // Caller must be admin
     const { data: roleRow } = await admin
