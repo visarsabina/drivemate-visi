@@ -39,6 +39,10 @@ import {
   CreditCard,
   KeyRound,
   Pencil,
+  Trash2,
+  UserPlus,
+  UserMinus,
+  Mail,
 } from "lucide-react";
 import SuperAdminStats from "@/components/SuperAdminStats";
 
@@ -97,13 +101,23 @@ const SuperAdmin = () => {
   });
   const [savingSub, setSavingSub] = useState(false);
 
-  // Admin password reset state
+  // Admin management state (password/email/add/remove)
   const [pwTenant, setPwTenant] = useState<TenantRow | null>(null);
   const [pwLoading, setPwLoading] = useState(false);
   const [pwAdmins, setPwAdmins] = useState<Array<{ id: string; email: string | null; full_name: string | null }>>([]);
   const [pwSelected, setPwSelected] = useState<string>("");
   const [pwValue, setPwValue] = useState("");
   const [pwSaving, setPwSaving] = useState(false);
+  const [pwNewEmail, setPwNewEmail] = useState("");
+  const [pwAddOpen, setPwAddOpen] = useState(false);
+  const [pwAddEmail, setPwAddEmail] = useState("");
+  const [pwAddPassword, setPwAddPassword] = useState("");
+  const [pwAddName, setPwAddName] = useState("");
+
+  // Delete tenant state
+  const [delTenant, setDelTenant] = useState<TenantRow | null>(null);
+  const [delConfirm, setDelConfirm] = useState("");
+  const [delSaving, setDelSaving] = useState(false);
 
   // Edit tenant state
   const [editTenant, setEditTenant] = useState<TenantRow | null>(null);
@@ -164,6 +178,11 @@ const SuperAdmin = () => {
     setPwAdmins([]);
     setPwSelected("");
     setPwValue("");
+    setPwNewEmail("");
+    setPwAddOpen(false);
+    setPwAddEmail("");
+    setPwAddPassword("");
+    setPwAddName("");
     setPwLoading(true);
     const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
       body: { action: "list", tenant_id: t.id },
@@ -175,7 +194,17 @@ const SuperAdmin = () => {
     }
     const admins = (data as { admins: Array<{ id: string; email: string | null; full_name: string | null }> }).admins;
     setPwAdmins(admins);
-    if (admins.length === 1) setPwSelected(admins[0].id);
+    if (admins.length === 1) {
+      setPwSelected(admins[0].id);
+      setPwNewEmail(admins[0].email ?? "");
+    }
+  };
+
+  const onSelectAdmin = (id: string) => {
+    setPwSelected(id);
+    const a = pwAdmins.find((x) => x.id === id);
+    setPwNewEmail(a?.email ?? "");
+    setPwValue("");
   };
 
   const savePw = async () => {
@@ -194,7 +223,95 @@ const SuperAdmin = () => {
       return;
     }
     toast.success("Fjalëkalimi u përditësua");
-    setPwTenant(null);
+    setPwValue("");
+  };
+
+  const saveEmail = async () => {
+    if (!pwTenant || !pwSelected) return;
+    const current = pwAdmins.find((a) => a.id === pwSelected)?.email ?? "";
+    if (!pwNewEmail || pwNewEmail === current) return;
+    setPwSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: { action: "update_email", tenant_id: pwTenant.id, target_user_id: pwSelected, email: pwNewEmail },
+    });
+    setPwSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success("Emaili u përditësua");
+    // refresh list
+    openPw(pwTenant);
+  };
+
+  const addAdmin = async () => {
+    if (!pwTenant) return;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pwAddEmail)) {
+      toast.error("Email i pavlefshëm");
+      return;
+    }
+    if (pwAddPassword.length < 6) {
+      toast.error("Fjalëkalimi duhet ≥ 6 karaktere");
+      return;
+    }
+    setPwSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: {
+        action: "add_admin", tenant_id: pwTenant.id,
+        email: pwAddEmail, password: pwAddPassword, full_name: pwAddName,
+      },
+    });
+    setPwSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success("Admini u shtua");
+    setPwAddEmail(""); setPwAddPassword(""); setPwAddName(""); setPwAddOpen(false);
+    openPw(pwTenant);
+    load();
+  };
+
+  const removeAdmin = async (id: string) => {
+    if (!pwTenant) return;
+    if (!confirm("Largoje këtë admin nga autoshkolla?")) return;
+    setPwSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: { action: "remove_admin", tenant_id: pwTenant.id, target_user_id: id },
+    });
+    setPwSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success("Admini u largua");
+    openPw(pwTenant);
+    load();
+  };
+
+  const openDelete = (t: TenantRow) => {
+    setDelTenant(t);
+    setDelConfirm("");
+  };
+
+  const confirmDelete = async () => {
+    if (!delTenant) return;
+    if (delConfirm !== delTenant.name) {
+      toast.error("Shkruaj saktësisht emrin e autoshkollës për konfirmim");
+      return;
+    }
+    setDelSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-delete-tenant", {
+      body: { tenant_id: delTenant.id, confirm_name: delConfirm },
+    });
+    setDelSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success(`Autoshkolla "${delTenant.name}" u fshi`);
+    setDelTenant(null);
+    load();
   };
 
   const openSub = (t: TenantRow) => {
@@ -426,7 +543,7 @@ const SuperAdmin = () => {
                           <Button variant="ghost" size="sm" onClick={() => openEdit(t)} className="h-8 px-2" title="Modifiko">
                             <Pencil className="w-4 h-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => openPw(t)} className="h-8 px-2" title="Ndrysho fjalëkalimin">
+                          <Button variant="ghost" size="sm" onClick={() => openPw(t)} className="h-8 px-2" title="Menaxho adminat">
                             <KeyRound className="w-4 h-4" />
                           </Button>
                           <Button variant="ghost" size="sm" onClick={() => openSub(t)} className="h-8 px-2">
@@ -434,6 +551,9 @@ const SuperAdmin = () => {
                           </Button>
                           <Button variant="ghost" size="sm" onClick={() => toggleActive(t)} className="h-8 px-2">
                             {t.is_active ? <PowerOff className="w-4 h-4" /> : <Power className="w-4 h-4" />}
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => openDelete(t)} className="h-8 px-2 text-destructive" title="Fshi">
+                            <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
                       </div>
@@ -544,9 +664,9 @@ const SuperAdmin = () => {
                                 <Pencil className="w-4 h-4 mr-1" />
                                 Modifiko
                               </Button>
-                              <Button variant="ghost" size="sm" onClick={() => openPw(t)} title="Ndrysho fjalëkalimin e adminit">
+                              <Button variant="ghost" size="sm" onClick={() => openPw(t)} title="Menaxho adminat">
                                 <KeyRound className="w-4 h-4 mr-1" />
-                                Fjalëkalimi
+                                Adminat
                               </Button>
                               <Button variant="ghost" size="sm" onClick={() => openSub(t)} title="Menaxho abonimin">
                                 <CreditCard className="w-4 h-4 mr-1" />
@@ -570,6 +690,10 @@ const SuperAdmin = () => {
                                       Aktivizo
                                     </>
                                   )}
+                              </Button>
+                              <Button variant="ghost" size="sm" onClick={() => openDelete(t)} className="text-destructive hover:text-destructive" title="Fshi autoshkollën">
+                                <Trash2 className="w-4 h-4 mr-1" />
+                                Fshi
                               </Button>
                             </div>
                           </TableCell>
@@ -858,59 +982,164 @@ const SuperAdmin = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Admin password reset dialog */}
+      {/* Admin management dialog */}
       <Dialog open={!!pwTenant} onOpenChange={(o) => !o && setPwTenant(null)}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Ndrysho fjalëkalimin · {pwTenant?.name}</DialogTitle>
+            <DialogTitle>Adminat · {pwTenant?.name}</DialogTitle>
             <DialogDescription>
-              Zgjidh adminin dhe vendos një fjalëkalim të ri. Kredencialet duhet t'i dërgohen klientit.
+              Menaxho adminat: ndrysho emailin, fjalëkalimin, shto ose largo admin.
             </DialogDescription>
           </DialogHeader>
           {pwLoading ? (
             <div className="flex justify-center py-6">
               <Loader2 className="w-5 h-5 animate-spin text-primary" />
             </div>
-          ) : pwAdmins.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4">Asnjë admin i regjistruar për këtë autoshkollë.</p>
           ) : (
-            <div className="space-y-3">
-              <div>
-                <Label>Admini</Label>
-                <select
-                  value={pwSelected}
-                  onChange={(e) => setPwSelected(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                >
-                  <option value="">— Zgjidh —</option>
-                  {pwAdmins.map((a) => (
-                    <option key={a.id} value={a.id}>
-                      {a.email}{a.full_name ? ` (${a.full_name})` : ""}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <Label htmlFor="newpw">Fjalëkalimi i ri (min 6)</Label>
-                <Input
-                  id="newpw"
-                  type="text"
-                  value={pwValue}
-                  onChange={(e) => setPwValue(e.target.value)}
-                  placeholder="P.sh. 123456"
-                />
+            <div className="space-y-4">
+              {pwAdmins.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Asnjë admin i regjistruar.</p>
+              ) : (
+                <>
+                  <div>
+                    <Label>Zgjidh adminin</Label>
+                    <select
+                      value={pwSelected}
+                      onChange={(e) => onSelectAdmin(e.target.value)}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    >
+                      <option value="">— Zgjidh —</option>
+                      {pwAdmins.map((a) => (
+                        <option key={a.id} value={a.id}>
+                          {a.email}{a.full_name ? ` (${a.full_name})` : ""}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {pwSelected && (
+                    <div className="space-y-3 rounded-md border border-border p-3">
+                      <div>
+                        <Label htmlFor="newemail">Emaili</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            id="newemail"
+                            type="email"
+                            value={pwNewEmail}
+                            onChange={(e) => setPwNewEmail(e.target.value)}
+                          />
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={saveEmail}
+                            disabled={pwSaving || !pwNewEmail || pwNewEmail === (pwAdmins.find(a => a.id === pwSelected)?.email ?? "")}
+                          >
+                            <Mail className="w-4 h-4 mr-1" />
+                            Ndrysho
+                          </Button>
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="newpw">Fjalëkalimi i ri (min 6)</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            id="newpw"
+                            type="text"
+                            value={pwValue}
+                            onChange={(e) => setPwValue(e.target.value)}
+                            placeholder="P.sh. 123456"
+                          />
+                          <Button size="sm" onClick={savePw} disabled={pwSaving || pwValue.length < 6}>
+                            {pwSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <KeyRound className="w-4 h-4 mr-1" />}
+                            Ruaj
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="pt-1">
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => removeAdmin(pwSelected)}
+                          disabled={pwSaving}
+                        >
+                          <UserMinus className="w-4 h-4 mr-1" />
+                          Largo këtë admin
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              <div className="rounded-md border border-dashed border-border p-3">
+                {!pwAddOpen ? (
+                  <Button size="sm" variant="outline" onClick={() => setPwAddOpen(true)}>
+                    <UserPlus className="w-4 h-4 mr-1" />
+                    Shto admin të ri
+                  </Button>
+                ) : (
+                  <div className="space-y-2">
+                    <div>
+                      <Label>Emri i plotë (opsional)</Label>
+                      <Input value={pwAddName} onChange={(e) => setPwAddName(e.target.value)} />
+                    </div>
+                    <div>
+                      <Label>Email *</Label>
+                      <Input type="email" value={pwAddEmail} onChange={(e) => setPwAddEmail(e.target.value)} />
+                    </div>
+                    <div>
+                      <Label>Fjalëkalimi *</Label>
+                      <Input type="text" value={pwAddPassword} onChange={(e) => setPwAddPassword(e.target.value)} placeholder="min 6 karaktere" />
+                    </div>
+                    <div className="flex gap-2 justify-end">
+                      <Button size="sm" variant="ghost" onClick={() => setPwAddOpen(false)} disabled={pwSaving}>Anulo</Button>
+                      <Button size="sm" onClick={addAdmin} disabled={pwSaving}>
+                        {pwSaving && <Loader2 className="w-4 h-4 mr-1 animate-spin" />}
+                        Shto
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setPwTenant(null)} disabled={pwSaving}>Anulo</Button>
-            <Button onClick={savePw} disabled={pwSaving || !pwSelected || pwValue.length < 6}>
-              {pwSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Ruaj fjalëkalimin
+            <Button variant="outline" onClick={() => setPwTenant(null)} disabled={pwSaving}>Mbyll</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete tenant dialog */}
+      <Dialog open={!!delTenant} onOpenChange={(o) => !o && setDelTenant(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-destructive">Fshi autoshkollën</DialogTitle>
+            <DialogDescription>
+              Ky veprim është i pakthyeshëm dhe fshin të gjitha të dhënat (kandidatët, pagesat, mjetet, punëtorët, etj.) të autoshkollës <strong>{delTenant?.name}</strong>.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2">
+            <Label>Për të konfirmuar, shkruaj emrin e autoshkollës:</Label>
+            <Input
+              value={delConfirm}
+              onChange={(e) => setDelConfirm(e.target.value)}
+              placeholder={delTenant?.name ?? ""}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDelTenant(null)} disabled={delSaving}>Anulo</Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+              disabled={delSaving || !delTenant || delConfirm !== delTenant.name}
+            >
+              {delSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
+              Fshi përgjithmonë
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
 
       {/* Edit tenant dialog */}
       <Dialog open={!!editTenant} onOpenChange={(o) => !o && setEditTenant(null)}>
