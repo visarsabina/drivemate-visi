@@ -982,59 +982,164 @@ const SuperAdmin = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Admin password reset dialog */}
+      {/* Admin management dialog */}
       <Dialog open={!!pwTenant} onOpenChange={(o) => !o && setPwTenant(null)}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Ndrysho fjalëkalimin · {pwTenant?.name}</DialogTitle>
+            <DialogTitle>Adminat · {pwTenant?.name}</DialogTitle>
             <DialogDescription>
-              Zgjidh adminin dhe vendos një fjalëkalim të ri. Kredencialet duhet t'i dërgohen klientit.
+              Menaxho adminat: ndrysho emailin, fjalëkalimin, shto ose largo admin.
             </DialogDescription>
           </DialogHeader>
           {pwLoading ? (
             <div className="flex justify-center py-6">
               <Loader2 className="w-5 h-5 animate-spin text-primary" />
             </div>
-          ) : pwAdmins.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4">Asnjë admin i regjistruar për këtë autoshkollë.</p>
           ) : (
-            <div className="space-y-3">
-              <div>
-                <Label>Admini</Label>
-                <select
-                  value={pwSelected}
-                  onChange={(e) => setPwSelected(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                >
-                  <option value="">— Zgjidh —</option>
-                  {pwAdmins.map((a) => (
-                    <option key={a.id} value={a.id}>
-                      {a.email}{a.full_name ? ` (${a.full_name})` : ""}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <Label htmlFor="newpw">Fjalëkalimi i ri (min 6)</Label>
-                <Input
-                  id="newpw"
-                  type="text"
-                  value={pwValue}
-                  onChange={(e) => setPwValue(e.target.value)}
-                  placeholder="P.sh. 123456"
-                />
+            <div className="space-y-4">
+              {pwAdmins.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Asnjë admin i regjistruar.</p>
+              ) : (
+                <>
+                  <div>
+                    <Label>Zgjidh adminin</Label>
+                    <select
+                      value={pwSelected}
+                      onChange={(e) => onSelectAdmin(e.target.value)}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    >
+                      <option value="">— Zgjidh —</option>
+                      {pwAdmins.map((a) => (
+                        <option key={a.id} value={a.id}>
+                          {a.email}{a.full_name ? ` (${a.full_name})` : ""}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {pwSelected && (
+                    <div className="space-y-3 rounded-md border border-border p-3">
+                      <div>
+                        <Label htmlFor="newemail">Emaili</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            id="newemail"
+                            type="email"
+                            value={pwNewEmail}
+                            onChange={(e) => setPwNewEmail(e.target.value)}
+                          />
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={saveEmail}
+                            disabled={pwSaving || !pwNewEmail || pwNewEmail === (pwAdmins.find(a => a.id === pwSelected)?.email ?? "")}
+                          >
+                            <Mail className="w-4 h-4 mr-1" />
+                            Ndrysho
+                          </Button>
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="newpw">Fjalëkalimi i ri (min 6)</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            id="newpw"
+                            type="text"
+                            value={pwValue}
+                            onChange={(e) => setPwValue(e.target.value)}
+                            placeholder="P.sh. 123456"
+                          />
+                          <Button size="sm" onClick={savePw} disabled={pwSaving || pwValue.length < 6}>
+                            {pwSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <KeyRound className="w-4 h-4 mr-1" />}
+                            Ruaj
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="pt-1">
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => removeAdmin(pwSelected)}
+                          disabled={pwSaving}
+                        >
+                          <UserMinus className="w-4 h-4 mr-1" />
+                          Largo këtë admin
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              <div className="rounded-md border border-dashed border-border p-3">
+                {!pwAddOpen ? (
+                  <Button size="sm" variant="outline" onClick={() => setPwAddOpen(true)}>
+                    <UserPlus className="w-4 h-4 mr-1" />
+                    Shto admin të ri
+                  </Button>
+                ) : (
+                  <div className="space-y-2">
+                    <div>
+                      <Label>Emri i plotë (opsional)</Label>
+                      <Input value={pwAddName} onChange={(e) => setPwAddName(e.target.value)} />
+                    </div>
+                    <div>
+                      <Label>Email *</Label>
+                      <Input type="email" value={pwAddEmail} onChange={(e) => setPwAddEmail(e.target.value)} />
+                    </div>
+                    <div>
+                      <Label>Fjalëkalimi *</Label>
+                      <Input type="text" value={pwAddPassword} onChange={(e) => setPwAddPassword(e.target.value)} placeholder="min 6 karaktere" />
+                    </div>
+                    <div className="flex gap-2 justify-end">
+                      <Button size="sm" variant="ghost" onClick={() => setPwAddOpen(false)} disabled={pwSaving}>Anulo</Button>
+                      <Button size="sm" onClick={addAdmin} disabled={pwSaving}>
+                        {pwSaving && <Loader2 className="w-4 h-4 mr-1 animate-spin" />}
+                        Shto
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setPwTenant(null)} disabled={pwSaving}>Anulo</Button>
-            <Button onClick={savePw} disabled={pwSaving || !pwSelected || pwValue.length < 6}>
-              {pwSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Ruaj fjalëkalimin
+            <Button variant="outline" onClick={() => setPwTenant(null)} disabled={pwSaving}>Mbyll</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete tenant dialog */}
+      <Dialog open={!!delTenant} onOpenChange={(o) => !o && setDelTenant(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-destructive">Fshi autoshkollën</DialogTitle>
+            <DialogDescription>
+              Ky veprim është i pakthyeshëm dhe fshin të gjitha të dhënat (kandidatët, pagesat, mjetet, punëtorët, etj.) të autoshkollës <strong>{delTenant?.name}</strong>.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2">
+            <Label>Për të konfirmuar, shkruaj emrin e autoshkollës:</Label>
+            <Input
+              value={delConfirm}
+              onChange={(e) => setDelConfirm(e.target.value)}
+              placeholder={delTenant?.name ?? ""}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDelTenant(null)} disabled={delSaving}>Anulo</Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+              disabled={delSaving || !delTenant || delConfirm !== delTenant.name}
+            >
+              {delSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
+              Fshi përgjithmonë
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
 
       {/* Edit tenant dialog */}
       <Dialog open={!!editTenant} onOpenChange={(o) => !o && setEditTenant(null)}>
