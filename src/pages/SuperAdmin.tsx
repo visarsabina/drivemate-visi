@@ -178,6 +178,11 @@ const SuperAdmin = () => {
     setPwAdmins([]);
     setPwSelected("");
     setPwValue("");
+    setPwNewEmail("");
+    setPwAddOpen(false);
+    setPwAddEmail("");
+    setPwAddPassword("");
+    setPwAddName("");
     setPwLoading(true);
     const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
       body: { action: "list", tenant_id: t.id },
@@ -189,7 +194,17 @@ const SuperAdmin = () => {
     }
     const admins = (data as { admins: Array<{ id: string; email: string | null; full_name: string | null }> }).admins;
     setPwAdmins(admins);
-    if (admins.length === 1) setPwSelected(admins[0].id);
+    if (admins.length === 1) {
+      setPwSelected(admins[0].id);
+      setPwNewEmail(admins[0].email ?? "");
+    }
+  };
+
+  const onSelectAdmin = (id: string) => {
+    setPwSelected(id);
+    const a = pwAdmins.find((x) => x.id === id);
+    setPwNewEmail(a?.email ?? "");
+    setPwValue("");
   };
 
   const savePw = async () => {
@@ -208,7 +223,95 @@ const SuperAdmin = () => {
       return;
     }
     toast.success("Fjalëkalimi u përditësua");
-    setPwTenant(null);
+    setPwValue("");
+  };
+
+  const saveEmail = async () => {
+    if (!pwTenant || !pwSelected) return;
+    const current = pwAdmins.find((a) => a.id === pwSelected)?.email ?? "";
+    if (!pwNewEmail || pwNewEmail === current) return;
+    setPwSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: { action: "update_email", tenant_id: pwTenant.id, target_user_id: pwSelected, email: pwNewEmail },
+    });
+    setPwSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success("Emaili u përditësua");
+    // refresh list
+    openPw(pwTenant);
+  };
+
+  const addAdmin = async () => {
+    if (!pwTenant) return;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pwAddEmail)) {
+      toast.error("Email i pavlefshëm");
+      return;
+    }
+    if (pwAddPassword.length < 6) {
+      toast.error("Fjalëkalimi duhet ≥ 6 karaktere");
+      return;
+    }
+    setPwSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: {
+        action: "add_admin", tenant_id: pwTenant.id,
+        email: pwAddEmail, password: pwAddPassword, full_name: pwAddName,
+      },
+    });
+    setPwSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success("Admini u shtua");
+    setPwAddEmail(""); setPwAddPassword(""); setPwAddName(""); setPwAddOpen(false);
+    openPw(pwTenant);
+    load();
+  };
+
+  const removeAdmin = async (id: string) => {
+    if (!pwTenant) return;
+    if (!confirm("Largoje këtë admin nga autoshkolla?")) return;
+    setPwSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-reset-admin-password", {
+      body: { action: "remove_admin", tenant_id: pwTenant.id, target_user_id: id },
+    });
+    setPwSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success("Admini u largua");
+    openPw(pwTenant);
+    load();
+  };
+
+  const openDelete = (t: TenantRow) => {
+    setDelTenant(t);
+    setDelConfirm("");
+  };
+
+  const confirmDelete = async () => {
+    if (!delTenant) return;
+    if (delConfirm !== delTenant.name) {
+      toast.error("Shkruaj saktësisht emrin e autoshkollës për konfirmim");
+      return;
+    }
+    setDelSaving(true);
+    const { data, error } = await supabase.functions.invoke("super-admin-delete-tenant", {
+      body: { tenant_id: delTenant.id, confirm_name: delConfirm },
+    });
+    setDelSaving(false);
+    if (error || (data as { error?: string })?.error) {
+      toast.error("Gabim: " + (error?.message || (data as { error?: string })?.error));
+      return;
+    }
+    toast.success(`Autoshkolla "${delTenant.name}" u fshi`);
+    setDelTenant(null);
+    load();
   };
 
   const openSub = (t: TenantRow) => {
