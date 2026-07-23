@@ -24,18 +24,16 @@ Deno.serve(async (req) => {
       return json({ error: "Missing Authorization header" }, 401);
     }
 
-    // Validate caller
-    const userClient = createClient(SUPABASE_URL, ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: userData, error: userErr } = await userClient.auth.getUser();
+    // Service-role client for admin work
+    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
+
+    // Validate caller by decoding the bearer token directly (avoids session_id lookups)
+    const token = authHeader.replace(/^Bearer\s+/i, "");
+    const { data: userData, error: userErr } = await admin.auth.getUser(token);
     if (userErr || !userData.user) {
       return json({ error: "Unauthorized" }, 401);
     }
     const callerId = userData.user.id;
-
-    // Service-role client for admin work
-    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
     // Check caller is admin
     const { data: roleRow, error: roleErr } = await admin

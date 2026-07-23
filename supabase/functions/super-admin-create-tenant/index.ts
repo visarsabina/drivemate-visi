@@ -42,14 +42,14 @@ Deno.serve(async (req) => {
     const userClient = createClient(SUPABASE_URL, ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
     });
+    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
-    const { data: userData, error: userErr } = await userClient.auth.getUser();
+    const token = authHeader.replace(/^Bearer\s+/i, "");
+    const { data: userData, error: userErr } = await admin.auth.getUser(token);
     if (userErr || !userData.user) {
       console.error("getUser failed:", userErr);
       return json({ error: "Invalid token" }, 401);
     }
-
-    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
     // Check super_admin role using service role (bypasses RLS)
     const { data: roleRows, error: roleErr } = await admin
