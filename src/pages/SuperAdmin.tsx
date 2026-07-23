@@ -101,13 +101,23 @@ const SuperAdmin = () => {
   });
   const [savingSub, setSavingSub] = useState(false);
 
-  // Admin password reset state
+  // Admin management state (password/email/add/remove)
   const [pwTenant, setPwTenant] = useState<TenantRow | null>(null);
   const [pwLoading, setPwLoading] = useState(false);
   const [pwAdmins, setPwAdmins] = useState<Array<{ id: string; email: string | null; full_name: string | null }>>([]);
   const [pwSelected, setPwSelected] = useState<string>("");
   const [pwValue, setPwValue] = useState("");
   const [pwSaving, setPwSaving] = useState(false);
+  const [pwNewEmail, setPwNewEmail] = useState("");
+  const [pwAddOpen, setPwAddOpen] = useState(false);
+  const [pwAddEmail, setPwAddEmail] = useState("");
+  const [pwAddPassword, setPwAddPassword] = useState("");
+  const [pwAddName, setPwAddName] = useState("");
+
+  // Delete tenant state
+  const [delTenant, setDelTenant] = useState<TenantRow | null>(null);
+  const [delConfirm, setDelConfirm] = useState("");
+  const [delSaving, setDelSaving] = useState(false);
 
   // Edit tenant state
   const [editTenant, setEditTenant] = useState<TenantRow | null>(null);
