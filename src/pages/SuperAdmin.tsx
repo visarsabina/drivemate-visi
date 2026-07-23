@@ -543,7 +543,7 @@ const SuperAdmin = () => {
                           <Button variant="ghost" size="sm" onClick={() => openEdit(t)} className="h-8 px-2" title="Modifiko">
                             <Pencil className="w-4 h-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => openPw(t)} className="h-8 px-2" title="Ndrysho fjalëkalimin">
+                          <Button variant="ghost" size="sm" onClick={() => openPw(t)} className="h-8 px-2" title="Menaxho adminat">
                             <KeyRound className="w-4 h-4" />
                           </Button>
                           <Button variant="ghost" size="sm" onClick={() => openSub(t)} className="h-8 px-2">
@@ -551,6 +551,9 @@ const SuperAdmin = () => {
                           </Button>
                           <Button variant="ghost" size="sm" onClick={() => toggleActive(t)} className="h-8 px-2">
                             {t.is_active ? <PowerOff className="w-4 h-4" /> : <Power className="w-4 h-4" />}
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => openDelete(t)} className="h-8 px-2 text-destructive" title="Fshi">
+                            <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
                       </div>
