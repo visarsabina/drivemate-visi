@@ -691,6 +691,10 @@ const SuperAdmin = () => {
                                     </>
                                   )}
                               </Button>
+                              <Button variant="ghost" size="sm" onClick={() => openDelete(t)} className="text-destructive hover:text-destructive" title="Fshi autoshkollën">
+                                <Trash2 className="w-4 h-4 mr-1" />
+                                Fshi
+                              </Button>
                             </div>
                           </TableCell>
                         </TableRow>
