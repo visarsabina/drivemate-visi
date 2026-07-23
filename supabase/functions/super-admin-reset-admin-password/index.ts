@@ -27,8 +27,6 @@ Deno.serve(async (req) => {
     }
     const callerId = userData.user.id;
 
-    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
-
     // Caller must be super_admin
     const { data: r } = await admin
       .from("user_roles")
