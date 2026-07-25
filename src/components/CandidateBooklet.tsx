@@ -217,7 +217,7 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
 
     const printWindow = window.open("", "_blank");
     if (printWindow) {
-      printWindow.document.write(html + `<button onclick="window.close()" style="position:fixed;top:8px;left:8px;padding:8px 14px;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:sans-serif;font-size:13px;z-index:9999">← Kthehu</button><style>@media print{button{display:none!important}}</style><script>window.onafterprint=()=>window.close();<\/script>`);
+      printWindow.document.write(html + `<button onclick="_back()" style="position:fixed;top:8px;left:8px;padding:8px 14px;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:sans-serif;font-size:13px;z-index:9999">← Kthehu te formulari</button><style>@media print{button{display:none!important}}</style><script>function _back(){try{if(window.opener&&!window.opener.closed)window.opener.focus();}catch(e){}window.close();}window.onafterprint=_back;if(window.matchMedia){var _m=window.matchMedia('print');var _h=function(e){if(!e.matches)_back();};_m.addEventListener?_m.addEventListener('change',_h):_m.addListener&&_m.addListener(_h);}<\/script>`);
       printWindow.document.close();
       printWindow.focus();
       setTimeout(() => printWindow.print(), 500);
