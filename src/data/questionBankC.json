@@ -851,5 +851,420 @@
     ],
     "correctIndex": 0,
     "points": 2
+  },
+  {
+    "id": "c3_1",
+    "test": 3,
+    "text": "Shoferi i automjetit transportues të mallrave, i cili qarkullon nëpër korsinë e majtë të komunikacionit në rrugë jashtë vendbanimit (si në fotografinë):",
+    "options": [
+      "në mënyrë jo të rregullt bën parakalimin sipas sinjalizimit horizontal të rrugës.",
+      "gjatë parakalimit është i obliguar, që automjetin e vet ta mbajë në distancën e nevojshme nga automjeti që e parakalon.",
+      "nuk guxon të fillojë me parakalimin në këtë pjesë të rrugës."
+    ],
+    "correctIndex": 1,
+    "points": 4,
+    "image": "c3_1.png"
+  },
+  {
+    "id": "c3_2",
+    "test": 3,
+    "text": "„Raporti Evropian për fatkeqësi në komunikacion\" është formular i përgatitur nga Zyra Nacionale për sigurim në RM, i cili në rast fatkeqësie të komunikacionit me dëmtim të vogël material e plotësojnë:",
+    "options": [
+      "pjesëmarrësit në fatkeqësinë e komunikacionit",
+      "përfaqësuesit e kompanive të sigurimit",
+      "anëtarët e policisë së komunikacionit"
+    ],
+    "correctIndex": 0,
+    "points": 4
+  },
+  {
+    "id": "c3_4",
+    "test": 3,
+    "text": "Automjetet transportuese të mallrave dhe autobusët në pajisjen e tyre të obliguar duhet të kenë:",
+    "options": [
+      "një trekëndësh të sigurisë",
+      "dy trekëndësha të sigurisë",
+      "një tabelë kotrore për automjet të ndalur në rrugë"
+    ],
+    "correctIndex": 0,
+    "points": 4
+  },
+  {
+    "id": "c3_5",
+    "test": 3,
+    "text": "Në raste kur timoni lëvizë rëndë, gjegjësisht shoferi përdor forcë më të madhe gjatë sjelljes, shkaku i saj është:",
+    "options": [
+      "bllokimi i rrotave të boshtit të përparëm",
+      "mosfunksionimi i pajisjes servo",
+      "ankth i tepërt i nyjeve lidhëse të drejtimit"
+    ],
+    "correctIndex": 1,
+    "points": 4
+  },
+  {
+    "id": "c3_6",
+    "test": 3,
+    "text": "Çfarë kujdesi duhet të keni në këtë situatë?",
+    "options": [
+      "Duhet me shpejtësi të rritur të lëvizi pranë autobusit.",
+      "Duhet të ndalem prapa autobusit deri sa bëhet dalja dhe hyrja e udhëtarëve.",
+      "Në këmbësorë që dalin përpara dhe prapa autobusit dhe mundë të kalojnë rrugën."
+    ],
+    "correctIndex": 2,
+    "points": 4,
+    "image": "c3_6.png"
+  },
+  {
+    "id": "c3_7",
+    "test": 3,
+    "text": "Çka duhet të keni parasysh në këtë situatë?",
+    "options": [
+      "Duhet të largoj këmbën nga gazi (nuk i jap gaz).",
+      "Në afërsi të ngushtim të rrugës nga ana e majtë.",
+      "Duhet pasur kujdes, mjetet mund të vijnë nga rrugët dytësore."
+    ],
+    "correctIndex": 2,
+    "points": 4,
+    "image": "c3_7.png"
+  },
+  {
+    "id": "c3_8",
+    "test": 3,
+    "text": "Cila sjellje (veprim) është e drejtë?",
+    "options": [
+      "Largoj këmbën nga pedalja e gazit (nuk i jap gaz).",
+      "Duhet vazhdojë me njëjtën shpejtësi.",
+      "Nuk ndërrmarr asgjë, këmbësori duhet të largohet nga rruga."
+    ],
+    "correctIndex": 0,
+    "points": 4,
+    "image": "c3_8.png"
+  },
+  {
+    "id": "c3_9",
+    "test": 3,
+    "text": "Çka duhet të keni parasysh në këtë situatë?",
+    "options": [
+      "Të frenoj.",
+      "Mund të lëvizi me shpejtësi të njëjët.",
+      "Duhet të ndalem te shenja e trafikut."
+    ],
+    "correctIndex": 1,
+    "points": 4,
+    "image": "c3_9.png"
+  },
+  {
+    "id": "c3_10",
+    "test": 3,
+    "text": "A duhet të jepni përparësi kalimi këmbësorëve në këtë situatë?",
+    "options": [
+      "Jo, do të përdori shenjën akustike (burinë).",
+      "Po.",
+      "Po, vetëm nëse janë fëmijë."
+    ],
+    "correctIndex": 1,
+    "points": 4,
+    "image": "c3_10.png"
+  },
+  {
+    "id": "c3_11",
+    "test": 3,
+    "text": "Shenja e trafikut paralajmëron afërsinë e kthesës së rrezikshme majtas.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 3,
+    "image": "c3_11.png"
+  },
+  {
+    "id": "c3_12",
+    "test": 3,
+    "text": "Shenja e trafikut paralajmëron vendkalimin hekurudhor me mbrojtëse ose gjysëmbrojtëse.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 3,
+    "image": "c3_12.png"
+  },
+  {
+    "id": "c3_13",
+    "test": 3,
+    "text": "Shenja e trafikut paralajmëron rrugën e rrëshqitshme.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 3,
+    "image": "c3_13.png"
+  },
+  {
+    "id": "c3_14",
+    "test": 3,
+    "text": "Shenja e trafikut tregon mbarimin e të gjitha ndalesave.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 3,
+    "image": "c3_14.png"
+  },
+  {
+    "id": "c3_15",
+    "test": 3,
+    "text": "Shenja e trafikut tregon pjesën e rrugës ku ndalohet përdorimi i shenjave akustike.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 3,
+    "image": "c3_15.png"
+  },
+  {
+    "id": "c3_16",
+    "test": 3,
+    "text": "Shenja e trafikut tregon ndalim trafiku në një kah.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 3,
+    "image": "c3_16.png"
+  },
+  {
+    "id": "c3_17",
+    "test": 3,
+    "text": "Shenja e trafikut tregon ndalimin e lëvizjës për biçiklistë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 3,
+    "image": "c3_17.png"
+  },
+  {
+    "id": "c3_18",
+    "test": 3,
+    "text": "Shenja e trafikut tregonë përparësin e kalimit në raport me mjetet që vijnë nga kahu i kundërt.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 3,
+    "image": "c3_18.png"
+  },
+  {
+    "id": "c3_19",
+    "test": 3,
+    "text": "Shenja e trafikut tregon obligimin e ndezjes së dritave të shkurtëra kur mjeti merr pjesë në trafik.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 3,
+    "image": "c3_19.png"
+  },
+  {
+    "id": "c3_20",
+    "test": 3,
+    "text": "Çka duhet të keni parasysh në këtë situatë?",
+    "options": [
+      "Lëvizjën nëpër shiritin 3 dhe 4 e kam të lejuar.",
+      "Unë jam i obliguar nga shiriti 2 të kaloj në shiritin 1.",
+      "Unë mund ta shfrytëzoj cilin do shirit për lëvizje."
+    ],
+    "correctIndex": 1,
+    "points": 3,
+    "image": "c3_20.png"
+  },
+  {
+    "id": "c3_21",
+    "test": 3,
+    "text": "Çfarë do të thotë dora e ngritur lartë e policit?",
+    "options": [
+      "Pjesëmarrësit e trafikut duhet të lëvizin me kujdes të shtuar.",
+      "Urdhëresa e policit vlen vetëm për motoçikleta.",
+      "Ndalim kalimi për të gjithë pjesëmarrësit në trafik."
+    ],
+    "correctIndex": 2,
+    "points": 3,
+    "image": "c3_21.png"
+  },
+  {
+    "id": "c3_22",
+    "test": 3,
+    "text": "Çfarë paraqet vija e dyfishtë e kombinuar?",
+    "options": [
+      "Lejon tejkalimin nga dy anët.",
+      "Ndalim tejkalimi nga ana ku shtrihet vija gjatësore e plotë.",
+      "Vendin ku ngushtohet rruga."
+    ],
+    "correctIndex": 1,
+    "points": 3,
+    "image": "c3_22.png"
+  },
+  {
+    "id": "c3_23",
+    "test": 3,
+    "text": "Shoferit i lejohet ta ndalë veturën në vendkalim të këmbësorëve për arsye të bllokadës në trafik.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 4,
+    "image": "c3_23.png"
+  },
+  {
+    "id": "c3_24",
+    "test": 3,
+    "text": "Lejohet parkimi i veturës nëse i ka të ndezur të gjitha treguesit të drejtimit.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 4,
+    "image": "c3_24.png"
+  },
+  {
+    "id": "c3_25",
+    "test": 3,
+    "text": "Në këtë pjesë të rrugës nuk më lejohet të lëvizi me shpejtësi më të vogël se 20 km/h.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 4,
+    "image": "c3_25.png"
+  },
+  {
+    "id": "c3_26",
+    "test": 3,
+    "text": "Lejohet kthimi gjysëm rrethor në këtë situatë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 4,
+    "image": "c3_26.png"
+  },
+  {
+    "id": "c3_27",
+    "test": 3,
+    "text": "Lejohet tejkalimi i traktorit në këtë situatë edhe pse është vija e plotë gjatësore në rrugë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 4,
+    "image": "c3_27.png"
+  },
+  {
+    "id": "c3_28",
+    "test": 3,
+    "text": "Në këtë kryqëzim unë lëvizi pas këmbësorit.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 4,
+    "image": "c3_28.png"
+  },
+  {
+    "id": "c3_29",
+    "test": 3,
+    "text": "Në këtë kryqëzim unë lëviz i dyti.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 4,
+    "image": "c3_29.png"
+  },
+  {
+    "id": "c3_30",
+    "test": 3,
+    "text": "Në këtë kryqëzim biçiklisti lëviz i dyti.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 4,
+    "image": "c3_30.png"
+  },
+  {
+    "id": "c3_31",
+    "test": 3,
+    "text": "Në këtë kryqëzim vetura e kuqe lëvizë e fundit.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 4,
+    "image": "c3_31.png"
+  },
+  {
+    "id": "c3_32",
+    "test": 3,
+    "text": "Medikamentet (barërat) të cilat nuk lejohen të konsumohen para dhe gjatë ngasjes së mjetit ndikojnë pozitivish.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 2
+  },
+  {
+    "id": "c3_33",
+    "test": 3,
+    "text": "Llampa kontrolluese në foto sinjalizon se sistemi ABS nuk është funksional.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 2,
+    "image": "c3_33.png"
+  },
+  {
+    "id": "c3_34",
+    "test": 3,
+    "text": "Ndaj cilëve pjesëmarrës në trafik nuk vlenë parimi i besueshmërisë?",
+    "options": [
+      "Fëmijëve, personave të moshuar, personave me aftësi të kufizuara.",
+      "Shoferëve të autobusëve.",
+      "Shoferëve profesional."
+    ],
+    "correctIndex": 0,
+    "points": 2
+  },
+  {
+    "id": "c3_35",
+    "test": 3,
+    "text": "Përdorimi i veturës në relacione të shkurtëra ndikon në ruajtjen e ambienti dhe kursimin e karburantit (Eko- ngasjes).",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 2
   }
 ]
