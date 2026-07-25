@@ -1266,5 +1266,436 @@
     ],
     "correctIndex": 1,
     "points": 2
+  },
+  {
+    "id": "c4_1",
+    "text": "Në pjesët e jashtme të automjetit motorik (të treguar në fotografi) mund të barten vetëm persona:",
+    "options": [
+      "që punët në vendet e tyre të punës i kryejnë në atë automjet.",
+      "në relacione të shkurtra deri më 500 metra",
+      "në rrugëkalim me intensitet më të dobët të komunikacionit"
+    ],
+    "correctIndex": 0,
+    "image": "c4_1.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_2",
+    "text": "Masa më e madhe e lejuar është:",
+    "options": [
+      "automjeti me rezervuar të mbushur me karburant",
+      "ngarkesa që mund të bartet",
+      "automjeti bashkë me peshëmbajtjen e tij"
+    ],
+    "correctIndex": 2,
+    "image": "c4_2.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_3",
+    "text": "Natën dhe ditën në raste të dukshmërisë së zvogëluar, pika më e nxjerrur e ngarkesës që bartet me automjetin ngarkues dhe e tejkalon për më shumë se një metër pikën më të largët të pjesës së prapme të automjetit, shënohet me:",
+    "options": [
+      "dritë dhe materie reflektuese me ngjyrë të kuqe",
+      "dritë dhe materie reflektuese me ngjyrë të verdhë",
+      "pëlhurë të kuqe"
+    ],
+    "correctIndex": 0,
+    "image": "c4_3.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_4",
+    "text": "Kontrollimin dhe kalibrimin e tahografëve e bën:",
+    "options": [
+      "Organi administrativ në Fakultetin e Inxhinierisë Mekanike",
+      "Person juridik (puntori) i autorizuar nga Ministria e Infrastrukturës",
+      "Ministria e Punëve të Brendshme"
+    ],
+    "correctIndex": 1,
+    "image": "c4_4.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_5",
+    "text": "Gjatë përdorimit të frenit punues dhe ndihmës të automjeti motorik dhe mjetit bashkëngjitës, dallimi i forcës së frenimit mbi rrotat e të të njëjtit bosht, nuk guxon të jenë më e madhe se:",
+    "options": [
+      "10%",
+      "20%",
+      "30%"
+    ],
+    "correctIndex": 1,
+    "image": "c4_5.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_6",
+    "text": "Çka duhet të keni parasysh në këtë situatë?",
+    "options": [
+      "Në zvoglim të distancës anësore të sigurisë.",
+      "Do të jem i gatshëm të reagoj në rast nevoje.",
+      "Do të përdori shenjën akustike (borinë) që këmbësorët të largohen nga rruga."
+    ],
+    "correctIndex": 1,
+    "image": "c4_6.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_7",
+    "text": "Si do të veproni në këtë situatë?",
+    "options": [
+      "Do të ndalem prapa autobusit dhe të pres derisa të niset nga vendndalja e tij.",
+      "Duhet të vazhdoj lëvizjen me shpejtësi të rritur, pasi që autobusi është i ndaluar në vendaljen për autobusë.",
+      "Do të vazhdoj lëvizjen me kujdes të shtuar."
+    ],
+    "correctIndex": 2,
+    "image": "c4_7.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_8",
+    "text": "Çka duhet të keni parasysh në këte situatë?",
+    "options": [
+      "Në respektim të semaforit.",
+      "Duhet të ndalem para kryqëzimit.",
+      "Më lejohet ndërrimi i shiritave të trafikut."
+    ],
+    "correctIndex": 0,
+    "image": "c4_8.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_9",
+    "text": "Shoferi i veturës hyn ne trafik duke lëvizur prapa, si e vlersoni këte situatë?",
+    "options": [
+      "Drejt, nëse nuk i pengon pjesëmarrësit tjerë në trafik.",
+      "Drejt, nëse i ndez të gjithë treguesit e drejtimit.",
+      "Jo, drejt."
+    ],
+    "correctIndex": 2,
+    "image": "c4_9.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_10",
+    "text": "A duhet ti jepni përparësi kalimi autobusit i cili hynë rrugë qarkulluese nga vendndalja, jashte vendbanimit?",
+    "options": [
+      "Jo.",
+      "Po.",
+      "Po, vetëm natën."
+    ],
+    "correctIndex": 1,
+    "image": "c4_10.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_11",
+    "text": "Shenja e trafikut paralajmëron kthesë të njëpasnjëshme e para në të djathtë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c4_11.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_12",
+    "text": "Shenja e trafikut paralajmëron pjesën e rrugës ku ndalohet lëvizja e këmbësorëve.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_12.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_13",
+    "text": "Shenja e trafikut paralajmëron rrugë tramvaji.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_13.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_14",
+    "text": "Shenja e trafikut tregon ndalim trafiku në një kah.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c4_14.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_15",
+    "text": "Shenja e trafikut tregon përparësi kalimi për mjetet nga kahu i kundërt.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c4_15.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_16",
+    "text": "Shenja e trafikut tregon rrugën për lëvizjën e veturave.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_16.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_17",
+    "text": "Shenja e trafikut tregon ndalimin e lëvizjës së fëmijëve në rrugë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_17.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_18",
+    "text": "Shenja e trafikut tregon drejtimin e obliguar për Mitrovicë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_18.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_19",
+    "text": "Shenja e trafikut tregon vendkalimin e shënuar për biçiklistë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c4_19.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_20",
+    "text": "Çfarë domethënie ka drita e verdhë e pandërprerë në semafor?",
+    "options": [
+      "Ndalim kalimi, përveç mjeteve të cilat nuk mund të ndalen në mënyrë të sigurt para semaforit.",
+      "Kalim i lirë.",
+      "Duhet të jenë të ndezur të gjithë treguesit e drejtimit në automjet."
+    ],
+    "correctIndex": 0,
+    "image": "c4_20.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_21",
+    "text": "Si do të veproni kur ju tejkalon, përballëkalon mjeti si në foto?",
+    "options": [
+      "Duhet të vazhdoj lëvizjen me shpejtësi të rritur që mos të pengoj automjetin.",
+      "Duhet ti ndezi të gjithë treguesit e drejtimit.",
+      "Do të skajohem në skajin e rrugës dhe do të ndalem."
+    ],
+    "correctIndex": 2,
+    "image": "c4_21.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_22",
+    "text": "Çfarë paraqet vija e dyfishtë e plotë?",
+    "options": [
+      "Përfundimin e rrugës publike.",
+      "Ndalon kalimin e mjeteve mbi vija.",
+      "Lejohet tejkalimi mbi vija."
+    ],
+    "correctIndex": 1,
+    "image": "c4_22.png",
+    "points": 3,
+    "test": 4
+  },
+  {
+    "id": "c4_23",
+    "text": "Rruga ka dy shirita të trafikut në një kah të lëvizjës, lejohet tejkalimi në këtë situatë.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c4_23.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_24",
+    "text": "Lejohet tejkalimi i dy mjeteve njëkohësisht.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c4_24.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_25",
+    "text": "Në këtë situatë nuk lejohet tejkalimi i qerres.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_25.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_26",
+    "text": "Shenja e trafikut \"Kryqi i Andreut\" tregon kalimin e rrugës përtej hekurudhës me dy a më shumë palë binar.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_26.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_27",
+    "text": "Këmbësori mund ta kaloj rrugën jashtë vendbanimit, nëse vendkalimi i tyre është më larg se 100 metra.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c4_27.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_28",
+    "text": "Në kryqëzim vetura e kaltër lëviz para biçiklistit.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_28.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_29",
+    "text": "Në këtë kryqëzim vetura është rreshtuar drejtë për kthim majtas.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_29.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_30",
+    "text": "Në këtë kryqëzim, duhet të ndalem para shenjës STOP, pastaj do të vazhdoj lëvizjen me kujdes të shtuar.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_30.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_31",
+    "text": "Në këtë kryqëzim radhitja e kalimit duhet të jetë: këmbësori, unë, vetura e kaltër.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "image": "c4_31.png",
+    "points": 4,
+    "test": 4
+  },
+  {
+    "id": "c4_32",
+    "text": "Shoferi nën ndikim të alkoolit i vlerëson drejtë situatat në trafik.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "points": 2,
+    "test": 4
+  },
+  {
+    "id": "c4_33",
+    "text": "Llampa kontrolluese në foto sinjalizon (tregon) se temperatura e motorit nuk e ka kaluar kufirin e lejuar - sistemi i ftohjes defekt.",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 1,
+    "image": "c4_33.png",
+    "points": 2,
+    "test": 4
+  },
+  {
+    "id": "c4_34",
+    "text": "Çka konsiderohet sjellje e gabuar në trafikun rrugor?",
+    "options": [
+      "Çdo sjellje e gabuar e cila është në kundërshtim me rregullat e trafikut dhe sigurisë.",
+      "Vetëm sjelljet të cilat shkaktojnë aksident trafiku.",
+      "Vetëm nëse shoferi aplikon ngasjen defanzive."
+    ],
+    "correctIndex": 0,
+    "points": 2,
+    "test": 4
+  },
+  {
+    "id": "c4_35",
+    "text": "Shmangia e ngasjes gjatë trafikut të dendur ndikon në ruajtjen e ambienti dhe kursimin e karburantit (Eko-ngasjes).",
+    "options": [
+      "E saktë.",
+      "E pasaktë."
+    ],
+    "correctIndex": 0,
+    "points": 2,
+    "test": 4
   }
 ]
