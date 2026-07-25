@@ -23,6 +23,28 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
   const candidate = candidates.find((c) => c.id === selectedId);
 
+  // Autosave & restore per-candidate form data
+  useEffect(() => {
+    if (!candidate) return;
+    try {
+      const raw = localStorage.getItem(`fletparaqitja-${candidate.id}`);
+      const d = raw ? JSON.parse(raw) : {};
+      setEmriBabait(d.emriBabait || "");
+      setVendlindja(d.vendlindja || "");
+      setKomuna(d.komuna || "");
+    } catch {
+      setEmriBabait(""); setVendlindja(""); setKomuna("");
+    }
+  }, [candidate?.id]);
+
+  useEffect(() => {
+    if (!candidate) return;
+    localStorage.setItem(
+      `fletparaqitja-${candidate.id}`,
+      JSON.stringify({ emriBabait, vendlindja, komuna })
+    );
+  }, [candidate?.id, emriBabait, vendlindja, komuna]);
+
   // Sync from candidate data
   const effectiveEmriBabait = emriBabait || candidate?.emriBabait || "";
   const effectiveVendlindja = vendlindja || candidate?.vendlindja || "";
