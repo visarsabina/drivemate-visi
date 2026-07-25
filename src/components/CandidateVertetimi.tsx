@@ -67,18 +67,51 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   const candidate = candidates.find((c) => c.id === selectedId);
   const licenseNumber = candidate?.kategoria ? licenses[candidate.kategoria] || "" : "";
 
+  // Restore per-candidate saved form values
   useEffect(() => {
-    if (candidate) {
+    if (!candidate) return;
+    let restored = false;
+    try {
+      const raw = localStorage.getItem(`vertetimi-${candidate.id}`);
+      if (raw) {
+        const d = JSON.parse(raw);
+        setVendlindja(d.vendlindja || "");
+        setKomuna(d.komuna || "");
+        setVendbanimi(d.vendbanimi || "");
+        setDataFillimitTeori(d.dataFillimitTeori || "");
+        setDataMbarimitTeori(d.dataMbarimitTeori || "");
+        setDataFillimitPraktike(d.dataFillimitPraktike || "");
+        setDataMbarimitPraktike(d.dataMbarimitPraktike || "");
+        if (d.numriOreveTeori) setNumriOreveTeori(d.numriOreveTeori);
+        if (d.numriOrevePraktike) setNumriOrevePraktike(d.numriOrevePraktike);
+        if (d.ligjruesi) setLigjruesi(d.ligjruesi);
+        if (d.instruktori) setInstruktori(d.instruktori);
+        if (d.dataLeshimit) setDataLeshimit(d.dataLeshimit);
+        restored = true;
+      }
+    } catch {}
+    if (!restored) {
+      setVendlindja(""); setKomuna(""); setVendbanimi("");
+      setDataFillimitTeori(""); setDataMbarimitTeori("");
+      setDataFillimitPraktike(""); setDataMbarimitPraktike("");
       const cat = candidate.kategoria?.toUpperCase();
       if (cat === "C" || cat === "CE" || cat === "D") {
-        setNumriOreveTeori("15");
-        setNumriOrevePraktike("15");
+        setNumriOreveTeori("15"); setNumriOrevePraktike("15");
       } else {
-        setNumriOreveTeori("20");
-        setNumriOrevePraktike("20");
+        setNumriOreveTeori("20"); setNumriOrevePraktike("20");
       }
     }
-  }, [candidate]);
+  }, [candidate?.id]);
+
+  useEffect(() => {
+    if (!candidate) return;
+    localStorage.setItem(`vertetimi-${candidate.id}`, JSON.stringify({
+      vendlindja, komuna, vendbanimi,
+      numriOreveTeori, dataFillimitTeori, dataMbarimitTeori,
+      numriOrevePraktike, dataFillimitPraktike, dataMbarimitPraktike,
+      ligjruesi, instruktori, dataLeshimit,
+    }));
+  }, [candidate?.id, vendlindja, komuna, vendbanimi, numriOreveTeori, dataFillimitTeori, dataMbarimitTeori, numriOrevePraktike, dataFillimitPraktike, dataMbarimitPraktike, ligjruesi, instruktori, dataLeshimit]);
 
   const formatDate = (d: string) => {
     if (!d) return "___.___.______";
