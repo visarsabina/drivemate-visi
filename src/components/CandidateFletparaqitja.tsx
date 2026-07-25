@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Candidate } from "@/types/candidate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,28 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   const [komuna, setKomuna] = useState("");
 
   const candidate = candidates.find((c) => c.id === selectedId);
+
+  // Autosave & restore per-candidate form data
+  useEffect(() => {
+    if (!candidate) return;
+    try {
+      const raw = localStorage.getItem(`fletparaqitja-${candidate.id}`);
+      const d = raw ? JSON.parse(raw) : {};
+      setEmriBabait(d.emriBabait || "");
+      setVendlindja(d.vendlindja || "");
+      setKomuna(d.komuna || "");
+    } catch {
+      setEmriBabait(""); setVendlindja(""); setKomuna("");
+    }
+  }, [candidate?.id]);
+
+  useEffect(() => {
+    if (!candidate) return;
+    localStorage.setItem(
+      `fletparaqitja-${candidate.id}`,
+      JSON.stringify({ emriBabait, vendlindja, komuna })
+    );
+  }, [candidate?.id, emriBabait, vendlindja, komuna]);
 
   // Sync from candidate data
   const effectiveEmriBabait = emriBabait || candidate?.emriBabait || "";
@@ -203,7 +225,9 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title> </title>
   </div>
 </div>
 
-<script>setTimeout(()=>window.print(),400);<\/script>
+<script>window.onafterprint=()=>window.close();setTimeout(()=>window.print(),400);<\/script>
+<button onclick="window.close()" style="position:fixed;top:8px;left:8px;padding:8px 14px;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:sans-serif;font-size:13px;z-index:9999">← Kthehu</button>
+<style>@media print{button{display:none!important}}</style>
 </body></html>`);
     printWindow.document.close();
   };

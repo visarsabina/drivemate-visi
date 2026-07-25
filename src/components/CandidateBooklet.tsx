@@ -217,7 +217,7 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
 
     const printWindow = window.open("", "_blank");
     if (printWindow) {
-      printWindow.document.write(html);
+      printWindow.document.write(html + `<button onclick="window.close()" style="position:fixed;top:8px;left:8px;padding:8px 14px;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:sans-serif;font-size:13px;z-index:9999">← Kthehu</button><style>@media print{button{display:none!important}}</style><script>window.onafterprint=()=>window.close();<\/script>`);
       printWindow.document.close();
       printWindow.focus();
       setTimeout(() => printWindow.print(), 500);
