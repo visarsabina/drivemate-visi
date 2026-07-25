@@ -216,11 +216,13 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
 
 </div></div>
 
-<script>window.onafterprint=()=>window.close();setTimeout(()=>window.print(),300);<\/script>
 <button onclick="window.close()" style="position:fixed;top:8px;left:8px;padding:8px 14px;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:sans-serif;font-size:13px;z-index:9999">← Kthehu</button>
 <style>@media print{button{display:none!important}}</style>
+<script>window.onafterprint=()=>window.close();<\/script>
 </body></html>`);
     printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => printWindow.print(), 500);
   };
 
   return (
