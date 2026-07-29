@@ -333,7 +333,7 @@ const SocialPosts = () => {
             </Button>
             <Button variant="outline" onClick={generateImage} disabled={imageLoading}>
               {imageLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ImageIcon className="mr-2 h-4 w-4" />}
-              Gjenero foton
+              {imagePath ? "Kombino me AI" : "Gjenero foton"}
             </Button>
             <Button
               variant="outline"
