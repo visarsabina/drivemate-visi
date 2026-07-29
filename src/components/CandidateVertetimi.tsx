@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
+import MissingFieldsAlert from "@/components/MissingFieldsAlert";
 
 interface CandidateVertetimiProps {
   candidates: Candidate[];
@@ -45,6 +46,9 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   const [instruktori, setInstruktori] = useState(instruktoret[0]);
   const [dataLeshimit, setDataLeshimit] = useState(new Date().toISOString().split("T")[0]);
   const [licenses, setLicenses] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const errCls = (key: string) => (errors[key] ? "border-2 border-destructive focus-visible:ring-destructive" : "");
+
 
   const { tenantId } = useTenant();
 
@@ -119,12 +123,31 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   };
 
+  const validate = () => {
+    const miss: Record<string, string> = {};
+    if (!vendlindja.trim()) miss.vendlindja = "Vendi i Lindjes";
+    if (!komuna.trim()) miss.komuna = "Komuna";
+    if (!vendbanimi.trim()) miss.vendbanimi = "Vendbanimi";
+    if (!numriOreveTeori) miss.numriOreveTeori = "Numri i orëve (teori)";
+    if (!dataFillimitTeori) miss.dataFillimitTeori = "Data e fillimit (teori)";
+    if (!dataMbarimitTeori) miss.dataMbarimitTeori = "Data e mbarimit (teori)";
+    if (!numriOrevePraktike) miss.numriOrevePraktike = "Numri i orëve (praktikë)";
+    if (!dataFillimitPraktike) miss.dataFillimitPraktike = "Data e fillimit (praktikë)";
+    if (!dataMbarimitPraktike) miss.dataMbarimitPraktike = "Data e mbarimit (praktikë)";
+    if (!dataLeshimit) miss.dataLeshimit = "Data e Lëshimit";
+    return miss;
+  };
+
   const handlePrint = () => {
     if (!candidate) return;
+    const miss = validate();
+    setErrors(miss);
+    if (Object.keys(miss).length) return;
     const safe = escapeHtmlObject(candidate);
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
     onPrinted?.(candidate.id);
+
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${safe.emri} ${safe.mbiemri}</title>
 <style>
@@ -290,15 +313,15 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label>Vendi i Lindjes</Label>
-                  <Input value={vendlindja} onChange={(e) => setVendlindja(e.target.value)} placeholder="Vendi i lindjes" />
+                  <Input className={errCls("vendlindja")} value={vendlindja} onChange={(e) => setVendlindja(e.target.value)} placeholder="Vendi i lindjes" />
                 </div>
                 <div className="space-y-2">
                   <Label>Komuna</Label>
-                  <Input value={komuna} onChange={(e) => setKomuna(e.target.value)} placeholder="Komuna" />
+                  <Input className={errCls("komuna")} value={komuna} onChange={(e) => setKomuna(e.target.value)} placeholder="Komuna" />
                 </div>
                 <div className="space-y-2">
                   <Label>Vendbanimi</Label>
-                  <Input value={vendbanimi} onChange={(e) => setVendbanimi(e.target.value)} placeholder="Vendbanimi" />
+                  <Input className={errCls("vendbanimi")} value={vendbanimi} onChange={(e) => setVendbanimi(e.target.value)} placeholder="Vendbanimi" />
                 </div>
               </div>
 
@@ -307,15 +330,15 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label>Numri i Orëve</Label>
-                    <Input type="number" value={numriOreveTeori} onChange={(e) => setNumriOreveTeori(e.target.value)} />
+                    <Input className={errCls("numriOreveTeori")} type="number" value={numriOreveTeori} onChange={(e) => setNumriOreveTeori(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label>Data e Fillimit</Label>
-                    <Input type="date" value={dataFillimitTeori} onChange={(e) => setDataFillimitTeori(e.target.value)} />
+                    <Input className={errCls("dataFillimitTeori")} type="date" value={dataFillimitTeori} onChange={(e) => setDataFillimitTeori(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label>Data e Mbarimit</Label>
-                    <Input type="date" value={dataMbarimitTeori} onChange={(e) => setDataMbarimitTeori(e.target.value)} />
+                    <Input className={errCls("dataMbarimitTeori")} type="date" value={dataMbarimitTeori} onChange={(e) => setDataMbarimitTeori(e.target.value)} />
                   </div>
                 </div>
                 <div className="mt-3 space-y-2">
@@ -338,15 +361,15 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label>Numri i Orëve</Label>
-                    <Input type="number" value={numriOrevePraktike} onChange={(e) => setNumriOrevePraktike(e.target.value)} />
+                    <Input className={errCls("numriOrevePraktike")} type="number" value={numriOrevePraktike} onChange={(e) => setNumriOrevePraktike(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label>Data e Fillimit</Label>
-                    <Input type="date" value={dataFillimitPraktike} onChange={(e) => setDataFillimitPraktike(e.target.value)} />
+                    <Input className={errCls("dataFillimitPraktike")} type="date" value={dataFillimitPraktike} onChange={(e) => setDataFillimitPraktike(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label>Data e Mbarimit</Label>
-                    <Input type="date" value={dataMbarimitPraktike} onChange={(e) => setDataMbarimitPraktike(e.target.value)} />
+                    <Input className={errCls("dataMbarimitPraktike")} type="date" value={dataMbarimitPraktike} onChange={(e) => setDataMbarimitPraktike(e.target.value)} />
                   </div>
                 </div>
                 <div className="mt-3 space-y-2">
@@ -367,9 +390,11 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
               <div className="border-t border-border pt-4">
                 <div className="space-y-2 max-w-xs">
                   <Label>Data e Lëshimit</Label>
-                  <Input type="date" value={dataLeshimit} onChange={(e) => setDataLeshimit(e.target.value)} />
+                  <Input className={errCls("dataLeshimit")} type="date" value={dataLeshimit} onChange={(e) => setDataLeshimit(e.target.value)} />
                 </div>
               </div>
+
+              <MissingFieldsAlert fields={Object.values(errors)} />
 
               <Button onClick={handlePrint} className="gap-2 mt-4">
                 <Printer className="w-4 h-4" /> Printo Vërtetimin

@@ -6,6 +6,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
+import MissingFieldsAlert from "@/components/MissingFieldsAlert";
 
 interface CandidateBookletProps {
   candidates: Candidate[];
@@ -15,10 +16,21 @@ interface CandidateBookletProps {
 const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) => {
   const [selectedId, setSelectedId] = useState(preselectedId || "");
   const [open, setOpen] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const rowCls = (key: string) => cn("text-sm rounded px-1", errors[key] && "border-2 border-destructive");
   const candidate = candidates.find((c) => c.id === selectedId);
 
   const handlePrint = () => {
     if (!candidate) return;
+    const miss: Record<string, string> = {};
+    if (!(candidate.emri || "").trim() || !(candidate.mbiemri || "").trim()) miss.emri = "Emri dhe mbiemri";
+    if (!(candidate.numriPersonal || "").trim()) miss.numriPersonal = "Nr. Personal";
+    if (!(candidate.kategoria || "").trim()) miss.kategoria = "Kategoria";
+    if (!String(candidate.numriRegjistrimit || "").trim()) miss.numriRegjistrimit = "Nr. Regjistrimit";
+    if (!(candidate.vendi || "").trim()) miss.vendi = "Vendi";
+    if (!(candidate.certifikataShendetsore || "").trim()) miss.certifikataShendetsore = "Çertifikata shëndetësore";
+    setErrors(miss);
+    if (Object.keys(miss).length) return;
     const safe = escapeHtmlObject(candidate);
 
     const formatDate = (d: string) => {
@@ -278,14 +290,16 @@ const CandidateBooklet = ({ candidates, preselectedId }: CandidateBookletProps) 
 
           {candidate && (
             <div className="space-y-2 p-4 rounded-lg bg-muted/50">
-              <p className="text-sm"><span className="text-muted-foreground">Emri:</span> <strong>{candidate.emri} {candidate.mbiemri}</strong></p>
-              <p className="text-sm"><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal}</strong></p>
-              <p className="text-sm"><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria}</strong></p>
-              <p className="text-sm"><span className="text-muted-foreground">Nr. Regjistrimit:</span> <strong>{candidate.numriRegjistrimit}</strong></p>
-              <p className="text-sm"><span className="text-muted-foreground">Vendi:</span> <strong>{candidate.vendi}</strong></p>
-              <p className="text-sm"><span className="text-muted-foreground">Çertifikata:</span> <strong>{candidate.certifikataShendetsore}</strong></p>
+              <p className={rowCls("emri")}><span className="text-muted-foreground">Emri:</span> <strong>{candidate.emri} {candidate.mbiemri}</strong></p>
+              <p className={rowCls("numriPersonal")}><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal || "—"}</strong></p>
+              <p className={rowCls("kategoria")}><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria || "—"}</strong></p>
+              <p className={rowCls("numriRegjistrimit")}><span className="text-muted-foreground">Nr. Regjistrimit:</span> <strong>{candidate.numriRegjistrimit || "—"}</strong></p>
+              <p className={rowCls("vendi")}><span className="text-muted-foreground">Vendi:</span> <strong>{candidate.vendi || "—"}</strong></p>
+              <p className={rowCls("certifikataShendetsore")}><span className="text-muted-foreground">Çertifikata:</span> <strong>{candidate.certifikataShendetsore || "—"}</strong></p>
             </div>
           )}
+
+          <MissingFieldsAlert fields={Object.values(errors)} />
 
           <Button onClick={handlePrint} disabled={!candidate} className="w-full sm:w-auto">
             <Printer className="w-4 h-4 mr-2" />
