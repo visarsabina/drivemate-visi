@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  Sparkles, Loader2, Copy, Check, Image as ImageIcon, Save, Send, Trash2, RefreshCw, Upload,
+  Sparkles, Loader2, Copy, Check, Image as ImageIcon, Save, Send, Trash2, RefreshCw, Upload, Download,
 } from "lucide-react";
 
 const PLATFORMS = ["Facebook", "Instagram", "TikTok", "LinkedIn"];
@@ -243,6 +243,24 @@ const SocialPosts = () => {
     setBusyId(null);
   };
 
+  const downloadImage = async (url: string, name: string) => {
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const objUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = objUrl;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(objUrl);
+      toast.success("Fotoja u ruajt!");
+    } catch {
+      toast.error("Ruajtja e fotos dështoi.");
+    }
+  };
+
   const copy = async (text: string, i: number) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -364,13 +382,23 @@ const SocialPosts = () => {
                 alt="Foto e gjeneruar për postimin në rrjete sociale"
                 className="max-h-64 w-full rounded-lg border border-border object-contain"
               />
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => { setImagePath(null); setImagePreview(null); }}
-              >
-                Hiq foton
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => downloadImage(imagePreview, `postim-${Date.now()}.png`)}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Ruaj foton
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => { setImagePath(null); setImagePreview(null); }}
+                >
+                  Hiq foton
+                </Button>
+              </div>
             </div>
           )}
         </Card>
