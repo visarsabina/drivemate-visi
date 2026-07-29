@@ -45,6 +45,9 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
   const [instruktori, setInstruktori] = useState(instruktoret[0]);
   const [dataLeshimit, setDataLeshimit] = useState(new Date().toISOString().split("T")[0]);
   const [licenses, setLicenses] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const errCls = (key: string) => (errors[key] ? "border-2 border-destructive focus-visible:ring-destructive" : "");
+
 
   const { tenantId } = useTenant();
 
