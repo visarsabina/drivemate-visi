@@ -481,6 +481,63 @@ export type Database = {
           },
         ]
       }
+      social_posts: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string | null
+          external_post_id: string | null
+          id: string
+          image_url: string | null
+          length: string | null
+          platform: string
+          publish_error: string | null
+          published_at: string | null
+          scheduled_at: string | null
+          status: string
+          tenant_id: string
+          tone: string | null
+          topic: string | null
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by?: string | null
+          external_post_id?: string | null
+          id?: string
+          image_url?: string | null
+          length?: string | null
+          platform?: string
+          publish_error?: string | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string
+          tenant_id: string
+          tone?: string | null
+          topic?: string | null
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          external_post_id?: string | null
+          id?: string
+          image_url?: string | null
+          length?: string | null
+          platform?: string
+          publish_error?: string | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string
+          tenant_id?: string
+          tone?: string | null
+          topic?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       staff: {
         Row: {
           categories: string | null

@@ -122,7 +122,7 @@ const Index = () => {
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
     assistant: "Asistenti AI",
-    social: "Postime Sociale AI",
+    social: "Marketing AI",
     instructor: "Kandidatët e Mi",
     candidates: "Lista e Kandidatëve",
     "candidate-detail": "Paneli i Kandidatit",
