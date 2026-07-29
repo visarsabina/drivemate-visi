@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "@/hooks/useTenant";
+import MissingFieldsAlert from "@/components/MissingFieldsAlert";
 
 interface CandidateVertetimiProps {
   candidates: Candidate[];
@@ -312,15 +313,15 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label>Vendi i Lindjes</Label>
-                  <Input value={vendlindja} onChange={(e) => setVendlindja(e.target.value)} placeholder="Vendi i lindjes" />
+                  <Input className={errCls("vendlindja")} value={vendlindja} onChange={(e) => setVendlindja(e.target.value)} placeholder="Vendi i lindjes" />
                 </div>
                 <div className="space-y-2">
                   <Label>Komuna</Label>
-                  <Input value={komuna} onChange={(e) => setKomuna(e.target.value)} placeholder="Komuna" />
+                  <Input className={errCls("komuna")} value={komuna} onChange={(e) => setKomuna(e.target.value)} placeholder="Komuna" />
                 </div>
                 <div className="space-y-2">
                   <Label>Vendbanimi</Label>
-                  <Input value={vendbanimi} onChange={(e) => setVendbanimi(e.target.value)} placeholder="Vendbanimi" />
+                  <Input className={errCls("vendbanimi")} value={vendbanimi} onChange={(e) => setVendbanimi(e.target.value)} placeholder="Vendbanimi" />
                 </div>
               </div>
 
@@ -329,15 +330,15 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label>Numri i Orëve</Label>
-                    <Input type="number" value={numriOreveTeori} onChange={(e) => setNumriOreveTeori(e.target.value)} />
+                    <Input className={errCls("numriOreveTeori")} type="number" value={numriOreveTeori} onChange={(e) => setNumriOreveTeori(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label>Data e Fillimit</Label>
-                    <Input type="date" value={dataFillimitTeori} onChange={(e) => setDataFillimitTeori(e.target.value)} />
+                    <Input className={errCls("dataFillimitTeori")} type="date" value={dataFillimitTeori} onChange={(e) => setDataFillimitTeori(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label>Data e Mbarimit</Label>
-                    <Input type="date" value={dataMbarimitTeori} onChange={(e) => setDataMbarimitTeori(e.target.value)} />
+                    <Input className={errCls("dataMbarimitTeori")} type="date" value={dataMbarimitTeori} onChange={(e) => setDataMbarimitTeori(e.target.value)} />
                   </div>
                 </div>
                 <div className="mt-3 space-y-2">
@@ -360,15 +361,15 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label>Numri i Orëve</Label>
-                    <Input type="number" value={numriOrevePraktike} onChange={(e) => setNumriOrevePraktike(e.target.value)} />
+                    <Input className={errCls("numriOrevePraktike")} type="number" value={numriOrevePraktike} onChange={(e) => setNumriOrevePraktike(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label>Data e Fillimit</Label>
-                    <Input type="date" value={dataFillimitPraktike} onChange={(e) => setDataFillimitPraktike(e.target.value)} />
+                    <Input className={errCls("dataFillimitPraktike")} type="date" value={dataFillimitPraktike} onChange={(e) => setDataFillimitPraktike(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label>Data e Mbarimit</Label>
-                    <Input type="date" value={dataMbarimitPraktike} onChange={(e) => setDataMbarimitPraktike(e.target.value)} />
+                    <Input className={errCls("dataMbarimitPraktike")} type="date" value={dataMbarimitPraktike} onChange={(e) => setDataMbarimitPraktike(e.target.value)} />
                   </div>
                 </div>
                 <div className="mt-3 space-y-2">
@@ -389,9 +390,11 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
               <div className="border-t border-border pt-4">
                 <div className="space-y-2 max-w-xs">
                   <Label>Data e Lëshimit</Label>
-                  <Input type="date" value={dataLeshimit} onChange={(e) => setDataLeshimit(e.target.value)} />
+                  <Input className={errCls("dataLeshimit")} type="date" value={dataLeshimit} onChange={(e) => setDataLeshimit(e.target.value)} />
                 </div>
               </div>
+
+              <MissingFieldsAlert fields={Object.values(errors)} />
 
               <Button onClick={handlePrint} className="gap-2 mt-4">
                 <Printer className="w-4 h-4" /> Printo Vërtetimin
