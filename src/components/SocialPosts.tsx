@@ -467,6 +467,15 @@ const SocialPosts = () => {
                 <Button variant="outline" size="sm" onClick={() => copy(post.content, -1)}>
                   <Copy className="h-4 w-4" />
                 </Button>
+                {previews[post.id] && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => downloadImage(previews[post.id], `postim-${post.id}.png`)}
+                  >
+                    <Download className="h-4 w-4" />
+                  </Button>
+                )}
                 <Button
                   size="sm"
                   className="flex-1"
