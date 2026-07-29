@@ -119,8 +119,10 @@ const PostGenerator = () => {
     setSaving(true);
     const { error } = await supabase.from("marketing_posts").insert({
       tenant_id: tenantId,
+      title: (caption || cta || contentType).slice(0, 80),
       platform,
       content_type: contentType,
+      category: category,
       driving_category: category,
       tone,
       target_audience: audience || null,
