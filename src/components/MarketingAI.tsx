@@ -25,9 +25,12 @@ const MarketingAI = () => {
           </div>
         </div>
 
-        {active.live ? (
+        {active.id === "create-post" ? (
+          <PostGenerator />
+        ) : active.live ? (
           <SocialPosts />
         ) : (
+
           <div className="glass-card rounded-xl p-6 text-center space-y-3">
             <Construction className="w-8 h-8 mx-auto text-muted-foreground" />
             <p className="text-sm text-muted-foreground">
