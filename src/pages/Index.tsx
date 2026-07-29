@@ -27,6 +27,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TestGenerator from "@/components/TestGenerator";
 import CandidateTests from "@/components/CandidateTests";
 import AdminChat from "@/components/AdminChat";
+import SocialPosts from "@/components/SocialPosts";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
@@ -121,6 +122,7 @@ const Index = () => {
   const viewTitles: Record<string, string> = {
     dashboard: "Paneli Kryesor",
     assistant: "Asistenti AI",
+    social: "Postime Sociale AI",
     instructor: "Kandidatët e Mi",
     candidates: "Lista e Kandidatëve",
     "candidate-detail": "Paneli i Kandidatit",
@@ -331,6 +333,8 @@ const Index = () => {
           {activeView === "activity" && <ActivityLog />}
 
           {activeView === "assistant" && isAdmin && <AdminChat />}
+
+          {activeView === "social" && isAdmin && <SocialPosts />}
 
           {activeView === "instructor-reports" && <InstructorReports adminMode />}
 
