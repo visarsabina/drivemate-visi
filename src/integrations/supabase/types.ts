@@ -403,6 +403,7 @@ export type Database = {
       marketing_posts: {
         Row: {
           caption: string | null
+          category: string | null
           content_type: string
           created_at: string
           created_by: string | null
@@ -415,11 +416,13 @@ export type Database = {
           status: string
           target_audience: string | null
           tenant_id: string
+          title: string | null
           tone: string
           updated_at: string
         }
         Insert: {
           caption?: string | null
+          category?: string | null
           content_type?: string
           created_at?: string
           created_by?: string | null
@@ -432,11 +435,13 @@ export type Database = {
           status?: string
           target_audience?: string | null
           tenant_id: string
+          title?: string | null
           tone?: string
           updated_at?: string
         }
         Update: {
           caption?: string | null
+          category?: string | null
           content_type?: string
           created_at?: string
           created_by?: string | null
@@ -449,6 +454,7 @@ export type Database = {
           status?: string
           target_audience?: string | null
           tenant_id?: string
+          title?: string | null
           tone?: string
           updated_at?: string
         }
