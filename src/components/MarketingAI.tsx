@@ -3,7 +3,9 @@ import { ArrowLeft, Construction } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialPosts from "@/components/SocialPosts";
 import MarketingCard from "@/components/marketing/MarketingCard";
+import PostGenerator from "@/components/marketing/PostGenerator";
 import { sections, type SectionDef } from "@/components/marketing/sections";
+
 
 const MarketingAI = () => {
   const [active, setActive] = useState<SectionDef | null>(null);
