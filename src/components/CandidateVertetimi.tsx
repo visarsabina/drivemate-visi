@@ -119,12 +119,31 @@ const CandidateVertetimi = ({ candidates, preselectedId, onPrinted }: CandidateV
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   };
 
+  const validate = () => {
+    const miss: Record<string, string> = {};
+    if (!vendlindja.trim()) miss.vendlindja = "Vendi i Lindjes";
+    if (!komuna.trim()) miss.komuna = "Komuna";
+    if (!vendbanimi.trim()) miss.vendbanimi = "Vendbanimi";
+    if (!numriOreveTeori) miss.numriOreveTeori = "Numri i orëve (teori)";
+    if (!dataFillimitTeori) miss.dataFillimitTeori = "Data e fillimit (teori)";
+    if (!dataMbarimitTeori) miss.dataMbarimitTeori = "Data e mbarimit (teori)";
+    if (!numriOrevePraktike) miss.numriOrevePraktike = "Numri i orëve (praktikë)";
+    if (!dataFillimitPraktike) miss.dataFillimitPraktike = "Data e fillimit (praktikë)";
+    if (!dataMbarimitPraktike) miss.dataMbarimitPraktike = "Data e mbarimit (praktikë)";
+    if (!dataLeshimit) miss.dataLeshimit = "Data e Lëshimit";
+    return miss;
+  };
+
   const handlePrint = () => {
     if (!candidate) return;
+    const miss = validate();
+    setErrors(miss);
+    if (Object.keys(miss).length) return;
     const safe = escapeHtmlObject(candidate);
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
     onPrinted?.(candidate.id);
+
 
     printWindow.document.write(`<!DOCTYPE html><html><head><title>Vërtetimi - ${safe.emri} ${safe.mbiemri}</title>
 <style>
