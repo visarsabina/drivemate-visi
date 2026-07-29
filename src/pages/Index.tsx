@@ -334,7 +334,7 @@ const Index = () => {
 
           {activeView === "assistant" && isAdmin && <AdminChat />}
 
-          {activeView === "social" && isAdmin && <SocialPosts />}
+          {activeView === "social" && isAdmin && <MarketingAI />}
 
           {activeView === "instructor-reports" && <InstructorReports adminMode />}
 
