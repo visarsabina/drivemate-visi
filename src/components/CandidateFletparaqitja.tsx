@@ -8,6 +8,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
+import MissingFieldsAlert from "@/components/MissingFieldsAlert";
 
 interface CandidateFletparaqitjaProps {
   candidates: Candidate[];
@@ -20,6 +21,8 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
   const [emriBabait, setEmriBabait] = useState("");
   const [vendlindja, setVendlindja] = useState("");
   const [komuna, setKomuna] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const errCls = (key: string) => (errors[key] ? "border-2 border-destructive focus-visible:ring-destructive" : "");
 
   const candidate = candidates.find((c) => c.id === selectedId);
 
@@ -57,6 +60,15 @@ const CandidateFletparaqitja = ({ candidates, preselectedId }: CandidateFletpara
 
   const handlePrint = () => {
     if (!candidate) return;
+    const miss: Record<string, string> = {};
+    if (!effectiveEmriBabait.trim()) miss.emriBabait = "Emri i Babait";
+    if (!effectiveVendlindja.trim()) miss.vendlindja = "Vendlindja";
+    if (!(komuna || candidate.vendi || "").trim()) miss.komuna = "Komuna";
+    if (!(candidate.numriPersonal || "").trim()) miss.numriPersonal = "Numri personal i kandidatit";
+    if (!(candidate.telefon || "").trim()) miss.telefon = "Numri i telefonit të kandidatit";
+    if (!(candidate.kategoria || "").trim()) miss.kategoria = "Kategoria";
+    setErrors(miss);
+    if (Object.keys(miss).length) return;
     const safe = escapeHtmlObject(candidate);
     const coatUrl = `${window.location.origin}/kosovo-coat.jpg`;
 
@@ -290,25 +302,27 @@ printWindow.document.write(`<!DOCTYPE html><html><head><title> </title>
           <>
             <div className="grid grid-cols-2 gap-4 text-sm p-4 bg-muted/50 rounded-lg">
               <div><span className="text-muted-foreground">Emri:</span> <strong>{candidate.emri} {candidate.mbiemri}</strong></div>
-              <div><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal}</strong></div>
-              <div><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria}</strong></div>
-              <div><span className="text-muted-foreground">Telefoni:</span> <strong>{candidate.telefon}</strong></div>
+              <div className={cn("rounded px-1", errors.numriPersonal && "border-2 border-destructive")}><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal || "—"}</strong></div>
+              <div className={cn("rounded px-1", errors.kategoria && "border-2 border-destructive")}><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria || "—"}</strong></div>
+              <div className={cn("rounded px-1", errors.telefon && "border-2 border-destructive")}><span className="text-muted-foreground">Telefoni:</span> <strong>{candidate.telefon || "—"}</strong></div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Emri i Babait</Label>
-                <Input value={emriBabait} onChange={(e) => setEmriBabait(e.target.value)} placeholder="Emri i babait..." />
+                <Input className={errCls("emriBabait")} value={emriBabait} onChange={(e) => setEmriBabait(e.target.value)} placeholder="Emri i babait..." />
               </div>
               <div className="space-y-2">
                 <Label>Vendlindja</Label>
-                <Input value={vendlindja} onChange={(e) => setVendlindja(e.target.value)} placeholder="Vendi i lindjes..." />
+                <Input className={errCls("vendlindja")} value={vendlindja} onChange={(e) => setVendlindja(e.target.value)} placeholder="Vendi i lindjes..." />
               </div>
               <div className="space-y-2">
                 <Label>Komuna</Label>
-                <Input value={komuna} onChange={(e) => setKomuna(e.target.value)} placeholder={candidate.vendi || "Komuna..."} />
+                <Input className={errCls("komuna")} value={komuna} onChange={(e) => setKomuna(e.target.value)} placeholder={candidate.vendi || "Komuna..."} />
               </div>
             </div>
+
+            <MissingFieldsAlert fields={Object.values(errors)} />
 
             <Button className="gap-2" onClick={handlePrint}>
               <Printer className="w-4 h-4" /> Printo Fletparaqitjen
