@@ -14,12 +14,42 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const prompt = String(body.prompt ?? "").trim().slice(0, 1200);
     const schoolName = String(body.schoolName ?? "Autoshkolla").slice(0, 120);
+    const basePath = typeof body.basePath === "string" ? body.basePath : "";
     if (!prompt) return json({ error: "Përshkrimi i fotos është i detyrueshëm" }, 400);
 
-    const fullPrompt =
-      `Fotografi marketingu profesionale për autoshkollën "${schoolName}" në Kosovë. ` +
-      `Tema: ${prompt}. Stil modern, ndriçim natyral, ngjyra të ngrohta, format katror i përshtatshëm ` +
-      `për Instagram dhe Facebook. Pa tekst të shkruar në foto.`;
+    // Optional: an uploaded image to combine with / edit.
+    let baseDataUrl: string | null = null;
+    if (basePath) {
+      if (!basePath.startsWith(`${ctx.tenantId}/`)) {
+        return json({ error: "Fotoja bazë nuk i përket kësaj autoshkolle" }, 403);
+      }
+      const { data: file, error: dlErr } = await ctx.admin.storage
+        .from("social-images")
+        .download(basePath);
+      if (dlErr || !file) return json({ error: "Fotoja e ngarkuar nuk u gjet" }, 400);
+      const buf = new Uint8Array(await file.arrayBuffer());
+      let bin = "";
+      for (let i = 0; i < buf.length; i += 8192) {
+        bin += String.fromCharCode(...buf.subarray(i, i + 8192));
+      }
+      baseDataUrl = `data:${file.type || "image/png"};base64,${btoa(bin)}`;
+    }
+
+    const fullPrompt = baseDataUrl
+      ? `Kombino dhe përpuno fotografinë e dhënë në një fotografi marketingu profesionale për autoshkollën ` +
+        `"${schoolName}" në Kosovë. Ruaj personat/objektet kryesore nga fotoja origjinale. Tema: ${prompt}. ` +
+        `Stil modern, ndriçim natyral, ngjyra të ngrohta, format katror për Instagram dhe Facebook. ` +
+        `Pa tekst të shkruar në foto.`
+      : `Fotografi marketingu profesionale për autoshkollën "${schoolName}" në Kosovë. ` +
+        `Tema: ${prompt}. Stil modern, ndriçim natyral, ngjyra të ngrohta, format katror i përshtatshëm ` +
+        `për Instagram dhe Facebook. Pa tekst të shkruar në foto.`;
+
+    const content = baseDataUrl
+      ? [
+          { type: "text", text: fullPrompt },
+          { type: "image_url", image_url: { url: baseDataUrl } },
+        ]
+      : fullPrompt;
 
     const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/images/generations", {
       method: "POST",
@@ -29,10 +59,11 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-image",
-        messages: [{ role: "user", content: fullPrompt }],
+        messages: [{ role: "user", content }],
         modalities: ["image", "text"],
       }),
     });
+
 
     if (!aiRes.ok) {
       const details = await aiRes.text();

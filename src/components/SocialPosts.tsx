@@ -149,16 +149,18 @@ const SocialPosts = () => {
       const payload = await invoke("social-image", {
         prompt: topic,
         schoolName: branding?.name ?? "Auto Shkolla Visi",
+        basePath: imagePath ?? undefined,
       });
       setImagePath(payload.path ?? null);
       setImagePreview(payload.url ?? null);
-      toast.success("Fotoja u gjenerua!");
+      toast.success(imagePath ? "Fotoja u kombinua!" : "Fotoja u gjenerua!");
     } catch (e: any) {
       toast.error(e?.message ?? "Gjenerimi i fotos dështoi.");
     } finally {
       setImageLoading(false);
     }
   };
+
 
   const uploadImage = async (file: File) => {
     if (!file.type.startsWith("image/")) {
@@ -331,7 +333,7 @@ const SocialPosts = () => {
             </Button>
             <Button variant="outline" onClick={generateImage} disabled={imageLoading}>
               {imageLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ImageIcon className="mr-2 h-4 w-4" />}
-              Gjenero foton
+              {imagePath ? "Kombino me AI" : "Gjenero foton"}
             </Button>
             <Button
               variant="outline"
