@@ -14,7 +14,7 @@ interface SidebarProps {
 const adminNavItems = [
   { id: "dashboard", label: "Paneli", icon: LayoutDashboard },
   { id: "assistant", label: "Asistenti AI", icon: Sparkles },
-  { id: "social", label: "Postime Sociale AI", icon: Megaphone },
+  { id: "social", label: "Marketing AI", icon: Megaphone },
   { id: "candidates", label: "Kandidatët", icon: Users },
   { id: "add", label: "Shto Kandidat", icon: UserPlus },
   { id: "payment", label: "Pagesa", icon: CreditCard },
