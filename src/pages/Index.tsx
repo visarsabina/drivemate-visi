@@ -27,7 +27,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TestGenerator from "@/components/TestGenerator";
 import CandidateTests from "@/components/CandidateTests";
 import AdminChat from "@/components/AdminChat";
-import SocialPosts from "@/components/SocialPosts";
+import MarketingAI from "@/components/MarketingAI";
 import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
@@ -334,7 +334,7 @@ const Index = () => {
 
           {activeView === "assistant" && isAdmin && <AdminChat />}
 
-          {activeView === "social" && isAdmin && <SocialPosts />}
+          {activeView === "social" && isAdmin && <MarketingAI />}
 
           {activeView === "instructor-reports" && <InstructorReports adminMode />}
 
