@@ -400,6 +400,60 @@ export type Database = {
           },
         ]
       }
+      marketing_posts: {
+        Row: {
+          caption: string | null
+          content_type: string
+          created_at: string
+          created_by: string | null
+          cta: string | null
+          driving_category: string | null
+          extra_instructions: string | null
+          hashtags: string | null
+          id: string
+          platform: string
+          status: string
+          target_audience: string | null
+          tenant_id: string
+          tone: string
+          updated_at: string
+        }
+        Insert: {
+          caption?: string | null
+          content_type?: string
+          created_at?: string
+          created_by?: string | null
+          cta?: string | null
+          driving_category?: string | null
+          extra_instructions?: string | null
+          hashtags?: string | null
+          id?: string
+          platform?: string
+          status?: string
+          target_audience?: string | null
+          tenant_id: string
+          tone?: string
+          updated_at?: string
+        }
+        Update: {
+          caption?: string | null
+          content_type?: string
+          created_at?: string
+          created_by?: string | null
+          cta?: string | null
+          driving_category?: string | null
+          extra_instructions?: string | null
+          hashtags?: string | null
+          id?: string
+          platform?: string
+          status?: string
+          target_audience?: string | null
+          tenant_id?: string
+          tone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       question_overrides: {
         Row: {
           correct_key: string | null

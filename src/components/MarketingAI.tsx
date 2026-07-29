@@ -3,7 +3,9 @@ import { ArrowLeft, Construction } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialPosts from "@/components/SocialPosts";
 import MarketingCard from "@/components/marketing/MarketingCard";
+import PostGenerator from "@/components/marketing/PostGenerator";
 import { sections, type SectionDef } from "@/components/marketing/sections";
+
 
 const MarketingAI = () => {
   const [active, setActive] = useState<SectionDef | null>(null);
@@ -23,9 +25,12 @@ const MarketingAI = () => {
           </div>
         </div>
 
-        {active.live ? (
+        {active.id === "create-post" ? (
+          <PostGenerator />
+        ) : active.live ? (
           <SocialPosts />
         ) : (
+
           <div className="glass-card rounded-xl p-6 text-center space-y-3">
             <Construction className="w-8 h-8 mx-auto text-muted-foreground" />
             <p className="text-sm text-muted-foreground">
