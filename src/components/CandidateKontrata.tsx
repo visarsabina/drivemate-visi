@@ -7,6 +7,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { escapeHtmlObject } from "@/lib/escapeHtml";
+import MissingFieldsAlert from "@/components/MissingFieldsAlert";
 
 interface CandidateKontrataProps {
   candidates: Candidate[];
@@ -16,6 +17,8 @@ interface CandidateKontrataProps {
 const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps) => {
   const [selectedId, setSelectedId] = useState(preselectedId || "");
   const [open, setOpen] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const rowCls = (key: string) => cn("rounded px-1", errors[key] && "border-2 border-destructive");
   const candidate = candidates.find((c) => c.id === selectedId);
 
   const formatDate = (d: string) => {
@@ -26,6 +29,17 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
 
   const handlePrint = () => {
     if (!candidate) return;
+    const miss: Record<string, string> = {};
+    if (!(candidate.emri || "").trim() || !(candidate.mbiemri || "").trim()) miss.emri = "Emri dhe mbiemri";
+    if (!(candidate.numriPersonal || "").trim()) miss.numriPersonal = "Nr. Personal";
+    if (!(candidate.vendlindja || "").trim()) miss.vendlindja = "Vendlindja";
+    if (!(candidate.vendi || "").trim()) miss.vendi = "Vendbanimi";
+    if (!(candidate.kategoria || "").trim()) miss.kategoria = "Kategoria";
+    if (!candidate.shumaMarreveshjes) miss.shumaMarreveshjes = "Shuma e marrëveshjes";
+    if (!(candidate.dataRegjistrimit || "").trim()) miss.dataRegjistrimit = "Data e regjistrimit";
+    if (!(candidate.dataLindjes || "").trim()) miss.dataLindjes = "Data e lindjes";
+    setErrors(miss);
+    if (Object.keys(miss).length) return;
     const safe = escapeHtmlObject(candidate);
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
@@ -210,14 +224,17 @@ const CandidateKontrata = ({ candidates, preselectedId }: CandidateKontrataProps
           {candidate && (
             <>
               <div className="p-4 rounded-lg bg-muted/50 text-sm space-y-1">
-                <p><span className="text-muted-foreground">Emri:</span> <strong>{candidate.emri} {candidate.mbiemri}</strong></p>
-                <p><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal}</strong></p>
-                <p><span className="text-muted-foreground">Vendlindja:</span> <strong>{candidate.vendlindja}</strong></p>
-                <p><span className="text-muted-foreground">Vendbanimi:</span> <strong>{candidate.vendi}</strong></p>
-                <p><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria}</strong></p>
-                <p><span className="text-muted-foreground">Shuma Marrëveshjes:</span> <strong>{candidate.shumaMarreveshjes.toFixed(2)} €</strong></p>
-                <p><span className="text-muted-foreground">Data Regjistrimit:</span> <strong>{candidate.dataRegjistrimit}</strong></p>
+                <p className={rowCls("emri")}><span className="text-muted-foreground">Emri:</span> <strong>{candidate.emri} {candidate.mbiemri}</strong></p>
+                <p className={rowCls("numriPersonal")}><span className="text-muted-foreground">Nr. Personal:</span> <strong>{candidate.numriPersonal || "—"}</strong></p>
+                <p className={rowCls("dataLindjes")}><span className="text-muted-foreground">Data e Lindjes:</span> <strong>{candidate.dataLindjes || "—"}</strong></p>
+                <p className={rowCls("vendlindja")}><span className="text-muted-foreground">Vendlindja:</span> <strong>{candidate.vendlindja || "—"}</strong></p>
+                <p className={rowCls("vendi")}><span className="text-muted-foreground">Vendbanimi:</span> <strong>{candidate.vendi || "—"}</strong></p>
+                <p className={rowCls("kategoria")}><span className="text-muted-foreground">Kategoria:</span> <strong>{candidate.kategoria || "—"}</strong></p>
+                <p className={rowCls("shumaMarreveshjes")}><span className="text-muted-foreground">Shuma Marrëveshjes:</span> <strong>{(candidate.shumaMarreveshjes || 0).toFixed(2)} €</strong></p>
+                <p className={rowCls("dataRegjistrimit")}><span className="text-muted-foreground">Data Regjistrimit:</span> <strong>{candidate.dataRegjistrimit || "—"}</strong></p>
               </div>
+
+              <MissingFieldsAlert fields={Object.values(errors)} />
 
               <Button onClick={handlePrint} className="gap-2 mt-4">
                 <Printer className="w-4 h-4" /> Printo Kontratën
