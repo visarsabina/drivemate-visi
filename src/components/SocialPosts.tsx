@@ -149,16 +149,18 @@ const SocialPosts = () => {
       const payload = await invoke("social-image", {
         prompt: topic,
         schoolName: branding?.name ?? "Auto Shkolla Visi",
+        basePath: imagePath ?? undefined,
       });
       setImagePath(payload.path ?? null);
       setImagePreview(payload.url ?? null);
-      toast.success("Fotoja u gjenerua!");
+      toast.success(imagePath ? "Fotoja u kombinua!" : "Fotoja u gjenerua!");
     } catch (e: any) {
       toast.error(e?.message ?? "Gjenerimi i fotos dështoi.");
     } finally {
       setImageLoading(false);
     }
   };
+
 
   const uploadImage = async (file: File) => {
     if (!file.type.startsWith("image/")) {
