@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  Sparkles, Loader2, Copy, Check, Image as ImageIcon, Save, Send, Trash2, RefreshCw,
+  Sparkles, Loader2, Copy, Check, Image as ImageIcon, Save, Send, Trash2, RefreshCw, Upload,
 } from "lucide-react";
 
 const PLATFORMS = ["Facebook", "Instagram", "TikTok", "LinkedIn"];
@@ -80,6 +80,8 @@ const SocialPosts = () => {
   const [copied, setCopied] = useState<number | null>(null);
 
   const [imageLoading, setImageLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePath, setImagePath] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -155,6 +157,38 @@ const SocialPosts = () => {
       toast.error(e?.message ?? "Gjenerimi i fotos dështoi.");
     } finally {
       setImageLoading(false);
+    }
+  };
+
+  const uploadImage = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Zgjidhni një skedar fotografie.");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Fotoja duhet të jetë nën 10MB.");
+      return;
+    }
+    setUploading(true);
+    try {
+      const { data: tenantId, error: tErr } = await supabase.rpc("get_user_tenant_id");
+      if (tErr || !tenantId) throw new Error("Nuk u gjet autoshkolla.");
+      const ext = file.name.split(".").pop()?.toLowerCase() || "png";
+      const path = `${tenantId}/${crypto.randomUUID()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("social-images")
+        .upload(path, file, { contentType: file.type, upsert: false });
+      if (upErr) throw new Error(upErr.message);
+      const { data: signed } = await supabase.storage
+        .from("social-images")
+        .createSignedUrl(path, 60 * 60 * 24 * 7);
+      setImagePath(path);
+      setImagePreview(signed?.signedUrl ?? null);
+      toast.success("Fotoja u ngarkua!");
+    } catch (e: any) {
+      toast.error(e?.message ?? "Ngarkimi dështoi.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -299,6 +333,25 @@ const SocialPosts = () => {
               {imageLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ImageIcon className="mr-2 h-4 w-4" />}
               Gjenero foton
             </Button>
+            <Button
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
+              Ngarko foto
+            </Button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) uploadImage(file);
+                e.target.value = "";
+              }}
+            />
           </div>
 
           {imagePreview && (
