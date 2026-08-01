@@ -17,8 +17,10 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd ~/drivemate-visi
-            git pull
+            cd /var/www/drivemate-visi
+             git pull origin main
+              npm install
             npm run build
-            cp -r dist/. /var/www/html/
+            sudo systemctl restart nginx
+            
             systemctl restart nginx
