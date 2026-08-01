@@ -39,8 +39,8 @@ export interface SectionDef {
 export const sections: SectionDef[] = [
   {
     id: "create-post",
-    label: "Krijo Postim",
-    description: "Gjenero tekst për rrjetet sociale me AI",
+    label: "Content Studio",
+    description: "Brief, editor dhe parapamje live për Facebook, Instagram, TikTok",
     icon: PenSquare,
     gradient: "from-blue-500 to-indigo-600",
     live: true,
