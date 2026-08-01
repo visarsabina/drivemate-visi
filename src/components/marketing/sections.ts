@@ -5,6 +5,9 @@ import {
   CalendarDays,
   Clock,
   BarChart3,
+  FileText,
+  LayoutTemplate,
+  FolderOpen,
   type LucideIcon,
 } from "lucide-react";
 
@@ -14,7 +17,10 @@ export type SectionId =
   | "video-script"
   | "calendar"
   | "scheduled"
-  | "analytics";
+  | "analytics"
+  | "posts"
+  | "assets"
+  | "templates";
 
 /** Future integrations — declared here only, not implemented yet. */
 export type Integration = "OpenAI" | "Meta Graph API" | "TikTok API" | "Supabase";
@@ -81,5 +87,32 @@ export const sections: SectionDef[] = [
     icon: BarChart3,
     gradient: "from-cyan-500 to-sky-600",
     integrations: ["Meta Graph API", "TikTok API"],
+  },
+  {
+    id: "posts",
+    label: "Postimet",
+    description: "Menaxho postimet e marketingut (shto, ndrysho, fshij)",
+    icon: FileText,
+    gradient: "from-slate-500 to-slate-700",
+    live: true,
+    integrations: ["Supabase"],
+  },
+  {
+    id: "assets",
+    label: "Biblioteka e Materialeve",
+    description: "Foto, video dhe logo me tag-e dhe kërkim",
+    icon: FolderOpen,
+    gradient: "from-lime-500 to-green-600",
+    live: true,
+    integrations: ["Supabase"],
+  },
+  {
+    id: "templates",
+    label: "Shabllonet",
+    description: "Shabllone teksti të gatshme për platforma",
+    icon: LayoutTemplate,
+    gradient: "from-fuchsia-500 to-pink-600",
+    live: true,
+    integrations: ["Supabase"],
   },
 ];
