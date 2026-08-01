@@ -400,6 +400,57 @@ export type Database = {
           },
         ]
       }
+      marketing_assets: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          tags: string[]
+          tenant_id: string
+          title: string
+          type: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          tags?: string[]
+          tenant_id: string
+          title: string
+          type?: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          tags?: string[]
+          tenant_id?: string
+          title?: string
+          type?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketing_assets_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketing_assets_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       marketing_posts: {
         Row: {
           caption: string | null
@@ -412,7 +463,9 @@ export type Database = {
           extra_instructions: string | null
           hashtags: string | null
           id: string
+          image_url: string | null
           platform: string
+          publish_date: string | null
           status: string
           target_audience: string | null
           tenant_id: string
@@ -431,7 +484,9 @@ export type Database = {
           extra_instructions?: string | null
           hashtags?: string | null
           id?: string
+          image_url?: string | null
           platform?: string
+          publish_date?: string | null
           status?: string
           target_audience?: string | null
           tenant_id: string
@@ -450,7 +505,9 @@ export type Database = {
           extra_instructions?: string | null
           hashtags?: string | null
           id?: string
+          image_url?: string | null
           platform?: string
+          publish_date?: string | null
           status?: string
           target_audience?: string | null
           tenant_id?: string
@@ -459,6 +516,54 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      marketing_templates: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          platform: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          platform?: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          platform?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketing_templates_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketing_templates_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       question_overrides: {
         Row: {
