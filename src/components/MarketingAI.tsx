@@ -29,7 +29,7 @@ const MarketingAI = () => {
         </div>
 
         {active.id === "create-post" ? (
-          <PostGenerator />
+          <ContentStudio />
         ) : active.id === "posts" ? (
           <PostsManager />
         ) : active.id === "assets" ? (
