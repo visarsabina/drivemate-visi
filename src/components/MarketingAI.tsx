@@ -3,7 +3,7 @@ import { ArrowLeft, Construction } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialPosts from "@/components/SocialPosts";
 import MarketingCard from "@/components/marketing/MarketingCard";
-import PostGenerator from "@/components/marketing/PostGenerator";
+import ContentStudio from "@/components/marketing/ContentStudio";
 import PostsManager from "@/components/marketing/PostsManager";
 import AssetsManager from "@/components/marketing/AssetsManager";
 import TemplatesManager from "@/components/marketing/TemplatesManager";
@@ -29,7 +29,7 @@ const MarketingAI = () => {
         </div>
 
         {active.id === "create-post" ? (
-          <PostGenerator />
+          <ContentStudio />
         ) : active.id === "posts" ? (
           <PostsManager />
         ) : active.id === "assets" ? (
