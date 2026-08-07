@@ -196,7 +196,10 @@ const Index = () => {
 
           {activeView === "dashboard" && (
             <>
+              <VehicleAlerts onViewVehicles={() => setActiveView("vehicles")} />
+
               <StatsCards candidates={candidates} onSelectCandidate={(c) => { setSelectedCandidate(c); setActiveView("candidate-detail", { id: c.id }); }} />
+
 
               <div>
                 <h3 className="text-base lg:text-lg font-semibold mb-3">Dokumentet</h3>
@@ -242,9 +245,9 @@ const Index = () => {
                   <CategoryYearStats candidates={candidates} />
                 </TabsContent>
                 <TabsContent value="alerts" className="mt-3 space-y-3">
-                  <VehicleAlerts onViewVehicles={() => setActiveView("vehicles")} />
                   <EmployeeAlerts onViewEmployees={() => setActiveView("employees")} />
                 </TabsContent>
+
                 <TabsContent value="exams" className="mt-3">
                   <TodayPracticalExams candidates={candidates} />
                 </TabsContent>
