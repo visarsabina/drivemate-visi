@@ -71,7 +71,7 @@ const CandidatePortal = () => {
     const [pRes, lRes, eRes, rRes, tRes] = await Promise.all([
       supabase.from("candidate_payments").select("id, shuma, data").eq("candidate_id", c.id).order("data", { ascending: false }),
       supabase.from("candidate_lessons").select("id, data, hours").eq("candidate_id", c.id).order("data", { ascending: false }),
-      supabase.from("candidate_exams").select("id, exam_date, exam_time, exam_type, status").eq("candidate_id", c.id).order("exam_date", { ascending: true }),
+      supabase.from("candidate_exams").select("id, exam_date, exam_time, exam_type, status, location, notes, kategoria").eq("candidate_id", c.id).order("exam_date", { ascending: true }),
       supabase.from("exam_requests").select("id, requested_date, requested_time, exam_type, status, admin_response, created_at").eq("candidate_id", c.id).order("created_at", { ascending: false }),
       supabase.from("tenants").select("name").eq("id", c.tenant_id).maybeSingle(),
     ]);
