@@ -20,6 +20,29 @@ import { useAuth } from "@/context/AuthContext";
 import { parsePersonalNumber } from "@/lib/personalNumber";
 import { z } from "zod";
 import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
+import { supabase } from "@/integrations/supabase/client";
+
+type ExamRow = {
+  id: string;
+  exam_date: string;
+  exam_time: string | null;
+  exam_type: string;
+  status: string;
+  location: string | null;
+  notes: string | null;
+  kategoria: string | null;
+};
+
+const examStatusLabel = (s: string) =>
+  s === "planifikuar" ? "Planifikuar" : s === "kaluar" ? "Kaluar" : s === "deshtur" ? "Dështuar" : "Anuluar";
+const examStatusClass = (s: string) =>
+  s === "kaluar"
+    ? "bg-emerald-100 text-emerald-700"
+    : s === "deshtur"
+    ? "bg-destructive/10 text-destructive"
+    : s === "anuluar"
+    ? "bg-muted text-muted-foreground"
+    : "bg-primary/10 text-primary";
 
 const editCandidateSchema = z.object({
   emri: z.string().trim().min(1, "Emri është i detyrueshëm").max(100, "Emri max 100 karaktere"),
