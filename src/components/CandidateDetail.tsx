@@ -303,12 +303,39 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
       </div>
 
       <Tabs defaultValue="info" className="flex-1 min-h-0 flex flex-col lg:block lg:space-y-6">
-        <TabsList className="w-full grid grid-cols-4 h-auto shrink-0">
+        <TabsList className="w-full grid grid-cols-5 h-auto shrink-0">
           <TabsTrigger value="info" className="text-[11px] lg:text-sm py-1.5">Info</TabsTrigger>
           <TabsTrigger value="oret" className="text-[11px] lg:text-sm py-1.5">Orët</TabsTrigger>
+          <TabsTrigger value="termine" className="text-[11px] lg:text-sm py-1.5">Terminet</TabsTrigger>
           <TabsTrigger value="dok" className="text-[11px] lg:text-sm py-1.5">Dokumentet</TabsTrigger>
           <TabsTrigger value="pag" className="text-[11px] lg:text-sm py-1.5">Pagesat</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="termine" className="mt-2 lg:mt-0 flex-1 min-h-0 overflow-y-auto">
+          <div className="glass-card rounded-xl p-3 sm:p-6">
+            <h3 className="text-sm sm:text-lg font-semibold mb-3">Terminet e provimeve — {candidate.emri} {candidate.mbiemri}</h3>
+            {exams.length === 0 ? (
+              <p className="text-xs sm:text-sm text-muted-foreground">Nuk ka termine të regjistruara për këtë kandidat.</p>
+            ) : (
+              <ul className="divide-y divide-border">
+                {exams.map((e) => (
+                  <li key={e.id} className="py-2 flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">
+                        {e.exam_type === "teori" ? "Teori" : "Praktikë"} · {e.exam_date} {e.exam_time?.slice(0, 5) ?? ""}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {[e.kategoria && `Kategoria: ${e.kategoria}`, e.location, e.notes].filter(Boolean).join(" · ")}
+                      </p>
+                    </div>
+                    <span className={`text-xs px-2 py-0.5 rounded-md shrink-0 ${examStatusClass(e.status)}`}>{examStatusLabel(e.status)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </TabsContent>
+
 
         <TabsContent value="info" className="mt-2 lg:mt-0 flex-1 min-h-0 overflow-y-auto">
           <div className="glass-card rounded-xl p-3 sm:p-6">
