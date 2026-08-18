@@ -232,21 +232,62 @@ const CandidatePortal = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="termini" className="mt-2 flex-1 overflow-y-auto">
+          <TabsContent value="termini" className="mt-2 flex-1 overflow-y-auto space-y-2">
             <Card className="p-3">
               <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                <Clock className="w-4 h-4" /> Termini i ardhshëm
+                <Clock className="w-4 h-4" /> Termini i ardhshëm — {candidate.emri} {candidate.mbiemri}
               </div>
               {nextExam ? (
-                <div className="text-sm">
-                  <p className="font-medium capitalize">{nextExam.exam_type === "teori" ? "Teori" : "Praktikë"}</p>
+                <div className="text-sm space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium">{nextExam.exam_type === "teori" ? "Teori" : "Praktikë"}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-md ${examStatusClass(nextExam.status)}`}>{examStatusLabel(nextExam.status)}</span>
+                  </div>
                   <p className="text-muted-foreground">{nextExam.exam_date} · {nextExam.exam_time?.slice(0, 5)}</p>
+                  {nextExam.kategoria && <p className="text-xs text-muted-foreground">Kategoria: {nextExam.kategoria}</p>}
+                  {nextExam.location && <p className="text-xs text-muted-foreground">Vendi: {nextExam.location}</p>}
+                  {nextExam.notes && <p className="text-xs text-muted-foreground">{nextExam.notes}</p>}
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground">Nuk ke termine të planifikuara.</p>
               )}
             </Card>
+
+            {upcomingExams.length > 1 && (
+              <Card className="p-3">
+                <p className="text-xs text-muted-foreground mb-2">Terminet e tjera</p>
+                <ul className="divide-y divide-border">
+                  {upcomingExams.slice(1).map((e) => (
+                    <li key={e.id} className="py-2 flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">{e.exam_type === "teori" ? "Teori" : "Praktikë"} · {e.exam_date} {e.exam_time?.slice(0, 5)}</p>
+                        {e.location && <p className="text-xs text-muted-foreground truncate">{e.location}</p>}
+                      </div>
+                      <span className={`text-xs px-2 py-0.5 rounded-md shrink-0 ${examStatusClass(e.status)}`}>{examStatusLabel(e.status)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
+
+            {pastExams.length > 0 && (
+              <Card className="p-3">
+                <p className="text-xs text-muted-foreground mb-2">Historiku i provimeve</p>
+                <ul className="divide-y divide-border">
+                  {pastExams.map((e) => (
+                    <li key={e.id} className="py-2 flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">{e.exam_type === "teori" ? "Teori" : "Praktikë"} · {e.exam_date} {e.exam_time?.slice(0, 5)}</p>
+                        {e.kategoria && <p className="text-xs text-muted-foreground truncate">Kategoria: {e.kategoria}</p>}
+                      </div>
+                      <span className={`text-xs px-2 py-0.5 rounded-md shrink-0 ${examStatusClass(e.status)}`}>{examStatusLabel(e.status)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
           </TabsContent>
+
 
           <TabsContent value="kerkesat" className="mt-2 flex-1 overflow-y-auto">
             <Card className="p-3">
