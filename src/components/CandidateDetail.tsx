@@ -112,6 +112,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
   const [numriPageses, setNumriPageses] = useState("");
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editForm, setEditForm] = useState<Candidate>(candidate);
+  const [exams, setExams] = useState<ExamRow[]>([]);
 
   useEffect(() => {
     if (autoEdit) {
@@ -120,6 +121,20 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoEdit, candidate.id]);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const { data } = await supabase
+        .from("candidate_exams")
+        .select("id, exam_date, exam_time, exam_type, status, location, notes, kategoria")
+        .eq("candidate_id", candidate.id)
+        .order("exam_date", { ascending: false });
+      if (active) setExams((data ?? []) as ExamRow[]);
+    })();
+    return () => { active = false; };
+  }, [candidate.id]);
+
 
   const openEditDialog = () => {
     setEditForm(candidate);
