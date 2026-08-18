@@ -17,3 +17,4 @@ Dashboard must offer quick access to Libreza, Vërtetimi, Fletparaqitja, and Kon
 - [Certificate](mem://features/documents/certificate-vertetimi) — Landscape certificate with specific lines and predefined instructors
 - [Contract](mem://features/documents/contract-kontrata) — Portrait A4 contract auto-populated with candidate details and fixed director name
 - [Exam Reservation](mem://features/documents/fletparaqitja) — Portrait A4 exam reservation form with boxed personal number and category grid
+- [Expiry Email Alerts](mem://features/expiry-email-alerts) — Daily 06:00 email për afatet e mjeteve/punëtorëve tek email-i i autoshkollës
