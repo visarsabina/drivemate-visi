@@ -112,17 +112,13 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
       return;
     }
 
-    const { data: inserted, error } = await supabase
-      .from("registrations")
-      .insert({
-        full_name: result.data.fullName,
-        email: result.data.email,
-        phone: result.data.phone,
-        category: result.data.category,
-        tenant_id: tenantId,
-      })
-      .select("id")
-      .maybeSingle();
+    const { error } = await supabase.from("registrations").insert({
+      full_name: result.data.fullName,
+      email: result.data.email,
+      phone: result.data.phone,
+      category: result.data.category,
+      tenant_id: tenantId,
+    });
 
     if (error) {
       setSubmitting(false);
@@ -135,13 +131,13 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
     }
 
     // Notify the school by email (best-effort — never blocks the user).
-    if (inserted?.id) {
-      supabase.functions
-        .invoke("notify-new-registration", {
-          body: { registration_id: inserted.id },
-        })
-        .catch((e) => console.error("notify-new-registration failed", e));
-    }
+    supabase.functions
+      .invoke("notify-new-registration", {
+        body: { tenant_id: tenantId, email: result.data.email },
+      })
+      .catch((e) => console.error("notify-new-registration failed", e));
+
+
 
 
     setSubmitting(false);
