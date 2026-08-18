@@ -23,25 +23,34 @@ Deno.serve(async (req) => {
     return json({ error: 'Server configuration error' }, 500)
   }
 
-  let registrationId: string
+  let tenantId: string
+  let email: string
   try {
     const body = await req.json()
-    registrationId = body.registration_id || body.registrationId
+    tenantId = body.tenant_id || body.tenantId
+    email = body.email
   } catch {
     return json({ error: 'Invalid JSON body' }, 400)
   }
 
-  if (!registrationId || typeof registrationId !== 'string') {
-    return json({ error: 'registration_id is required' }, 400)
+  if (!tenantId || typeof tenantId !== 'string' || !email || typeof email !== 'string') {
+    return json({ error: 'tenant_id and email are required' }, 400)
   }
 
   const supabase = createClient(supabaseUrl, serviceKey)
 
+  // Only notify for a registration that actually exists and was just created.
+  const since = new Date(Date.now() - 10 * 60 * 1000).toISOString()
   const { data: reg, error: regError } = await supabase
     .from('registrations')
     .select('id, full_name, email, phone, category, created_at, tenant_id')
-    .eq('id', registrationId)
+    .eq('tenant_id', tenantId)
+    .eq('email', email)
+    .gte('created_at', since)
+    .order('created_at', { ascending: false })
+    .limit(1)
     .maybeSingle()
+
 
   if (regError) {
     console.error('Registration lookup failed', regError.message)
