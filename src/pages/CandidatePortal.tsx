@@ -31,6 +31,12 @@ interface ExamRow { id: string; exam_date: string; exam_time: string; exam_type:
 interface RequestRow { id: string; requested_date: string; requested_time: string; exam_type: string; status: string; admin_response: string | null; created_at: string }
 
 const statusLabel = (s: string) => s === "pending" ? "Në pritje" : s === "approved" ? "Aprovuar" : s === "rejected" ? "Refuzuar" : s;
+const examStatusLabel = (s: string) => s === "planifikuar" ? "Planifikuar" : s === "kaluar" ? "Kaluar" : s === "deshtur" ? "Dështuar" : s === "anuluar" ? "Anuluar" : s;
+const examStatusClass = (s: string) =>
+  s === "kaluar" ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300" :
+  s === "deshtur" ? "bg-destructive/15 text-destructive" :
+  s === "anuluar" ? "bg-muted text-muted-foreground" :
+  "bg-primary/15 text-primary";
 const statusClass = (s: string) =>
   s === "approved" ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300" :
   s === "rejected" ? "bg-destructive/15 text-destructive" :
