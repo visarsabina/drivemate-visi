@@ -27,7 +27,7 @@ interface CandidateRow {
 
 interface PaymentRow { id: string; shuma: number; data: string }
 interface LessonRow { id: string; data: string; hours: number }
-interface ExamRow { id: string; exam_date: string; exam_time: string; exam_type: string; status: string }
+interface ExamRow { id: string; exam_date: string; exam_time: string; exam_type: string; status: string; location: string | null; notes: string | null; kategoria: string | null }
 interface RequestRow { id: string; requested_date: string; requested_time: string; exam_type: string; status: string; admin_response: string | null; created_at: string }
 
 const statusLabel = (s: string) => s === "pending" ? "Në pritje" : s === "approved" ? "Aprovuar" : s === "rejected" ? "Refuzuar" : s;
