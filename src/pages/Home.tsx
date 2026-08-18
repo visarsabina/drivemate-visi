@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import RegistrationDialog from "@/components/RegistrationDialog";
-import ExtraLessonsPromo from "@/components/ExtraLessonsPromo";
 import heroImg from "@/assets/hero-driving.jpg";
 import classroomImg from "@/assets/classroom.jpg";
 import successImg from "@/assets/success-student.jpg";
@@ -67,7 +66,6 @@ const Home = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
-  const [promoOpen, setPromoOpen] = useState(false);
   const [staff, setStaff] = useState<StaffMember[]>([]);
 
   // Auto-redirect logged-in admins straight to the panel (PWA "remember me")
@@ -181,7 +179,7 @@ const Home = () => {
             </div>
             <button
               type="button"
-              onClick={() => setPromoOpen(true)}
+              onClick={() => { setRegisterCategory("B"); setRegisterOpen(true); }}
               className="mt-6 group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-warning to-primary p-[2px] shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02]"
             >
               <span className="flex items-center gap-3 rounded-2xl bg-background/95 backdrop-blur px-5 py-3 text-left">
@@ -647,7 +645,6 @@ const Home = () => {
         tenantId={branding?.id ?? null}
         schoolName={schoolName}
       />
-      <ExtraLessonsPromo tenantId={branding?.id ?? null} schoolName={schoolName} open={promoOpen} onOpenChange={setPromoOpen} />
     </div>
   );
 };
