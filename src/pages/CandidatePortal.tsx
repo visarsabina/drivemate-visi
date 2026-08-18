@@ -89,7 +89,11 @@ const CandidatePortal = () => {
   const totalLessons = candidate?.total_lessons ?? 20;
   const remaining = Math.max(totalLessons - totalHours, 0);
 
-  const nextExam = exams.find((e) => new Date(`${e.exam_date}T${e.exam_time}`) >= new Date()) ?? exams[0];
+  const examDT = (e: ExamRow) => new Date(`${e.exam_date}T${e.exam_time || "00:00"}`);
+  const now = new Date();
+  const upcomingExams = exams.filter((e) => examDT(e) >= now).sort((a, b) => +examDT(a) - +examDT(b));
+  const pastExams = exams.filter((e) => examDT(e) < now).sort((a, b) => +examDT(b) - +examDT(a));
+  const nextExam = upcomingExams[0] ?? exams[exams.length - 1];
 
   const handleLogout = async () => {
     await signOut();
