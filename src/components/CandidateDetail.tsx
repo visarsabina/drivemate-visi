@@ -20,6 +20,29 @@ import { useAuth } from "@/context/AuthContext";
 import { parsePersonalNumber } from "@/lib/personalNumber";
 import { z } from "zod";
 import { escapeHtmlObject, escapeHtml as __esc } from "@/lib/escapeHtml";
+import { supabase } from "@/integrations/supabase/client";
+
+type ExamRow = {
+  id: string;
+  exam_date: string;
+  exam_time: string | null;
+  exam_type: string;
+  status: string;
+  location: string | null;
+  notes: string | null;
+  kategoria: string | null;
+};
+
+const examStatusLabel = (s: string) =>
+  s === "planifikuar" ? "Planifikuar" : s === "kaluar" ? "Kaluar" : s === "deshtur" ? "Dështuar" : "Anuluar";
+const examStatusClass = (s: string) =>
+  s === "kaluar"
+    ? "bg-emerald-100 text-emerald-700"
+    : s === "deshtur"
+    ? "bg-destructive/10 text-destructive"
+    : s === "anuluar"
+    ? "bg-muted text-muted-foreground"
+    : "bg-primary/10 text-primary";
 
 const editCandidateSchema = z.object({
   emri: z.string().trim().min(1, "Emri është i detyrueshëm").max(100, "Emri max 100 karaktere"),
@@ -112,6 +135,7 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
   const [numriPageses, setNumriPageses] = useState("");
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editForm, setEditForm] = useState<Candidate>(candidate);
+  const [exams, setExams] = useState<ExamRow[]>([]);
 
   useEffect(() => {
     if (autoEdit) {
@@ -120,6 +144,20 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoEdit, candidate.id]);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const { data } = await supabase
+        .from("candidate_exams")
+        .select("id, exam_date, exam_time, exam_type, status, location, notes, kategoria")
+        .eq("candidate_id", candidate.id)
+        .order("exam_date", { ascending: false });
+      if (active) setExams((data ?? []) as ExamRow[]);
+    })();
+    return () => { active = false; };
+  }, [candidate.id]);
+
 
   const openEditDialog = () => {
     setEditForm(candidate);
@@ -265,12 +303,39 @@ const CandidateDetail = ({ candidate, onBack, onVertetimiPrinted, onUpdate, onDe
       </div>
 
       <Tabs defaultValue="info" className="flex-1 min-h-0 flex flex-col lg:block lg:space-y-6">
-        <TabsList className="w-full grid grid-cols-4 h-auto shrink-0">
+        <TabsList className="w-full grid grid-cols-5 h-auto shrink-0">
           <TabsTrigger value="info" className="text-[11px] lg:text-sm py-1.5">Info</TabsTrigger>
           <TabsTrigger value="oret" className="text-[11px] lg:text-sm py-1.5">Orët</TabsTrigger>
+          <TabsTrigger value="termine" className="text-[11px] lg:text-sm py-1.5">Terminet</TabsTrigger>
           <TabsTrigger value="dok" className="text-[11px] lg:text-sm py-1.5">Dokumentet</TabsTrigger>
           <TabsTrigger value="pag" className="text-[11px] lg:text-sm py-1.5">Pagesat</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="termine" className="mt-2 lg:mt-0 flex-1 min-h-0 overflow-y-auto">
+          <div className="glass-card rounded-xl p-3 sm:p-6">
+            <h3 className="text-sm sm:text-lg font-semibold mb-3">Terminet e provimeve — {candidate.emri} {candidate.mbiemri}</h3>
+            {exams.length === 0 ? (
+              <p className="text-xs sm:text-sm text-muted-foreground">Nuk ka termine të regjistruara për këtë kandidat.</p>
+            ) : (
+              <ul className="divide-y divide-border">
+                {exams.map((e) => (
+                  <li key={e.id} className="py-2 flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">
+                        {e.exam_type === "teori" ? "Teori" : "Praktikë"} · {e.exam_date} {e.exam_time?.slice(0, 5) ?? ""}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {[e.kategoria && `Kategoria: ${e.kategoria}`, e.location, e.notes].filter(Boolean).join(" · ")}
+                      </p>
+                    </div>
+                    <span className={`text-xs px-2 py-0.5 rounded-md shrink-0 ${examStatusClass(e.status)}`}>{examStatusLabel(e.status)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </TabsContent>
+
 
         <TabsContent value="info" className="mt-2 lg:mt-0 flex-1 min-h-0 overflow-y-auto">
           <div className="glass-card rounded-xl p-3 sm:p-6">
