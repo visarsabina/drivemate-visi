@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import RegistrationDialog from "@/components/RegistrationDialog";
-import ExtraLessonsPromo from "@/components/ExtraLessonsPromo";
 import heroImg from "@/assets/hero-driving.jpg";
 import classroomImg from "@/assets/classroom.jpg";
 import successImg from "@/assets/success-student.jpg";
@@ -67,7 +66,6 @@ const Home = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
-  const [promoOpen, setPromoOpen] = useState(false);
   const [staff, setStaff] = useState<StaffMember[]>([]);
 
   // Auto-redirect logged-in admins straight to the panel (PWA "remember me")
@@ -78,6 +76,17 @@ const Home = () => {
     }
   }, [slug, session, roleChecked, isAdmin, navigate]);
 
+
+  // Auto-show the online registration modal for first-time visitors
+  useEffect(() => {
+    const seen = sessionStorage.getItem("registration-modal-seen");
+    if (seen) return;
+    const t = setTimeout(() => {
+      setRegisterOpen(true);
+      sessionStorage.setItem("registration-modal-seen", "1");
+    }, 600);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     if (!branding?.id) return;
@@ -179,19 +188,6 @@ const Home = () => {
                 Na Kontaktoni
               </Button>
             </div>
-            <button
-              type="button"
-              onClick={() => setPromoOpen(true)}
-              className="mt-6 group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-warning to-primary p-[2px] shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02]"
-            >
-              <span className="flex items-center gap-3 rounded-2xl bg-background/95 backdrop-blur px-5 py-3 text-left">
-                <Sparkles className="w-5 h-5 text-warning shrink-0" />
-                <span>
-                  <span className="block text-xs font-semibold text-warning uppercase tracking-wide">Ofertë e re</span>
-                  <span className="block text-sm md:text-base font-bold text-foreground">Rezervo Orë Plotësuese →</span>
-                </span>
-              </span>
-            </button>
           </div>
         </div>
         <button onClick={() => scrollTo("stats")} className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white" aria-label="Lëviz poshtë te statistikat">
@@ -647,7 +643,6 @@ const Home = () => {
         tenantId={branding?.id ?? null}
         schoolName={schoolName}
       />
-      <ExtraLessonsPromo tenantId={branding?.id ?? null} schoolName={schoolName} open={promoOpen} onOpenChange={setPromoOpen} />
     </div>
   );
 };
