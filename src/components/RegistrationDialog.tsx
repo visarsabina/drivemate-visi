@@ -130,6 +130,16 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
       return;
     }
 
+    // Notify the school by email (best-effort — never blocks the user).
+    supabase.functions
+      .invoke("notify-new-registration", {
+        body: { tenant_id: tenantId, email: result.data.email },
+      })
+      .catch((e) => console.error("notify-new-registration failed", e));
+
+
+
+
     setSubmitting(false);
     setSubmitted(true);
     toast({
