@@ -25,6 +25,11 @@ Deno.serve(async (req) => {
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
   const supabase = createClient(supabaseUrl, serviceKey)
 
+  let body: Record<string, unknown> = {}
+  try { body = await req.json() } catch { /* no body */ }
+  const testMode = body?.test === true
+  const testTenantId = typeof body?.tenantId === 'string' ? body.tenantId : null
+
   const today = new Date().toISOString().slice(0, 10)
   const results: Array<Record<string, unknown>> = []
 
@@ -44,6 +49,25 @@ Deno.serve(async (req) => {
 
   for (const t of tenants ?? []) {
     if (!t.email) continue
+    if (testTenantId && t.id !== testTenantId) continue
+
+    if (testMode) {
+      const { error: testErr } = await supabase.functions.invoke('send-transactional-email', {
+        body: {
+          templateName: 'expiry-alert',
+          recipientEmail: t.email,
+          idempotencyKey: `expiry-alert-test-${t.id}-${Date.now()}`,
+          templateData: {
+            schoolName: t.name,
+            vehicles: [{ title: 'TEST — Golf 5 (01-234-AB)', detail: 'regjistrimi skadon sot' }],
+            employees: [{ title: 'TEST — Instruktor Shembull', detail: 'licenca skadon nesër' }],
+          },
+        },
+      })
+      if (testErr) console.error('test send failed', t.id, testErr.message)
+      results.push({ tenant: t.id, email: t.email, test: true, sent: !testErr })
+      continue
+    }
 
     const [{ data: vehicles }, { data: employees }] = await Promise.all([
       supabase
