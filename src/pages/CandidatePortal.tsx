@@ -27,10 +27,16 @@ interface CandidateRow {
 
 interface PaymentRow { id: string; shuma: number; data: string }
 interface LessonRow { id: string; data: string; hours: number }
-interface ExamRow { id: string; exam_date: string; exam_time: string; exam_type: string; status: string }
+interface ExamRow { id: string; exam_date: string; exam_time: string; exam_type: string; status: string; location: string | null; notes: string | null; kategoria: string | null }
 interface RequestRow { id: string; requested_date: string; requested_time: string; exam_type: string; status: string; admin_response: string | null; created_at: string }
 
 const statusLabel = (s: string) => s === "pending" ? "Në pritje" : s === "approved" ? "Aprovuar" : s === "rejected" ? "Refuzuar" : s;
+const examStatusLabel = (s: string) => s === "planifikuar" ? "Planifikuar" : s === "kaluar" ? "Kaluar" : s === "deshtur" ? "Dështuar" : s === "anuluar" ? "Anuluar" : s;
+const examStatusClass = (s: string) =>
+  s === "kaluar" ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300" :
+  s === "deshtur" ? "bg-destructive/15 text-destructive" :
+  s === "anuluar" ? "bg-muted text-muted-foreground" :
+  "bg-primary/15 text-primary";
 const statusClass = (s: string) =>
   s === "approved" ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300" :
   s === "rejected" ? "bg-destructive/15 text-destructive" :
@@ -71,7 +77,7 @@ const CandidatePortal = () => {
     const [pRes, lRes, eRes, rRes, tRes] = await Promise.all([
       supabase.from("candidate_payments").select("id, shuma, data").eq("candidate_id", c.id).order("data", { ascending: false }),
       supabase.from("candidate_lessons").select("id, data, hours").eq("candidate_id", c.id).order("data", { ascending: false }),
-      supabase.from("candidate_exams").select("id, exam_date, exam_time, exam_type, status").eq("candidate_id", c.id).order("exam_date", { ascending: true }),
+      supabase.from("candidate_exams").select("id, exam_date, exam_time, exam_type, status, location, notes, kategoria").eq("candidate_id", c.id).order("exam_date", { ascending: true }),
       supabase.from("exam_requests").select("id, requested_date, requested_time, exam_type, status, admin_response, created_at").eq("candidate_id", c.id).order("created_at", { ascending: false }),
       supabase.from("tenants").select("name").eq("id", c.tenant_id).maybeSingle(),
     ]);
@@ -89,7 +95,11 @@ const CandidatePortal = () => {
   const totalLessons = candidate?.total_lessons ?? 20;
   const remaining = Math.max(totalLessons - totalHours, 0);
 
-  const nextExam = exams.find((e) => new Date(`${e.exam_date}T${e.exam_time}`) >= new Date()) ?? exams[0];
+  const examDT = (e: ExamRow) => new Date(`${e.exam_date}T${e.exam_time || "00:00"}`);
+  const now = new Date();
+  const upcomingExams = exams.filter((e) => examDT(e) >= now).sort((a, b) => +examDT(a) - +examDT(b));
+  const pastExams = exams.filter((e) => examDT(e) < now).sort((a, b) => +examDT(b) - +examDT(a));
+  const nextExam = upcomingExams[0] ?? exams[exams.length - 1];
 
   const handleLogout = async () => {
     await signOut();
@@ -222,21 +232,62 @@ const CandidatePortal = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="termini" className="mt-2 flex-1 overflow-y-auto">
+          <TabsContent value="termini" className="mt-2 flex-1 overflow-y-auto space-y-2">
             <Card className="p-3">
               <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                <Clock className="w-4 h-4" /> Termini i ardhshëm
+                <Clock className="w-4 h-4" /> Termini i ardhshëm — {candidate.emri} {candidate.mbiemri}
               </div>
               {nextExam ? (
-                <div className="text-sm">
-                  <p className="font-medium capitalize">{nextExam.exam_type === "teori" ? "Teori" : "Praktikë"}</p>
+                <div className="text-sm space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium">{nextExam.exam_type === "teori" ? "Teori" : "Praktikë"}</p>
+                    <span className={`text-xs px-2 py-0.5 rounded-md ${examStatusClass(nextExam.status)}`}>{examStatusLabel(nextExam.status)}</span>
+                  </div>
                   <p className="text-muted-foreground">{nextExam.exam_date} · {nextExam.exam_time?.slice(0, 5)}</p>
+                  {nextExam.kategoria && <p className="text-xs text-muted-foreground">Kategoria: {nextExam.kategoria}</p>}
+                  {nextExam.location && <p className="text-xs text-muted-foreground">Vendi: {nextExam.location}</p>}
+                  {nextExam.notes && <p className="text-xs text-muted-foreground">{nextExam.notes}</p>}
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground">Nuk ke termine të planifikuara.</p>
               )}
             </Card>
+
+            {upcomingExams.length > 1 && (
+              <Card className="p-3">
+                <p className="text-xs text-muted-foreground mb-2">Terminet e tjera</p>
+                <ul className="divide-y divide-border">
+                  {upcomingExams.slice(1).map((e) => (
+                    <li key={e.id} className="py-2 flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">{e.exam_type === "teori" ? "Teori" : "Praktikë"} · {e.exam_date} {e.exam_time?.slice(0, 5)}</p>
+                        {e.location && <p className="text-xs text-muted-foreground truncate">{e.location}</p>}
+                      </div>
+                      <span className={`text-xs px-2 py-0.5 rounded-md shrink-0 ${examStatusClass(e.status)}`}>{examStatusLabel(e.status)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
+
+            {pastExams.length > 0 && (
+              <Card className="p-3">
+                <p className="text-xs text-muted-foreground mb-2">Historiku i provimeve</p>
+                <ul className="divide-y divide-border">
+                  {pastExams.map((e) => (
+                    <li key={e.id} className="py-2 flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">{e.exam_type === "teori" ? "Teori" : "Praktikë"} · {e.exam_date} {e.exam_time?.slice(0, 5)}</p>
+                        {e.kategoria && <p className="text-xs text-muted-foreground truncate">Kategoria: {e.kategoria}</p>}
+                      </div>
+                      <span className={`text-xs px-2 py-0.5 rounded-md shrink-0 ${examStatusClass(e.status)}`}>{examStatusLabel(e.status)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
           </TabsContent>
+
 
           <TabsContent value="kerkesat" className="mt-2 flex-1 overflow-y-auto">
             <Card className="p-3">
