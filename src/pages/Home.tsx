@@ -145,7 +145,7 @@ const Home = () => {
             <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
-            <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Provo testin</button>
+            <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
             <Button size="sm" onClick={() => navigate("/login")}>Kyçu</Button>
           </div>
           <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Mbyll menynë" : "Hap menynë"} aria-expanded={mobileMenu}>
@@ -154,7 +154,7 @@ const Home = () => {
         </div>
         {mobileMenu && (
           <div className="md:hidden bg-background border-b border-border px-4 py-4 space-y-3">
-            {["Kryefaqja:hero", "Rreth Nesh:about", "Stafi:staff", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Provo testin:contact"].map((item) => {
+            {["Kryefaqja:hero", "Rreth Nesh:about", "Stafi:staff", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
               const [label, id] = item.split(":");
               return <button key={id} onClick={() => scrollTo(id)} className="block w-full text-left text-sm font-medium hover:text-primary">{label}</button>;
             })}
@@ -527,7 +527,7 @@ const Home = () => {
 
 
       {/* Footer */}
-      <footer className="bg-foreground text-background py-12">
+      <footer id="contact" className="bg-foreground text-background py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div>
@@ -552,7 +552,7 @@ const Home = () => {
                 <button onClick={() => scrollTo("about")} className="block hover:opacity-100">Rreth Nesh</button>
                 <button onClick={() => scrollTo("categories")} className="block hover:opacity-100">Kategoritë</button>
                 <button onClick={() => scrollTo("faq")} className="block hover:opacity-100">FAQ</button>
-                <button onClick={() => scrollTo("contact")} className="block hover:opacity-100">Provo testin</button>
+                <button onClick={() => scrollTo("contact")} className="block hover:opacity-100">Kontakti</button>
               </div>
             </div>
             <div>
