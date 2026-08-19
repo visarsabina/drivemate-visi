@@ -61,7 +61,7 @@ const stats = [
 const Home = () => {
   const navigate = useNavigate();
   const { slug } = useParams<{ slug?: string }>();
-  const { isAdmin, roleChecked, session } = useAuth();
+  const { isAdmin, roleChecked, session, loading: authLoading } = useAuth();
   const { branding, loading: brandingLoading, notFound } = usePublicTenantBranding(slug);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
@@ -79,7 +79,7 @@ const Home = () => {
 
   // Auto-show the demo test for first-time visitors
   useEffect(() => {
-    if (!slug && session && roleChecked && isAdmin) return;
+    if (authLoading || session) return;
     const seen = sessionStorage.getItem("demo-test-seen");
     if (seen) return;
     const t = setTimeout(() => {
@@ -87,7 +87,8 @@ const Home = () => {
       navigate("/provo-test");
     }, 600);
     return () => clearTimeout(t);
-  }, [slug, session, roleChecked, isAdmin, navigate]);
+  }, [authLoading, session, navigate]);
+
 
 
   useEffect(() => {
