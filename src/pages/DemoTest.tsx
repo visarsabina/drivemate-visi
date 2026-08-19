@@ -12,19 +12,15 @@ const DemoTest = () => {
       <CandidateTests
         candidateId="demo-public"
         category="B"
-        fixedTestIndex={1}
         onClose={() => navigate("/home")}
-        onResult={(r) => {
-          if (r.passed) setShowRegistration(true);
-        }}
+        onResult={() => setShowRegistration(true)}
       />
-
 
       <RegistrationDialog
         open={showRegistration}
         onOpenChange={setShowRegistration}
         defaultCategory="B"
-        promoNote="Urime! Kalove testin — regjistrohu online tani dhe përfito 10% zbritje."
+        promoNote="Faleminderit që provove testin! Regjistrohu online tani dhe përfito 20% zbritje."
       />
     </>
   );
