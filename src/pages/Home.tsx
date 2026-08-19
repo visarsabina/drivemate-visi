@@ -569,7 +569,7 @@ const Home = () => {
       {/* Footer */}
       <footer className="bg-foreground text-background py-12">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid sm:grid-cols-3 gap-8 mb-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <img src={logoSrc} alt={schoolName} width={32} height={32} className="brightness-200 rounded object-contain" />
@@ -578,12 +578,21 @@ const Home = () => {
               <p className="text-sm opacity-60">Partneri juaj i besuar për marrjen e patentës së shoferit.</p>
             </div>
             <div>
+              <h4 className="font-semibold mb-3">Kontakt</h4>
+              <div className="space-y-2 text-sm opacity-70">
+                {phoneLines.map((line) => <a key={line} href={`tel:${line.replace(/\s/g, "")}`} className="block hover:opacity-100">{line}</a>)}
+                {emailLines.map((line) => <a key={line} href={`mailto:${line}`} className="block hover:opacity-100">{line}</a>)}
+                {addressLines.map((line) => <p key={line} className="block">{line}</p>)}
+                <p className="block">Hënë - Shtunë, 09:30 - 18:00</p>
+              </div>
+            </div>
+            <div>
               <h4 className="font-semibold mb-3">Linqe të shpejta</h4>
               <div className="space-y-2 text-sm opacity-70">
                 <button onClick={() => scrollTo("about")} className="block hover:opacity-100">Rreth Nesh</button>
                 <button onClick={() => scrollTo("categories")} className="block hover:opacity-100">Kategoritë</button>
                 <button onClick={() => scrollTo("faq")} className="block hover:opacity-100">FAQ</button>
-                <button onClick={() => scrollTo("contact")} className="block hover:opacity-100">Kontakti</button>
+                <button onClick={() => scrollTo("contact")} className="block hover:opacity-100">Provo testin</button>
               </div>
             </div>
             <div>
@@ -600,6 +609,7 @@ const Home = () => {
           </div>
         </div>
       </footer>
+
 
       <RegistrationDialog
         open={registerOpen}
