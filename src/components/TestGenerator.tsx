@@ -683,7 +683,7 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
                         className="rounded-md border p-3 sm:p-4 print:mb-1.5 print:inline-block print:w-full print:rounded-none print:border-0 print:border-b print:p-0 print:pb-1.5 print:break-inside-avoid"
                       >
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3 print:flex-row print:gap-2">
-                          {question.image ? (
+                          {question.image || imageMap[question.id] ? (
                             <img
                               src={imageMap[question.id] || `${imageDir}${question.image}`}
                               alt={`Pyetja ${index + 1}`}
