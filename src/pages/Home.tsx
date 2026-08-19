@@ -20,7 +20,7 @@ import truckCeImg from "@/assets/truck-ce.jpg";
 import defaultLogo from "@/assets/logo.png";
 
 const categories = [
-  { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "20 orë teori + 20 praktike", price: "250€", icon: Car, image: carBImg },
+  { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "20 orë teori + 20 praktike", price: "300€", icon: Car, image: carBImg },
   { name: "BE", desc: "Automjete me rimorkio", age: "18+", duration: "6 ditë", price: "150€", icon: Car, image: carBeImg },
   { name: "C1", desc: "Automjete 3500-7500 kg", age: "18+", duration: "deri 45 ditë", price: "250€", icon: Truck, image: truckC1Img },
   { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "21 ditë", price: "300€", icon: Truck, image: truckCImg },
