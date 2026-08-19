@@ -312,7 +312,7 @@ const Home = () => {
                 Disponojmë me makina moderne, klasa teorike të pajisura, dhe instruktorë me përvojë të gjatë. Suksesi juaj është prioriteti ynë!
               </p>
               <div className="flex gap-4">
-                <Button onClick={() => scrollTo("contact")}>Na Kontaktoni</Button>
+                <Button onClick={() => navigate("/provo-test")}>Provo testin</Button>
                 <Button variant="outline" onClick={() => scrollTo("categories")}>Kategoritë</Button>
               </div>
             </div>
