@@ -270,7 +270,7 @@ const Home = () => {
                   <div className="border-t border-border pt-4 mb-4">
                     <div className="flex items-baseline justify-between mb-2">
                       <span className="text-sm text-muted-foreground">Çmimi total</span>
-                      <span className="text-lg font-bold text-foreground">250€</span>
+                      <span className="text-lg font-bold text-foreground">300€</span>
                     </div>
                     <div className="flex items-baseline justify-between">
                       <span className="text-sm text-muted-foreground">Numri i kësteve</span>
@@ -281,7 +281,7 @@ const Home = () => {
                   <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-5 text-center">
                     <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mb-1">Vetëm</div>
                     <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-5xl font-extrabold text-primary">42</span>
+                      <span className="text-5xl font-extrabold text-primary">50</span>
                       <span className="text-2xl font-bold text-primary">€</span>
                       <span className="text-sm text-muted-foreground ml-1">/muaj</span>
                     </div>
