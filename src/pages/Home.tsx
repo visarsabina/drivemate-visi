@@ -145,7 +145,7 @@ const Home = () => {
             <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
-            <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
+            <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Provo testin</button>
             <Button size="sm" onClick={() => navigate("/login")}>Kyçu</Button>
           </div>
           <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Mbyll menynë" : "Hap menynë"} aria-expanded={mobileMenu}>
