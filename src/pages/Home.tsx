@@ -181,13 +181,17 @@ const Home = () => {
               Instruktorë me përvojë, makina moderne dhe orar fleksibël – mëso shpejt, sigurt dhe me sukses të garantuar nga hera e parë.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" onClick={() => scrollTo("categories")} className="text-base px-8">
+              <Button size="lg" onClick={() => navigate("/provo-test")} className="text-base px-8">
+                Provo një test
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => scrollTo("categories")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
                 Shiko Kategoritë
               </Button>
               <Button size="lg" variant="outline" onClick={() => scrollTo("contact")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
                 Na Kontaktoni
               </Button>
             </div>
+
           </div>
         </div>
         <button onClick={() => scrollTo("stats")} className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white" aria-label="Lëviz poshtë te statistikat">

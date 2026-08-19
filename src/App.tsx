@@ -15,6 +15,8 @@ import CandidatePortal from "./pages/CandidatePortal.tsx";
 import Trust from "./pages/Trust.tsx";
 import OAuthConsent from "./pages/OAuthConsent.tsx";
 import Unsubscribe from "./pages/Unsubscribe.tsx";
+import DemoTest from "./pages/DemoTest.tsx";
+
 import ProtectedRoute from "@/components/ProtectedRoute";
 import CandidateRoute from "@/components/CandidateRoute";
 import SuperAdminRoute from "@/components/SuperAdminRoute";
@@ -39,6 +41,8 @@ const App = () => (
             <Route path="/privacy" element={<Trust />} />
             <Route path="/security" element={<Trust />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
+            <Route path="/provo-test" element={<DemoTest />} />
+
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             {/* Legacy login route -> redirect to secure auth */}
             <Route path="/login" element={<Navigate to="/auth" replace />} />
