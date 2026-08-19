@@ -26,6 +26,8 @@ import { toast } from "sonner";
 import builtinBank from "@/data/questionBank.json";
 import builtinBankC from "@/data/questionBankC.json";
 import { Candidate } from "@/types/candidate";
+import { useQuestionOverrides } from "@/hooks/useQuestionOverrides";
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -249,21 +251,39 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
   const effectiveCount = bankSource === "builtin" ? builtinFor.count : QUESTION_COUNT;
   const imageDir = bankSource === "builtin" ? builtinFor.imageDir : "/literatura/";
 
+  // Super-admin overrides (edited text/options + replaced images)
+  const { imageMap, textMap } = useQuestionOverrides();
+
+  const effectiveBank = useMemo<ParsedQuestion[]>(() => {
+    return questionBank.map((q) => {
+      const o = textMap[q.id];
+      if (!o) return q;
+      const opts =
+        o.options && o.options.length >= 2
+          ? o.options.slice(0, OPTION_KEYS.length).map((text, idx) => ({ key: OPTION_KEYS[idx], text }))
+          : q.options;
+      let correctKey = q.correctKey;
+      if (o.correctKey && opts.some((x) => x.key === o.correctKey)) correctKey = o.correctKey;
+      else if (!opts.some((x) => x.key === correctKey)) correctKey = opts[0].key;
+      return { ...q, text: o.text?.trim() ? o.text.trim() : q.text, options: opts, correctKey };
+    });
+  }, [questionBank, textMap]);
+
   const summary = useMemo(
-    () => ({ total: questionBank.length, enough: questionBank.length >= effectiveCount }),
-    [questionBank, effectiveCount],
+    () => ({ total: effectiveBank.length, enough: effectiveBank.length >= effectiveCount }),
+    [effectiveBank, effectiveCount],
   );
 
   const createGeneratedTest = (candidate: TestCandidate) => {
     const count = effectiveCount;
-    if (questionBank.length < count) {
+    if (effectiveBank.length < count) {
       toast.error("Nuk ka pyetje të mjaftueshme");
       return;
     }
 
     const MIN_NO_IMAGE = Math.min(6, Math.max(0, count - 1));
-    const withoutImage = shuffleArray(questionBank.filter((q) => !q.image));
-    const withImage = shuffleArray(questionBank.filter((q) => !!q.image));
+    const withoutImage = shuffleArray(effectiveBank.filter((q) => !q.image));
+    const withImage = shuffleArray(effectiveBank.filter((q) => !!q.image));
     const noImageCount = Math.min(MIN_NO_IMAGE, withoutImage.length);
     const picked = [
       ...withoutImage.slice(0, noImageCount),
@@ -271,9 +291,10 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
     ];
     if (picked.length < count) {
       const used = new Set(picked.map((q) => q.id));
-      const rest = questionBank.filter((q) => !used.has(q.id));
+      const rest = effectiveBank.filter((q) => !used.has(q.id));
       picked.push(...shuffleArray(rest).slice(0, count - picked.length));
     }
+
     const selectedQuestions = shuffleArray(picked);
 
     const minCorrect = Math.ceil((PASS_THRESHOLD / 100) * count);
@@ -662,9 +683,9 @@ const TestGenerator = ({ candidates, initialCandidateId, onBack }: TestGenerator
                         className="rounded-md border p-3 sm:p-4 print:mb-1.5 print:inline-block print:w-full print:rounded-none print:border-0 print:border-b print:p-0 print:pb-1.5 print:break-inside-avoid"
                       >
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3 print:flex-row print:gap-2">
-                          {question.image ? (
+                          {question.image || imageMap[question.id] ? (
                             <img
-                              src={`${imageDir}${question.image}`}
+                              src={imageMap[question.id] || `${imageDir}${question.image}`}
                               alt={`Pyetja ${index + 1}`}
                               loading="lazy"
                               onError={(e) => {
