@@ -524,46 +524,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Contact replaced by Test CTA */}
-      <section id="contact" className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Përgatitu për provimin</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2">Provoje veten në testin e patentës</h2>
-          </div>
-          <div className="rounded-3xl bg-gradient-to-br from-primary via-primary to-primary/80 p-8 md:p-12 shadow-2xl text-center text-primary-foreground relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-2xl" />
-            <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-white/10 blur-2xl" />
-            <div className="relative">
-              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
-                <BookOpen className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-3">Provo një test interaktiv kategorie B</h3>
-              <p className="text-base md:text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-                Përgatitu për provimin me një test interaktiv kategorie B. Pa regjistrim, menjëherë, falas.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  onClick={() => navigate("/provo-test")}
-                  className="text-base px-8 font-bold shadow-xl hover:scale-105 transition-transform"
-                >
-                  Provo një test
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => scrollTo("categories")}
-                  className="text-base px-8 border-white/50 text-white hover:bg-white/20 backdrop-blur-sm"
-                >
-                  Shiko Kategoritë
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
 
       {/* Footer */}
