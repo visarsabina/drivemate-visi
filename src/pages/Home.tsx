@@ -599,6 +599,19 @@ const Home = () => {
               />
             </div>
           </div>
+
+          {/* Test demo CTA */}
+          <div className="mt-16 text-center">
+            <div className="rounded-2xl bg-primary/10 border border-primary/20 p-8 md:p-12">
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Provoje veten në testin e patentës</h3>
+              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                Përgatitu për provimin me një test interaktiv kategorie B. Pa regjistrim, menjëherë falas.
+              </p>
+              <Button size="lg" onClick={() => navigate("/provo-test")} className="text-base px-8">
+                Provo një test
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 
