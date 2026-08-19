@@ -39,6 +39,8 @@ const App = () => (
             <Route path="/privacy" element={<Trust />} />
             <Route path="/security" element={<Trust />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
+            <Route path="/provo-test" element={<DemoTest />} />
+
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             {/* Legacy login route -> redirect to secure auth */}
             <Route path="/login" element={<Navigate to="/auth" replace />} />
