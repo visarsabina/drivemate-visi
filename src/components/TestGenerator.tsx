@@ -26,6 +26,8 @@ import { toast } from "sonner";
 import builtinBank from "@/data/questionBank.json";
 import builtinBankC from "@/data/questionBankC.json";
 import { Candidate } from "@/types/candidate";
+import { useQuestionOverrides } from "@/hooks/useQuestionOverrides";
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
