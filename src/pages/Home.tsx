@@ -181,9 +181,6 @@ const Home = () => {
               Instruktorë me përvojë, makina moderne dhe orar fleksibël – mëso shpejt, sigurt dhe me sukses të garantuar nga hera e parë.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" onClick={() => navigate("/provo-test")} className="text-base px-8">
-                Provo një test
-              </Button>
               <Button size="lg" variant="outline" onClick={() => scrollTo("categories")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
                 Shiko Kategoritë
               </Button>
@@ -600,6 +597,19 @@ const Home = () => {
                 style={{ border: 0 }}
                 allowFullScreen
               />
+            </div>
+          </div>
+
+          {/* Test demo CTA */}
+          <div className="mt-16 text-center">
+            <div className="rounded-2xl bg-primary/10 border border-primary/20 p-8 md:p-12">
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Provoje veten në testin e patentës</h3>
+              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                Përgatitu për provimin me një test interaktiv kategorie B. Pa regjistrim, menjëherë falas.
+              </p>
+              <Button size="lg" onClick={() => navigate("/provo-test")} className="text-base px-8">
+                Provo një test
+              </Button>
             </div>
           </div>
         </div>
