@@ -53,9 +53,11 @@ interface RegistrationDialogProps {
   tenantId?: string | null;
   /** Optional school name to show in the dialog title. */
   schoolName?: string;
+  /** Optional promo message shown above the form (e.g. discount after passing the demo test). */
+  promoNote?: string;
 }
 
-const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId: tenantIdProp, schoolName }: RegistrationDialogProps) => {
+const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId: tenantIdProp, schoolName, promoNote }: RegistrationDialogProps) => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -173,6 +175,11 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
                 Plotëso formularin dhe ne do t'ju kontaktojmë së shpejti.
               </DialogDescription>
             </DialogHeader>
+            {promoNote && (
+              <div className="rounded-md border-2 border-emerald-500 bg-emerald-500/10 px-3 py-2 text-sm font-medium text-emerald-700">
+                {promoNote}
+              </div>
+            )}
             {form.category === "B" && (
               <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
                 <div className="font-semibold text-primary mb-1">🎉 Ofertë: 6 këste pa interes</div>
