@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { usePublicTenantBranding } from "@/hooks/useTenantBranding";
-import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2, User, Navigation } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, ChevronDown, Star, Users, Award, Car, Truck, Bus, Menu, X, BookOpen, Download, Sparkles, CreditCard, CheckCircle2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -145,7 +145,7 @@ const Home = () => {
             <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
-            <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
+            <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Provo testin</button>
             <Button size="sm" onClick={() => navigate("/login")}>Kyçu</Button>
           </div>
           <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Mbyll menynë" : "Hap menynë"} aria-expanded={mobileMenu}>
@@ -154,7 +154,7 @@ const Home = () => {
         </div>
         {mobileMenu && (
           <div className="md:hidden bg-background border-b border-border px-4 py-4 space-y-3">
-            {["Kryefaqja:hero", "Rreth Nesh:about", "Stafi:staff", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
+            {["Kryefaqja:hero", "Rreth Nesh:about", "Stafi:staff", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Provo testin:contact"].map((item) => {
               const [label, id] = item.split(":");
               return <button key={id} onClick={() => scrollTo(id)} className="block w-full text-left text-sm font-medium hover:text-primary">{label}</button>;
             })}
@@ -184,8 +184,8 @@ const Home = () => {
               <Button size="lg" variant="outline" onClick={() => scrollTo("categories")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
                 Shiko Kategoritë
               </Button>
-              <Button size="lg" variant="outline" onClick={() => scrollTo("contact")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
-                Na Kontaktoni
+              <Button size="lg" variant="outline" onClick={() => navigate("/provo-test")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
+                Provo një test
               </Button>
             </div>
 
@@ -312,7 +312,7 @@ const Home = () => {
                 Disponojmë me makina moderne, klasa teorike të pajisura, dhe instruktorë me përvojë të gjatë. Suksesi juaj është prioriteti ynë!
               </p>
               <div className="flex gap-4">
-                <Button onClick={() => scrollTo("contact")}>Na Kontaktoni</Button>
+                <Button onClick={() => navigate("/provo-test")}>Provo testin</Button>
                 <Button variant="outline" onClick={() => scrollTo("categories")}>Kategoritë</Button>
               </div>
             </div>
@@ -524,101 +524,52 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Contact */}
+      {/* Contact replaced by Test CTA */}
       <section id="contact" className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Kontakti</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2">Na kontaktoni</h2>
+            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Përgatitu për provimin</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2">Provoje veten në testin e patentës</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Phone, title: "Telefoni", lines: phoneLines, href: phoneLines[0] ? `tel:${phoneLines[0].replace(/\s/g, "")}` : undefined },
-              { icon: Mail, title: "Email", lines: emailLines, href: emailLines[0] ? `mailto:${emailLines[0]}` : undefined },
-              { icon: MapPin, title: "Adresa", lines: addressLines, href: "https://maps.app.goo.gl/KfLzQf8L6aAybqvu8" },
-              { icon: Clock, title: "Orari", lines: ["Hënë - Shtunë", "09:30 - 18:00"] },
-            ].map((c) => {
-              const Icon = c.icon;
-              const inner = (
-                <CardContent className="p-6">
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">{c.title}</h3>
-                  {c.lines.map((line) => (
-                    <p key={line} className="text-sm text-muted-foreground">{line}</p>
-                  ))}
-                </CardContent>
-              );
-              const isExternal = c.href?.startsWith("http");
-              return (
-                <Card key={c.title} className="text-center hover:shadow-lg transition-shadow">
-                  {c.href ? (
-                    <a
-                      href={c.href}
-                      target={isExternal ? "_blank" : undefined}
-                      rel={isExternal ? "noopener noreferrer" : undefined}
-                      className="block"
-                      aria-label={`${c.title}: ${c.lines.join(", ")}`}
-                    >
-                      {inner}
-                    </a>
-                  ) : (
-                    inner
-                  )}
-                </Card>
-              );
-            })}
-          </div>
-
-          {/* Location */}
-          <div className="mt-10">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold">{schoolName}</h3>
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button className="gap-2">
-                  <Navigation className="w-4 h-4" />
-                  Drejtimet
-                </Button>
-              </a>
-            </div>
-            <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-              <iframe
-                title={`Lokacioni i ${schoolName} në hartë`}
-                src={`https://www.google.com/maps?q=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}&output=embed`}
-                width="100%"
-                height="360"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                style={{ border: 0 }}
-                allowFullScreen
-              />
-            </div>
-          </div>
-
-          {/* Test demo CTA */}
-          <div className="mt-16 text-center">
-            <div className="rounded-2xl bg-primary/10 border border-primary/20 p-8 md:p-12">
-              <h3 className="text-2xl md:text-3xl font-bold mb-3">Provoje veten në testin e patentës</h3>
-              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Përgatitu për provimin me një test interaktiv kategorie B. Pa regjistrim, menjëherë falas.
+          <div className="rounded-3xl bg-gradient-to-br from-primary via-primary to-primary/80 p-8 md:p-12 shadow-2xl text-center text-primary-foreground relative overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-white/10 blur-2xl" />
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
+                <BookOpen className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Provo një test interaktiv kategorie B</h3>
+              <p className="text-base md:text-lg opacity-90 mb-8 max-w-2xl mx-auto">
+                Përgatitu për provimin me një test interaktiv kategorie B. Pa regjistrim, menjëherë, falas.
               </p>
-              <Button size="lg" onClick={() => navigate("/provo-test")} className="text-base px-8">
-                Provo një test
-              </Button>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  onClick={() => navigate("/provo-test")}
+                  className="text-base px-8 font-bold shadow-xl hover:scale-105 transition-transform"
+                >
+                  Provo një test
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => scrollTo("categories")}
+                  className="text-base px-8 border-white/50 text-white hover:bg-white/20 backdrop-blur-sm"
+                >
+                  Shiko Kategoritë
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+
       {/* Footer */}
       <footer className="bg-foreground text-background py-12">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid sm:grid-cols-3 gap-8 mb-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <img src={logoSrc} alt={schoolName} width={32} height={32} className="brightness-200 rounded object-contain" />
@@ -627,12 +578,21 @@ const Home = () => {
               <p className="text-sm opacity-60">Partneri juaj i besuar për marrjen e patentës së shoferit.</p>
             </div>
             <div>
+              <h4 className="font-semibold mb-3">Kontakt</h4>
+              <div className="space-y-2 text-sm opacity-70">
+                {phoneLines.map((line) => <a key={line} href={`tel:${line.replace(/\s/g, "")}`} className="block hover:opacity-100">{line}</a>)}
+                {emailLines.map((line) => <a key={line} href={`mailto:${line}`} className="block hover:opacity-100">{line}</a>)}
+                {addressLines.map((line) => <p key={line} className="block">{line}</p>)}
+                <p className="block">Hënë - Shtunë, 09:30 - 18:00</p>
+              </div>
+            </div>
+            <div>
               <h4 className="font-semibold mb-3">Linqe të shpejta</h4>
               <div className="space-y-2 text-sm opacity-70">
                 <button onClick={() => scrollTo("about")} className="block hover:opacity-100">Rreth Nesh</button>
                 <button onClick={() => scrollTo("categories")} className="block hover:opacity-100">Kategoritë</button>
                 <button onClick={() => scrollTo("faq")} className="block hover:opacity-100">FAQ</button>
-                <button onClick={() => scrollTo("contact")} className="block hover:opacity-100">Kontakti</button>
+                <button onClick={() => scrollTo("contact")} className="block hover:opacity-100">Provo testin</button>
               </div>
             </div>
             <div>
@@ -649,6 +609,7 @@ const Home = () => {
           </div>
         </div>
       </footer>
+
 
       <RegistrationDialog
         open={registerOpen}
