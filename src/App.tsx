@@ -15,6 +15,8 @@ import CandidatePortal from "./pages/CandidatePortal.tsx";
 import Trust from "./pages/Trust.tsx";
 import OAuthConsent from "./pages/OAuthConsent.tsx";
 import Unsubscribe from "./pages/Unsubscribe.tsx";
+import DemoTest from "./pages/DemoTest.tsx";
+
 import ProtectedRoute from "@/components/ProtectedRoute";
 import CandidateRoute from "@/components/CandidateRoute";
 import SuperAdminRoute from "@/components/SuperAdminRoute";
