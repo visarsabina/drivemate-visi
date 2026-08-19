@@ -61,7 +61,7 @@ const stats = [
 const Home = () => {
   const navigate = useNavigate();
   const { slug } = useParams<{ slug?: string }>();
-  const { isAdmin, roleChecked, session } = useAuth();
+  const { isAdmin, roleChecked, session, loading: authLoading } = useAuth();
   const { branding, loading: brandingLoading, notFound } = usePublicTenantBranding(slug);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
@@ -77,16 +77,19 @@ const Home = () => {
   }, [slug, session, roleChecked, isAdmin, navigate]);
 
 
-  // Auto-show the online registration modal for first-time visitors
+  // Auto-show the demo test for first-time visitors
   useEffect(() => {
-    const seen = sessionStorage.getItem("registration-modal-seen");
+    if (authLoading || session) return;
+    const seen = sessionStorage.getItem("demo-test-seen");
     if (seen) return;
     const t = setTimeout(() => {
-      setRegisterOpen(true);
-      sessionStorage.setItem("registration-modal-seen", "1");
+      sessionStorage.setItem("demo-test-seen", "1");
+      navigate("/provo-test");
     }, 600);
     return () => clearTimeout(t);
-  }, []);
+  }, [authLoading, session, navigate]);
+
+
 
   useEffect(() => {
     if (!branding?.id) return;
