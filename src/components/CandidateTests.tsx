@@ -196,6 +196,10 @@ interface Props {
   onClose: () => void;
   /** Start directly in a random test; exiting the test calls onClose. */
   autoStartRandom?: boolean;
+  /** Start directly in a specific test index (0-based); exiting calls onClose. */
+  fixedTestIndex?: number;
+  /** Called with the finished result (used e.g. for the public demo test). */
+  onResult?: (r: Result) => void;
 }
 
 // Category-specific test config
@@ -218,11 +222,11 @@ function getTestsForCategory(category?: string): { tests: Q[][]; imageDir: strin
   return { tests, imageDir: "/literatura/" };
 }
 
-export default function CandidateTests({ candidateId, category, onClose, autoStartRandom }: Props) {
+export default function CandidateTests({ candidateId, category, onClose, autoStartRandom, fixedTestIndex, onResult }: Props) {
   const { tests, imageDir } = useMemo(() => getTestsForCategory(category), [category]);
   const testCount = tests.length;
   const [activeTest, setActiveTest] = useState<number | null>(
-    autoStartRandom ? Math.floor(Math.random() * Math.max(testCount, 1)) : null
+    fixedTestIndex != null ? fixedTestIndex : autoStartRandom ? Math.floor(Math.random() * Math.max(testCount, 1)) : null
   );
   const [results, setResults] = useState<Record<number, Result>>({});
 
@@ -237,7 +241,7 @@ export default function CandidateTests({ candidateId, category, onClose, autoSta
         questions={tests[activeTest]}
         imageDir={imageDir}
         onExit={() => {
-          if (autoStartRandom) {
+          if (autoStartRandom || fixedTestIndex != null) {
             onClose();
             return;
           }
@@ -247,6 +251,7 @@ export default function CandidateTests({ candidateId, category, onClose, autoSta
         onFinish={(r) => {
           saveResult(candidateId, activeTest, r);
           setResults(loadResults(candidateId));
+          onResult?.(r);
         }}
       />
     );
