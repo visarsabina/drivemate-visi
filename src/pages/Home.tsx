@@ -77,16 +77,18 @@ const Home = () => {
   }, [slug, session, roleChecked, isAdmin, navigate]);
 
 
-  // Auto-show the online registration modal for first-time visitors
+  // Auto-show the demo test for first-time visitors
   useEffect(() => {
-    const seen = sessionStorage.getItem("registration-modal-seen");
+    if (!slug && session && roleChecked && isAdmin) return;
+    const seen = sessionStorage.getItem("demo-test-seen");
     if (seen) return;
     const t = setTimeout(() => {
-      setRegisterOpen(true);
-      sessionStorage.setItem("registration-modal-seen", "1");
+      sessionStorage.setItem("demo-test-seen", "1");
+      navigate("/provo-test");
     }, 600);
     return () => clearTimeout(t);
-  }, []);
+  }, [slug, session, roleChecked, isAdmin, navigate]);
+
 
   useEffect(() => {
     if (!branding?.id) return;
