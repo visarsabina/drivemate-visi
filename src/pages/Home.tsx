@@ -145,7 +145,7 @@ const Home = () => {
             <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
-            <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Provo testin</button>
+            <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
             <Button size="sm" onClick={() => navigate("/login")}>Kyçu</Button>
           </div>
           <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Mbyll menynë" : "Hap menynë"} aria-expanded={mobileMenu}>
@@ -154,7 +154,7 @@ const Home = () => {
         </div>
         {mobileMenu && (
           <div className="md:hidden bg-background border-b border-border px-4 py-4 space-y-3">
-            {["Kryefaqja:hero", "Rreth Nesh:about", "Stafi:staff", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Provo testin:contact"].map((item) => {
+            {["Kryefaqja:hero", "Rreth Nesh:about", "Stafi:staff", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
               const [label, id] = item.split(":");
               return <button key={id} onClick={() => scrollTo(id)} className="block w-full text-left text-sm font-medium hover:text-primary">{label}</button>;
             })}
@@ -183,9 +183,6 @@ const Home = () => {
             <div className="flex flex-wrap gap-4">
               <Button size="lg" variant="outline" onClick={() => scrollTo("categories")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
                 Shiko Kategoritë
-              </Button>
-              <Button size="lg" variant="outline" onClick={() => navigate("/provo-test")} className="text-base px-8 bg-white/20 border-white/50 text-white hover:bg-white/30 backdrop-blur-sm">
-                Provo një test
               </Button>
             </div>
 
@@ -312,8 +309,8 @@ const Home = () => {
                 Disponojmë me makina moderne, klasa teorike të pajisura, dhe instruktorë me përvojë të gjatë. Suksesi juaj është prioriteti ynë!
               </p>
               <div className="flex gap-4">
-                <Button onClick={() => navigate("/provo-test")}>Provo testin</Button>
-                <Button variant="outline" onClick={() => scrollTo("categories")}>Kategoritë</Button>
+                <Button onClick={() => openRegister()}>Regjistrohu Tani</Button>
+                <Button variant="outline" onClick={() => scrollTo("categories")}>Shiko Kategoritë</Button>
               </div>
             </div>
             <div className="relative">
@@ -524,50 +521,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Contact replaced by Test CTA */}
-      <section id="contact" className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Përgatitu për provimin</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2">Provoje veten në testin e patentës</h2>
-          </div>
-          <div className="rounded-3xl bg-gradient-to-br from-primary via-primary to-primary/80 p-8 md:p-12 shadow-2xl text-center text-primary-foreground relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-2xl" />
-            <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-white/10 blur-2xl" />
-            <div className="relative">
-              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
-                <BookOpen className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-3">Provo një test interaktiv kategorie B</h3>
-              <p className="text-base md:text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-                Përgatitu për provimin me një test interaktiv kategorie B. Pa regjistrim, menjëherë, falas.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  onClick={() => navigate("/provo-test")}
-                  className="text-base px-8 font-bold shadow-xl hover:scale-105 transition-transform"
-                >
-                  Provo një test
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => scrollTo("categories")}
-                  className="text-base px-8 border-white/50 text-white hover:bg-white/20 backdrop-blur-sm"
-                >
-                  Shiko Kategoritë
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
 
       {/* Footer */}
-      <footer className="bg-foreground text-background py-12">
+      <footer id="contact" className="bg-foreground text-background py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div>
@@ -592,7 +549,7 @@ const Home = () => {
                 <button onClick={() => scrollTo("about")} className="block hover:opacity-100">Rreth Nesh</button>
                 <button onClick={() => scrollTo("categories")} className="block hover:opacity-100">Kategoritë</button>
                 <button onClick={() => scrollTo("faq")} className="block hover:opacity-100">FAQ</button>
-                <button onClick={() => scrollTo("contact")} className="block hover:opacity-100">Provo testin</button>
+                <button onClick={() => scrollTo("contact")} className="block hover:opacity-100">Kontakti</button>
               </div>
             </div>
             <div>
