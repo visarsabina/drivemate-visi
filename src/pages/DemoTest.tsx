@@ -12,6 +12,7 @@ const DemoTest = () => {
       <CandidateTests
         candidateId="demo-public"
         category="B"
+        fixedTestIndex={1}
         onClose={() => navigate("/home")}
         onResult={() => setShowRegistration(true)}
       />
