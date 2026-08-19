@@ -20,7 +20,7 @@ import truckCeImg from "@/assets/truck-ce.jpg";
 import defaultLogo from "@/assets/logo.png";
 
 const categories = [
-  { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "20 orë teori + 20 praktike", price: "300€", icon: Car, image: carBImg },
+  { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "20 orë teori + 20 praktike", price: "250€", icon: Car, image: carBImg },
   { name: "BE", desc: "Automjete me rimorkio", age: "18+", duration: "6 ditë", price: "150€", icon: Car, image: carBeImg },
   { name: "C1", desc: "Automjete 3500-7500 kg", age: "18+", duration: "deri 45 ditë", price: "250€", icon: Truck, image: truckC1Img },
   { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "21 ditë", price: "300€", icon: Truck, image: truckCImg },
@@ -270,7 +270,7 @@ const Home = () => {
                   <div className="border-t border-border pt-4 mb-4">
                     <div className="flex items-baseline justify-between mb-2">
                       <span className="text-sm text-muted-foreground">Çmimi total</span>
-                      <span className="text-lg font-bold text-foreground">300€</span>
+                      <span className="text-lg font-bold text-foreground">250€</span>
                     </div>
                     <div className="flex items-baseline justify-between">
                       <span className="text-sm text-muted-foreground">Numri i kësteve</span>
@@ -281,7 +281,7 @@ const Home = () => {
                   <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-5 text-center">
                     <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mb-1">Vetëm</div>
                     <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-5xl font-extrabold text-primary">50</span>
+                      <span className="text-5xl font-extrabold text-primary">42</span>
                       <span className="text-2xl font-bold text-primary">€</span>
                       <span className="text-sm text-muted-foreground ml-1">/muaj</span>
                     </div>
