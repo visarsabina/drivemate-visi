@@ -184,7 +184,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
               <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
                 <div className="font-semibold text-primary mb-1">🎉 Ofertë: 6 këste pa interes</div>
                 <div className="text-muted-foreground">
-                  Kategoria B – 250€ total, vetëm <strong className="text-foreground">42€/muaj</strong> për 6 muaj.
+                  Kategoria B – 300€ total, vetëm <strong className="text-foreground">50€/muaj</strong> për 6 muaj.
                 </div>
               </div>
             )}
