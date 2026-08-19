@@ -194,6 +194,8 @@ interface Props {
   candidateId: string;
   category?: string;
   onClose: () => void;
+  /** Start directly in a random test; exiting the test calls onClose. */
+  autoStartRandom?: boolean;
 }
 
 // Category-specific test config
@@ -216,24 +218,29 @@ function getTestsForCategory(category?: string): { tests: Q[][]; imageDir: strin
   return { tests, imageDir: "/literatura/" };
 }
 
-export default function CandidateTests({ candidateId, category, onClose }: Props) {
-  const [activeTest, setActiveTest] = useState<number | null>(null);
-  const [results, setResults] = useState<Record<number, Result>>({});
-
+export default function CandidateTests({ candidateId, category, onClose, autoStartRandom }: Props) {
   const { tests, imageDir } = useMemo(() => getTestsForCategory(category), [category]);
   const testCount = tests.length;
+  const [activeTest, setActiveTest] = useState<number | null>(
+    autoStartRandom ? Math.floor(Math.random() * Math.max(testCount, 1)) : null
+  );
+  const [results, setResults] = useState<Record<number, Result>>({});
 
   useEffect(() => {
     setResults(loadResults(candidateId));
   }, [candidateId]);
 
-  if (activeTest !== null) {
+  if (activeTest !== null && tests[activeTest]) {
     return (
       <TestRunner
         testIndex={activeTest}
         questions={tests[activeTest]}
         imageDir={imageDir}
         onExit={() => {
+          if (autoStartRandom) {
+            onClose();
+            return;
+          }
           setActiveTest(null);
           setResults(loadResults(candidateId));
         }}
@@ -244,6 +251,7 @@ export default function CandidateTests({ candidateId, category, onClose }: Props
       />
     );
   }
+
 
   return (
     <div className="min-h-screen bg-muted/30">
