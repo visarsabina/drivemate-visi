@@ -524,96 +524,47 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Contact */}
+      {/* Contact replaced by Test CTA */}
       <section id="contact" className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Kontakti</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2">Na kontaktoni</h2>
+            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Përgatitu për provimin</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2">Provoje veten në testin e patentës</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Phone, title: "Telefoni", lines: phoneLines, href: phoneLines[0] ? `tel:${phoneLines[0].replace(/\s/g, "")}` : undefined },
-              { icon: Mail, title: "Email", lines: emailLines, href: emailLines[0] ? `mailto:${emailLines[0]}` : undefined },
-              { icon: MapPin, title: "Adresa", lines: addressLines, href: "https://maps.app.goo.gl/KfLzQf8L6aAybqvu8" },
-              { icon: Clock, title: "Orari", lines: ["Hënë - Shtunë", "09:30 - 18:00"] },
-            ].map((c) => {
-              const Icon = c.icon;
-              const inner = (
-                <CardContent className="p-6">
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">{c.title}</h3>
-                  {c.lines.map((line) => (
-                    <p key={line} className="text-sm text-muted-foreground">{line}</p>
-                  ))}
-                </CardContent>
-              );
-              const isExternal = c.href?.startsWith("http");
-              return (
-                <Card key={c.title} className="text-center hover:shadow-lg transition-shadow">
-                  {c.href ? (
-                    <a
-                      href={c.href}
-                      target={isExternal ? "_blank" : undefined}
-                      rel={isExternal ? "noopener noreferrer" : undefined}
-                      className="block"
-                      aria-label={`${c.title}: ${c.lines.join(", ")}`}
-                    >
-                      {inner}
-                    </a>
-                  ) : (
-                    inner
-                  )}
-                </Card>
-              );
-            })}
-          </div>
-
-          {/* Location */}
-          <div className="mt-10">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold">{schoolName}</h3>
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button className="gap-2">
-                  <Navigation className="w-4 h-4" />
-                  Drejtimet
-                </Button>
-              </a>
-            </div>
-            <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-              <iframe
-                title={`Lokacioni i ${schoolName} në hartë`}
-                src={`https://www.google.com/maps?q=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}&output=embed`}
-                width="100%"
-                height="360"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                style={{ border: 0 }}
-                allowFullScreen
-              />
-            </div>
-          </div>
-
-          {/* Test demo CTA */}
-          <div className="mt-16 text-center">
-            <div className="rounded-2xl bg-primary/10 border border-primary/20 p-8 md:p-12">
-              <h3 className="text-2xl md:text-3xl font-bold mb-3">Provoje veten në testin e patentës</h3>
-              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Përgatitu për provimin me një test interaktiv kategorie B. Pa regjistrim, menjëherë falas.
+          <div className="rounded-3xl bg-gradient-to-br from-primary via-primary to-primary/80 p-8 md:p-12 shadow-2xl text-center text-primary-foreground relative overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-white/10 blur-2xl" />
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
+                <BookOpen className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Provo një test interaktiv kategorie B</h3>
+              <p className="text-base md:text-lg opacity-90 mb-8 max-w-2xl mx-auto">
+                Përgatitu për provimin me një test interaktiv kategorie B. Pa regjistrim, menjëherë, falas.
               </p>
-              <Button size="lg" onClick={() => navigate("/provo-test")} className="text-base px-8">
-                Provo një test
-              </Button>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  onClick={() => navigate("/provo-test")}
+                  className="text-base px-8 font-bold shadow-xl hover:scale-105 transition-transform"
+                >
+                  Provo një test
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => scrollTo("categories")}
+                  className="text-base px-8 border-white/50 text-white hover:bg-white/20 backdrop-blur-sm"
+                >
+                  Shiko Kategoritë
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
 
       {/* Footer */}
       <footer className="bg-foreground text-background py-12">
