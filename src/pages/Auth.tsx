@@ -8,10 +8,24 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import logo from "@/assets/logo.png";
 
 const candidateEmail = (personal: string) => `c${personal}@candidate.local`;
+const REMEMBER_KEY = "asv_remember_login";
+
+type RememberedLogin = { mode: "admin" | "candidate"; email: string; personalNumber: string; password: string };
+
+const loadRemembered = (): RememberedLogin | null => {
+  try {
+    const raw = localStorage.getItem(REMEMBER_KEY);
+    if (!raw) return null;
+    return JSON.parse(atob(raw)) as RememberedLogin;
+  } catch {
+    return null;
+  }
+};
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -20,12 +34,16 @@ const Auth = () => {
   const safeNext = nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : null;
   const { toast } = useToast();
   const { session, isAdmin, isInstructor, isCandidate, roleChecked, loading: authLoading } = useAuth();
-  const [mode, setMode] = useState<"admin" | "candidate">("admin");
-  const [email, setEmail] = useState("");
-  const [personalNumber, setPersonalNumber] = useState("");
-  const [password, setPassword] = useState("");
+  const remembered = loadRemembered();
+  const [mode, setMode] = useState<"admin" | "candidate">(remembered?.mode ?? "admin");
+  const [email, setEmail] = useState(remembered?.email ?? "");
+  const [personalNumber, setPersonalNumber] = useState(remembered?.personalNumber ?? "");
+  const [password, setPassword] = useState(remembered?.password ?? "");
+  const [remember, setRemember] = useState(Boolean(remembered));
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
+
 
   useEffect(() => {
     if (authLoading) return;
@@ -79,9 +97,23 @@ const Auth = () => {
     if (error) {
       toast({ title: "Kyçje e dështuar", description: error.message, variant: "destructive" });
       setHasAttemptedLogin(false);
+    } else {
+      try {
+        if (remember) {
+          localStorage.setItem(
+            REMEMBER_KEY,
+            btoa(JSON.stringify({ mode, email, personalNumber, password } satisfies RememberedLogin)),
+          );
+        } else {
+          localStorage.removeItem(REMEMBER_KEY);
+        }
+      } catch {
+        /* ignore */
+      }
     }
     setSubmitting(false);
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
@@ -124,8 +156,33 @@ const Auth = () => {
             )}
             <div className="space-y-2">
               <Label htmlFor="password">Fjalëkalimi</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Fshih fjalëkalimin" : "Shfaq fjalëkalimin"}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
+            <div className="flex items-center gap-2">
+              <Checkbox id="remember" checked={remember} onCheckedChange={(v) => setRemember(Boolean(v))} />
+              <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
+                Mbaj mend userin dhe fjalëkalimin
+              </Label>
+            </div>
+
             <Button type="submit" className="w-full" disabled={submitting}>
               {submitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Kyçu
