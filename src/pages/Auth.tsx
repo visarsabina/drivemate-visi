@@ -97,9 +97,23 @@ const Auth = () => {
     if (error) {
       toast({ title: "Kyçje e dështuar", description: error.message, variant: "destructive" });
       setHasAttemptedLogin(false);
+    } else {
+      try {
+        if (remember) {
+          localStorage.setItem(
+            REMEMBER_KEY,
+            btoa(JSON.stringify({ mode, email, personalNumber, password } satisfies RememberedLogin)),
+          );
+        } else {
+          localStorage.removeItem(REMEMBER_KEY);
+        }
+      } catch {
+        /* ignore */
+      }
     }
     setSubmitting(false);
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
