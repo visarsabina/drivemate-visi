@@ -8,10 +8,24 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import logo from "@/assets/logo.png";
 
 const candidateEmail = (personal: string) => `c${personal}@candidate.local`;
+const REMEMBER_KEY = "asv_remember_login";
+
+type RememberedLogin = { mode: "admin" | "candidate"; email: string; personalNumber: string; password: string };
+
+const loadRemembered = (): RememberedLogin | null => {
+  try {
+    const raw = localStorage.getItem(REMEMBER_KEY);
+    if (!raw) return null;
+    return JSON.parse(atob(raw)) as RememberedLogin;
+  } catch {
+    return null;
+  }
+};
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -20,12 +34,16 @@ const Auth = () => {
   const safeNext = nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : null;
   const { toast } = useToast();
   const { session, isAdmin, isInstructor, isCandidate, roleChecked, loading: authLoading } = useAuth();
-  const [mode, setMode] = useState<"admin" | "candidate">("admin");
-  const [email, setEmail] = useState("");
-  const [personalNumber, setPersonalNumber] = useState("");
-  const [password, setPassword] = useState("");
+  const remembered = loadRemembered();
+  const [mode, setMode] = useState<"admin" | "candidate">(remembered?.mode ?? "admin");
+  const [email, setEmail] = useState(remembered?.email ?? "");
+  const [personalNumber, setPersonalNumber] = useState(remembered?.personalNumber ?? "");
+  const [password, setPassword] = useState(remembered?.password ?? "");
+  const [remember, setRemember] = useState(Boolean(remembered));
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
+
 
   useEffect(() => {
     if (authLoading) return;
