@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import RegistrationDialog from "@/components/RegistrationDialog";
+import VisitorOfferDialog, { useVisitorOffer } from "@/components/VisitorOfferDialog";
 import heroImg from "@/assets/hero-driving.jpg";
 import classroomImg from "@/assets/classroom.jpg";
 import successImg from "@/assets/success-student.jpg";
@@ -67,6 +68,7 @@ const Home = () => {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerCategory, setRegisterCategory] = useState("");
   const [staff, setStaff] = useState<StaffMember[]>([]);
+  const { open: offerOpen, setOpen: setOfferOpen } = useVisitorOffer();
 
   // Auto-redirect logged-in admins straight to the panel (PWA "remember me")
   // Only when viewing the root site (no specific /school/:slug)
@@ -75,22 +77,6 @@ const Home = () => {
       navigate("/admin", { replace: true });
     }
   }, [slug, session, roleChecked, isAdmin, navigate]);
-
-
-  // Auto-show the demo test for first-time visitors after 2 seconds
-  useEffect(() => {
-    if (authLoading || session) return;
-    const seen = sessionStorage.getItem("demo-test-seen");
-    if (seen) return;
-    const t = setTimeout(() => {
-      sessionStorage.setItem("demo-test-seen", "1");
-      navigate("/provo-test");
-    }, 2000);
-    return () => clearTimeout(t);
-  }, [authLoading, session, navigate]);
-
-
-
 
   useEffect(() => {
     if (!branding?.id) return;
@@ -582,6 +568,8 @@ const Home = () => {
         tenantId={branding?.id ?? null}
         schoolName={schoolName}
       />
+
+      <VisitorOfferDialog open={offerOpen} onOpenChange={setOfferOpen} />
     </div>
   );
 };
