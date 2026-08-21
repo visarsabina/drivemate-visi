@@ -568,6 +568,8 @@ const Home = () => {
         tenantId={branding?.id ?? null}
         schoolName={schoolName}
       />
+
+      <VisitorOfferDialog open={offerOpen} onOpenChange={setOfferOpen} />
     </div>
   );
 };
