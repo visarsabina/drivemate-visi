@@ -122,7 +122,9 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
       phone: result.data.phone,
       category: result.data.category,
       tenant_id: tenantId,
+      notes: couponCode ? `Kupon zbritjeje 20%: ${couponCode}` : null,
     });
+
 
     if (error) {
       setSubmitting(false);
