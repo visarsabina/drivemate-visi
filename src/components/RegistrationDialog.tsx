@@ -167,6 +167,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
               Regjistrimi juaj për kategorinë <strong>{form.category}</strong> u dërgua me sukses.
               Stafi ynë do t'ju kontaktojë në {form.phone} brenda 24 orëve.
             </DialogDescription>
+            {couponCode && <CouponBox code={couponCode} />}
             <Button className="mt-6 w-full" onClick={() => handleClose(false)}>
               Mbyll
             </Button>
@@ -184,6 +185,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
                 {promoNote}
               </div>
             )}
+            {couponCode && <CouponBox code={couponCode} />}
             {form.category === "B" && (
               <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
                 <div className="font-semibold text-primary mb-1">🎉 Ofertë: 6 këste pa interes</div>
