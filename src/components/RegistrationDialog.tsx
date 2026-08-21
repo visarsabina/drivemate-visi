@@ -55,9 +55,11 @@ interface RegistrationDialogProps {
   schoolName?: string;
   /** Optional promo message shown above the form (e.g. discount after passing the demo test). */
   promoNote?: string;
+  /** Optional discount coupon code generated after finishing the public test. */
+  couponCode?: string;
 }
 
-const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId: tenantIdProp, schoolName, promoNote }: RegistrationDialogProps) => {
+const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId: tenantIdProp, schoolName, promoNote, couponCode }: RegistrationDialogProps) => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
