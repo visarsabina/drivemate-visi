@@ -77,7 +77,7 @@ const Home = () => {
   }, [slug, session, roleChecked, isAdmin, navigate]);
 
 
-  // Auto-show the demo test for first-time visitors
+  // Auto-show the demo test for first-time visitors after 2 seconds
   useEffect(() => {
     if (authLoading || session) return;
     const seen = sessionStorage.getItem("demo-test-seen");
@@ -85,9 +85,10 @@ const Home = () => {
     const t = setTimeout(() => {
       sessionStorage.setItem("demo-test-seen", "1");
       navigate("/provo-test");
-    }, 600);
+    }, 2000);
     return () => clearTimeout(t);
   }, [authLoading, session, navigate]);
+
 
 
 
