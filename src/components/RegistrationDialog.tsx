@@ -45,6 +45,33 @@ const schema = z.object({
 
 const CATEGORIES = ["B", "BE", "C1", "C", "CE", "D"];
 
+const CouponBox = ({ code }: { code: string }) => {
+  const { toast } = useToast();
+  return (
+    <div className="mt-4 rounded-lg border-2 border-dashed border-emerald-500 bg-emerald-500/5 p-3 text-center">
+      <div className="text-xs font-medium uppercase tracking-wide text-emerald-700">
+        Kodi i zbritjes 20%
+      </div>
+      <div className="mt-1 text-2xl font-bold tracking-widest text-emerald-700">{code}</div>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="mt-2"
+        onClick={() => {
+          navigator.clipboard?.writeText(code);
+          toast({ title: "Kodi u kopjua!", description: code });
+        }}
+      >
+        <Copy className="mr-2 h-3.5 w-3.5" /> Kopjo kodin
+      </Button>
+      <p className="mt-2 text-xs text-muted-foreground">
+        Prezantoje këtë kod në autoshkollë për të përfituar zbritjen.
+      </p>
+    </div>
+  );
+};
+
 interface RegistrationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
