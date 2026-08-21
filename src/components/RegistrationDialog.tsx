@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Copy, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveTenantByDomain } from "@/hooks/useTenant";
 
@@ -45,6 +45,33 @@ const schema = z.object({
 
 const CATEGORIES = ["B", "BE", "C1", "C", "CE", "D"];
 
+const CouponBox = ({ code }: { code: string }) => {
+  const { toast } = useToast();
+  return (
+    <div className="mt-4 rounded-lg border-2 border-dashed border-emerald-500 bg-emerald-500/5 p-3 text-center">
+      <div className="text-xs font-medium uppercase tracking-wide text-emerald-700">
+        Kodi i zbritjes 20%
+      </div>
+      <div className="mt-1 text-2xl font-bold tracking-widest text-emerald-700">{code}</div>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="mt-2"
+        onClick={() => {
+          navigator.clipboard?.writeText(code);
+          toast({ title: "Kodi u kopjua!", description: code });
+        }}
+      >
+        <Copy className="mr-2 h-3.5 w-3.5" /> Kopjo kodin
+      </Button>
+      <p className="mt-2 text-xs text-muted-foreground">
+        Prezantoje këtë kod në autoshkollë për të përfituar zbritjen.
+      </p>
+    </div>
+  );
+};
+
 interface RegistrationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -55,9 +82,11 @@ interface RegistrationDialogProps {
   schoolName?: string;
   /** Optional promo message shown above the form (e.g. discount after passing the demo test). */
   promoNote?: string;
+  /** Optional discount coupon code generated after finishing the public test. */
+  couponCode?: string;
 }
 
-const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId: tenantIdProp, schoolName, promoNote }: RegistrationDialogProps) => {
+const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId: tenantIdProp, schoolName, promoNote, couponCode }: RegistrationDialogProps) => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -120,7 +149,9 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
       phone: result.data.phone,
       category: result.data.category,
       tenant_id: tenantId,
+      notes: couponCode ? `Kupon zbritjeje 20%: ${couponCode}` : null,
     });
+
 
     if (error) {
       setSubmitting(false);
@@ -163,6 +194,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
               Regjistrimi juaj për kategorinë <strong>{form.category}</strong> u dërgua me sukses.
               Stafi ynë do t'ju kontaktojë në {form.phone} brenda 24 orëve.
             </DialogDescription>
+            {couponCode && <CouponBox code={couponCode} />}
             <Button className="mt-6 w-full" onClick={() => handleClose(false)}>
               Mbyll
             </Button>
@@ -180,6 +212,7 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
                 {promoNote}
               </div>
             )}
+            {couponCode && <CouponBox code={couponCode} />}
             {form.category === "B" && (
               <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
                 <div className="font-semibold text-primary mb-1">🎉 Ofertë: 6 këste pa interes</div>
