@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Gift, ArrowRight } from "lucide-react";
 
+const CHOICE_KEY = "visitor-offer-choice";
+
 interface VisitorOfferDialogProps {
   /** Controlled open state from parent. */
   open: boolean;
@@ -22,17 +24,24 @@ const VisitorOfferDialog = ({ open, onOpenChange }: VisitorOfferDialogProps) => 
   const navigate = useNavigate();
 
   const handleTest = () => {
+    localStorage.setItem(CHOICE_KEY, "test");
     onOpenChange(false);
     navigate("/provo-test");
   };
 
   const handleEnterSite = () => {
+    localStorage.setItem(CHOICE_KEY, "site");
     onOpenChange(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={open} onOpenChange={(next) => { if (!next) handleEnterSite(); }}>
+      <DialogContent
+        className="sm:max-w-md [&>button]:hidden"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <DialogHeader className="text-center">
           <div className="mx-auto w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-3">
             <Gift className="w-7 h-7 text-primary" />
@@ -78,14 +87,10 @@ export const useVisitorOffer = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const seen = sessionStorage.getItem("visitor-offer-seen");
-    if (seen) return;
+    // Show until the visitor actually picks one of the two options.
+    if (localStorage.getItem(CHOICE_KEY)) return;
 
-    const t = setTimeout(() => {
-      setOpen(true);
-      sessionStorage.setItem("visitor-offer-seen", "1");
-    }, 2000);
-
+    const t = setTimeout(() => setOpen(true), 2000);
     return () => clearTimeout(t);
   }, []);
 
