@@ -183,115 +183,124 @@ const RegistrationDialog = ({ open, onOpenChange, defaultCategory = "", tenantId
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
-        {submitted ? (
-          <div className="text-center py-6">
-            <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-success" />
-            </div>
-            <DialogTitle className="text-xl mb-2">Faleminderit, {form.fullName.split(" ")[0]}!</DialogTitle>
-            <DialogDescription>
-              Regjistrimi juaj për kategorinë <strong>{form.category}</strong> u dërgua me sukses.
-              Stafi ynë do t'ju kontaktojë në {form.phone} brenda 24 orëve.
-            </DialogDescription>
-            {couponCode && <CouponBox code={couponCode} />}
-            <Button className="mt-6 w-full" onClick={() => handleClose(false)}>
-              Mbyll
-            </Button>
-          </div>
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle>Regjistrohu në {schoolName ?? "Autoshkollën Visi"}</DialogTitle>
-              <DialogDescription>
-                Plotëso formularin dhe ne do t'ju kontaktojmë së shpejti.
+      <DialogContent className="sm:max-w-md max-h-[92dvh] p-0 gap-0 overflow-hidden">
+        <div className="overflow-y-auto max-h-[92dvh] p-6">
+          {submitted ? (
+            <div className="text-center py-4">
+              <div className="w-14 h-14 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-3">
+                <CheckCircle2 className="w-7 h-7 text-success" />
+              </div>
+              <DialogTitle className="text-lg mb-2">Faleminderit, {form.fullName.split(" ")[0]}!</DialogTitle>
+              <DialogDescription className="text-sm">
+                Regjistrimi juaj për kategorinë <strong>{form.category}</strong> u dërgua me sukses.
+                Stafi ynë do t'ju kontaktojë në {form.phone} brenda 24 orëve.
               </DialogDescription>
-            </DialogHeader>
-            {promoNote && (
-              <div className="rounded-md border-2 border-emerald-500 bg-emerald-500/10 px-3 py-2 text-sm font-medium text-emerald-700">
-                {promoNote}
+              {couponCode && <CouponBox code={couponCode} />}
+              <Button className="mt-4 w-full" onClick={() => handleClose(false)}>
+                Mbyll
+              </Button>
+            </div>
+          ) : (
+            <>
+              <DialogHeader className="mb-3">
+                <DialogTitle className="text-lg leading-tight">Regjistrohu në {schoolName ?? "Autoshkollën Visi"}</DialogTitle>
+                <DialogDescription className="text-xs">
+                  Plotëso formularin dhe ne do t'ju kontaktojmë së shpejti.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-2">
+                {promoNote && (
+                  <div className="rounded-md border-2 border-emerald-500 bg-emerald-500/10 px-2.5 py-1.5 text-xs font-medium text-emerald-700">
+                    {promoNote}
+                  </div>
+                )}
+                {couponCode && <CouponBox code={couponCode} />}
+                {form.category === "B" && (
+                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-2 text-xs">
+                    <div className="font-semibold text-primary mb-0.5">🎉 Ofertë: 6 këste pa interes</div>
+                    <div className="text-muted-foreground">
+                      Kategoria B – 300€ total, vetëm <strong className="text-foreground">50€/muaj</strong> për 6 muaj.
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-            {couponCode && <CouponBox code={couponCode} />}
-            {form.category === "B" && (
-              <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
-                <div className="font-semibold text-primary mb-1">🎉 Ofertë: 6 këste pa interes</div>
-                <div className="text-muted-foreground">
-                  Kategoria B – 300€ total, vetëm <strong className="text-foreground">50€/muaj</strong> për 6 muaj.
+
+              <form onSubmit={handleSubmit} className="space-y-3 mt-3">
+                <div className="space-y-1">
+                  <Label htmlFor="fullName" className="text-xs">Emri dhe mbiemri *</Label>
+                  <Input
+                    id="fullName"
+                    value={form.fullName}
+                    onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+                    placeholder="P.sh. Arben Krasniqi"
+                    maxLength={100}
+                    className="h-9 text-sm"
+                  />
+                  {errors.fullName && <p className="text-xs text-destructive">{errors.fullName}</p>}
                 </div>
-              </div>
-            )}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Emri dhe mbiemri *</Label>
-                <Input
-                  id="fullName"
-                  value={form.fullName}
-                  onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-                  placeholder="P.sh. Arben Krasniqi"
-                  maxLength={100}
-                />
-                {errors.fullName && <p className="text-sm text-destructive">{errors.fullName}</p>}
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Emaili *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="example@email.com"
-                  maxLength={255}
-                />
-                {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
-              </div>
+                <div className="space-y-1">
+                  <Label htmlFor="email" className="text-xs">Emaili *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="example@email.com"
+                    maxLength={255}
+                    className="h-9 text-sm"
+                  />
+                  {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone">Numri i telefonit *</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  placeholder="044 123 456"
-                  maxLength={20}
-                />
-                {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
-              </div>
+                <div className="space-y-1">
+                  <Label htmlFor="phone" className="text-xs">Numri i telefonit *</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    placeholder="044 123 456"
+                    maxLength={20}
+                    className="h-9 text-sm"
+                  />
+                  {errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="category">Kategoria *</Label>
-                <Select
-                  value={form.category}
-                  onValueChange={(v) => setForm({ ...form, category: v })}
-                >
-                  <SelectTrigger id="category">
-                    <SelectValue placeholder="Zgjidh kategorinë" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIES.map((c) => (
-                      <SelectItem key={c} value={c}>
-                        Kategoria {c}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.category && <p className="text-sm text-destructive">{errors.category}</p>}
-              </div>
+                <div className="space-y-1">
+                  <Label htmlFor="category" className="text-xs">Kategoria *</Label>
+                  <Select
+                    value={form.category}
+                    onValueChange={(v) => setForm({ ...form, category: v })}
+                  >
+                    <SelectTrigger id="category" className="h-9 text-sm">
+                      <SelectValue placeholder="Zgjidh kategorinë" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CATEGORIES.map((c) => (
+                        <SelectItem key={c} value={c} className="text-sm">
+                          Kategoria {c}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.category && <p className="text-xs text-destructive">{errors.category}</p>}
+                </div>
 
-              <DialogFooter className="gap-2 sm:gap-0">
-                <Button type="button" variant="outline" onClick={() => handleClose(false)} disabled={submitting}>
-                  Anulo
-                </Button>
-                <Button type="submit" disabled={submitting}>
-                  {submitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                  {submitting ? "Duke dërguar..." : "Dërgo Regjistrimin"}
-                </Button>
-              </DialogFooter>
-            </form>
-          </>
-        )}
+                <DialogFooter className="gap-2 sm:gap-2 pt-1">
+                  <Button type="button" variant="outline" onClick={() => handleClose(false)} disabled={submitting} className="h-9 text-sm flex-1">
+                    Anulo
+                  </Button>
+                  <Button type="submit" disabled={submitting} className="h-9 text-sm flex-1">
+                    {submitting && <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />}
+                    {submitting ? "Duke dërguar..." : "Dërgo"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );
