@@ -39,7 +39,7 @@ const DemoTest = () => {
         onOpenChange={setShowRegistration}
         defaultCategory="B"
         couponCode={coupon ?? undefined}
-        promoNote="Faleminderit që provove testin! Ky kod zbritjeje është vetëm për ju – regjistrohu online dhe përfito 20% zbritje."
+        promoNote="Urime! Fituat 20% zbritje: nga 300€ në 240€. Regjistrohu online tani dhe përfito ofertën."
       />
     </>
   );
