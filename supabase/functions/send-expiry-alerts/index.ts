@@ -108,20 +108,12 @@ Deno.serve(async (req) => {
     if (testTenantId && t.id !== testTenantId) continue
 
     if (testMode) {
-      const { error: testErr } = await supabase.functions.invoke('send-transactional-email', {
-        body: {
-          templateName: 'expiry-alert',
-          recipientEmail: t.email,
-          idempotencyKey: `expiry-alert-test-${t.id}-${Date.now()}`,
-          templateData: {
-            schoolName: t.name,
-            vehicles: [{ title: 'TEST — Golf 5 (01-234-AB)', detail: 'regjistrimi skadon sot' }],
-            employees: [{ title: 'TEST — Instruktor Shembull', detail: 'licenca skadon nesër' }],
-          },
-        },
+      const sent = await sendAlert(t.email, `expiry-alert-test-${t.id}-${Date.now()}`, {
+        schoolName: t.name,
+        vehicles: [{ title: 'TEST — Golf 5 (01-234-AB)', detail: 'regjistrimi skadon sot' }],
+        employees: [{ title: 'TEST — Instruktor Shembull', detail: 'licenca skadon nesër' }],
       })
-      if (testErr) console.error('test send failed', t.id, testErr.message)
-      results.push({ tenant: t.id, email: t.email, test: true, sent: !testErr })
+      results.push({ tenant: t.id, email: t.email, test: true, sent })
       continue
     }
 
