@@ -1,4 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import { sendTemplateEmail } from '../_shared/transactional-email-templates/send-email.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -74,15 +75,27 @@ Deno.serve(async (req) => {
     ? new Date(reg.created_at).toLocaleString('sq-AL', { timeZone: 'Europe/Belgrade' })
     : undefined
 
-  const res = await fetch(`${supabaseUrl}/functions/v1/send-transactional-email`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${serviceKey}`,
-    },
-    body: JSON.stringify({
-      templateName: 'new-registration',
-      recipientEmail: recipient,
+  const logSend = async (
+    status: 'sent' | 'suppressed' | 'failed',
+    errorMessage?: string,
+  ) => {
+    const { error } = await supabase.from('email_send_log').insert({
+      message_id: null,
+      template_name: 'new-registration',
+      recipient_email: recipient,
+      status,
+      error_message: errorMessage ?? null,
+    })
+    if (error) {
+      console.error('Failed to write email_send_log', {
+        code: error.code,
+        message: error.message,
+      })
+    }
+  }
+
+  try {
+    const result = await sendTemplateEmail('new-registration', recipient, {
       idempotencyKey: `new-registration-${reg.id}`,
       templateData: {
         schoolName: tenant?.name,
@@ -92,14 +105,19 @@ Deno.serve(async (req) => {
         category: reg.category,
         createdAt,
       },
-    }),
-  })
+    })
 
-  const result = await res.json().catch(() => ({}))
-  if (!res.ok) {
-    console.error('Failed to send registration notification', res.status, result)
+    if (!result.sent) {
+      await logSend('suppressed')
+      return json({ success: false, reason: result.reason })
+    }
+
+    await logSend('sent')
+    return json({ success: true })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    console.error('Failed to send registration notification', message)
+    await logSend('failed', message.slice(0, 1000))
     return json({ success: false, reason: 'send_failed' }, 502)
   }
-
-  return json({ success: true, result })
 })

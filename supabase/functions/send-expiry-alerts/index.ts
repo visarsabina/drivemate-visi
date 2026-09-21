@@ -1,5 +1,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
+import { EmailAPIError } from 'npm:@lovable.dev/email-js@0.1.0'
+import { sendTemplateEmail } from '../_shared/transactional-email-templates/send-email.ts'
 
 const WARN_DAYS = 1 // notify on the last day (and when already expired)
 
@@ -33,6 +35,60 @@ Deno.serve(async (req) => {
   const today = new Date().toISOString().slice(0, 10)
   const results: Array<Record<string, unknown>> = []
 
+  const logSend = async (
+    recipient: string,
+    status: 'sent' | 'suppressed' | 'failed',
+    errorMessage?: string,
+  ) => {
+    const { error } = await supabase.from('email_send_log').insert({
+      message_id: null,
+      template_name: 'expiry-alert',
+      recipient_email: recipient,
+      status,
+      error_message: errorMessage ?? null,
+    })
+    if (error) {
+      console.error('Failed to write email_send_log', { code: error.code, message: error.message })
+    }
+  }
+
+  const sendAlert = async (
+    recipient: string,
+    idempotencyKey: string,
+    templateData: Record<string, unknown>,
+  ): Promise<boolean> => {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const result = await sendTemplateEmail('expiry-alert', recipient, {
+          idempotencyKey,
+          templateData,
+        })
+        if (!result.sent) {
+          await logSend(recipient, 'suppressed')
+          return false
+        }
+        await logSend(recipient, 'sent')
+        return true
+      } catch (error) {
+        // Honour a rate limit once by waiting the requested cooldown, then retry.
+        if (
+          attempt === 0 &&
+          error instanceof EmailAPIError &&
+          error.status === 429
+        ) {
+          const waitSeconds = error.retryAfterSeconds ?? 60
+          await new Promise((r) => setTimeout(r, waitSeconds * 1000))
+          continue
+        }
+        const message = error instanceof Error ? error.message : String(error)
+        console.error('send failed', message)
+        await logSend(recipient, 'failed', message.slice(0, 1000))
+        return false
+      }
+    }
+    return false
+  }
+
   const { data: tenants, error: tErr } = await supabase
     .from('tenants')
     .select('id, name, email')
@@ -52,20 +108,12 @@ Deno.serve(async (req) => {
     if (testTenantId && t.id !== testTenantId) continue
 
     if (testMode) {
-      const { error: testErr } = await supabase.functions.invoke('send-transactional-email', {
-        body: {
-          templateName: 'expiry-alert',
-          recipientEmail: t.email,
-          idempotencyKey: `expiry-alert-test-${t.id}-${Date.now()}`,
-          templateData: {
-            schoolName: t.name,
-            vehicles: [{ title: 'TEST — Golf 5 (01-234-AB)', detail: 'regjistrimi skadon sot' }],
-            employees: [{ title: 'TEST — Instruktor Shembull', detail: 'licenca skadon nesër' }],
-          },
-        },
+      const sent = await sendAlert(t.email, `expiry-alert-test-${t.id}-${Date.now()}`, {
+        schoolName: t.name,
+        vehicles: [{ title: 'TEST — Golf 5 (01-234-AB)', detail: 'regjistrimi skadon sot' }],
+        employees: [{ title: 'TEST — Instruktor Shembull', detail: 'licenca skadon nesër' }],
       })
-      if (testErr) console.error('test send failed', t.id, testErr.message)
-      results.push({ tenant: t.id, email: t.email, test: true, sent: !testErr })
+      results.push({ tenant: t.id, email: t.email, test: true, sent })
       continue
     }
 
@@ -115,21 +163,13 @@ Deno.serve(async (req) => {
 
     if (!vehicleItems.length && !employeeItems.length) continue
 
-    const { error: sendErr } = await supabase.functions.invoke('send-transactional-email', {
-      body: {
-        templateName: 'expiry-alert',
-        recipientEmail: t.email,
-        idempotencyKey: `expiry-alert-${t.id}-${today}`,
-        templateData: {
-          schoolName: t.name,
-          vehicles: vehicleItems,
-          employees: employeeItems,
-        },
-      },
+    const sent = await sendAlert(t.email, `expiry-alert-${t.id}-${today}`, {
+      schoolName: t.name,
+      vehicles: vehicleItems,
+      employees: employeeItems,
     })
 
-    if (sendErr) console.error('send failed', t.id, sendErr.message)
-    results.push({ tenant: t.id, vehicles: vehicleItems.length, employees: employeeItems.length, sent: !sendErr })
+    results.push({ tenant: t.id, vehicles: vehicleItems.length, employees: employeeItems.length, sent })
   }
 
   return new Response(JSON.stringify({ ok: true, results }), {
