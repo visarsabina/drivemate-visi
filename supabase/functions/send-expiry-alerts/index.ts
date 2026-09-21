@@ -1,5 +1,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
+import { EmailAPIError } from 'npm:@lovable.dev/email-js@0.1.0'
+import { sendTemplateEmail } from '../_shared/transactional-email-templates/send-email.ts'
 
 const WARN_DAYS = 1 // notify on the last day (and when already expired)
 
