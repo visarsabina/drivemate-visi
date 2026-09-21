@@ -163,21 +163,13 @@ Deno.serve(async (req) => {
 
     if (!vehicleItems.length && !employeeItems.length) continue
 
-    const { error: sendErr } = await supabase.functions.invoke('send-transactional-email', {
-      body: {
-        templateName: 'expiry-alert',
-        recipientEmail: t.email,
-        idempotencyKey: `expiry-alert-${t.id}-${today}`,
-        templateData: {
-          schoolName: t.name,
-          vehicles: vehicleItems,
-          employees: employeeItems,
-        },
-      },
+    const sent = await sendAlert(t.email, `expiry-alert-${t.id}-${today}`, {
+      schoolName: t.name,
+      vehicles: vehicleItems,
+      employees: employeeItems,
     })
 
-    if (sendErr) console.error('send failed', t.id, sendErr.message)
-    results.push({ tenant: t.id, vehicles: vehicleItems.length, employees: employeeItems.length, sent: !sendErr })
+    results.push({ tenant: t.id, vehicles: vehicleItems.length, employees: employeeItems.length, sent })
   }
 
   return new Response(JSON.stringify({ ok: true, results }), {
