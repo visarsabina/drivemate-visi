@@ -35,6 +35,60 @@ Deno.serve(async (req) => {
   const today = new Date().toISOString().slice(0, 10)
   const results: Array<Record<string, unknown>> = []
 
+  const logSend = async (
+    recipient: string,
+    status: 'sent' | 'suppressed' | 'failed',
+    errorMessage?: string,
+  ) => {
+    const { error } = await supabase.from('email_send_log').insert({
+      message_id: null,
+      template_name: 'expiry-alert',
+      recipient_email: recipient,
+      status,
+      error_message: errorMessage ?? null,
+    })
+    if (error) {
+      console.error('Failed to write email_send_log', { code: error.code, message: error.message })
+    }
+  }
+
+  const sendAlert = async (
+    recipient: string,
+    idempotencyKey: string,
+    templateData: Record<string, unknown>,
+  ): Promise<boolean> => {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const result = await sendTemplateEmail('expiry-alert', recipient, {
+          idempotencyKey,
+          templateData,
+        })
+        if (!result.sent) {
+          await logSend(recipient, 'suppressed')
+          return false
+        }
+        await logSend(recipient, 'sent')
+        return true
+      } catch (error) {
+        // Honour a rate limit once by waiting the requested cooldown, then retry.
+        if (
+          attempt === 0 &&
+          error instanceof EmailAPIError &&
+          error.status === 429
+        ) {
+          const waitSeconds = error.retryAfterSeconds ?? 60
+          await new Promise((r) => setTimeout(r, waitSeconds * 1000))
+          continue
+        }
+        const message = error instanceof Error ? error.message : String(error)
+        console.error('send failed', message)
+        await logSend(recipient, 'failed', message.slice(0, 1000))
+        return false
+      }
+    }
+    return false
+  }
+
   const { data: tenants, error: tErr } = await supabase
     .from('tenants')
     .select('id, name, email')
