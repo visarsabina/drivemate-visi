@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -23,14 +23,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isCandidate, setIsCandidate] = useState(false);
   const [roleChecked, setRoleChecked] = useState(false);
   const [loading, setLoading] = useState(true);
+  const lastUserId = useRef<string | null>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      if (newSession?.user) setRoleChecked(false);
+      const newId = newSession?.user?.id ?? null;
+      const sameUser = newId !== null && newId === lastUserId.current;
       setSession(newSession);
+      if (sameUser) return; // background token refresh: don't reset the app
+      lastUserId.current = newId;
       setUser(newSession?.user ?? null);
 
       if (newSession?.user) {
+        setRoleChecked(false);
         setTimeout(() => {
           checkRoles(newSession.user.id);
         }, 100);
@@ -45,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
+      lastUserId.current = existingSession?.user?.id ?? null;
       if (existingSession?.user) {
         checkRoles(existingSession.user.id).finally(() => setLoading(false));
       } else {

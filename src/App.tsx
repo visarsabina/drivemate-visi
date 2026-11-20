@@ -21,7 +21,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import CandidateRoute from "@/components/CandidateRoute";
 import SuperAdminRoute from "@/components/SuperAdminRoute";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } });
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
