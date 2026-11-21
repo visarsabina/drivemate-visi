@@ -8,6 +8,13 @@
       "when": 1795188885452,
       "tag": "0000_restrict_question_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795296303012,
+      "tag": "0001_tighten_question_and_photo_reads",
+      "breakpoints": true
     }
   ]
 }
