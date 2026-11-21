@@ -1,4 +1,4 @@
-import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft, FileQuestion, CalendarDays, CalendarClock, History, Clock, ClipboardList, Sparkles, Megaphone, Images } from "lucide-react";
+import { Users, LayoutDashboard, UserPlus, CreditCard, LogOut, Wallet, Inbox, Car, Briefcase, IdCard, ShieldCheck, Wrench, ArrowLeft, FileQuestion, CalendarDays, CalendarClock, History, Clock, ClipboardList, Sparkles, Megaphone, Images, Globe } from "lucide-react";
 import defaultLogo from "@/assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -111,6 +111,13 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             Kthehu te Super Admin
           </button>
         )}
+        <button
+          onClick={() => navigate("/")}
+          className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-sidebar-accent/30 text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+        >
+          <Globe className="w-4 h-4" />
+          Shiko faqen Web
+        </button>
         <button
           onClick={handleSignOut}
           className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors"

@@ -64,13 +64,6 @@ const Home = () => {
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const { open: offerOpen, setOpen: setOfferOpen } = useVisitorOffer();
 
-  // Auto-redirect logged-in admins straight to the panel (PWA "remember me")
-  // Only when viewing the root site (no specific /school/:slug)
-  useEffect(() => {
-    if (!slug && session && roleChecked && isAdmin) {
-      navigate("/admin", { replace: true });
-    }
-  }, [slug, session, roleChecked, isAdmin, navigate]);
 
   useEffect(() => {
     if (!branding?.id) return;
@@ -130,7 +123,7 @@ const Home = () => {
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
             <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
-            <Button size="sm" onClick={() => navigate("/login")}>Kyçu</Button>
+            <Button size="sm" onClick={() => navigate(session && isAdmin ? "/admin" : "/login")}>{session && isAdmin ? "Paneli Admin" : "Kyçu"}</Button>
           </div>
           <button className="md:hidden p-2" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Mbyll menynë" : "Hap menynë"} aria-expanded={mobileMenu}>
             {mobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -142,7 +135,7 @@ const Home = () => {
               const [label, id] = item.split(":");
               return <button key={id} onClick={() => scrollTo(id)} className="block w-full text-left text-sm font-medium hover:text-primary">{label}</button>;
             })}
-            <Button size="sm" className="w-full" onClick={() => navigate("/login")}>Kyçu</Button>
+            <Button size="sm" className="w-full" onClick={() => navigate(session && isAdmin ? "/admin" : "/login")}>{session && isAdmin ? "Paneli Admin" : "Kyçu"}</Button>
           </div>
         )}
       </nav>
