@@ -589,7 +589,14 @@ const Home = () => {
         schoolName={schoolName}
       />
 
-      <VisitorOfferDialog open={offerOpen} onOpenChange={setOfferOpen} />
+      <VisitorOfferDialog
+        open={offerOpen}
+        onOpenChange={setOfferOpen}
+        onRegister={() => {
+          setRegisterCategory("");
+          setRegisterOpen(true);
+        }}
+      />
     </div>
   );
 };
