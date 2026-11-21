@@ -733,6 +733,51 @@ export type Database = {
           },
         ]
       }
+      school_gallery: {
+        Row: {
+          created_at: string
+          description: string
+          event_date: string
+          id: string
+          image_path: string
+          tenant_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          event_date?: string
+          id?: string
+          image_path: string
+          tenant_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          event_date?: string
+          id?: string
+          image_path?: string
+          tenant_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "school_gallery_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "school_gallery_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       social_posts: {
         Row: {
           content: string
@@ -1196,6 +1241,10 @@ export type Database = {
       add_existing_user_to_my_tenant: {
         Args: { _as_admin: boolean; _target_user_id: string }
         Returns: undefined
+      }
+      can_manage_school_gallery: {
+        Args: { _tenant_id: string }
+        Returns: boolean
       }
       create_tenant_with_admin: {
         Args: {

@@ -22,6 +22,20 @@
       "when": 1795297666832,
       "tag": "0002_lock_candidate_account_link",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795301584013,
+      "tag": "0003_school_gallery",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795301789261,
+      "tag": "0004_qualify_gallery_storage_paths",
+      "breakpoints": true
     }
   ]
 }

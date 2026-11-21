@@ -19,6 +19,7 @@ import truckC1Img from "@/assets/truck-c1.jpg";
 import truckCImg from "@/assets/truck-c.jpg";
 import truckCeImg from "@/assets/truck-ce.jpg";
 import defaultLogo from "@/assets/logo.png";
+import SchoolGallery from "@/components/SchoolGallery";
 
 const categories = [
   { name: "B", desc: "Automjete deri 3500 kg", age: "18+", duration: "20 orë teori + 20 praktike", price: "300€", icon: Car, image: carBImg },
@@ -27,13 +28,6 @@ const categories = [
   { name: "C", desc: "Automjete mbi 3500 kg", age: "21+", duration: "21 ditë", price: "300€", icon: Truck, image: truckCImg },
   { name: "CE", desc: "Kamion me rimorkio", age: "21+", duration: "10 ditë", price: "300€", icon: Truck, image: truckCeImg },
   { name: "D", desc: "Autobus (mbi 8 udhëtarë)", age: "24+", duration: "21 ditë", price: "300€", icon: Bus, image: busDImg },
-];
-
-const testimonials = [
-  { name: "Arben M.", text: "Përvojë e shkëlqyer! Instruktorët janë shumë profesionalë dhe të durueshëm.", rating: 5 },
-  { name: "Fjolla K.", text: "E mora patentën nga provimi i parë falë përgatitjes së mirë teorike dhe praktike.", rating: 5 },
-  { name: "Driton H.", text: "Çmimet janë të arsyeshme dhe kushtet e mira. E rekomandoj!", rating: 5 },
-  { name: "Blerta S.", text: "Stafi shumë i sjellshëm, orari fleksibil. Faleminderit Autoshkolla Visi!", rating: 4 },
 ];
 
 const faqs = [
@@ -132,7 +126,7 @@ const Home = () => {
             <button onClick={() => scrollTo("about")} className="hover:text-primary transition-colors">Rreth Nesh</button>
             <button onClick={() => scrollTo("staff")} className="hover:text-primary transition-colors">Stafi</button>
             <button onClick={() => scrollTo("categories")} className="hover:text-primary transition-colors">Kategoritë</button>
-            <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Vlerësimet</button>
+            <Button variant="ghost" className="h-auto p-0 hover:bg-transparent hover:text-primary" onClick={() => scrollTo("gallery")}>Galeria</Button>
             <button onClick={() => scrollTo("literatura")} className="hover:text-primary transition-colors">Literatura</button>
             <button onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors">FAQ</button>
             <button onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors">Kontakti</button>
@@ -144,7 +138,7 @@ const Home = () => {
         </div>
         {mobileMenu && (
           <div className="md:hidden bg-background border-b border-border px-4 py-4 space-y-3">
-            {["Kryefaqja:hero", "Rreth Nesh:about", "Stafi:staff", "Kategoritë:categories", "Vlerësimet:testimonials", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
+            {["Kryefaqja:hero", "Rreth Nesh:about", "Stafi:staff", "Kategoritë:categories", "Galeria:gallery", "Literatura:literatura", "FAQ:faq", "Kontakti:contact"].map((item) => {
               const [label, id] = item.split(":");
               return <button key={id} onClick={() => scrollTo(id)} className="block w-full text-left text-sm font-medium hover:text-primary">{label}</button>;
             })}
@@ -411,35 +405,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section id="testimonials" className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Vlerësimet</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2">Çfarë thonë kandidatët tanë</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map((t, i) => (
-              <Card key={i} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex gap-1 mb-3">
-                    {Array.from({ length: 5 }).map((_, j) => (
-                      <Star key={j} className={`w-4 h-4 ${j < t.rating ? "text-warning fill-warning" : "text-muted"}`} />
-                    ))}
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4 italic">"{t.text}"</p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                      {t.name.charAt(0)}
-                    </div>
-                    <span className="font-medium text-sm">{t.name}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      <SchoolGallery tenantId={branding?.id} />
 
       {/* Success Image Section */}
       <section className="py-20">

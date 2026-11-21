@@ -32,6 +32,7 @@ import TodayPracticalExams from "@/components/TodayPracticalExams";
 import ExamRequestsAdmin from "@/components/ExamRequestsAdmin";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
 import ActivityLog from "@/components/ActivityLog";
+import GalleryManager from "@/components/GalleryManager";
 import { useAuth } from "@/context/AuthContext";
 import { useCandidates } from "@/hooks/useCandidates";
 import { useTenantBranding } from "@/hooks/useTenantBranding";
@@ -139,6 +140,7 @@ const Index = () => {
     users: "Përdoruesit",
     tests: "Gjenero Testin",
     activity: "Historiku i Veprimeve",
+    gallery: "Galeria",
     "instructor-reports": "Raporti i Orëve",
     "candidate-tests": "Testet e Kandidatit",
     libreza: "Libreza e Kandidatit",
@@ -334,6 +336,7 @@ const Index = () => {
           {activeView === "tests" && <TestGenerator candidates={candidates} initialCandidateId={selectedCandidate?.id ?? null} />}
 
           {activeView === "activity" && <ActivityLog />}
+          {activeView === "gallery" && isAdmin && <GalleryManager />}
 
           {activeView === "assistant" && isAdmin && <AdminChat />}
 

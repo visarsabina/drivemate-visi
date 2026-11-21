@@ -1,0 +1,3 @@
+ALTER POLICY "Gallery managers access photos" ON storage.objects USING (bucket_id = 'school-gallery' AND EXISTS (SELECT 1 FROM public.tenants t WHERE t.id::text = split_part(storage.objects.name, '/', 1) AND public.can_manage_school_gallery(t.id)));
+ALTER POLICY "Gallery managers upload photos" ON storage.objects WITH CHECK (bucket_id = 'school-gallery' AND EXISTS (SELECT 1 FROM public.tenants t WHERE t.id::text = split_part(storage.objects.name, '/', 1) AND public.can_manage_school_gallery(t.id)));
+ALTER POLICY "Gallery managers delete photos" ON storage.objects USING (bucket_id = 'school-gallery' AND EXISTS (SELECT 1 FROM public.tenants t WHERE t.id::text = split_part(storage.objects.name, '/', 1) AND public.can_manage_school_gallery(t.id)));
