@@ -28,6 +28,7 @@ const TYPES = ["image", "video", "logo", "document"];
 
 interface AssetRow {
   id: string;
+  displayUrl?: string;
   title: string;
   type: string;
   url: string;
@@ -62,7 +63,22 @@ const AssetsManager = () => {
       toast({ title: "Leximi dështoi", description: error.message, variant: "destructive" });
       return;
     }
-    setRows((data ?? []) as AssetRow[]);
+    const list = (data ?? []) as AssetRow[];
+    // Stored value is a bucket path (or a legacy signed link); show via short-lived links.
+    const toPath = (u: string) => {
+      if (!/^https?:\/\//i.test(u)) return u;
+      const m = u.match(/\/object\/sign\/social-images\/([^?]+)/);
+      return m ? decodeURIComponent(m[1]) : null;
+    };
+    const withLinks = await Promise.all(
+      list.map(async (r) => {
+        const path = toPath(r.url);
+        if (!path) return { ...r, displayUrl: r.url };
+        const { data: signed } = await supabase.storage.from("social-images").createSignedUrl(path, 60 * 60);
+        return { ...r, url: path, displayUrl: signed?.signedUrl ?? "" };
+      }),
+    );
+    setRows(withLinks);
   };
 
   useEffect(() => {
@@ -140,8 +156,7 @@ const AssetsManager = () => {
       toast({ title: "Ngarkimi dështoi", description: error.message, variant: "destructive" });
       return;
     }
-    const { data } = await supabase.storage.from("social-images").createSignedUrl(path, 60 * 60 * 24 * 365);
-    setForm((f) => ({ ...f, url: data?.signedUrl ?? path, title: f.title || file.name }));
+    setForm((f) => ({ ...f, url: path, title: f.title || file.name }));
     toast({ title: "Foto u ngarkua" });
   };
 
@@ -171,7 +186,7 @@ const AssetsManager = () => {
           {filtered.map((r) => (
             <div key={r.id} className="glass-card rounded-xl p-3 space-y-2">
               {r.type === "image" ? (
-                <img src={r.url} alt={r.title} loading="lazy" className="w-full h-32 object-cover rounded-lg" />
+                <img src={r.displayUrl ?? r.url} alt={r.title} loading="lazy" className="w-full h-32 object-cover rounded-lg" />
               ) : null}
               <div className="flex items-start justify-between gap-2">
                 <p className="font-medium text-sm truncate">{r.title}</p>
@@ -188,7 +203,7 @@ const AssetsManager = () => {
                 <span className="text-[11px] text-muted-foreground">{formatDateDMY(r.created_at)}</span>
                 <div className="flex gap-1">
                   <Button size="icon" variant="ghost" asChild>
-                    <a href={r.url} target="_blank" rel="noreferrer"><ExternalLink className="w-4 h-4" /></a>
+                    <a href={r.displayUrl ?? r.url} target="_blank" rel="noreferrer"><ExternalLink className="w-4 h-4" /></a>
                   </Button>
                   <Button size="icon" variant="ghost" onClick={() => openEdit(r)}><Pencil className="w-4 h-4" /></Button>
                   <Button size="icon" variant="ghost" onClick={() => remove(r.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>

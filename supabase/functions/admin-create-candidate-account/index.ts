@@ -72,6 +72,9 @@ Deno.serve(async (req) => {
     let targetUserId: string | null = cand.user_id ?? null;
 
     if (targetUserId) {
+      if (!(await isSafeCandidateAccount(admin, targetUserId, tenantId))) {
+        return json({ error: "Llogaria e lidhur nuk është llogari kandidati" }, 403);
+      }
       // Account already exists -> just reset password
       const { error: updErr } = await admin.auth.admin.updateUserById(targetUserId, { password });
       if (updErr) return json({ error: "Përditësimi i fjalëkalimit dështoi: " + updErr.message }, 500);
@@ -87,6 +90,9 @@ Deno.serve(async (req) => {
         const { data: list } = await admin.auth.admin.listUsers();
         const existing = list?.users.find((u) => u.email?.toLowerCase() === email);
         if (!existing) return json({ error: createErr.message }, 400);
+        if (!(await isSafeCandidateAccount(admin, existing.id, tenantId))) {
+          return json({ error: "Llogaria ekzistuese nuk mund të përdoret" }, 403);
+        }
         targetUserId = existing.id;
         const { error: pwErr } = await admin.auth.admin.updateUserById(existing.id, { password });
         if (pwErr) return json({ error: pwErr.message }, 500);
@@ -116,6 +122,18 @@ Deno.serve(async (req) => {
     return json({ error: (e as Error).message }, 500);
   }
 });
+
+
+async function isSafeCandidateAccount(admin: any, userId: string, tenantId: string): Promise<boolean> {
+  const { data: roles } = await admin.from("user_roles").select("role").eq("user_id", userId);
+  const r = (roles ?? []).map((x: { role: string }) => x.role);
+  if (r.some((x: string) => x !== "candidate")) return false;
+  const { data: memberships } = await admin.from("user_tenants").select("tenant_id").eq("user_id", userId);
+  if ((memberships ?? []).some((m: { tenant_id: string }) => m.tenant_id !== tenantId)) return false;
+  const { data: u } = await admin.auth.admin.getUserById(userId);
+  const email = u?.user?.email?.toLowerCase() ?? "";
+  return email.endsWith("@candidate.local");
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {

@@ -15,6 +15,13 @@
       "when": 1795296303012,
       "tag": "0001_tighten_question_and_photo_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795297666832,
+      "tag": "0002_lock_candidate_account_link",
+      "breakpoints": true
     }
   ]
 }

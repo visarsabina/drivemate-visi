@@ -96,7 +96,8 @@ Deno.serve(async (req) => {
       if (!existing) {
         return json({ error: createErr.message }, 400);
       }
-      targetUserId = existing.id;
+      // Never silently attach an existing account (it may belong to another school).
+      return json({ error: "Ky email ekziston tashmë. Përdoruesi nuk mund të shtohet automatikisht." }, 409);
     } else {
       targetUserId = created.user?.id ?? null;
     }

@@ -35,8 +35,9 @@ var list_candidates_default = defineTool({
       "id, emri, mbiemri, numri_personal, telefon, kategoria, statusi, numri_regjistrimit, data_regjistrimit, shuma_marreveshjes, total_lessons",
       { count: "exact" }
     ).order("data_regjistrimit", { ascending: false }).range(skip, skip + take - 1);
-    if (search && search.trim()) {
-      const s = `%${search.trim()}%`;
+    if (search && search.trim().replace(/[^\p{L}\p{N}\s\-']/gu, "")) {
+      const cleaned = search.trim().replace(/[^\p{L}\p{N}\s\-']/gu, "").slice(0, 100);
+      const s = `%${cleaned}%`;
       q = q.or(`emri.ilike.${s},mbiemri.ilike.${s},numri_personal.ilike.${s}`);
     }
     const { data, error, count } = await q;

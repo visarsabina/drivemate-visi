@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
         .eq("user_id", targetUserId)
         .eq("tenant_id", callerTenantId)
         .maybeSingle();
-      belongs = !!cand;
+      belongs = !!cand && (await isSafeCandidateAccount(admin, targetUserId, callerTenantId));
     }
     if (!belongs) return json({ error: "Përdoruesi nuk i përket autoshkollës tuaj" }, 403);
 
@@ -106,6 +106,18 @@ Deno.serve(async (req) => {
     return json({ error: (e as Error).message }, 500);
   }
 });
+
+
+async function isSafeCandidateAccount(admin: any, userId: string, tenantId: string): Promise<boolean> {
+  const { data: roles } = await admin.from("user_roles").select("role").eq("user_id", userId);
+  const r = (roles ?? []).map((x: { role: string }) => x.role);
+  if (r.some((x: string) => x !== "candidate")) return false;
+  const { data: memberships } = await admin.from("user_tenants").select("tenant_id").eq("user_id", userId);
+  if ((memberships ?? []).some((m: { tenant_id: string }) => m.tenant_id !== tenantId)) return false;
+  const { data: u } = await admin.auth.admin.getUserById(userId);
+  const email = u?.user?.email?.toLowerCase() ?? "";
+  return email.endsWith("@candidate.local");
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {

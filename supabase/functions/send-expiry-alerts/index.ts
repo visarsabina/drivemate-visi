@@ -27,6 +27,23 @@ Deno.serve(async (req) => {
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
   const supabase = createClient(supabaseUrl, serviceKey)
 
+  // Only the scheduled job (service credentials) may run this function.
+  const token = (req.headers.get('Authorization') ?? '').replace(/^Bearer\s+/i, '').trim()
+  let authorized = !!token && token === serviceKey
+  if (!authorized && token) {
+    try {
+      const probe = createClient(supabaseUrl, token, { auth: { persistSession: false } })
+      const { error } = await probe.auth.admin.listUsers({ page: 1, perPage: 1 })
+      authorized = !error
+    } catch { authorized = false }
+  }
+  if (!authorized) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+  }
+
   let body: Record<string, unknown> = {}
   try { body = await req.json() } catch { /* no body */ }
   const testMode = body?.test === true

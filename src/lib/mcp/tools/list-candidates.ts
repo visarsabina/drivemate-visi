@@ -37,8 +37,10 @@ export default defineTool({
       )
       .order("data_regjistrimit", { ascending: false })
       .range(skip, skip + take - 1);
-    if (search && search.trim()) {
-      const s = `%${search.trim()}%`;
+    if (search && search.trim().replace(/[^\p{L}\p{N}\s\-']/gu, "")) {
+      // Strip characters that have meaning in the filter syntax.
+      const cleaned = search.trim().replace(/[^\p{L}\p{N}\s\-']/gu, "").slice(0, 100);
+      const s = `%${cleaned}%`;
       q = q.or(`emri.ilike.${s},mbiemri.ilike.${s},numri_personal.ilike.${s}`);
     }
     const { data, error, count } = await q;

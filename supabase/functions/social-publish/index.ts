@@ -12,9 +12,14 @@ interface PostRow {
 }
 
 /** Turns a stored bucket path into a temporary public URL the provider can fetch. */
-async function signImage(admin: any, imagePath: string | null): Promise<string | null> {
+async function signImage(admin: any, imagePath: string | null, tenantId: string): Promise<string | null> {
   if (!imagePath) return null;
   if (/^https?:\/\//i.test(imagePath)) return imagePath;
+  const clean = imagePath.replace(/^\/+/, "");
+  if (clean.includes("..") || !clean.startsWith(`${tenantId}/`)) {
+    throw new Error("Foto nuk i përket autoshkollës suaj.");
+  }
+  imagePath = clean;
   const { data } = await admin.storage.from("social-images").createSignedUrl(imagePath, 60 * 60);
   return data?.signedUrl ?? null;
 }
@@ -116,7 +121,12 @@ Deno.serve(async (req) => {
       .maybeSingle<PostRow>();
     if (error || !post) return json({ error: "Postimi nuk u gjet" }, 404);
 
-    const imageUrl = await signImage(ctx.admin, post.image_url);
+    let imageUrl: string | null;
+    try {
+      imageUrl = await signImage(ctx.admin, post.image_url, post.tenant_id);
+    } catch (err) {
+      return json({ error: err instanceof Error ? err.message : "Foto e pavlefshme" }, 403);
+    }
     const platform = (post.platform || "").toLowerCase();
 
     let externalId = "";
