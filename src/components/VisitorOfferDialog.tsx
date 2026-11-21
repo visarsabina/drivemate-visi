@@ -12,7 +12,7 @@ import { ArrowRight, Clock } from "lucide-react";
 import logo from "@/assets/logo.png";
 import truckC from "@/assets/truck-c.jpg";
 
-const CHOICE_KEY = "visitor-offer-choice";
+const CHOICE_KEY = "promo-kategorite-renda-28nentor";
 
 interface VisitorOfferDialogProps {
   /** Controlled open state from parent. */
