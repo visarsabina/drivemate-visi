@@ -534,6 +534,26 @@ const Home = () => {
                 {emailLines.map((line) => <a key={line} href={`mailto:${line}`} className="block hover:opacity-100">{line}</a>)}
                 {addressLines.map((line) => <p key={line} className="block">{line}</p>)}
                 <p className="block">Hënë - Shtunë, 09:30 - 18:00</p>
+                <div className="mt-3 rounded-lg overflow-hidden border border-background/20">
+                  <iframe
+                    title={`Lokacioni i ${schoolName} në hartë`}
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}&output=embed`}
+                    width="100%"
+                    height="160"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                  />
+                </div>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${schoolName} ${addressLines.join(" ")}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 underline hover:opacity-100"
+                >
+                  Hap në Google Maps / Drejtimet
+                </a>
               </div>
             </div>
             <div>
